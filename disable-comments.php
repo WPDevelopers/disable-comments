@@ -246,8 +246,8 @@ jQuery(document).ready(function($){
 			$this->options['permanent'] = isset( $_POST['permanent'] );
 			
 			$this->update_options();
-			echo '<div id="message" class="updated"><p>Options updated. Changes to the Admin Menu and Admin Bar will not appear until you leave or reload this page.' . ( WP_CACHE ? ' <strong>If a caching/performance plugin is active, please invalidate its cache to ensure that changes are reflected immediately.</strong>' : '' ) . '</p></div>';
-                        // echo '<div id="message" class="updated"><p>' . __('Options updated. Changes to the Admin Menu and Admin Bar will not appear until you leave or reload this page.', 'disable-comments') . ( WP_CACHE ? ' <strong>' . _e('If a caching/performance plugin is active, please invalidate its cache to ensure that changes are reflected immediately.', 'disable-comments') . '</strong> ' : ' ) . '</p></div>';
+			$cache_message = WP_CACHE ? ' <strong>' . __( 'If a caching/performance plugin is active, please invalidate its cache to ensure that changes are reflected immediately.' ) . '</strong>' : '';
+                        echo '<div id="message" class="updated"><p>' . __( 'Options updated. Changes to the Admin Menu and Admin Bar will not appear until you leave or reload this page.', 'disable-comments' ) . $cache_message . '</p></div>';
 		}	
 	?>
 	<style> .indent {padding-left: 2em} </style>
