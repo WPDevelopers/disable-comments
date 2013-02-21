@@ -217,7 +217,7 @@ jQuery(document).ready(function($){
                 if ($file == $plugin) {
                     return array_merge(
                         $links,
-                        array( sprintf( '<a href="https://github.com/solarissmoke/disable-comments">%s</a>', __('Dev-Repo @GitHub','disable-comments')))
+                        array( sprintf( '<a href="https://github.com/solarissmoke/disable-comments">%s</a>', 'GitHub-Repo'))
                     );
                 }
                 return $links;

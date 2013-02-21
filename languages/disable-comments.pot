@@ -34,10 +34,6 @@ msgid ""
 "which post types to disable comments on."
 msgstr ""
 
-#: disable-comments.php:220
-msgid "Dev-Repo @GitHub"
-msgstr ""
-
 #: disable-comments.php:227 disable-comments.php:229
 msgid "Disable Comments"
 msgstr ""
