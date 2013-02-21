@@ -224,9 +224,9 @@ jQuery(document).ready(function($){
         }
 	function settings_menu() {
 		if( $this->networkactive )
-			add_submenu_page( 'settings.php', 'Disable Comments', 'Disable Comments', 'manage_network_plugins', 'disable_comments_settings', array( $this, 'settings_page' ) );
+			add_submenu_page( 'settings.php', __('Disable Comments', 'disable-comments'), __('Disable Comments', 'disable-comments'), 'manage_network_plugins', 'disable_comments_settings', array( $this, 'settings_page' ) );
 		else
-			add_submenu_page( 'options-general.php', 'Disable Comments', 'Disable Comments', 'manage_options', 'disable_comments_settings', array( $this, 'settings_page' ) );
+			add_submenu_page( 'options-general.php', __('Disable Comments', 'disable-comments'), __('Disable Comments', 'disable-comments'), 'manage_options', 'disable_comments_settings', array( $this, 'settings_page' ) );
 	}
 	
 	function settings_page() {
