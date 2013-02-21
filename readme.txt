@@ -17,6 +17,8 @@ Additionally, comment-related items can be removed from the Dashboard, Widgets, 
 
 If you come across any bugs or have suggestions, please use the plugin support forum or contact me at [rayofsolaris.net](http://rayofsolaris.net). I can't fix it if I don't know it's broken! Please check the [FAQ](http://wordpress.org/extend/plugins/disable-comments/faq/) for common issues.
 
+Want to contribute? Here's the [GitHub development repository](https://github.com/solarissmoke/disable-comments).
+
 == Frequently Asked Questions ==
 
 = What is "persistent mode"? =
