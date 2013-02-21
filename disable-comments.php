@@ -113,6 +113,7 @@ class Disable_Comments {
 			}
 
 			add_action( 'admin_print_footer_scripts', array( $this, 'discussion_notice' ) );
+                        add_filter('plugin_row_meta', array(&$this, 'set_plugin_meta'), 10, 2);
 			
 			// if only certain types are disabled, remember the original post status
 			if( !$this->options['permanent'] && !$this->options['remove_everywhere'] ) {
@@ -211,6 +212,16 @@ jQuery(document).ready(function($){
 		unregister_widget( 'WP_Widget_Recent_Comments' );
 	}
 	
+        function set_plugin_meta($links, $file) {
+                $plugin = plugin_basename(__FILE__);
+                if ($file == $plugin) {
+                    return array_merge(
+                        $links,
+                        array( sprintf( '<a href="https://github.com/solarissmoke/disable-comments">%s</a>', __('Dev-Repo @GitHub','disable-comments')))
+                    );
+                }
+                return $links;
+        }
 	function settings_menu() {
 		if( $this->networkactive )
 			add_submenu_page( 'settings.php', 'Disable Comments', 'Disable Comments', 'manage_network_plugins', 'disable_comments_settings', array( $this, 'settings_page' ) );
