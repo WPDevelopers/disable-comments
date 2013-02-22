@@ -65,6 +65,10 @@ The plugin provides the option to **completely disable the commenting feature in
 
 == Changelog ==
 
+= 0.8.1 =
+* Added gettext support and German translation.
+* Added links to GitHub development repo.
+
 = 0.8 =
 * Remove X-Pingback header when comments are completely disabled.
 * Disable comment feeds when comment are completely disabled.

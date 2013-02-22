@@ -7,7 +7,6 @@ Version: 0.8.1
 Author: Samir Shah
 Author URI: http://rayofsolaris.net/
 License: GPL2
-
 Text Domain: disable-comments
 Domain Path: /languages/
 */
@@ -20,7 +19,7 @@ class Disable_Comments {
 	private $options;
 	private $networkactive;
 	private $modified_types = array();
-	
+
 	function __construct() {
 		// are we network activated?
 		$this->networkactive = ( is_multisite() && array_key_exists( plugin_basename( __FILE__ ), get_site_option( 'active_sitewide_plugins' ) ) );
@@ -28,7 +27,7 @@ class Disable_Comments {
 		// load options
 		$this->options = $this->networkactive ? get_site_option( 'disable_comments_options', array() ) : get_option( 'disable_comments_options', array() );
 		
-                // load language files
+		// load language files
 		load_plugin_textdomain( 'disable-comments', false, dirname( plugin_basename( __FILE__ ) ) .  '/languages' );
                 
 		// If it looks like first run, check compat
@@ -113,7 +112,7 @@ class Disable_Comments {
 			}
 
 			add_action( 'admin_print_footer_scripts', array( $this, 'discussion_notice' ) );
-                        add_filter('plugin_row_meta', array(&$this, 'set_plugin_meta'), 10, 2);
+			add_filter( 'plugin_row_meta', array( $this, 'set_plugin_meta' ), 10, 2 );
 			
 			// if only certain types are disabled, remember the original post status
 			if( !$this->options['permanent'] && !$this->options['remove_everywhere'] ) {
@@ -212,21 +211,22 @@ jQuery(document).ready(function($){
 		unregister_widget( 'WP_Widget_Recent_Comments' );
 	}
 	
-        function set_plugin_meta($links, $file) {
-                $plugin = plugin_basename(__FILE__);
-                if ($file == $plugin) {
-                    return array_merge(
-                        $links,
-                        array( sprintf( '<a href="https://github.com/solarissmoke/disable-comments">%s</a>', 'GitHub-Repo'))
-                    );
-                }
-                return $links;
-        }
+	function set_plugin_meta( $links, $file ) {
+		if ( $file == plugin_basename( __FILE__ ) ) {
+			return array_merge(
+				$links,
+				array( '<a href="https://github.com/solarissmoke/disable-comments">GitHub-Repo</a>' )
+			);
+		}
+		return $links;
+	}
+
 	function settings_menu() {
+		$title = __( 'Disable Comments', 'disable-comments' );
 		if( $this->networkactive )
-			add_submenu_page( 'settings.php', __('Disable Comments', 'disable-comments'), __('Disable Comments', 'disable-comments'), 'manage_network_plugins', 'disable_comments_settings', array( $this, 'settings_page' ) );
+			add_submenu_page( 'settings.php', $title, $title, 'manage_network_plugins', 'disable_comments_settings', array( $this, 'settings_page' ) );
 		else
-			add_submenu_page( 'options-general.php', __('Disable Comments', 'disable-comments'), __('Disable Comments', 'disable-comments'), 'manage_options', 'disable_comments_settings', array( $this, 'settings_page' ) );
+			add_submenu_page( 'options-general.php', $title, $title, 'manage_options', 'disable_comments_settings', array( $this, 'settings_page' ) );
 	}
 	
 	function settings_page() {
@@ -258,7 +258,7 @@ jQuery(document).ready(function($){
 			
 			$this->update_options();
 			$cache_message = WP_CACHE ? ' <strong>' . __( 'If a caching/performance plugin is active, please invalidate its cache to ensure that changes are reflected immediately.' ) . '</strong>' : '';
-                        echo '<div id="message" class="updated"><p>' . __( 'Options updated. Changes to the Admin Menu and Admin Bar will not appear until you leave or reload this page.', 'disable-comments' ) . $cache_message . '</p></div>';
+			echo '<div id="message" class="updated"><p>' . __( 'Options updated. Changes to the Admin Menu and Admin Bar will not appear until you leave or reload this page.', 'disable-comments' ) . $cache_message . '</p></div>';
 		}	
 	?>
 	<style> .indent {padding-left: 2em} </style>
@@ -274,18 +274,19 @@ jQuery(document).ready(function($){
 	<form action="" method="post" id="disable-comments">
 	<ul>
 	<li><label for="remove_everywhere"><input type="radio" id="remove_everywhere" name="mode" value="remove_everywhere" <?php checked( $this->options['remove_everywhere'] );?> /> <strong><?php _e( 'Everywhere', 'disable-comments') ?></strong>: <?php _e( 'Disable all comment-related controls and settings in WordPress.', 'disable-comments') ?></label>
-		<p class="indent"><?php printf( __( '%s: This option is global and will affect your entire site. Use it only if you want to disable comments <em>everywhere</em>. A complete description of what this option does is <a href="http://wordpress.org/extend/plugins/disable-comments/other_notes/" target="_blank">available here</a>.', 'disable-comments'), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>' ); ?></p>
+		<p class="indent"><?php printf( __( '%s: This option is global and will affect your entire site. Use it only if you want to disable comments <em>everywhere</em>. A complete description of what this option does is <a href="%s" target="_blank">available here</a>.', 'disable-comments' ), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>', 'http://wordpress.org/extend/plugins/disable-comments/other_notes/' ); ?></p>
 	</li>
-	<li><label for="selected_types"><input type="radio" id="selected_types" name="mode" value="selected_types" <?php checked( ! $this->options['remove_everywhere'] );?> /> <strong><?php _e( 'On certain post types', 'disable-comments') ?></strong>:
+	<li><label for="selected_types"><input type="radio" id="selected_types" name="mode" value="selected_types" <?php checked( ! $this->options['remove_everywhere'] );?> /> <strong><?php _e( 'On certain post types', 'disable-comments') ?></strong></label>:
 		<p></p>
 		<ul class="indent" id="listoftypes">
 			<?php foreach( $types as $k => $v ) echo "<li><label for='post-type-$k'><input type='checkbox' name='disabled_types[]' value='$k' ". checked( in_array( $k, $this->options['disabled_post_types'] ), true, false ) ." id='post-type-$k'> {$v->labels->name}</label></li>";?>
 		</ul>
 		<p class="indent"><?php _e( 'Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts.', 'disable-comments') ?></p>
 	</li>
+	</ul>
 	<h3>Other options</h3>
 	<ul>
-		<li><label for="permanent"><input type="checkbox" name="permanent" id="permanent" <?php checked( $this->options['permanent'] );?>> <strong><?php _e( 'Use persistent mode', 'disable-comments') ?></strong></label><p class="indent"><?php printf( __( '%s: <strong>This will make persistent changes to your database &mdash; comments will remain closed even if you later disable the plugin!</strong> You should not use it if you only want to disable comments temporarily. Please <a href="http://wordpress.org/extend/plugins/disable-comments/faq/" target="_blank">read and understand the FAQ</a> before selecting this option.', 'disable-comments'), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>' ); ?></p>
+		<li><label for="permanent"><input type="checkbox" name="permanent" id="permanent" <?php checked( $this->options['permanent'] );?>> <strong><?php _e( 'Use persistent mode', 'disable-comments') ?></strong></label><p class="indent"><?php printf( __( '%s: <strong>This will make persistent changes to your database &mdash; comments will remain closed even if you later disable the plugin!</strong> You should not use it if you only want to disable comments temporarily. Please <a href="%s" target="_blank">read and understand the FAQ</a> before selecting this option.', 'disable-comments'), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>', 'http://wordpress.org/extend/plugins/disable-comments/faq/' ); ?></p>
 		<?php if( $this->networkactive ) echo '<p class="indent">' . sprintf( __( '%s: Entering persistent mode on large multi-site networks requires a large number of database queries and can take a while. Use with caution!', 'disable-comments'), '<strong>' . __('Warning', 'disable-comments') . '</strong>' ) . '</p>';?>
 		</li>
 	</ul>
@@ -309,7 +310,7 @@ jQuery(document).ready(function($){
 		disable_comments_uihelper();
 		
 		$("#permanent").change( function() {
-			if( $(this).is(":checked") && ! confirm("<?php sprintf( __( '%s: Selecting this option will make persistent changes to your database. Are you sure you want to enable it?', 'disable-comments'), __('Warning', 'disable-comments')); ?>") )
+			if( $(this).is(":checked") && ! confirm("<?php printf( __( '%s: Selecting this option will make persistent changes to your database. Are you sure you want to enable it?', 'disable-comments'), __('Warning', 'disable-comments')); ?>") )
 				$(this).attr("checked", false );
 		});
 	});
