@@ -35,7 +35,7 @@ class Disable_Comments {
 			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 			deactivate_plugins( __FILE__ );
 			if ( isset( $_GET['action'] ) && ( $_GET['action'] == 'activate' || $_GET['action'] == 'error_scrape' ) )
-				exit( __( 'Disable Comments requires WordPress version 3.2 or greater.', 'disable-comments') );
+				exit( sprintf( __( 'Disable Comments requires WordPress version %s or greater.', 'disable-comments' ), '3.2' ) );
 		}
 		
 		$old_ver = isset( $this->options['db_version'] ) ? $this->options['db_version'] : 0;
@@ -166,7 +166,7 @@ class Disable_Comments {
 ?>
 <script>
 jQuery(document).ready(function($){
-	$(".wrap h2").first().after( "<div style='color: #900'><p>Note: <?php printf( __( 'The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types.', 'disable-comments'), implode( ', ', $names ) );?></div>" );
+	$(".wrap h2").first().after( <?php echo json_encode( '<div style="color: #900"><p>' . sprintf( __( 'Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types.', 'disable-comments' ), implode( __( ', ' ), $names ) ) . '</p></div>' );?> );
 });
 </script>
 <?php
@@ -310,7 +310,7 @@ jQuery(document).ready(function($){
 		disable_comments_uihelper();
 		
 		$("#permanent").change( function() {
-			if( $(this).is(":checked") && ! confirm("<?php printf( __( '%s: Selecting this option will make persistent changes to your database. Are you sure you want to enable it?', 'disable-comments'), __('Warning', 'disable-comments')); ?>") )
+			if( $(this).is(":checked") && ! confirm(<?php echo json_encode( sprintf( __( '%s: Selecting this option will make persistent changes to your database. Are you sure you want to enable it?', 'disable-comments'), __( 'Warning', 'disable-comments' ) ) );?>) )
 				$(this).attr("checked", false );
 		});
 	});

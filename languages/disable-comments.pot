@@ -1,10 +1,10 @@
-# Copyright (C) 2013 
-# This file is distributed under the same license as the  package.
+# Copyright (C) 2013 Disable Comments
+# This file is distributed under the same license as the Disable Comments package.
 msgid ""
 msgstr ""
-"Project-Id-Version:  \n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tag/wp\n"
-"POT-Creation-Date: 2013-02-21 13:24:32+00:00\n"
+"Project-Id-Version: Disable Comments 0.8.1\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/disable-comments\n"
+"POT-Creation-Date: 2013-02-24 04:51:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,55 +12,40 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: disable-comments.php:5
-msgid "Allows administrators to globally disable comments on their site. Comments can be disabled according to post type."
+#: disable-comments.php:38
+msgid "Disable Comments requires WordPress version %s or greater."
 msgstr ""
 
-#: disable-comments.php:39
-msgid "Disable Comments requires WordPress version 3.2 or greater."
+#: disable-comments.php:169
+msgid "Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types."
 msgstr ""
 
-#: disable-comments.php:170
-msgid ""
-"The <em>Disable Comments</em> plugin is currently active, and comments are "
-"completely disabled on: %s. Many of the settings below will not be "
-"applicable for those post types."
+#: disable-comments.php:169
+msgid ", "
 msgstr ""
 
-#: disable-comments.php:184
-msgid ""
-"The <em>Disable Comments</em> plugin is active, but isn't configured to do "
-"anything yet. Visit the <a href=\"%s\">configuration page</a> to choose "
-"which post types to disable comments on."
+#: disable-comments.php:183
+msgid "The <em>Disable Comments</em> plugin is active, but isn't configured to do anything yet. Visit the <a href=\"%s\">configuration page</a> to choose which post types to disable comments on."
 msgstr ""
 
-#: disable-comments.php:227 disable-comments.php:229
+#: disable-comments.php:225 disable-comments.php:267
 msgid "Disable Comments"
 msgstr ""
 
 #: disable-comments.php:260
-msgid ""
-"If a caching/performance plugin is active, please invalidate its cache to "
-"ensure that changes are reflected immediately."
+msgid "If a caching/performance plugin is active, please invalidate its cache to ensure that changes are reflected immediately."
 msgstr ""
 
 #: disable-comments.php:261
-msgid ""
-"Options updated. Changes to the Admin Menu and Admin Bar will not appear "
-"until you leave or reload this page."
+msgid "Options updated. Changes to the Admin Menu and Admin Bar will not appear until you leave or reload this page."
 msgstr ""
 
 #: disable-comments.php:270
-msgid ""
-"<em>Disable Comments</em> is Network Activated. The settings below will "
-"affect <strong>all sites</strong> in this network."
+msgid "<em>Disable Comments</em> is Network Activated. The settings below will affect <strong>all sites</strong> in this network."
 msgstr ""
 
 #: disable-comments.php:272
-msgid ""
-"It seems that a caching/performance plugin is active on this site. Please "
-"manually invalidate that plugin's cache after making any changes to the "
-"settings below."
+msgid "It seems that a caching/performance plugin is active on this site. Please manually invalidate that plugin's cache after making any changes to the settings below."
 msgstr ""
 
 #: disable-comments.php:276
@@ -72,15 +57,11 @@ msgid "Disable all comment-related controls and settings in WordPress."
 msgstr ""
 
 #: disable-comments.php:277
-msgid ""
-"%s: This option is global and will affect your entire site. Use it only if "
-"you want to disable comments <em>everywhere</em>. A complete description of "
-"what this option does is <a href=\"http://wordpress.org/extend/plugins/"
-"disable-comments/other_notes/\" target=\"_blank\">available here</a>."
+msgid "%s: This option is global and will affect your entire site. Use it only if you want to disable comments <em>everywhere</em>. A complete description of what this option does is <a href=\"%s\" target=\"_blank\">available here</a>."
 msgstr ""
 
-#: disable-comments.php:277 disable-comments.php:288 disable-comments.php:289
-#: disable-comments.php:312
+#: disable-comments.php:277 disable-comments.php:289 disable-comments.php:290
+#: disable-comments.php:313
 msgid "Warning"
 msgstr ""
 
@@ -89,34 +70,44 @@ msgid "On certain post types"
 msgstr ""
 
 #: disable-comments.php:284
-msgid ""
-"Disabling comments will also disable trackbacks and pingbacks. All comment-"
-"related fields will also be hidden from the edit/quick-edit screens of the "
-"affected posts. These settings cannot be overridden for individual posts."
-msgstr ""
-
-#: disable-comments.php:288
-msgid "Use persistent mode"
-msgstr ""
-
-#: disable-comments.php:288
-msgid ""
-"%s: <strong>This will make persistent changes to your database &mdash; "
-"comments will remain closed even if you later disable the plugin!</strong> "
-"You should not use it if you only want to disable comments temporarily. "
-"Please <a href=\"http://wordpress.org/extend/plugins/disable-comments/faq/\" "
-"target=\"_blank\">read and understand the FAQ</a> before selecting this "
-"option."
+msgid "Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts."
 msgstr ""
 
 #: disable-comments.php:289
-msgid ""
-"%s: Entering persistent mode on large multi-site networks requires a large "
-"number of database queries and can take a while. Use with caution!"
+msgid "Use persistent mode"
 msgstr ""
 
-#: disable-comments.php:312
-msgid ""
-"%s: Selecting this option will make persistent changes to your database. Are "
-"you sure you want to enable it?"
+#: disable-comments.php:289
+msgid "%s: <strong>This will make persistent changes to your database &mdash; comments will remain closed even if you later disable the plugin!</strong> You should not use it if you only want to disable comments temporarily. Please <a href=\"%s\" target=\"_blank\">read and understand the FAQ</a> before selecting this option."
+msgstr ""
+
+#: disable-comments.php:290
+msgid "%s: Entering persistent mode on large multi-site networks requires a large number of database queries and can take a while. Use with caution!"
+msgstr ""
+
+#: disable-comments.php:293
+msgid "Save Changes"
+msgstr ""
+
+#: disable-comments.php:313
+msgid "%s: Selecting this option will make persistent changes to your database. Are you sure you want to enable it?"
+msgstr ""
+#. Plugin Name of the plugin/theme
+msgid "Disable Comments"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://wordpress.org/extend/plugins/disable-comments/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Allows administrators to globally disable comments on their site. Comments can be disabled according to post type."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Samir Shah"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://rayofsolaris.net/"
 msgstr ""
