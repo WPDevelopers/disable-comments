@@ -284,7 +284,7 @@ jQuery(document).ready(function($){
 		<p class="indent"><?php _e( 'Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts.', 'disable-comments') ?></p>
 	</li>
 	</ul>
-	<h3>Other options</h3>
+	<h3><?php _e( 'Other options', 'disable-comments') ?></h3>
 	<ul>
 		<li><label for="permanent"><input type="checkbox" name="permanent" id="permanent" <?php checked( $this->options['permanent'] );?>> <strong><?php _e( 'Use persistent mode', 'disable-comments') ?></strong></label><p class="indent"><?php printf( __( '%s: <strong>This will make persistent changes to your database &mdash; comments will remain closed even if you later disable the plugin!</strong> You should not use it if you only want to disable comments temporarily. Please <a href="%s" target="_blank">read and understand the FAQ</a> before selecting this option.', 'disable-comments'), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>', 'http://wordpress.org/extend/plugins/disable-comments/faq/' ); ?></p>
 		<?php if( $this->networkactive ) echo '<p class="indent">' . sprintf( __( '%s: Entering persistent mode on large multi-site networks requires a large number of database queries and can take a while. Use with caution!', 'disable-comments'), '<strong>' . __('Warning', 'disable-comments') . '</strong>' ) . '</p>';?>

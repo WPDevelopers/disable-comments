@@ -20,10 +20,6 @@ msgstr ""
 msgid "Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types."
 msgstr ""
 
-#: disable-comments.php:169
-msgid ", "
-msgstr ""
-
 #: disable-comments.php:183
 msgid "The <em>Disable Comments</em> plugin is active, but isn't configured to do anything yet. Visit the <a href=\"%s\">configuration page</a> to choose which post types to disable comments on."
 msgstr ""
@@ -73,6 +69,10 @@ msgstr ""
 msgid "Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts."
 msgstr ""
 
+#: disable-comments.php:287
+msgid "Other options"
+msgstr ""
+
 #: disable-comments.php:289
 msgid "Use persistent mode"
 msgstr ""
@@ -85,29 +85,15 @@ msgstr ""
 msgid "%s: Entering persistent mode on large multi-site networks requires a large number of database queries and can take a while. Use with caution!"
 msgstr ""
 
-#: disable-comments.php:293
-msgid "Save Changes"
-msgstr ""
-
 #: disable-comments.php:313
 msgid "%s: Selecting this option will make persistent changes to your database. Are you sure you want to enable it?"
 msgstr ""
+
 #. Plugin Name of the plugin/theme
 msgid "Disable Comments"
 msgstr ""
 
-#. Plugin URI of the plugin/theme
-msgid "http://wordpress.org/extend/plugins/disable-comments/"
-msgstr ""
 
 #. Description of the plugin/theme
 msgid "Allows administrators to globally disable comments on their site. Comments can be disabled according to post type."
-msgstr ""
-
-#. Author of the plugin/theme
-msgid "Samir Shah"
-msgstr ""
-
-#. Author URI of the plugin/theme
-msgid "http://rayofsolaris.net/"
 msgstr ""
