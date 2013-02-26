@@ -296,10 +296,34 @@ jQuery(document).ready(function($){
                         <?php
                         if ($active_tab == 'about') { ?>
                             <div class="wrap indent">
+                                
+                                <h1>Disable Comments for WordPress</h1>
+                                <p>
+                                    <a href="http://wordpress.org/extend/plugins/disable-comments/" target="_blank">WordPress.org</a> | 
+                                    <a href="https://github.com/solarissmoke/disable-comments" target="_blank">GitHub Repository</a> | 
+                                    <a href="https://github.com/solarissmoke/disable-comments/issues" target="_blank">Issue Tracker</a>
+                                </p>
+                                
+                                <h3><?php _e('Development', 'disable-comments'); ?></h3>
                                 <ul>
-                                    <li>GitHub: <a href = "https://github.com/solarissmoke/disable-comments" target = "_blank">https://github.com/solarissmoke/disable-comments</a></li>
-                                    <li>WordPress.org: <a href = "http://wordpress.org/extend/plugins/disable-comments/" target = "_blank">http://wordpress.org/extend/plugins/disable-comments/</a></li>
+                                    <li><?php _e('Main Developer', 'disable-comments'); ?>: <a href="http://rayofsolaris.net/" target="_blank">Samir Shah</a> | <a href="https://github.com/solarissmoke/" target="_blank">solarissmoke@GitHub</a> | <a href="http://profiles.wordpress.org/solarissmoke/" target="_blank">solarissmoke@WP.org</a></li>
                                 </ul>
+
+                                <h3>WordPress</h3>
+                                <ul>
+                                    <li><?php printf( __('Requires at least: %s', 'disable-comments'), '3.2'); ?></li>
+                                    <li><?php printf( __('Tested up to: %s', 'disable-comments'), '3.5.1'); ?></li>
+                                </ul>
+                                
+                                <h3><?php _e('Languages', 'disable-comments'); ?></h3>
+                                <ul>
+                                    <li><?php _e('English'); ?></li>
+                                    <li><?php _e('German'); ?></li>
+                                </ul>
+                                <p><?php printf( __('Help to translate at %s', 'disable-comments'), '<a href="https://translate.foe-services.de/projects/disable-comments" target="_blank">https://translate.foe-services.de/projects/disable-comments</a>'); ?></p>
+
+                                <h3><?php _e('License', 'disable-comments'); ?></h3> <a href="http://www.gnu.org/licenses/gpl-2.0.html" target="_blank">GPLv2</a>
+
                             </div><!-- /.wrap --> 
                         <?php } elseif ($active_tab == 'pmode' && $persistent_allowed == true) { ?>
                         
