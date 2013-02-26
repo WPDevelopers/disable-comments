@@ -61,9 +61,9 @@ class Disable_Comments {
 		}
                 
                 // TABBED SETTINGS
-		add_action( 'admin_init', 'disable_comments_settings_initialize_modes' );
-                add_action( 'admin_init', 'disable_comments_settings_intialize_about' );
-                add_action( 'admin_init', 'disable_comments_settings_initialize_pmode' );
+		// add_action( 'admin_init', 'disable_comments_settings_initialize_modes' );
+                // add_action( 'admin_init', 'disable_comments_settings_intialize_about' );
+                // add_action( 'admin_init', 'disable_comments_settings_initialize_pmode' );
                 
                 
 		// these need to happen now
@@ -331,6 +331,7 @@ jQuery(document).ready(function($){
                                     <?php if( $this->networkactive ) echo '<p class="indent">' . sprintf( __( '%s: Entering persistent mode on large multi-site networks requires a large number of database queries and can take a while. Use with caution!', 'disable-comments'), '<strong>' . __('Warning', 'disable-comments') . '</strong>' ) . '</p>';?>
                                     </li>
                                 </ul>
+                                <p class="submit"><input class="button-primary" type="submit" name="submit" value="<?php _e( 'Save Changes') ?>"></p>
                                 </form>
                             </div>
                             <script>
@@ -360,9 +361,9 @@ jQuery(document).ready(function($){
                             // do_settings_sections('disable_comments_settings_modes');
                         } // end if/else
                         
-                        if ($active_tab != 'about') {
-                            submit_button();
-                        }
+//                        if ($active_tab != 'about') {
+//                            submit_button();
+//                        }
                         ?>
                     </form>
                 </div><!-- /.wrap -->
