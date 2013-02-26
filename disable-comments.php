@@ -299,18 +299,65 @@ jQuery(document).ready(function($){
                     </h2>
                     <form method="post" action="" id="disable-comments">
                         <?php
-                        if ($active_tab == 'about') {
+                        if ($active_tab == 'about') { ?>
 
-                            settings_fields('disable_comments_settings_about');
-                            do_settings_sections('disable_comments_settings_about');
-                        } elseif ($active_tab == 'pmode') {
+                        <ul>
+                            <li>GitHub: <a href = "https://github.com/solarissmoke/disable-comments" target = "_blank">https://github.com/solarissmoke/disable-comments</a></li>
+                            <li>WordPress.org: <a href = "http://wordpress.org/extend/plugins/disable-comments/" target = "_blank">http://wordpress.org/extend/plugins/disable-comments/</a></li>
+                        </ul>
+                                
+                        <?php } elseif ($active_tab == 'pmode') {
 
                             settings_fields('disable_comments_settings_pmode');
                             do_settings_sections('disable_comments_settings_pmode');
-                        } else {
+                        } else { ?>
+                            <div class="wrap">
+                                <form action="" method="post" id="disable-comments">
+                                <ul>
+                                    <li><label for="remove_everywhere"><input type="radio" id="remove_everywhere" name="mode" value="remove_everywhere" <?php checked( $this->options['remove_everywhere'] );?> /> <strong><?php _e( 'Everywhere', 'disable-comments') ?></strong>: <?php _e( 'Disable all comment-related controls and settings in WordPress.', 'disable-comments') ?></label>
+                                            <p class="indent"><?php printf( __( '%s: This option is global and will affect your entire site. Use it only if you want to disable comments <em>everywhere</em>. A complete description of what this option does is <a href="%s" target="_blank">available here</a>.', 'disable-comments' ), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>', 'http://wordpress.org/extend/plugins/disable-comments/other_notes/' ); ?></p>
+                                    </li>
+                                    <li><label for="selected_types"><input type="radio" id="selected_types" name="mode" value="selected_types" <?php checked( ! $this->options['remove_everywhere'] );?> /> <strong><?php _e( 'On certain post types', 'disable-comments') ?></strong></label>:
+                                            <p></p>
+                                            <ul class="indent" id="listoftypes">
+                                                    <?php foreach( $types as $k => $v ) echo "<li><label for='post-type-$k'><input type='checkbox' name='disabled_types[]' value='$k' ". checked( in_array( $k, $this->options['disabled_post_types'] ), true, false ) ." id='post-type-$k'> {$v->labels->name}</label></li>";?>
+                                            </ul>
+                                            <p class="indent"><?php _e( 'Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts.', 'disable-comments') ?></p>
+                                    </li>
+                                </ul>
+                                <h3><?php _e( 'Other options', 'disable-comments') ?></h3>
+                                <ul>
+                                    <li><label for="permanent"><input type="checkbox" name="permanent" id="permanent" <?php checked( $this->options['permanent'] );?>> <strong><?php _e( 'Use persistent mode', 'disable-comments') ?></strong></label><p class="indent"><?php printf( __( '%s: <strong>This will make persistent changes to your database &mdash; comments will remain closed even if you later disable the plugin!</strong> You should not use it if you only want to disable comments temporarily. Please <a href="%s" target="_blank">read and understand the FAQ</a> before selecting this option.', 'disable-comments'), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>', 'http://wordpress.org/extend/plugins/disable-comments/faq/' ); ?></p>
+                                    <?php if( $this->networkactive ) echo '<p class="indent">' . sprintf( __( '%s: Entering persistent mode on large multi-site networks requires a large number of database queries and can take a while. Use with caution!', 'disable-comments'), '<strong>' . __('Warning', 'disable-comments') . '</strong>' ) . '</p>';?>
+                                    </li>
+                                </ul>
+                                </form>
+                            </div>
+                            <script>
+                            jQuery(document).ready(function($){
+                                    function disable_comments_uihelper(){
+                                            if( $("#remove_everywhere").is(":checked") )
+                                                    $("#listoftypes").css("color", "#888").find(":input").attr("disabled", true );
+                                            else
+                                                    $("#listoftypes").css("color", "#000").find(":input").attr("disabled", false );
+                                    }
 
-                            settings_fields('disable_comments_settings_modes');
-                            do_settings_sections('disable_comments_settings_modes');
+                                    $("#disable-comments :input").change(function(){
+                                            $("#message").slideUp();
+                                            disable_comments_uihelper();
+                                    });
+
+                                    disable_comments_uihelper();
+
+                                    $("#permanent").change( function() {
+                                            if( $(this).is(":checked") && ! confirm(<?php echo json_encode( sprintf( __( '%s: Selecting this option will make persistent changes to your database. Are you sure you want to enable it?', 'disable-comments'), __( 'Warning', 'disable-comments' ) ) );?>) )
+                                                    $(this).attr("checked", false );
+                                    });
+                            });
+                            </script>
+                        <?php     
+                            // settings_fields('disable_comments_settings_modes');
+                            // do_settings_sections('disable_comments_settings_modes');
                         } // end if/else
                         
                         if ($active_tab != 'about') {
@@ -378,22 +425,6 @@ jQuery(document).ready(function($){
         * Setting Registration
         * ------------------------------------------------------------------------ */
 
-
-        /**
-        * Provides default values for the Social Options.
-        */
-        function disable_comments_settings_default_about() {
-
-            $defaults = array(
-            'twitter'	=>	'',
-            'facebook'	=>	'',
-            'googleplus'	=>	'',
-            );
-
-            return apply_filters( 'disable_comments_settings_default_about', $defaults );
-
-        } // end disable_comments_settings_default_about
-
         /**
         * Provides default values for the Display Options.
         */
@@ -424,27 +455,7 @@ jQuery(document).ready(function($){
 
             return apply_filters( 'disable_comments_settings_default_pmode', $defaults );
 
-        } // end disable_comments_settings_default_pmode
-        
-        /**
-        * Initializes the theme's social options by registering the Sections,
-        * Fields, and Settings.
-        *
-        * This function is registered with the 'admin_init' hook.
-        */
-        function disable_comments_settings_intialize_about() {
-
-            if( false == get_option( 'disable_comments_settings_about' ) ) {
-            add_option( 'disable_comments_settings_about', apply_filters( 'disable_comments_settings_default_about', disable_comments_settings_default_about() ) );
-            } // end if ?>
-            <ul>
-                <li>GitHub: <a href="https://github.com/solarissmoke/disable-comments" target="_blank">https://github.com/solarissmoke/disable-comments</a></li>
-                <li>WordPress.org: <a href="http://wordpress.org/extend/plugins/disable-comments/" target="_blank">http://wordpress.org/extend/plugins/disable-comments/</a></li>
-            </ul>
-            <?php // static about content
-
-        } // end disable_comments_settings_intialize_about
-        
+        } // end disable_comments_settings_default_pmode      
 
         /**
          * Initializes the theme's input example by registering the Sections,
