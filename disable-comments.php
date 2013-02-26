@@ -3,7 +3,7 @@
 Plugin Name: Disable Comments
 Plugin URI: http://wordpress.org/extend/plugins/disable-comments/
 Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type.
-Version: 0.8.1
+Version: 0.9
 Author: Samir Shah
 Author URI: http://rayofsolaris.net/
 License: GPL2
@@ -115,7 +115,7 @@ class Disable_Comments {
 			add_filter( 'plugin_row_meta', array( $this, 'set_plugin_meta' ), 10, 2 );
 			
 			// if only certain types are disabled, remember the original post status
-			if( !$this->options['permanent'] && !$this->options['remove_everywhere'] ) {
+			if( !( $this->persistent_mode_allowed() && $this->options['permanent'] ) && !$this->options['remove_everywhere'] ) {
 				add_action( 'edit_form_advanced', array( $this, 'edit_form_inputs' ) );
 				add_action( 'edit_page_form', array( $this, 'edit_form_inputs' ) );
 			}
@@ -238,6 +238,8 @@ jQuery(document).ready(function($){
 			if( ! in_array( $type, $this->modified_types ) && ! post_type_supports( $type, 'comments' ) )	// the type doesn't support comments anyway
 				unset( $types[$type] );
 		}
+
+		$persistent_allowed = $this->persistent_mode_allowed();
 		
 		if ( isset( $_POST['submit'] ) ) {
 			$this->options['remove_everywhere'] = ( $_POST['mode'] == 'remove_everywhere' );
@@ -250,11 +252,11 @@ jQuery(document).ready(function($){
 			$disabled_post_types = array_intersect( $disabled_post_types, array_keys( $types ) );
 			
 			// entering permanent mode, or post types have changed
-			if( !empty( $_POST['permanent'] ) && ( !$this->options['permanent'] || $disabled_post_types != $this->options['disabled_post_types'] ) )
+			if( $persistent_allowed && !empty( $_POST['permanent'] ) && ( !$this->options['permanent'] || $disabled_post_types != $this->options['disabled_post_types'] ) )
 				$this->enter_permanent_mode();
 			
 			$this->options['disabled_post_types'] = $disabled_post_types;
-			$this->options['permanent'] = isset( $_POST['permanent'] );
+			$this->options['permanent'] = $persistent_allowed && isset( $_POST['permanent'] );
 			
 			$this->update_options();
 			$cache_message = WP_CACHE ? ' <strong>' . __( 'If a caching/performance plugin is active, please invalidate its cache to ensure that changes are reflected immediately.' ) . '</strong>' : '';
@@ -284,12 +286,14 @@ jQuery(document).ready(function($){
 		<p class="indent"><?php _e( 'Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts.', 'disable-comments') ?></p>
 	</li>
 	</ul>
+	<?php if( $persistent_allowed ) : ?>
 	<h3><?php _e( 'Other options', 'disable-comments') ?></h3>
 	<ul>
 		<li><label for="permanent"><input type="checkbox" name="permanent" id="permanent" <?php checked( $this->options['permanent'] );?>> <strong><?php _e( 'Use persistent mode', 'disable-comments') ?></strong></label><p class="indent"><?php printf( __( '%s: <strong>This will make persistent changes to your database &mdash; comments will remain closed even if you later disable the plugin!</strong> You should not use it if you only want to disable comments temporarily. Please <a href="%s" target="_blank">read and understand the FAQ</a> before selecting this option.', 'disable-comments'), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>', 'http://wordpress.org/extend/plugins/disable-comments/faq/' ); ?></p>
 		<?php if( $this->networkactive ) echo '<p class="indent">' . sprintf( __( '%s: Entering persistent mode on large multi-site networks requires a large number of database queries and can take a while. Use with caution!', 'disable-comments'), '<strong>' . __('Warning', 'disable-comments') . '</strong>' ) . '</p>';?>
 		</li>
 	</ul>
+	<?php endif; ?>
 	<p class="submit"><input class="button-primary" type="submit" name="submit" value="<?php _e( 'Save Changes') ?>"></p>
 	</form>
 	</div>
@@ -346,6 +350,10 @@ jQuery(document).ready(function($){
 		$wpdb->query( $wpdb->prepare( "UPDATE `$wpdb->posts` SET `comment_status` = 'closed', ping_status = 'closed' WHERE `post_type` IN ( $bits )", $types ) );
 	}
 	
+	private function persistent_mode_allowed() {
+		return ( !is_multisite() || apply_filters( 'disable_comments_allow_persistent_mode', true ) );
+	}
+
 	function single_site_deactivate() {
 		// for single sites, delete the options upon deactivation, not uninstall
 		delete_option( 'disable_comments_options' );
