@@ -29,6 +29,8 @@ Unfortunately some themes do not properly check the comment status of posts, and
 
 **I repeat, using persistent mode will make changes to your database. DO NOT USE IT IF YOU WANT TO DISABLE COMMENTS TEMPORARILY.**
 
+**Network Administrators**: If you want to prevent individual site administrators from using persistent mode, hook into the `disable_comments_allow_persistent_mode` filter and return `false`. This will prevent the option from being visible to site administrators.
+
 = Nothing happens after I disable comments on all posts - comment forms still appear when I view my posts. =
 
 This is because your theme is not checking the comment status of posts in the correct way. The solution is to switch the plugin to persistent mode (the last option on the plugin settings page).
