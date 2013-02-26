@@ -59,7 +59,13 @@ class Disable_Comments {
 			$this->options['db_version'] = self::db_version;
 			$this->update_options();
 		}
-		
+                
+                // TABBED SETTINGS
+		add_action( 'admin_init', 'disable_comments_settings_initialize_modes' );
+                add_action( 'admin_init', 'disable_comments_settings_intialize_about' );
+                add_action( 'admin_init', 'disable_comments_settings_initialize_pmode' );
+                
+                
 		// these need to happen now
 		if( $this->options['remove_everywhere'] ) {
 			add_action( 'widgets_init', array( $this, 'disable_rc_widget' ) );
@@ -229,7 +235,7 @@ jQuery(document).ready(function($){
 			add_submenu_page( 'options-general.php', $title, $title, 'manage_options', 'disable_comments_settings', array( $this, 'settings_page' ) );
 	}
 	
-	function settings_page() {
+	function settings_page( $active_tab = '' ) {
 		$typeargs = array( 'public' => true );
 		if( $this->networkactive )
 			$typeargs['_builtin'] = true;	// stick to known types for network
@@ -264,15 +270,58 @@ jQuery(document).ready(function($){
 		}	
 	?>
 	<style> .indent {padding-left: 2em} </style>
+                <div class="wrap">
+                    <?php screen_icon( 'plugins' ); ?>
+                    <h2><?php _e( 'Disable Comments', 'disable-comments') ?></h2>                   
+                    <?php 
+                    if( $this->networkactive ) 
+                            echo '<div class="updated"><p>' . __( '<em>Disable Comments</em> is Network Activated. The settings below will affect <strong>all sites</strong> in this network.', 'disable-comments') . '</p></div>';
+                    if( WP_CACHE )
+                            echo '<div class="updated"><p>' . __( "It seems that a caching/performance plugin is active on this site. Please manually invalidate that plugin's cache after making any changes to the settings below.", 'disable-comments') . '</p></div>';
+                    ?>
+                    
+                    <?php
+                    if (isset($_GET['tab'])) {
+                        $active_tab = $_GET['tab'];
+                    } else if ($active_tab == 'pmode') {
+                        $active_tab = 'pmode';
+                    } else if ($active_tab == 'about') {
+                        $active_tab = 'about';
+                    } else {
+                        $active_tab = 'modes';
+                    } // end if/else 
+                    ?>
+            
+                    <h2 class="nav-tab-wrapper">
+                        <a href="?page=disable_comments_settings&tab=modes" class="nav-tab <?php echo $active_tab == 'modes' ? 'nav-tab-active' : ''; ?>"><?php _e('Modes', 'disable-comments'); ?></a>
+                        <a href="?page=disable_comments_settings&tab=pmode" class="nav-tab <?php echo $active_tab == 'pmode' ? 'nav-tab-active' : ''; ?>"><?php _e('Persistent Mode', 'disable-comments'); ?></a>
+                        <a href="?page=disable_comments_settings&tab=about" class="nav-tab <?php echo $active_tab == 'about' ? 'nav-tab-active' : ''; ?>"><?php _e('About', 'disable-comments'); ?></a>
+                    </h2>
+                    <form method="post" action="" id="disable-comments">
+                        <?php
+                        if ($active_tab == 'about') {
+
+                            settings_fields('disable_comments_settings_about');
+                            do_settings_sections('disable_comments_settings_about');
+                        } elseif ($active_tab == 'pmode') {
+
+                            settings_fields('disable_comments_settings_pmode');
+                            do_settings_sections('disable_comments_settings_pmode');
+                        } else {
+
+                            settings_fields('disable_comments_settings_modes');
+                            do_settings_sections('disable_comments_settings_modes');
+                        } // end if/else
+
+                        submit_button();
+                        ?>
+                    </form>
+                </div><!-- /.wrap -->
+        
+        
+
 	<div class="wrap">
-	<?php screen_icon( 'plugins' ); ?>
-	<h2><?php _e( 'Disable Comments', 'disable-comments') ?></h2>
-	<?php 
-	if( $this->networkactive ) 
-		echo '<div class="updated"><p>' . __( '<em>Disable Comments</em> is Network Activated. The settings below will affect <strong>all sites</strong> in this network.', 'disable-comments') . '</p></div>';
-	if( WP_CACHE )
-		echo '<div class="updated"><p>' . __( "It seems that a caching/performance plugin is active on this site. Please manually invalidate that plugin's cache after making any changes to the settings below.", 'disable-comments') . '</p></div>';
-	?>
+
 	<form action="" method="post" id="disable-comments">
 	<ul>
 	<li><label for="remove_everywhere"><input type="radio" id="remove_everywhere" name="mode" value="remove_everywhere" <?php checked( $this->options['remove_everywhere'] );?> /> <strong><?php _e( 'Everywhere', 'disable-comments') ?></strong>: <?php _e( 'Disable all comment-related controls and settings in WordPress.', 'disable-comments') ?></label>
@@ -322,6 +371,207 @@ jQuery(document).ready(function($){
 <?php
 	}
 	
+        // TABBED SETTINGS
+        /* ------------------------------------------------------------------------ *
+        * Setting Registration
+        * ------------------------------------------------------------------------ */
+
+
+        /**
+        * Provides default values for the Social Options.
+        */
+        function disable_comments_settings_default_about() {
+
+            $defaults = array(
+            'twitter'	=>	'',
+            'facebook'	=>	'',
+            'googleplus'	=>	'',
+            );
+
+            return apply_filters( 'disable_comments_settings_default_about', $defaults );
+
+        } // end disable_comments_settings_default_about
+
+        /**
+        * Provides default values for the Display Options.
+        */
+        function disable_comments_settings_default_modes() {
+
+            $defaults = array(
+            'show_header'	=>	'',
+            'show_content'	=>	'',
+            'show_footer'	=>	'',
+            );
+
+            return apply_filters( 'disable_comments_settings_default_modes', $defaults );
+
+        } // end disable_comments_settings_default_modes
+
+        /**
+        * Provides default values for the Input Options.
+        */
+        function disable_comments_settings_default_pmode() {
+
+            $defaults = array(
+            'input_example'	=>	'',
+            'textarea_example'	=>	'',
+            'checkbox_example'	=>	'',
+            'radio_example'	=>	'',
+            'time_options'	=>	'default'	
+            );
+
+            return apply_filters( 'disable_comments_settings_default_pmode', $defaults );
+
+        } // end disable_comments_settings_default_pmode
+        
+        /**
+        * Initializes the theme's social options by registering the Sections,
+        * Fields, and Settings.
+        *
+        * This function is registered with the 'admin_init' hook.
+        */
+        function disable_comments_settings_intialize_about() {
+
+            if( false == get_option( 'disable_comments_settings_about' ) ) {
+            add_option( 'disable_comments_settings_about', apply_filters( 'disable_comments_settings_default_about', disable_comments_settings_default_about() ) );
+            } // end if ?>
+            <ul>
+                <li>GitHub: <a href="https://github.com/solarissmoke/disable-comments" target="_blank">https://github.com/solarissmoke/disable-comments</a></li>
+                <li>WordPress.org: <a href="http://wordpress.org/extend/plugins/disable-comments/" target="_blank">http://wordpress.org/extend/plugins/disable-comments/</a></li>
+            </ul>
+            <?php // static about content
+
+        } // end disable_comments_settings_intialize_about
+        
+
+        /**
+         * Initializes the theme's input example by registering the Sections,
+         * Fields, and Settings. This particular group of options is used to demonstration
+         * validation and sanitization.
+         *
+         * This function is registered with the 'admin_init' hook.
+         */
+        function disable_comments_settings_initialize_pmode() {
+
+            if( false == get_option( 'disable_comments_settings_pmode' ) ) {
+            add_option( 'disable_comments_settings_pmode', apply_filters( 'disable_comments_settings_default_pmode', disable_comments_settings_default_pmode() ) );
+            } // end if
+
+            add_settings_section(
+            'pmode_section',
+             __( 'Input Examples', 'sandbox' ),
+             'sandbox_pmode_callback',
+             'disable_comments_settings_pmode'
+            );
+
+            add_settings_field(
+            'Input Element',
+             __( 'Input Element', 'sandbox' ),
+             'sandbox_input_element_callback',
+             'disable_comments_settings_pmode',
+             'pmode_section'
+            );
+
+            add_settings_field(
+            'Textarea Element',
+             __( 'Textarea Element', 'sandbox' ),
+             'sandbox_textarea_element_callback',
+             'disable_comments_settings_pmode',
+             'pmode_section'
+            );
+
+            add_settings_field(
+            'Checkbox Element',
+             __( 'Checkbox Element', 'sandbox' ),
+             'sandbox_checkbox_element_callback',
+             'disable_comments_settings_pmode',
+             'pmode_section'
+            );
+
+            add_settings_field(
+            'Radio Button Elements',
+             __( 'Radio Button Elements', 'sandbox' ),
+             'sandbox_radio_element_callback',
+             'disable_comments_settings_pmode',
+             'pmode_section'
+            );
+
+            add_settings_field(
+            'Select Element',
+             __( 'Select Element', 'sandbox' ),
+             'sandbox_select_element_callback',
+             'disable_comments_settings_pmode',
+             'pmode_section'
+            );
+
+            register_setting(
+            'disable_comments_settings_pmode',
+             'disable_comments_settings_pmode',
+             'disable_comments_settings_validate_pmode'
+            );
+
+        } // end disable_comments_settings_initialize_pmode
+        
+        function disable_comments_settings_initialize_modes() {
+
+            if (false == get_option('disable_comments_settings_modes')) {
+                add_option( 'disable_comments_settings_modes', apply_filters( 'disable_comments_settings_default_modes', disable_comments_settings_default_modes() ) );
+            } // end if
+
+            add_settings_section(
+            'pmode_section',
+            __( 'Input Examples', 'sandbox' ),
+            'sandbox_pmode_callback',
+            'disable_comments_settings_modes'
+            );
+
+            add_settings_field(
+            'Input Element',
+            __( 'Input Element', 'sandbox' ),
+            'sandbox_input_element_callback',
+            'disable_comments_settings_modes',
+            'pmode_section'
+            );
+
+            add_settings_field(
+            'Textarea Element',
+            __( 'Textarea Element', 'sandbox' ),
+            'sandbox_textarea_element_callback',
+            'disable_comments_settings_modes',
+            'pmode_section'
+            );
+
+            add_settings_field(
+            'Checkbox Element',
+            __( 'Checkbox Element', 'sandbox' ),
+            'sandbox_checkbox_element_callback',
+            'disable_comments_settings_modes',
+            'pmode_section'
+            );
+
+            add_settings_field(
+            'Radio Button Elements',
+            __( 'Radio Button Elements', 'sandbox' ),
+            'sandbox_radio_element_callback',
+            'disable_comments_settings_modes',
+            'pmode_section'
+            );
+
+            add_settings_field(
+            'Select Element',
+            __( 'Select Element', 'sandbox' ),
+            'sandbox_select_element_callback',
+            'disable_comments_settings_modes',
+            'pmode_section'
+            );
+
+            register_setting(
+            'disable_comments_settings_modes',
+            'disable_comments_settings_modes',
+            'disable_comments_settings_validate_modes'
+            );
+        }
+        
 	private function enter_permanent_mode() {
 		$types = $this->options['disabled_post_types'];
 		if( empty( $types ) )
