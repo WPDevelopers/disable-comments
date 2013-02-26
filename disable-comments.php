@@ -293,15 +293,14 @@ jQuery(document).ready(function($){
                         <?php endif; ?>
                         <a href="?page=disable_comments_settings&tab=about" class="nav-tab <?php echo $active_tab == 'about' ? 'nav-tab-active' : ''; ?>"><?php _e('About', 'disable-comments'); ?></a>
                     </h2>
-                    <form method="post" action="" id="disable-comments">
                         <?php
                         if ($active_tab == 'about') { ?>
-
-                        <ul>
-                            <li>GitHub: <a href = "https://github.com/solarissmoke/disable-comments" target = "_blank">https://github.com/solarissmoke/disable-comments</a></li>
-                            <li>WordPress.org: <a href = "http://wordpress.org/extend/plugins/disable-comments/" target = "_blank">http://wordpress.org/extend/plugins/disable-comments/</a></li>
-                        </ul>
-
+                            <div class="wrap indent">
+                                <ul>
+                                    <li>GitHub: <a href = "https://github.com/solarissmoke/disable-comments" target = "_blank">https://github.com/solarissmoke/disable-comments</a></li>
+                                    <li>WordPress.org: <a href = "http://wordpress.org/extend/plugins/disable-comments/" target = "_blank">http://wordpress.org/extend/plugins/disable-comments/</a></li>
+                                </ul>
+                            </div><!-- /.wrap --> 
                         <?php } elseif ($active_tab == 'pmode' && $persistent_allowed == true) { ?>
                         
                             <div class="wrap">
