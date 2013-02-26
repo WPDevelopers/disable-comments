@@ -312,8 +312,10 @@ jQuery(document).ready(function($){
                             settings_fields('disable_comments_settings_modes');
                             do_settings_sections('disable_comments_settings_modes');
                         } // end if/else
-
-                        submit_button();
+                        
+                        if ($active_tab != 'about') {
+                            submit_button();
+                        }
                         ?>
                     </form>
                 </div><!-- /.wrap -->
