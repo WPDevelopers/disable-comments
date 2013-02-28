@@ -351,7 +351,7 @@ jQuery(document).ready(function($){
 	}
 	
 	private function persistent_mode_allowed() {
-		return ( !is_multisite() || apply_filters( 'disable_comments_allow_persistent_mode', true ) );
+		return ( !is_multisite() || ( !$this->networkactive && apply_filters( 'disable_comments_allow_persistent_mode', true ) ) );
 	}
 
 	function single_site_deactivate() {

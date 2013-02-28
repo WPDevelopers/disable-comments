@@ -19,6 +19,8 @@ If you come across any bugs or have suggestions, please use the plugin support f
 
 Want to contribute? Here's the [GitHub development repository](https://github.com/solarissmoke/disable-comments).
 
+Thanks to the following people for contributing translations of this plugin: German - [http://foe-services.de](Christan Foellmann).
+
 == Frequently Asked Questions ==
 
 = What is "persistent mode"? =
@@ -67,9 +69,10 @@ The plugin provides the option to **completely disable the commenting feature in
 
 == Changelog ==
 
-= 0.8.1 =
+= 0.9 =
 * Added gettext support and German translation.
 * Added links to GitHub development repo.
+* Allow network administrators to prevent the use of persistent mode.
 
 = 0.8 =
 * Remove X-Pingback header when comments are completely disabled.
