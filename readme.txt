@@ -19,7 +19,7 @@ If you come across any bugs or have suggestions, please use the plugin support f
 
 Want to contribute? Here's the [GitHub development repository](https://github.com/solarissmoke/disable-comments).
 
-Thanks to the following people for contributing translations of this plugin: German - [http://foe-services.de](Christan Foellmann).
+Thanks to the following people for contributing translations of this plugin: German - [Christian Foellmann](http://foe-services.de).
 
 == Frequently Asked Questions ==
 
