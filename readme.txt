@@ -32,7 +32,7 @@ Unfortunately some themes do not properly check the comment status of posts, and
 
 **I repeat, using persistent mode will make changes to your database. DO NOT USE IT IF YOU WANT TO DISABLE COMMENTS TEMPORARILY.**
 
-**Network Administrators**: If you want to prevent individual site administrators from using persistent mode, hook into the `disable_comments_allow_persistent_mode` filter and return `false`. This will prevent the option from being visible to site administrators.
+**Administrators**: If you want to prevent persistent mode from being used by mistake, hook into the `disable_comments_allow_persistent_mode` filter and return `false`. This will prevent the option from being available on the settings page.
 
 = Nothing happens after I disable comments on all posts - comment forms still appear when I view my posts. =
 
@@ -54,6 +54,10 @@ Go to the edit page for the post you want to disable comments on. Scroll down to
 
 You can also bulk-edit the comment status of multiple posts from the [posts screen](http://codex.wordpress.org/Posts_Screen).
 
+= Why is persistent mode disabled? =
+
+Someone (probably your site administrator) has chosen to disable this option. See "What is persistent mode?" above.
+
 == Details ==
 
 The plugin provides the option to **completely disable the commenting feature in WordPress**. When this option is selected, the following changes are made:
@@ -69,6 +73,11 @@ The plugin provides the option to **completely disable the commenting feature in
 **Please delete any existing comments on your site before applying this setting, otherwise (depending on your theme) those comments may still be displayed to visitors.**
 
 == Changelog ==
+
+= 0.9.1 =
+* Make persistent mode option filter available all the time.
+* Remove feed links when comments are disabled
+* Fix redirection for feed requests
 
 = 0.9 =
 * Added gettext support and German translation.
