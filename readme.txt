@@ -74,10 +74,13 @@ The plugin provides the option to **completely disable the commenting feature in
 
 == Changelog ==
 
-= 0.9.1 =
+= 0.9.2 =
 * Make persistent mode option filter available all the time.
-* Remove feed links when comments are disabled
 * Fix redirection for feed requests
+* Fix admin bar filtering in WP 3.6
+
+= 0.9.1 =
+* Short life in the wild.
 
 = 0.9 =
 * Added gettext support and German translation.

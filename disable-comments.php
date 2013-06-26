@@ -3,7 +3,7 @@
 Plugin Name: Disable Comments
 Plugin URI: http://wordpress.org/extend/plugins/disable-comments/
 Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type.
-Version: 0.9.1
+Version: 0.9.2
 Author: Samir Shah
 Author URI: http://rayofsolaris.net/
 License: GPL2
@@ -65,6 +65,10 @@ class Disable_Comments {
 			add_action( 'widgets_init', array( $this, 'disable_rc_widget' ) );
 			add_filter( 'wp_headers', array( $this, 'filter_wp_headers' ) );
 			add_action( 'template_redirect', array( $this, 'filter_query' ), 9 );	// before redirect_canonical
+			
+			// Admin bar filtering has to happen here since WP 3.6
+			add_action( 'template_redirect', array( $this, 'filter_admin_bar' ) );
+			add_action( 'admin_init', array( $this, 'filter_admin_bar' ) );
 		}
                 
 		// these can happen later
@@ -94,15 +98,7 @@ class Disable_Comments {
 		elseif( is_admin() ) {
 			add_action( 'all_admin_notices', array( $this, 'setup_notice' ) );
 		}
-		
-		if( $this->options['remove_everywhere'] && is_admin_bar_showing() ) {
-			// Remove comments links from admin bar
-			remove_action( 'admin_bar_menu', 'wp_admin_bar_comments_menu', 50 );	// WP<3.3
-			remove_action( 'admin_bar_menu', 'wp_admin_bar_comments_menu', 60 );	// WP 3.3
-			if( $this->networkactive )
-				add_action( 'admin_bar_menu', array( $this, 'remove_network_comment_links' ), 500 );
-		}
-		
+
 		// Filters for the admin only
 		if( is_admin() ) {
 			if( $this->networkactive ) {
@@ -129,13 +125,6 @@ class Disable_Comments {
 				add_filter( 'pre_option_default_pingback_flag', '__return_zero' );
 			}
 		}
-		// Filters for the front end only
-		else {
-			if( $this->options['remove_everywhere'] ) {
-				remove_action( 'wp_head', 'feed_links', 2 );
-				remove_action( 'wp_head', 'feed_links_extra', 3 );
-			}
-		}
 	}
 	
 	function filter_wp_headers( $headers ) {
@@ -152,6 +141,16 @@ class Disable_Comments {
 
 			set_query_var( 'feed', '' );	// redirect_canonical will do the rest
 			redirect_canonical();
+		}
+	}
+	
+	function filter_admin_bar() {
+		if( is_admin_bar_showing() ) {
+			// Remove comments links from admin bar
+			remove_action( 'admin_bar_menu', 'wp_admin_bar_comments_menu', 50 );	// WP<3.3
+			remove_action( 'admin_bar_menu', 'wp_admin_bar_comments_menu', 60 );	// WP 3.3
+			if( $this->networkactive )
+				add_action( 'admin_bar_menu', array( $this, 'remove_network_comment_links' ), 500 );
 		}
 	}
 	
