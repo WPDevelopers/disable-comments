@@ -193,8 +193,13 @@ jQuery(document).ready(function($){
 	}
 	
 	function filter_admin_menu(){
+		global $pagenow;
+		
 		remove_menu_page( 'edit-comments.php' );
 		remove_submenu_page( 'options-general.php', 'options-discussion.php' );
+
+		if ( $pagenow == 'edit-comments.php' || $pagenow == 'options-discussions.php' )
+			wp_die( __( 'Comments are closed.' ) );
 	}
 	
 	function filter_dashboard(){
