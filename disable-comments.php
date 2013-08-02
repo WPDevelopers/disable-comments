@@ -192,14 +192,14 @@ jQuery(document).ready(function($){
 			echo '<div class="updated fade"><p>' . sprintf( __( 'The <em>Disable Comments</em> plugin is active, but isn\'t configured to do anything yet. Visit the <a href="%s">configuration page</a> to choose which post types to disable comments on.', 'disable-comments'), $url ) . '</p></div>';
 	}
 	
-	function filter_admin_menu(){
+	function filter_admin_menu(){		
 		global $pagenow;
-		
+
+		if ( $pagenow == 'comment.php' || $pagenow == 'edit-comments.php' || $pagenow == 'options-discussion.php' )
+			wp_die( __( 'Comments are closed.' ), '', array( 'response' => 403 ) );
+
 		remove_menu_page( 'edit-comments.php' );
 		remove_submenu_page( 'options-general.php', 'options-discussion.php' );
-
-		if ( $pagenow == 'edit-comments.php' || $pagenow == 'options-discussions.php' )
-			wp_die( __( 'Comments are closed.' ) );
 	}
 	
 	function filter_dashboard(){
