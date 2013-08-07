@@ -125,6 +125,17 @@ class Disable_Comments {
 				add_filter( 'pre_option_default_pingback_flag', '__return_zero' );
 			}
 		}
+		// Filters for front end only
+		else {
+			if( $this->options['remove_everywhere'] ) {
+				// Kill the comments template. This will deal with themes that don't check comment stati properly!
+				add_filter( 'comments_template', array( $this, 'dummy_comments_template' ), 20 );
+			}
+		}
+	}
+
+	function dummy_comments_template() {
+		return dirname( __FILE__ ) . '/comments-template.php';
 	}
 	
 	function filter_wp_headers( $headers ) {
