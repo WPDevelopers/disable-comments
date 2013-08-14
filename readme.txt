@@ -2,7 +2,7 @@
 Contributors: solarissmoke
 Donate link: http://rayofsolaris.net/donate.php
 Tags: comments, disable, global
-Requires at least: 3.2
+Requires at least: 3.3
 Tested up to: 3.6
 Stable tag: trunk
 
@@ -73,6 +73,10 @@ The plugin provides the option to **completely disable the commenting feature in
 **Please delete any existing comments on your site before applying this setting, otherwise (depending on your theme) those comments may still be displayed to visitors.**
 
 == Changelog ==
+
+= 1.0 =
+* Prevent theme comments template from being displayed when comments are disabled everywhere.
+* Prevent direct access to comment admin pages when comments are disabled everywhere.
 
 = 0.9.2 =
 * Make persistent mode option filter available all the time.
