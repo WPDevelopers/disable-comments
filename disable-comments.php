@@ -161,14 +161,20 @@ class Disable_Comments {
 			// Remove comments links from admin bar
 			remove_action( 'admin_bar_menu', 'wp_admin_bar_comments_menu', 50 );	// WP<3.3
 			remove_action( 'admin_bar_menu', 'wp_admin_bar_comments_menu', 60 );	// WP 3.3
-			if( $this->networkactive )
+			if( is_multisite() )
 				add_action( 'admin_bar_menu', array( $this, 'remove_network_comment_links' ), 500 );
 		}
 	}
 	
 	function remove_network_comment_links( $wp_admin_bar ) {
-		foreach( (array) $wp_admin_bar->user->blogs as $blog )
-			$wp_admin_bar->remove_menu( 'blog-' . $blog->userblog_id . '-c' );
+		if( $this->networkactive ) {
+			foreach( (array) $wp_admin_bar->user->blogs as $blog )
+				$wp_admin_bar->remove_menu( 'blog-' . $blog->userblog_id . '-c' );
+		}
+		else {
+			// We have no way to know whether the plugin is active on other sites, so only remove this one
+			$wp_admin_bar->remove_menu( 'blog-' . get_current_blog_id() . '-c' );
+		}
 	}
 	
 	function edit_form_inputs() {
