@@ -3,7 +3,7 @@
 Plugin Name: Disable Comments
 Plugin URI: http://wordpress.org/extend/plugins/disable-comments/
 Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type.
-Version: 1.0
+Version: 1.0.1
 Author: Samir Shah
 Author URI: http://rayofsolaris.net/
 License: GPL2
@@ -106,7 +106,8 @@ class Disable_Comments {
 			}
 			else {
 				add_action( 'admin_menu', array( $this, 'settings_menu' ) );
-				register_deactivation_hook( __FILE__, array( $this, 'single_site_deactivate' ) );
+				if( is_multisite() )	// We're on a multisite setup, but the plugin isn't network activated.
+					register_deactivation_hook( __FILE__, array( $this, 'single_site_deactivate' ) );
 			}
 
 			add_action( 'admin_print_footer_scripts', array( $this, 'discussion_notice' ) );

@@ -74,6 +74,9 @@ The plugin provides the option to **completely disable the commenting feature in
 
 == Changelog ==
 
+= 1.0.1 =
+* Fix issue with settings persistence in single-site installations.
+
 = 1.0 =
 * Prevent theme comments template from being displayed when comments are disabled everywhere.
 * Prevent direct access to comment admin pages when comments are disabled everywhere.
