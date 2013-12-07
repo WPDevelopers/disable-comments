@@ -6,6 +6,7 @@ Version and compatibility information can be found in the plugin [readme](https:
 
 ### Languages
 * English
+* French
 * German
 
 Help to translate at [https://translate.foe-services.de/projects/disable-comments](https://translate.foe-services.de/projects/disable-comments)
