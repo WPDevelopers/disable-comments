@@ -2,8 +2,8 @@
 Contributors: solarissmoke
 Donate link: http://rayofsolaris.net/donate.php
 Tags: comments, disable, global
-Requires at least: 3.3
-Tested up to: 3.6
+Requires at least: 3.4
+Tested up to: 3.8
 Stable tag: trunk
 
 Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly.
@@ -20,7 +20,7 @@ If you come across any bugs or have suggestions, please use the plugin support f
 
 Want to contribute? Here's the [GitHub development repository](https://github.com/solarissmoke/disable-comments).
 
-Thanks to the following people for contributing translations of this plugin: German - [Christian Foellmann](http://foe-services.de).
+Thanks to the following people for contributing translations of this plugin: French - [Murat](http://wptheme.fr), German - [Christian Foellmann](http://foe-services.de).
 
 == Frequently Asked Questions ==
 
@@ -73,6 +73,10 @@ The plugin provides the option to **completely disable the commenting feature in
 **Please delete any existing comments on your site before applying this setting, otherwise (depending on your theme) those comments may still be displayed to visitors.**
 
 == Changelog ==
+
+= 1.0.2 =
+* Disable comment-reply script for themes that don't check comment status properly.
+* Add French translation
 
 = 1.0.1 =
 * Fix issue with settings persistence in single-site installations.
