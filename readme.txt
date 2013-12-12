@@ -74,6 +74,9 @@ The plugin provides the option to **completely disable the commenting feature in
 
 == Changelog ==
 
+= 1.0.3 =
+* Compatibility fix for WordPress 3.8
+
 = 1.0.2 =
 * Disable comment-reply script for themes that don't check comment status properly.
 * Add French translation

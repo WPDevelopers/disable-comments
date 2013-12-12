@@ -3,7 +3,7 @@
 Plugin Name: Disable Comments
 Plugin URI: http://wordpress.org/extend/plugins/disable-comments/
 Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type.
-Version: 1.0.2
+Version: 1.0.3
 Author: Samir Shah
 Author URI: http://rayofsolaris.net/
 License: GPL2
@@ -31,11 +31,11 @@ class Disable_Comments {
 		load_plugin_textdomain( 'disable-comments', false, dirname( plugin_basename( __FILE__ ) ) .  '/languages' );
                 
 		// If it looks like first run, check compat
-		if ( empty( $this->options ) && version_compare( $GLOBALS['wp_version'], '3.2', '<' ) ) {
+		if ( empty( $this->options ) && version_compare( $GLOBALS['wp_version'], '3.3', '<' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 			deactivate_plugins( __FILE__ );
 			if ( isset( $_GET['action'] ) && ( $_GET['action'] == 'activate' || $_GET['action'] == 'error_scrape' ) )
-				exit( sprintf( __( 'Disable Comments requires WordPress version %s or greater.', 'disable-comments' ), '3.2' ) );
+				exit( sprintf( __( 'Disable Comments requires WordPress version %s or greater.', 'disable-comments' ), '3.3' ) );
 		}
 		
 		$old_ver = isset( $this->options['db_version'] ) ? $this->options['db_version'] : 0;
@@ -123,7 +123,7 @@ class Disable_Comments {
 			
 			if( $this->options['remove_everywhere'] ) {
 				add_action( 'admin_menu', array( $this, 'filter_admin_menu' ), 9999 );	// do this as late as possible
-				add_action( 'admin_head', array( $this, 'hide_discussion_rightnow' ) );
+				add_action( 'admin_head', array( $this, 'hide_dashboard_bits' ) );
 				add_action( 'wp_dashboard_setup', array( $this, 'filter_dashboard' ) );
 				add_filter( 'pre_option_default_pingback_flag', '__return_zero' );
 			}
@@ -234,14 +234,19 @@ jQuery(document).ready(function($){
 		remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
 	}
 	
-	function hide_discussion_rightnow(){
+	function hide_dashboard_bits(){
 		if( 'dashboard' == get_current_screen()->id )
-			add_action( 'admin_print_footer_scripts', array( $this, 'discussion_js' ) );
+			add_action( 'admin_print_footer_scripts', array( $this, 'dashboard_js' ) );
 	}
 	
-	function discussion_js(){
-		// getting hold of the discussion box is tricky. The table_discussion class is used for other things in multisite
-		echo '<script> jQuery(document).ready(function($){ $("#dashboard_right_now .table_discussion").has(\'a[href="edit-comments.php"]\').first().hide(); }); </script>';
+	function dashboard_js(){
+		if( version_compare( $GLOBALS['wp_version'], '3.8', '<' ) ) {
+			// getting hold of the discussion box is tricky. The table_discussion class is used for other things in multisite
+			echo '<script> jQuery(function($){ $("#dashboard_right_now .table_discussion").has(\'a[href="edit-comments.php"]\').first().hide(); }); </script>';
+		}
+		else {
+			echo '<script> jQuery(function($){ $("#dashboard_right_now .comment-count, #latest-comments").hide(); }); </script>';
+		}
 	}
 	
 	function filter_comment_status( $open, $post_id ) {
@@ -250,6 +255,7 @@ jQuery(document).ready(function($){
 	}
 	
 	function disable_rc_widget() {
+		// This widget has been removed from the Dashboard in WP 3.8 and can be removed in a future version
 		unregister_widget( 'WP_Widget_Recent_Comments' );
 	}
 	
