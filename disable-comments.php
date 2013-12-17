@@ -359,9 +359,6 @@ jQuery(document).ready(function($){
 			if( $this->networkactive )
 				echo '<p class="indent">' . sprintf( __( '%s: Entering persistent mode on large multi-site networks requires a large number of database queries and can take a while. Use with caution!', 'disable-comments'), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>' ) . '</p>';
 		}
-		else {
-			printf( __( 'Persistent mode has been manually disabled. See the <a href="%s" target="_blank">FAQ</a> for more information.', 'disable-comments' ), 'http://wordpress.org/extend/plugins/disable-comments/faq/' );
-		}
 		?>
 		</li>
 	</ul>
