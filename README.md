@@ -8,6 +8,8 @@ Version and compatibility information can be found in the plugin [readme](https:
 * English
 * French
 * German
+* Indonesian
+* Russian
 
 Help to translate at [https://translate.foe-services.de/projects/disable-comments](https://translate.foe-services.de/projects/disable-comments)
 

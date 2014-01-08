@@ -20,7 +20,7 @@ If you come across any bugs or have suggestions, please use the plugin support f
 
 Want to contribute? Here's the [GitHub development repository](https://github.com/solarissmoke/disable-comments).
 
-Thanks to the following people for contributing translations of this plugin: French - [Murat](http://wptheme.fr), German - [Christian Foellmann](http://foe-services.de), Indonesian - [Nasrulhaq Muiz](http://al-badar.net).
+Thanks to the following people for contributing translations of this plugin: French - [Murat](http://wptheme.fr), German - [Christian Foellmann](http://foe-services.de), Indonesian - [Nasrulhaq Muiz](http://al-badar.net), Russian - Elvis.
 
 == Frequently Asked Questions ==
 
