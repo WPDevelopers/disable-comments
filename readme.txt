@@ -42,9 +42,9 @@ You may like to point your theme's author to [this explanation](http://rayofsola
 
 = How can I remove the text that says "comments are closed" at the bottom of articles where comments are disabled? =
 
-With most newer themes (including Wordpress' bundled themes), this message will not appear when you use this plugin, because the plugin notifies them that comments are not just disabled, but unsupported.
+The plugin tries its very best to hide this (and any other comment-related) messages.
 
-If your theme still displays the message, you will have to edit its files manually to remove it. Two common approaches are to either delete or comment out the relevant lines in `wp-content/your-theme/comments.php`, or to add a declaration to `wp-content/your-theme/style.css` that hides the message from your visitors. In either case, make you you know what you are doing!
+If you still see the message, then it means your theme is overriding this behaviour, and you will have to edit its files manually to remove it. Two common approaches are to either delete or comment out the relevant lines in `wp-content/your-theme/comments.php`, or to add a declaration to `wp-content/your-theme/style.css` that hides the message from your visitors. In either case, make you you know what you are doing!
 
 = I only want to disable comments on certain posts, not globally. What do I do? =
 
@@ -73,6 +73,9 @@ The plugin provides the option to **completely disable the commenting feature in
 **Please delete any existing comments on your site before applying this setting, otherwise (depending on your theme) those comments may still be displayed to visitors.**
 
 == Changelog ==
+
+= 1.1 =
+* Attempt to hide the comments template ("Comments are closed") whenever comments are disabled.
 
 = 1.0.4 =
 * Fix CSRF vulnerability in the admin. Thanks to dxw for responsible disclosure.
