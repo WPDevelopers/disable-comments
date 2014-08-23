@@ -2,8 +2,8 @@
 Contributors: solarissmoke
 Donate link: http://rayofsolaris.net/donate.php
 Tags: comments, disable, global
-Requires at least: 3.5
-Tested up to: 3.9
+Requires at least: 3.6
+Tested up to: 4.0
 Stable tag: trunk
 
 Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly.
@@ -48,7 +48,7 @@ If you still see the message, then it means your theme is overriding this behavi
 
 = I only want to disable comments on certain posts, not globally. What do I do? =
 
-For starters, don't install this plugin!
+Don't install this plugin!
 
 Go to the edit page for the post you want to disable comments on. Scroll down to the "Discussion" box, where you will find the comment options for that post. If you don't see a "Discussion" box, then click on "Screen Options" at the top of your screen, and make sure the "Discussion" checkbox is checked.
 
@@ -73,6 +73,9 @@ The plugin provides the option to **completely disable the commenting feature in
 **Please delete any existing comments on your site before applying this setting, otherwise (depending on your theme) those comments may still be displayed to visitors.**
 
 == Changelog ==
+
+= 1.1.1 =
+* Fix PHP warning when active_sitewide_plugins option doesn't contain expected data type.
 
 = 1.1 =
 * Attempt to hide the comments template ("Comments are closed") whenever comments are disabled.

@@ -3,7 +3,7 @@
 Plugin Name: Disable Comments
 Plugin URI: http://wordpress.org/extend/plugins/disable-comments/
 Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type.
-Version: 1.1
+Version: 1.1.1
 Author: Samir Shah
 Author URI: http://rayofsolaris.net/
 License: GPL2
@@ -22,7 +22,7 @@ class Disable_Comments {
 
 	function __construct() {
 		// are we network activated?
-		$this->networkactive = ( is_multisite() && array_key_exists( plugin_basename( __FILE__ ), get_site_option( 'active_sitewide_plugins' ) ) );
+		$this->networkactive = ( is_multisite() && array_key_exists( plugin_basename( __FILE__ ), (array) get_site_option( 'active_sitewide_plugins' ) ) );
 		
 		// load options
 		$this->options = $this->networkactive ? get_site_option( 'disable_comments_options', array() ) : get_option( 'disable_comments_options', array() );
@@ -31,7 +31,7 @@ class Disable_Comments {
 		load_plugin_textdomain( 'disable-comments', false, dirname( plugin_basename( __FILE__ ) ) .  '/languages' );
                 
 		// If it looks like first run, check compat
-		if ( empty( $this->options ) && version_compare( $GLOBALS['wp_version'], '3.3', '<' ) ) {
+		if ( empty( $this->options ) && version_compare( $GLOBALS['wp_version'], '3.4', '<' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 			deactivate_plugins( __FILE__ );
 			if ( isset( $_GET['action'] ) && ( $_GET['action'] == 'activate' || $_GET['action'] == 'error_scrape' ) )
