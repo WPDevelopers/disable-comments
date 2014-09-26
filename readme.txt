@@ -16,11 +16,9 @@ Additionally, comment-related items can be removed from the Dashboard, Widgets, 
 
 **Important note**: Use this plugin if you don't want comments at all on your site (or on certain post types). Don't use it if you want to selectively disable comments on individual posts - WordPress lets you do that anyway. If you don't know how to disable comments on individual posts, there are instructions in [the FAQ](http://wordpress.org/extend/plugins/disable-comments/faq/).
 
-If you come across any bugs or have suggestions, please use the plugin support forum or contact me at [rayofsolaris.net](http://rayofsolaris.net). I can't fix it if I don't know it's broken! Please check the [FAQ](http://wordpress.org/extend/plugins/disable-comments/faq/) for common issues.
+If you come across any bugs or have suggestions, please use the plugin support forum. I can't fix it if I don't know it's broken! Please check the [FAQ](http://wordpress.org/extend/plugins/disable-comments/faq/) for common issues.
 
 Want to contribute? Here's the [GitHub development repository](https://github.com/solarissmoke/disable-comments).
-
-Thanks to the following people for contributing translations of this plugin: French - [Murat](http://wptheme.fr), German - [Christian Foellmann](http://foe-services.de), Indonesian - [Nasrulhaq Muiz](http://al-badar.net), Russian - [Elvis](http://turkenichev.ru), Vietamese - Rong Say.
 
 == Frequently Asked Questions ==
 
