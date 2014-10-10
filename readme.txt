@@ -20,6 +20,8 @@ If you come across any bugs or have suggestions, please use the plugin support f
 
 Want to contribute? Here's the [GitHub development repository](https://github.com/solarissmoke/disable-comments).
 
+A [must-use version](https://github.com/solarissmoke/disable-comments-mu) of the plugin is also available.
+
 == Frequently Asked Questions ==
 
 = What is "persistent mode"? =
