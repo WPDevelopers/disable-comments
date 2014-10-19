@@ -140,6 +140,8 @@ class Disable_Comments {
 			add_filter( 'comments_template', array( $this, 'dummy_comments_template' ), 20 );
 			// Remove comment-reply script for themes that include it indiscriminately
 			wp_deregister_script( 'comment-reply' );
+			// feed_links_extra inserts a comments RSS link
+			remove_action( 'wp_head', 'feed_links_extra', 3 );
 		}
 	}
 
