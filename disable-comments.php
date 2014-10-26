@@ -138,7 +138,6 @@ class Disable_Comments {
 	}
 
 	function check_comment_template() {
-		$type = get_post_type();
 		if( is_singular() && ( $this->options['remove_everywhere'] || $this->is_post_type_disabled( get_post_type() ) ) ) {
 			// Kill the comments template. This will deal with themes that don't check comment stati properly!
 			add_filter( 'comments_template', array( $this, 'dummy_comments_template' ), 20 );
@@ -452,7 +451,7 @@ jQuery(document).ready(function($){
 		$types = $this->options['disabled_post_types'];
 		// Not all extra_post_types might be registered on this particular site
 		if( $this->networkactive ) {
-			foreach( $this->options['extra_post_types'] as $extra ) {
+			foreach( (array) $this->options['extra_post_types'] as $extra ) {
 				if( post_type_exists( $extra ) ) {
 					$types[] = $extra;
 				}
