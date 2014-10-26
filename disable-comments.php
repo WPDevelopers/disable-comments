@@ -3,7 +3,7 @@
 Plugin Name: Disable Comments
 Plugin URI: http://wordpress.org/extend/plugins/disable-comments/
 Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type.
-Version: 1.1.1
+Version: 1.2
 Author: Samir Shah
 Author URI: http://rayofsolaris.net/
 License: GPL2
@@ -15,7 +15,7 @@ if( !defined( 'ABSPATH' ) )
 	exit;
 
 class Disable_Comments {
-	const db_version = 5;
+	const db_version = 6;
 	private $options;
 	private $networkactive;
 	private $modified_types = array();
@@ -23,13 +23,13 @@ class Disable_Comments {
 	function __construct() {
 		// are we network activated?
 		$this->networkactive = ( is_multisite() && array_key_exists( plugin_basename( __FILE__ ), (array) get_site_option( 'active_sitewide_plugins' ) ) );
-		
+
 		// load options
 		$this->options = $this->networkactive ? get_site_option( 'disable_comments_options', array() ) : get_option( 'disable_comments_options', array() );
-		
+
 		// load language files
 		load_plugin_textdomain( 'disable-comments', false, dirname( plugin_basename( __FILE__ ) ) .  '/languages' );
-                
+
 		// If it looks like first run, check compat
 		if ( empty( $this->options ) && version_compare( $GLOBALS['wp_version'], '3.4', '<' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
@@ -37,7 +37,7 @@ class Disable_Comments {
 			if ( isset( $_GET['action'] ) && ( $_GET['action'] == 'activate' || $_GET['action'] == 'error_scrape' ) )
 				exit( sprintf( __( 'Disable Comments requires WordPress version %s or greater.', 'disable-comments' ), '3.3' ) );
 		}
-		
+
 		$old_ver = isset( $this->options['db_version'] ) ? $this->options['db_version'] : 0;
 		if( $old_ver < self::db_version ) {
 			if( $old_ver < 2 ) {
@@ -52,39 +52,42 @@ class Disable_Comments {
 					unset( $this->options[$v] );
 			}
 
-			foreach( array( 'remove_everywhere', 'permanent' ) as $v )
-				if( !isset( $this->options[$v] ) )
+			foreach( array( 'remove_everywhere', 'permanent', 'extra_post_types' ) as $v ) {
+				if( !isset( $this->options[$v] ) ) {
 					$this->options[$v] = false;
+				}
+			}
 
 			$this->options['db_version'] = self::db_version;
 			$this->update_options();
 		}
-		
+
 		// these need to happen now
 		if( $this->options['remove_everywhere'] ) {
 			add_action( 'widgets_init', array( $this, 'disable_rc_widget' ) );
 			add_filter( 'wp_headers', array( $this, 'filter_wp_headers' ) );
 			add_action( 'template_redirect', array( $this, 'filter_query' ), 9 );	// before redirect_canonical
-			
+
 			// Admin bar filtering has to happen here since WP 3.6
 			add_action( 'template_redirect', array( $this, 'filter_admin_bar' ) );
 			add_action( 'admin_init', array( $this, 'filter_admin_bar' ) );
 		}
-                
+
 		// these can happen later
-		add_action( 'wp_loaded', array( $this, 'setup_filters' ) );	
+		add_action( 'wp_loaded', array( $this, 'setup_filters' ) );
 	}
-	
+
 	private function update_options() {
 		if( $this->networkactive )
 			update_site_option( 'disable_comments_options', $this->options );
 		else
 			update_option( 'disable_comments_options', $this->options );
 	}
-	
+
 	function setup_filters(){
-		if( !empty( $this->options['disabled_post_types'] ) ) {
-			foreach( $this->options['disabled_post_types'] as $type ) {
+		$disabled_post_types = $this->get_disabled_post_types();
+		if( !empty( $disabled_post_types ) ) {
+			foreach( $disabled_post_types as $type ) {
 				// we need to know what native support was for later
 				if( post_type_supports( $type, 'comments' ) ) {
 					$this->modified_types[] = $type;
@@ -120,7 +123,7 @@ class Disable_Comments {
 				add_action( 'edit_form_advanced', array( $this, 'edit_form_inputs' ) );
 				add_action( 'edit_page_form', array( $this, 'edit_form_inputs' ) );
 			}
-			
+
 			if( $this->options['remove_everywhere'] ) {
 				add_action( 'admin_menu', array( $this, 'filter_admin_menu' ), 9999 );	// do this as late as possible
 				add_action( 'admin_head', array( $this, 'hide_dashboard_bits' ) );
@@ -135,7 +138,8 @@ class Disable_Comments {
 	}
 
 	function check_comment_template() {
-		if( is_singular() && ( $this->options['remove_everywhere'] || in_array( get_post_type(), $this->options['disabled_post_types'] ) ) ) {
+		$type = get_post_type();
+		if( is_singular() && ( $this->options['remove_everywhere'] || $this->is_post_type_disabled( get_post_type() ) ) ) {
 			// Kill the comments template. This will deal with themes that don't check comment stati properly!
 			add_filter( 'comments_template', array( $this, 'dummy_comments_template' ), 20 );
 			// Remove comment-reply script for themes that include it indiscriminately
@@ -153,7 +157,7 @@ class Disable_Comments {
 		unset( $headers['X-Pingback'] );
 		return $headers;
 	}
-	
+
 	function filter_query() {
 		if( is_comment_feed() ) {
 			if( isset( $_GET['feed'] ) ) {
@@ -165,7 +169,7 @@ class Disable_Comments {
 			redirect_canonical();
 		}
 	}
-	
+
 	function filter_admin_bar() {
 		if( is_admin_bar_showing() ) {
 			// Remove comments links from admin bar
@@ -175,7 +179,7 @@ class Disable_Comments {
 				add_action( 'admin_bar_menu', array( $this, 'remove_network_comment_links' ), 500 );
 		}
 	}
-	
+
 	function remove_network_comment_links( $wp_admin_bar ) {
 		if( $this->networkactive ) {
 			foreach( (array) $wp_admin_bar->user->blogs as $blog )
@@ -186,7 +190,7 @@ class Disable_Comments {
 			$wp_admin_bar->remove_menu( 'blog-' . get_current_blog_id() . '-c' );
 		}
 	}
-	
+
 	function edit_form_inputs() {
 		global $post;
 		// Without a dicussion meta box, comment_status will be set to closed on new/updated posts
@@ -194,11 +198,12 @@ class Disable_Comments {
 			echo '<input type="hidden" name="comment_status" value="' . $post->comment_status . '" /><input type="hidden" name="ping_status" value="' . $post->ping_status . '" />';
 		}
 	}
-	
+
 	function discussion_notice(){
-		if( get_current_screen()->id == 'options-discussion' && !empty( $this->options['disabled_post_types'] ) ) {
+		$disabled_post_types = $this->get_disabled_post_types();
+		if( get_current_screen()->id == 'options-discussion' && !empty( $disabled_post_types ) ) {
 			$names = array();
-			foreach( $this->options['disabled_post_types'] as $type )
+			foreach( $disabled_post_types as $type )
 				$names[$type] = get_post_type_object( $type )->labels->name;
 ?>
 <script>
@@ -209,7 +214,7 @@ jQuery(document).ready(function($){
 <?php
 		}
 	}
-	
+
 	/**
 	 * Return context-aware settings page URL
 	 */
@@ -217,7 +222,7 @@ jQuery(document).ready(function($){
 		$base =  $this->networkactive ? network_admin_url( 'settings.php' ) : admin_url( 'options-general.php' );
 		return add_query_arg( 'page', 'disable_comments_settings', $base );
 	}
-	
+
 	function setup_notice(){
 		if( strpos( get_current_screen()->id, 'settings_page_disable_comments_settings' ) === 0 )
 			return;
@@ -225,8 +230,8 @@ jQuery(document).ready(function($){
 		if( $hascaps )
 			echo '<div class="updated fade"><p>' . sprintf( __( 'The <em>Disable Comments</em> plugin is active, but isn\'t configured to do anything yet. Visit the <a href="%s">configuration page</a> to choose which post types to disable comments on.', 'disable-comments'), esc_attr( $this->settings_page_url() ) ) . '</p></div>';
 	}
-	
-	function filter_admin_menu(){		
+
+	function filter_admin_menu(){
 		global $pagenow;
 
 		if ( $pagenow == 'comment.php' || $pagenow == 'edit-comments.php' || $pagenow == 'options-discussion.php' )
@@ -235,16 +240,16 @@ jQuery(document).ready(function($){
 		remove_menu_page( 'edit-comments.php' );
 		remove_submenu_page( 'options-general.php', 'options-discussion.php' );
 	}
-	
+
 	function filter_dashboard(){
 		remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
 	}
-	
+
 	function hide_dashboard_bits(){
 		if( 'dashboard' == get_current_screen()->id )
 			add_action( 'admin_print_footer_scripts', array( $this, 'dashboard_js' ) );
 	}
-	
+
 	function dashboard_js(){
 		if( version_compare( $GLOBALS['wp_version'], '3.8', '<' ) ) {
 			// getting hold of the discussion box is tricky. The table_discussion class is used for other things in multisite
@@ -254,17 +259,17 @@ jQuery(document).ready(function($){
 			echo '<script> jQuery(function($){ $("#dashboard_right_now .comment-count, #latest-comments").hide(); }); </script>';
 		}
 	}
-	
+
 	function filter_comment_status( $open, $post_id ) {
 		$post = get_post( $post_id );
-		return ( $this->options['remove_everywhere'] || in_array( $post->post_type, $this->options['disabled_post_types'] ) ) ? false : $open;
+		return ( $this->options['remove_everywhere'] || $this->is_post_type_disabled( $post->post_type ) ) ? false : $open;
 	}
-	
+
 	function disable_rc_widget() {
 		// This widget has been removed from the Dashboard in WP 3.8 and can be removed in a future version
 		unregister_widget( 'WP_Widget_Recent_Comments' );
 	}
-	
+
 	function set_plugin_meta( $links, $file ) {
 		static $plugin;
 		$plugin = plugin_basename( __FILE__ );
@@ -273,7 +278,7 @@ jQuery(document).ready(function($){
 		}
 		return $links;
 	}
-	
+
 	/**
 	 * Add links to Settings page
 	*/
@@ -281,7 +286,7 @@ jQuery(document).ready(function($){
 		static $plugin;
 		$plugin = plugin_basename( __FILE__ );
 		if( $file == $plugin && current_user_can('manage_options') ) {
-			array_unshift( 
+			array_unshift(
 				$links,
 				sprintf( '<a href="%s">%s</a>', esc_attr( $this->settings_page_url() ), __( 'Settings' ) )
 			);
@@ -297,11 +302,12 @@ jQuery(document).ready(function($){
 		else
 			add_submenu_page( 'options-general.php', $title, $title, 'manage_options', 'disable_comments_settings', array( $this, 'settings_page' ) );
 	}
-	
+
 	function settings_page() {
 		$typeargs = array( 'public' => true );
-		if( $this->networkactive )
+		if( $this->networkactive ) {
 			$typeargs['_builtin'] = true;	// stick to known types for network
+		}
 		$types = get_post_types( $typeargs, 'objects' );
 		foreach( array_keys( $types ) as $type ) {
 			if( ! in_array( $type, $this->modified_types ) && ! post_type_supports( $type, 'comments' ) )	// the type doesn't support comments anyway
@@ -309,36 +315,42 @@ jQuery(document).ready(function($){
 		}
 
 		$persistent_allowed = $this->persistent_mode_allowed();
-		
+
 		if ( isset( $_POST['submit'] ) ) {
 			check_admin_referer( 'disable-comments-admin' );
 			$this->options['remove_everywhere'] = ( $_POST['mode'] == 'remove_everywhere' );
-			
+
 			if( $this->options['remove_everywhere'] )
 				$disabled_post_types = array_keys( $types );
 			else
 				$disabled_post_types =  empty( $_POST['disabled_types'] ) ? array() : (array) $_POST['disabled_types'];
 
 			$disabled_post_types = array_intersect( $disabled_post_types, array_keys( $types ) );
-			
+
 			// entering permanent mode, or post types have changed
 			if( $persistent_allowed && !empty( $_POST['permanent'] ) && ( !$this->options['permanent'] || $disabled_post_types != $this->options['disabled_post_types'] ) )
 				$this->enter_permanent_mode();
-			
+
 			$this->options['disabled_post_types'] = $disabled_post_types;
 			$this->options['permanent'] = $persistent_allowed && isset( $_POST['permanent'] );
-			
+
+			// Extra custom post types
+			if( $this->networkactive && !empty( $_POST['extra_post_types'] ) ) {
+				$extra_post_types = array_filter( array_map( 'sanitize_key', explode( ',', $_POST['extra_post_types'] ) ) );
+				$this->options['extra_post_types'] = array_diff( $extra_post_types, array_keys( $types ) );	// Make sure we don't double up builtins
+			}
+
 			$this->update_options();
 			$cache_message = WP_CACHE ? ' <strong>' . __( 'If a caching/performance plugin is active, please invalidate its cache to ensure that changes are reflected immediately.' ) . '</strong>' : '';
 			echo '<div id="message" class="updated"><p>' . __( 'Options updated. Changes to the Admin Menu and Admin Bar will not appear until you leave or reload this page.', 'disable-comments' ) . $cache_message . '</p></div>';
-		}	
+		}
 	?>
 	<style> .indent {padding-left: 2em} </style>
 	<div class="wrap">
 	<?php screen_icon( 'plugins' ); ?>
 	<h2><?php _e( 'Disable Comments', 'disable-comments') ?></h2>
-	<?php 
-	if( $this->networkactive ) 
+	<?php
+	if( $this->networkactive )
 		echo '<div class="updated"><p>' . __( '<em>Disable Comments</em> is Network Activated. The settings below will affect <strong>all sites</strong> in this network.', 'disable-comments') . '</p></div>';
 	if( WP_CACHE )
 		echo '<div class="updated"><p>' . __( "It seems that a caching/performance plugin is active on this site. Please manually invalidate that plugin's cache after making any changes to the settings below.", 'disable-comments') . '</p></div>';
@@ -353,6 +365,10 @@ jQuery(document).ready(function($){
 		<ul class="indent" id="listoftypes">
 			<?php foreach( $types as $k => $v ) echo "<li><label for='post-type-$k'><input type='checkbox' name='disabled_types[]' value='$k' ". checked( in_array( $k, $this->options['disabled_post_types'] ), true, false ) ." id='post-type-$k'> {$v->labels->name}</label></li>";?>
 		</ul>
+		<?php if( $this->networkactive ) :?>
+		<p class="indent" id="extratypes"><?php _e( 'Only the built-in post types appear above. If you want to disable comments on other custom post types on the entire network, you can supply a comma-separated list of post types below (use the slug that identifies the post type).', 'disable-comments' ); ?>
+		<br /><label>Custom post types: <input type="text" name="extra_post_types" size="30" value="<?php echo implode( ', ', (array) $this->options['extra_post_types'] ); ?>" /></label></p>
+		<?php endif; ?>
 		<p class="indent"><?php _e( 'Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts.', 'disable-comments') ?></p>
 	</li>
 	</ul>
@@ -376,19 +392,20 @@ jQuery(document).ready(function($){
 	<script>
 	jQuery(document).ready(function($){
 		function disable_comments_uihelper(){
+			var indiv_bits = $("#listoftypes, #extratypes");
 			if( $("#remove_everywhere").is(":checked") )
-				$("#listoftypes").css("color", "#888").find(":input").attr("disabled", true );
+				indiv_bits.css("color", "#888").find(":input").attr("disabled", true );
 			else
-				$("#listoftypes").css("color", "#000").find(":input").attr("disabled", false );
+				indiv_bits.css("color", "#000").find(":input").attr("disabled", false );
 		}
-		
+
 		$("#disable-comments :input").change(function(){
 			$("#message").slideUp();
 			disable_comments_uihelper();
 		});
-		
+
 		disable_comments_uihelper();
-		
+
 		$("#permanent").change( function() {
 			if( $(this).is(":checked") && ! confirm(<?php echo json_encode( sprintf( __( '%s: Selecting this option will make persistent changes to your database. Are you sure you want to enable it?', 'disable-comments'), __( 'Warning', 'disable-comments' ) ) );?>) )
 				$(this).attr("checked", false );
@@ -397,18 +414,18 @@ jQuery(document).ready(function($){
 	</script>
 <?php
 	}
-	
+
 	private function enter_permanent_mode() {
-		$types = $this->options['disabled_post_types'];
+		$types = $this->get_disabled_post_types();
 		if( empty( $types ) )
 			return;
-			
+
 		global $wpdb;
 
 		if( $this->networkactive ) {
 			// NOTE: this can be slow on large networks!
 			$blogs = $wpdb->get_col( $wpdb->prepare( "SELECT blog_id FROM $wpdb->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND deleted = '0'", $wpdb->siteid ) );
-	
+
 			foreach ( $blogs as $id ) {
 				switch_to_blog( $id );
 				$this->close_comments_in_db( $types );
@@ -419,15 +436,33 @@ jQuery(document).ready(function($){
 			$this->close_comments_in_db( $types );
 		}
 	}
-	
+
 	private function close_comments_in_db( $types ){
 		global $wpdb;
 		$bits = implode( ', ', array_pad( array(), count( $types ), '%s' ) );
 		$wpdb->query( $wpdb->prepare( "UPDATE `$wpdb->posts` SET `comment_status` = 'closed', ping_status = 'closed' WHERE `post_type` IN ( $bits )", $types ) );
 	}
-	
+
 	private function persistent_mode_allowed() {
 		return apply_filters( 'disable_comments_allow_persistent_mode', true );
+	}
+
+	/* This function should only be used inside an individual site context */
+	private function get_disabled_post_types() {
+		$types = $this->options['disabled_post_types'];
+		// Not all extra_post_types might be registered on this particular site
+		if( $this->networkactive ) {
+			foreach( $this->options['extra_post_types'] as $extra ) {
+				if( post_type_exists( $extra ) ) {
+					$types[] = $extra;
+				}
+			}
+		}
+		return $types;
+	}
+
+	private function is_post_type_disabled( $type ) {
+		return in_array( $type, $this->get_disabled_post_types() );
 	}
 
 	function single_site_deactivate() {
