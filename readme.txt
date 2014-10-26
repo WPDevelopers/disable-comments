@@ -74,6 +74,9 @@ The plugin provides the option to **completely disable the commenting feature in
 
 == Changelog ==
 
+= 1.2 =
+* Allow network administrators to disable comments on custom post types across the whole network.
+
 = 1.1.1 =
 * Fix PHP warning when active_sitewide_plugins option doesn't contain expected data type.
 
