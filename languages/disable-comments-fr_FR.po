@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Disable Comments 1.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/disable-comments\n"
 "POT-Creation-Date: 2015-02-03 08:04:31+00:00\n"
-"PO-Revision-Date: 2015-02-03 09:23+0100\n"
+"PO-Revision-Date: 2015-02-03 14:30+0100\n"
 "Last-Translator: fxbenard | FxB <fx@fxbenard.com>\n"
 "Language-Team: Hexagone <fx@hexagone.io>\n"
 "Language: fr_FR\n"
@@ -41,9 +41,9 @@ msgid ""
 "anything yet. Visit the <a href=\"%s\">configuration page</a> to choose which "
 "post types to disable comments on."
 msgstr ""
-"L'extension <em>Disable Comments</em> est activée mais pas encore configurée "
-"pour fonctionner. Rendez-vous sur la <a href=\"%s\">page de configuration</a>  "
-"pour choisir les types de contenu pour lesquels vous souhaitez désactiver les "
+"L'extension <em>Disable Comments</em> est activée mais n'est pas encore "
+"configurée. Rendez-vous sur la <a href=\"%s\">page de configuration</a>  pour "
+"choisir les types de contenu pour lesquels vous souhaitez désactiver les "
 "commentaires. "
 
 #: disable-comments.php:237
@@ -109,7 +109,7 @@ msgstr ""
 "%s : Cette option affecte l'ensemble de votre site internet. Utilisez-la si "
 "vous souhaitez désactiver les commentaires <em>partout</em>. Une documentation "
 "complète des options de l'extension est <a href=\"%s\" target=\"_blank"
-"\">disponible ici</a>."
+"\">disponible ici (en)</a>."
 
 #: disable-comments.php:360 disable-comments.php:380 disable-comments.php:382
 #: disable-comments.php:409
@@ -118,7 +118,7 @@ msgstr "Avertissement"
 
 #: disable-comments.php:362
 msgid "On certain post types"
-msgstr "Sur certains type de contenu"
+msgstr "Certains types de contenu "
 
 #: disable-comments.php:368
 msgid ""
@@ -147,7 +147,7 @@ msgstr "Autres options"
 
 #: disable-comments.php:379
 msgid "Use persistent mode"
-msgstr "Utiliser le mode persistent"
+msgstr "Utiliser le mode persistant"
 
 #: disable-comments.php:380
 msgid ""
@@ -156,11 +156,11 @@ msgid ""
 "not use it if you only want to disable comments temporarily. Please <a href=\"%s"
 "\" target=\"_blank\">read the FAQ</a> before selecting this option."
 msgstr ""
-"%s: <strong>Ceci fera des changements permanent à votre base de données. Les "
+"%s : <strong>Ceci fera des changements permanents à votre base de données. Les "
 "commentaires seront désactivés même si vous désactivez l'extension !</strong> "
-"Vous ne devez pas activer cette option si vous souhaitez désactiver les "
-"commentaires de façon temporaire. Voir la <a href=\"%s\" target=\"_blank\"> FAQ "
-"</a>  avant de choisir cette option."
+"Si vous souhaitez désactiver les commentaires de façon temporaire, vous ne "
+"devez PAS activer cette option. Voir la <a href=\"%s\" target=\"_blank\">FAQ "
+"(en)</a> avant de choisir cette option."
 
 #: disable-comments.php:382
 msgid ""
