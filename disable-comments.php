@@ -52,7 +52,7 @@ class Disable_Comments {
 					unset( $this->options[$v] );
 			}
 
-			foreach( array( 'remove_everywhere', 'permanent', 'extra_post_types' ) as $v ) {
+			foreach( array( 'remove_everywhere', 'permanent', 'extra_post_types', 'allow_comments_template' ) as $v ) {
 				if( !isset( $this->options[$v] ) ) {
 					$this->options[$v] = false;
 				}
@@ -139,8 +139,10 @@ class Disable_Comments {
 
 	function check_comment_template() {
 		if( is_singular() && ( $this->options['remove_everywhere'] || $this->is_post_type_disabled( get_post_type() ) ) ) {
-			// Kill the comments template. This will deal with themes that don't check comment stati properly!
-			add_filter( 'comments_template', array( $this, 'dummy_comments_template' ), 20 );
+			if( !$this->options['allow_comments_template'] ) {
+				// Kill the comments template. This will deal with themes that don't check comment stati properly!
+				add_filter( 'comments_template', array( $this, 'dummy_comments_template' ), 20 );
+			}
 			// Remove comment-reply script for themes that include it indiscriminately
 			wp_deregister_script( 'comment-reply' );
 			// feed_links_extra inserts a comments RSS link
@@ -339,6 +341,8 @@ jQuery(document).ready(function($){
 				$this->options['extra_post_types'] = array_diff( $extra_post_types, array_keys( $types ) );	// Make sure we don't double up builtins
 			}
 
+			$this->options['allow_comments_template'] = isset( $_POST['allow_comments_template'] );
+
 			$this->update_options();
 			$cache_message = WP_CACHE ? ' <strong>' . __( 'If a caching/performance plugin is active, please invalidate its cache to ensure that changes are reflected immediately.' ) . '</strong>' : '';
 			echo '<div id="message" class="updated"><p>' . __( 'Options updated. Changes to the Admin Menu and Admin Bar will not appear until you leave or reload this page.', 'disable-comments' ) . $cache_message . '</p></div>';
@@ -382,6 +386,9 @@ jQuery(document).ready(function($){
 				echo '<p class="indent">' . sprintf( __( '%s: Entering persistent mode on large multi-site networks requires a large number of database queries and can take a while. Use with caution!', 'disable-comments'), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>' ) . '</p>';
 		}
 		?>
+		</li>
+		<li><label for="allow_comments_template"><input type="checkbox" name="allow_comments_template" id="allow_comments_template" <?php checked( $this->options['allow_comments_template'] );?> /> <strong><?php _e( 'Allow comments template', 'disable-comments') ?></strong></label>
+			<p class="indent"><?php _e( 'Only enable this if your theme checks comment status properly and you need to allow the comments template to run (e.g. when you know there is additional output).', 'disable-comments') ?></p>
 		</li>
 	</ul>
 	<?php wp_nonce_field( 'disable-comments-admin' ); ?>
