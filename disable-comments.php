@@ -16,11 +16,20 @@ if( !defined( 'ABSPATH' ) )
 
 class Disable_Comments {
 	const db_version = 6;
+	private static $instance = null;
 	private $options;
 	private $networkactive;
 	private $modified_types = array();
 
-	function __construct() {
+	public static function get_instance() {
+		if ( null == self::$instance ) {
+			self::$instance = new self;
+		}
+
+		return self::$instance;
+	}
+
+	private function __construct() {
 		// are we network activated?
 		$this->networkactive = ( is_multisite() && array_key_exists( plugin_basename( __FILE__ ), (array) get_site_option( 'active_sitewide_plugins' ) ) );
 
@@ -478,4 +487,4 @@ jQuery(document).ready(function($){
 	}
 }
 
-new Disable_Comments();
+Disable_Comments::get_instance();
