@@ -3,7 +3,7 @@
 Plugin Name: Disable Comments
 Plugin URI: http://wordpress.org/extend/plugins/disable-comments/
 Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type.
-Version: 1.2
+Version: 1.3
 Author: Samir Shah
 Author URI: http://rayofsolaris.net/
 License: GPL2
@@ -139,8 +139,10 @@ class Disable_Comments {
 
 	function check_comment_template() {
 		if( is_singular() && ( $this->options['remove_everywhere'] || $this->is_post_type_disabled( get_post_type() ) ) ) {
-			// Kill the comments template. This will deal with themes that don't check comment stati properly!
-			add_filter( 'comments_template', array( $this, 'dummy_comments_template' ), 20 );
+			if( !defined( 'DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE' ) || DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE == true ) {
+				// Kill the comments template. This will deal with themes that don't check comment stati properly!
+				add_filter( 'comments_template', array( $this, 'dummy_comments_template' ), 20 );
+			}
 			// Remove comment-reply script for themes that include it indiscriminately
 			wp_deregister_script( 'comment-reply' );
 			// feed_links_extra inserts a comments RSS link
@@ -371,19 +373,21 @@ jQuery(document).ready(function($){
 		<p class="indent"><?php _e( 'Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts.', 'disable-comments') ?></p>
 	</li>
 	</ul>
+
+	<?php if( $persistent_allowed ): ?>
 	<h3><?php _e( 'Other options', 'disable-comments') ?></h3>
 	<ul>
 		<li>
 		<?php
-		if( $persistent_allowed ) {
-			echo '<label for="permanent"><input type="checkbox" name="permanent" id="permanent" '. checked( $this->options['permanent'], true, false ) . '> <strong>' . __( 'Use persistent mode', 'disable-comments') . '</strong></label>';
-			echo '<p class="indent">' . sprintf( __( '%s: <strong>This will make persistent changes to your database &mdash; comments will remain closed even if you later disable the plugin!</strong> You should not use it if you only want to disable comments temporarily. Please <a href="%s" target="_blank">read the FAQ</a> before selecting this option.', 'disable-comments'), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>', 'http://wordpress.org/extend/plugins/disable-comments/faq/' ) . '</p>';
-			if( $this->networkactive )
-				echo '<p class="indent">' . sprintf( __( '%s: Entering persistent mode on large multi-site networks requires a large number of database queries and can take a while. Use with caution!', 'disable-comments'), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>' ) . '</p>';
-		}
+		echo '<label for="permanent"><input type="checkbox" name="permanent" id="permanent" '. checked( $this->options['permanent'], true, false ) . '> <strong>' . __( 'Use persistent mode', 'disable-comments') . '</strong></label>';
+		echo '<p class="indent">' . sprintf( __( '%s: <strong>This will make persistent changes to your database &mdash; comments will remain closed even if you later disable the plugin!</strong> You should not use it if you only want to disable comments temporarily. Please <a href="%s" target="_blank">read the FAQ</a> before selecting this option.', 'disable-comments'), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>', 'http://wordpress.org/extend/plugins/disable-comments/faq/' ) . '</p>';
+		if( $this->networkactive )
+			echo '<p class="indent">' . sprintf( __( '%s: Entering persistent mode on large multi-site networks requires a large number of database queries and can take a while. Use with caution!', 'disable-comments'), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>' ) . '</p>';
 		?>
 		</li>
 	</ul>
+	<?php endif; ?>
+
 	<?php wp_nonce_field( 'disable-comments-admin' ); ?>
 	<p class="submit"><input class="button-primary" type="submit" name="submit" value="<?php _e( 'Save Changes') ?>"></p>
 	</form>
@@ -443,6 +447,10 @@ jQuery(document).ready(function($){
 	}
 
 	private function persistent_mode_allowed() {
+		if( defined( 'DISABLE_COMMENTS_ALLOW_PERSISTENT_MODE' ) && DISABLE_COMMENTS_ALLOW_PERSISTENT_MODE == false ) {
+			return false;
+		}
+		// The filter below is deprecated and will be removed in future versions. Use the define instead.
 		return apply_filters( 'disable_comments_allow_persistent_mode', true );
 	}
 
