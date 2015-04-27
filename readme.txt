@@ -81,6 +81,9 @@ These definitions can be made either in your main `wp-config.php` or in your the
 
 == Changelog ==
 
+= 1.3.1 =
+* Change the behaviour for comment feed requests. This removes a potential security issue.
+
 = 1.3 =
 * Move persistent mode filter into a define.
 * Add an advanced option to show the theme's comment template even when comments are disabled.
