@@ -1,9 +1,9 @@
 === Disable Comments ===
 Contributors: solarissmoke
-Donate link: http://rayofsolaris.net/donate.php
+Donate link: http://www.rayofsolaris.net/donate/
 Tags: comments, disable, global
 Requires at least: 3.6
-Tested up to: 4.2
+Tested up to: 4.3
 Stable tag: trunk
 
 Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly.
