@@ -2,7 +2,7 @@
 Contributors: solarissmoke
 Donate link: http://www.rayofsolaris.net/donate/
 Tags: comments, disable, global
-Requires at least: 3.6
+Requires at least: 3.8
 Tested up to: 4.3
 Stable tag: trunk
 
@@ -136,7 +136,7 @@ These definitions can be made either in your main `wp-config.php` or in your the
 * Now supports Network Activation - disable comments on your entire multi-site network.
 * Simplified settings page.
 
-= 0.6 = 
+= 0.6 =
 * Add "persistent mode" to deal with themes that don't use filterable comment status checking.
 
 = 0.5 =

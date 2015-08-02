@@ -46,8 +46,7 @@ if ( isset( $_POST['submit'] ) ) {
 ?>
 <style> .indent {padding-left: 2em} </style>
 <div class="wrap">
-<?php screen_icon( 'plugins' ); ?>
-<h2><?php _e( 'Disable Comments', 'disable-comments') ?></h2>
+<h1><?php _e( 'Disable Comments', 'disable-comments') ?></h1>
 <?php
 if( $this->networkactive )
 	echo '<div class="updated"><p>' . __( '<em>Disable Comments</em> is Network Activated. The settings below will affect <strong>all sites</strong> in this network.', 'disable-comments') . '</p></div>';
@@ -73,7 +72,7 @@ if( WP_CACHE )
 </ul>
 
 <?php if( $persistent_allowed ): ?>
-<h3><?php _e( 'Other options', 'disable-comments') ?></h3>
+<h2><?php _e( 'Other options', 'disable-comments') ?></h2>
 <ul>
 	<li>
 	<?php
