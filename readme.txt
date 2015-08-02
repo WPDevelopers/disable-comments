@@ -81,6 +81,10 @@ These definitions can be made either in your main `wp-config.php` or in your the
 
 == Changelog ==
 
+= 1.3.2 =
+* Compatibility updates and code refactoring for WordPress 4.3
+* Adding a few new translations
+
 = 1.3.1 =
 * Change the behaviour for comment feed requests. This removes a potential security issue.
 
