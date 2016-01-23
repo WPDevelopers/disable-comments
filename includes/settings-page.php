@@ -71,7 +71,7 @@ if( WP_CACHE )
 </li>
 </ul>
 
-<?php if( $persistent_allowed ): ?>
+<?php if( $persistent_allowed && $this->options['permanent'] ): ?>
 <h2><?php _e( 'Other options', 'disable-comments') ?></h2>
 <ul>
 	<li>

@@ -3,7 +3,7 @@ Contributors: solarissmoke
 Donate link: http://www.rayofsolaris.net/donate/
 Tags: comments, disable, global
 Requires at least: 3.9
-Tested up to: 4.4
+Tested up to: 4.5
 Stable tag: trunk
 
 Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly.
@@ -24,17 +24,9 @@ A [must-use version](https://github.com/solarissmoke/disable-comments-mu) of the
 
 == Frequently Asked Questions ==
 
-= What is "persistent mode"? =
-
-By default, the plugin does not make any persistent changes to your posts - it just dynamically closes comments on them. This means that you can use the plugin temporarily and restore comment statuses when you disable it. If the plugin works in this mode, then I recommend that you don't use persistent mode.
-
-Unfortunately some themes do not properly check the comment status of posts, and the plugin in default mode will have no effect with them (comments will still appear to be open). To fix this, switch to persistent mode. Note however that this will make persistent changes: **comments will remain closed even if you later disable the plugin** (you can always reopen them manually, of course).
-
-**I repeat, using persistent mode will make changes to your database. DO NOT USE IT IF YOU WANT TO DISABLE COMMENTS TEMPORARILY.**
-
 = Nothing happens after I disable comments on all posts - comment forms still appear when I view my posts. =
 
-This is because your theme is not checking the comment status of posts in the correct way. The solution is to switch the plugin to persistent mode (the last option on the plugin settings page).
+This is because your theme is not checking the comment status of posts in the correct way.
 
 You may like to point your theme's author to [this explanation](http://rayofsolaris.net/blog/2012/how-to-check-if-comments-are-allowed-in-wordpress) of what they are doing wrong, and how to fix it.
 
@@ -51,10 +43,6 @@ Don't install this plugin!
 Go to the edit page for the post you want to disable comments on. Scroll down to the "Discussion" box, where you will find the comment options for that post. If you don't see a "Discussion" box, then click on "Screen Options" at the top of your screen, and make sure the "Discussion" checkbox is checked.
 
 You can also bulk-edit the comment status of multiple posts from the [posts screen](http://codex.wordpress.org/Posts_Screen).
-
-= Why is persistent mode disabled? =
-
-Someone (probably your site administrator) has chosen to disable this option. See "What is persistent mode?" above.
 
 == Details ==
 
@@ -74,12 +62,14 @@ The plugin provides the option to **completely disable the commenting feature in
 
 Some of the plugin's behaviour can be modified by site administrators and plugin/theme developers through code:
 
-* Define `DISABLE_COMMENTS_ALLOW_PERSISTENT_MODE` and set it to `false` to prevent persistent mode from being available as an option on the plugin settings page.
-* Define `DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE` and set it to `false` to prevent the plugin the plugin from replacing the theme's comment template with an empty one.
+* Define `DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE` and set it to `false` to prevent the plugin from replacing the theme's comment template with an empty one.
 
 These definitions can be made either in your main `wp-config.php` or in your theme's `functions.php` file.
 
 == Changelog ==
+
+= 1.4 =
+* Hide the troublesome "persistent mode" option for all sites where it is not in use. This option will be removed in a future release.
 
 = 1.3.2 =
 * Compatibility updates and code refactoring for WordPress 4.3
