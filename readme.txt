@@ -2,7 +2,7 @@
 Contributors: solarissmoke
 Donate link: http://www.rayofsolaris.net/donate/
 Tags: comments, disable, global
-Requires at least: 3.9
+Requires at least: 4.0
 Tested up to: 4.5
 Stable tag: trunk
 
@@ -67,6 +67,9 @@ Some of the plugin's behaviour can be modified by site administrators and plugin
 These definitions can be made either in your main `wp-config.php` or in your theme's `functions.php` file.
 
 == Changelog ==
+
+= 1.4.1 =
+* Delay loading of translation text domain until all plugins are loaded. This allows plugins to modify translations.
 
 = 1.4 =
 * Hide the troublesome "persistent mode" option for all sites where it is not in use. This option will be removed in a future release.
