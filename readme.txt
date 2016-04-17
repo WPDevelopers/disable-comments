@@ -68,7 +68,7 @@ These definitions can be made either in your main `wp-config.php` or in your the
 
 == Changelog ==
 
-= 1.4.1 =
+= 1.4.2 =
 * Delay loading of translation text domain until all plugins are loaded. This allows plugins to modify translations.
 
 = 1.4 =
