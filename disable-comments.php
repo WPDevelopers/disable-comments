@@ -251,7 +251,7 @@ class Disable_Comments {
 	 * Remove comment links from the admin bar in a multisite network.
 	 */
 	public function remove_network_comment_links( $wp_admin_bar ) {
-		if( $this->networkactive ) {
+		if( $this->networkactive  && isset( $wp_admin_bar->user->blogs ) ) {
 			foreach( (array) $wp_admin_bar->user->blogs as $blog )
 				$wp_admin_bar->remove_menu( 'blog-' . $blog->userblog_id . '-c' );
 		}
