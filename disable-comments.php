@@ -190,6 +190,10 @@ class Disable_Comments {
 		// Filters for front end only
 		else {
 			add_action( 'template_redirect', array( $this, 'check_comment_template' ) );
+
+			if( $this->options['remove_everywhere'] ) {
+				add_filter( 'feed_links_show_comments_feed', '__return_false' );
+			}
 		}
 	}
 
