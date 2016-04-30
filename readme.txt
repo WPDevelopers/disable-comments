@@ -68,6 +68,9 @@ These definitions can be made either in your main `wp-config.php` or in your the
 
 == Changelog ==
 
+= 1.5 =
+* Remove the comments feed link from the head in WP 4.4 and higher.
+
 = 1.4.2 =
 * Delay loading of translation text domain until all plugins are loaded. This allows plugins to modify translations.
 
