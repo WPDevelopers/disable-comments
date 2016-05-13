@@ -336,6 +336,7 @@ jQuery(document).ready(function($){
 		else {
 			echo '<script> jQuery(function($){ $("#dashboard_right_now .comment-count, #latest-comments").hide(); }); </script>';
 		}
+		echo '<script> jQuery(function($){ $("#welcome-panel .welcome-comments").parent().hide(); }); </script>';
 	}
 
 	public function filter_existing_comments($comments, $post_id) {
