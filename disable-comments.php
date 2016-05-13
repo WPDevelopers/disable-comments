@@ -152,6 +152,7 @@ class Disable_Comments {
 					remove_post_type_support( $type, 'trackbacks' );
 				}
 			}
+			add_filter( 'comments_array', 'filter_existing_comments', 20, 2 );
 			add_filter( 'comments_open', array( $this, 'filter_comment_status' ), 20, 2 );
 			add_filter( 'pings_open', array( $this, 'filter_comment_status' ), 20, 2 );
 		}
@@ -335,6 +336,11 @@ jQuery(document).ready(function($){
 		else {
 			echo '<script> jQuery(function($){ $("#dashboard_right_now .comment-count, #latest-comments").hide(); }); </script>';
 		}
+	}
+
+	public function filter_existing_comments($comments, $post_id) {
+		$post = get_post( $post_id );
+		return ( $this->options['remove_everywhere'] || $this->is_post_type_disabled( $post->post_type ) ) ? array() : $comments;
 	}
 
 	public function filter_comment_status( $open, $post_id ) {
