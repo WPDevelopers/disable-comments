@@ -195,6 +195,7 @@ class Disable_Comments {
 
 			if( $this->options['remove_everywhere'] ) {
 				add_filter( 'feed_links_show_comments_feed', '__return_false' );
+				add_action( 'wp_head', array( $this, 'hide_meta_widget_link' ) );
 			}
 		}
 	}
@@ -337,6 +338,10 @@ jQuery(document).ready(function($){
 			echo '<script> jQuery(function($){ $("#dashboard_right_now .comment-count, #latest-comments").hide(); }); </script>';
 		}
 		echo '<script> jQuery(function($){ $("#welcome-panel .welcome-comments").parent().hide(); }); </script>';
+	}
+
+	public function hide_meta_widget_link(){
+		echo '<script> jQuery(function($){ $(".widget_meta a[href=\'' . esc_url( get_bloginfo( 'comments_rss2_url' ) ) . '\']").parent().hide(); }); </script>';
 	}
 
 	public function filter_existing_comments($comments, $post_id) {
