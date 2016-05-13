@@ -134,6 +134,7 @@ class Disable_Comments {
 		// These can happen later
 		add_action( 'plugins_loaded', array( $this, 'register_text_domain' ) );
 		add_action( 'wp_loaded', array( $this, 'init_wploaded_filters' ) );
+		add_action( 'add_meta_boxes', array( $this, 'remove_comments_metabox_post_types' ), 99);
 	}
 
 	public function register_text_domain() {
@@ -344,6 +345,18 @@ jQuery(document).ready(function($){
 	public function disable_rc_widget() {
 		// This widget has been removed from the Dashboard in WP 3.8 and can be removed in a future version
 		unregister_widget( 'WP_Widget_Recent_Comments' );
+	}
+
+	public function remove_comments_metabox_post_types() {
+		// Remove meta boxes for comments, discussion and trackbacks metaboxes in post types
+		$disabled_post_types = $this->get_disabled_post_types();
+		if( !empty( $disabled_post_types ) ) {
+			foreach( $disabled_post_types as $type ) {
+		        remove_meta_box('commentsdiv', $type, 'normal');
+		        remove_meta_box('commentsstatusdiv', $type, 'normal');
+		        remove_meta_box('trackbacksdiv', $type, 'normal');
+		    }
+	    }
 	}
 
 	public function set_plugin_meta( $links, $file ) {
