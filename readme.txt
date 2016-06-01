@@ -6,13 +6,15 @@ Requires at least: 4.0
 Tested up to: 4.5
 Stable tag: trunk
 
-Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly.
+Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly. Provides tool to delete all comments or according to post type.
 
 == Description ==
 
 This plugin allows administrators to globally disable comments on any post type (posts, pages, attachments, etc.) so that these settings cannot be overridden for individual posts. It also removes all comment-related fields from edit and quick-edit screens. On multisite installations, it can be used to disable comments on the entire network.
 
 Additionally, comment-related items can be removed from the Dashboard, Widgets, the Admin Menu and the Admin Bar.
+
+**NEW**: You can also delete all comments or according to post type.
 
 **Important note**: Use this plugin if you don't want comments at all on your site (or on certain post types). Don't use it if you want to selectively disable comments on individual posts - WordPress lets you do that anyway. If you don't know how to disable comments on individual posts, there are instructions in [the FAQ](http://wordpress.org/extend/plugins/disable-comments/faq/).
 
@@ -44,6 +46,10 @@ Go to the edit page for the post you want to disable comments on. Scroll down to
 
 You can also bulk-edit the comment status of multiple posts from the [posts screen](http://codex.wordpress.org/Posts_Screen).
 
+= I want to delete comments from my database. What do I do? =
+
+Go to the settings page for the disable comments plugin and utlize the Delete Comments tool to delete all comments or according to the specified post types from your database.
+
 == Details ==
 
 The plugin provides the option to **completely disable the commenting feature in WordPress**. When this option is selected, the following changes are made:
@@ -56,7 +62,7 @@ The plugin provides the option to **completely disable the commenting feature in
 * The X-Pingback HTTP header is removed from all pages;
 * Outgoing pingbacks are disabled.
 
-**Please delete any existing comments on your site before applying this setting, otherwise (depending on your theme) those comments may still be displayed to visitors.**
+**Please delete any existing comments on your site before applying this setting, otherwise (depending on your theme) those comments may still be displayed to visitors. You can now use the Delete Comments tool to delete any existing comments on your site.**
 
 == Advanced Configuration ==
 
