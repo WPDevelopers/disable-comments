@@ -339,8 +339,8 @@ jQuery(document).ready(function($){
 	}
 
 	public function hide_meta_widget_link(){
-		if ( is_active_widget( false, false, 'meta', true ) ) {
-			echo '<script> jQuery(function($){ $(".widget_meta a[href=\'' . esc_url( get_bloginfo( 'comments_rss2_url' ) ) . '\']").parent().hide(); }); </script>';
+		if ( is_active_widget( false, false, 'meta', true ) && wp_script_is( 'jquery', 'enqueued' ) ) {
+			echo '<script> jQuery(function($){ $(".widget_meta a[href=\'' . esc_url( get_bloginfo( 'comments_rss2_url' ) ) . '\']").parent().remove(); }); </script>';
 		}
 	}
 
