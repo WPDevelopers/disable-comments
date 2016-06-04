@@ -336,6 +336,18 @@ jQuery(document).ready(function($){
 		else {
 			echo '<script> jQuery(function($){ $("#dashboard_right_now .comment-count, #latest-comments").hide(); }); </script>';
 		}
+		echo '<script> jQuery(function($){ $("#welcome-panel .welcome-comments").parent().hide(); }); </script>';
+	}
+
+	public function hide_meta_widget_link(){
+		if ( is_active_widget( false, false, 'meta', true ) ) {
+			echo '<script> jQuery(function($){ $(".widget_meta a[href=\'' . esc_url( get_bloginfo( 'comments_rss2_url' ) ) . '\']").parent().hide(); }); </script>';
+		}
+	}
+
+	public function filter_existing_comments($comments, $post_id) {
+		$post = get_post( $post_id );
+		return ( $this->options['remove_everywhere'] || $this->is_post_type_disabled( $post->post_type ) ) ? array() : $comments;
 	}
 
 	public function hide_meta_widget_link(){
@@ -393,7 +405,8 @@ jQuery(document).ready(function($){
 	}
 
 	public function settings_page() {
-		include dirname( __FILE__ ) . '/includes/settings-page.php';
+		include dirname( __FILE__ ) . '/includes/disable-comments-form.php';
+		include dirname( __FILE__ ) . '/includes/delete-comments-form.php';
 	}
 
 	private function enter_permanent_mode() {
