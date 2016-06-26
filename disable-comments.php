@@ -235,7 +235,11 @@ class Disable_Comments {
 	 */
 	public function filter_query() {
 		if( is_comment_feed() ) {
-			wp_die( __( 'Comments are closed.' ), '', array( 'response' => 403 ) );
+			$refere = isset($_SERVER['HTTP_REFERER'])? $_SERVER['HTTP_REFERER']: '';
+			$location = !empty($refere)? htmlspecialchars($refere): home_url('/');
+			$status = 301;
+			wp_redirect($location, $status);
+			exit;
 		}
 	}
 
