@@ -68,6 +68,10 @@ These definitions can be made either in your main `wp-config.php` or in your the
 
 == Changelog ==
 
+= 1.5.1 =
+* Hide existing comments if there are any.
+* Filter the comments link in the Meta widget if it is enabled.
+
 = 1.5 =
 * Remove the comments feed link from the head in WP 4.4 and higher.
 
