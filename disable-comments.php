@@ -151,7 +151,7 @@ class Disable_Comments {
 					remove_post_type_support( $type, 'trackbacks' );
 				}
 			}
-			add_filter( 'comments_array', 'filter_existing_comments', 20, 2 );
+			add_filter( 'comments_array', array( $this, 'filter_existing_comments' ), 20, 2 );
 			add_filter( 'comments_open', array( $this, 'filter_comment_status' ), 20, 2 );
 			add_filter( 'pings_open', array( $this, 'filter_comment_status' ), 20, 2 );
 		}
