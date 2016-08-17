@@ -86,7 +86,7 @@ if( WP_CACHE )
 <?php endif; ?>
 
 <?php wp_nonce_field( 'disable-comments-admin' ); ?>
-<p class="submit"><input class="button-primary" type="submit" name="submit" value="<?php _e( 'Save Changes') ?>"></p>
+<p class="submit"><input class="button-primary" type="submit" name="submit" value="<?php _e( 'Save Changes', 'disable-comments') ?>"></p>
 </form>
 </div>
 <script>

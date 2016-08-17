@@ -393,7 +393,8 @@ jQuery(document).ready(function($){
 	}
 
 	public function settings_page() {
-		include dirname( __FILE__ ) . '/includes/settings-page.php';
+		include dirname( __FILE__ ) . '/includes/disable-comments-form.php';
+		include dirname( __FILE__ ) . '/includes/delete-comments-form.php';
 	}
 
 	private function enter_permanent_mode() {
