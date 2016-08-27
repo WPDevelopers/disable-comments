@@ -68,6 +68,10 @@ These definitions can be made either in your main `wp-config.php` or in your the
 
 == Changelog ==
 
+= 1.5.2 =
+* Fix Javascript errors when the Meta widget is enabled.
+* Hide comments link from the Welcome panel.
+
 = 1.5.1 =
 * Hide existing comments if there are any.
 * Filter the comments link in the Meta widget if it is enabled.
