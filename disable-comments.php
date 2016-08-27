@@ -194,7 +194,7 @@ class Disable_Comments {
 
 			if( $this->options['remove_everywhere'] ) {
 				add_filter( 'feed_links_show_comments_feed', '__return_false' );
-				add_action( 'wp_footer', array( $this, 'hide_meta_widget_link' ) );
+				add_action( 'wp_footer', array( $this, 'hide_meta_widget_link' ), 100 );
 			}
 		}
 	}
