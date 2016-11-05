@@ -183,7 +183,7 @@ class Disable_Comments {
 
 			if( $this->options['remove_everywhere'] ) {
 				add_action( 'admin_menu', array( $this, 'filter_admin_menu' ), 9999 );	// do this as late as possible
-				add_action( 'admin_head', array( $this, 'hide_dashboard_bits' ) );
+				add_action( 'admin_print_footer_scripts-index.php', array( $this, 'dashboard_js' ) );
 				add_action( 'wp_dashboard_setup', array( $this, 'filter_dashboard' ) );
 				add_filter( 'pre_option_default_pingback_flag', '__return_zero' );
 			}
@@ -320,11 +320,6 @@ jQuery(document).ready(function($){
 
 	public function filter_dashboard(){
 		remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
-	}
-
-	public function hide_dashboard_bits(){
-		if( 'dashboard' == get_current_screen()->id )
-			add_action( 'admin_print_footer_scripts', array( $this, 'dashboard_js' ) );
 	}
 
 	public function dashboard_js(){
