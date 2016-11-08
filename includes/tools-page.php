@@ -10,10 +10,10 @@ if( !defined( 'ABSPATH' ) ) {
 global $wpdb;
 $comments_count = $wpdb->get_var("SELECT count(comment_id) from $wpdb->comments");
 if ( $comments_count <= 0 ) { ?>
-<p><strong>No comments available for deletion.</strong></p>
+<p><strong><?php _e( 'No comments available for deletion.', 'disable-comments') ?></strong></p>
 </div>
 <?php
-	exit;
+	return;
 }
 
 $typeargs = array( 'public' => true );
@@ -72,10 +72,10 @@ if ( isset( $_POST['delete'] ) && isset( $_POST['delete_mode'] ) ) {
 
 	$comments_count = $wpdb->get_var("SELECT count(comment_id) from $wpdb->comments");
 	if ( $comments_count <= 0 ) { ?>
-		<p><strong>No comments available for deletion.</strong></p>
+		<p><strong><?php _e( 'No comments available for deletion.', 'disable-comments') ?></strong></p>
 		</div>
 	<?php
-		exit;
+		return;
 	}
 
 }
@@ -92,14 +92,14 @@ if ( isset( $_POST['delete'] ) && isset( $_POST['delete_mode'] ) ) {
 	</ul>
 	<?php if( $this->networkactive ) :?>
 	<p class="indent" id="extradeletetypes"><?php _e( 'Only the built-in post types appear above. If you want to disable comments on other custom post types on the entire network, you can supply a comma-separated list of post types below (use the slug that identifies the post type).', 'disable-comments' ); ?>
-	<br /><label>Custom post types: <input type="text" name="delete_extra_post_types" size="30" value="<?php echo implode( ', ', (array) $this->options['extra_post_types'] ); ?>" /></label></p>
+	<br /><label><?php _e( 'Custom post types:', 'disable-comments' ); ?> <input type="text" name="delete_extra_post_types" size="30" value="<?php echo implode( ', ', (array) $this->options['extra_post_types'] ); ?>" /></label></p>
 	<?php endif; ?>
 	<p class="indent"><?php printf( __( '%s: Deleting comments will remove existing comment entries in the database and cannot be reverted without a database backup.', 'disable-comments'), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>' ); ?></p>
 </li>
 </ul>
 
 <?php wp_nonce_field( 'delete-comments-admin' ); ?>
-<h4>Total Comments : <?php echo $comments_count; ?></h4>
+<h4><?php _e( 'Total Comments:', 'disable-comments' ); ?> <?php echo $comments_count; ?></h4>
 <p class="submit"><input class="button-primary" type="submit" name="delete" value="<?php _e( 'Delete Comments', 'disable-comments') ?>"></p>
 </form>
 </div>

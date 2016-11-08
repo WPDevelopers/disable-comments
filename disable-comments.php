@@ -163,10 +163,12 @@ class Disable_Comments {
 		if( is_admin() ) {
 			if( $this->networkactive ) {
 				add_action( 'network_admin_menu', array( $this, 'settings_menu' ) );
+				add_action( 'network_admin_menu', array( $this, 'tools_menu' ) );
 				add_filter( 'network_admin_plugin_action_links', array( $this, 'plugin_actions_links'), 10, 2 );
 			}
 			else {
 				add_action( 'admin_menu', array( $this, 'settings_menu' ) );
+				add_action( 'admin_menu', array( $this, 'tools_menu' ) );
 				add_filter( 'plugin_action_links', array( $this, 'plugin_actions_links'), 10, 2 );
 				if( is_multisite() )	// We're on a multisite setup, but the plugin isn't network activated.
 					register_deactivation_hook( __FILE__, array( $this, 'single_site_deactivate' ) );
@@ -300,6 +302,14 @@ jQuery(document).ready(function($){
 		return add_query_arg( 'page', 'disable_comments_settings', $base );
 	}
 
+	/**
+	 * Return context-aware tools page URL
+	 */
+	private function tools_page_url() {
+		$base =  $this->networkactive ? network_admin_url( 'settings.php' ) : admin_url( 'tools.php' );
+		return add_query_arg( 'page', 'disable_comments_tools', $base );
+	}
+
 	public function setup_notice(){
 		if( strpos( get_current_screen()->id, 'settings_page_disable_comments_settings' ) === 0 )
 			return;
@@ -377,7 +387,8 @@ jQuery(document).ready(function($){
 		if( $file == $plugin && current_user_can('manage_options') ) {
 			array_unshift(
 				$links,
-				sprintf( '<a href="%s">%s</a>', esc_attr( $this->settings_page_url() ), __( 'Settings' ) )
+				sprintf( '<a href="%s">%s</a>', esc_attr( $this->settings_page_url() ), __( 'Settings' ) ),
+				sprintf( '<a href="%s">%s</a>', esc_attr( $this->tools_page_url() ), __( 'Tools' ) )
 			);
 		}
 
@@ -393,8 +404,19 @@ jQuery(document).ready(function($){
 	}
 
 	public function settings_page() {
-		include dirname( __FILE__ ) . '/includes/disable-comments-form.php';
-		include dirname( __FILE__ ) . '/includes/delete-comments-form.php';
+		include dirname( __FILE__ ) . '/includes/settings-page.php';
+	}
+
+	public function tools_menu() {
+		$title = __( 'Delete Comments', 'disable-comments' );
+		if( $this->networkactive )
+			add_submenu_page( 'settings.php', $title, $title, 'manage_network_plugins', 'disable_comments_tools', array( $this, 'tools_page' ) );
+		else
+			add_submenu_page( 'tools.php', $title, $title, 'manage_options', 'disable_comments_tools', array( $this, 'tools_page' ) );
+	}
+
+	public function tools_page() {
+		include dirname( __FILE__ ) . '/includes/tools-page.php';
 	}
 
 	private function enter_permanent_mode() {
