@@ -3,7 +3,7 @@ Contributors: solarissmoke
 Donate link: http://www.rayofsolaris.net/donate/
 Tags: comments, disable, global
 Requires at least: 4.0
-Tested up to: 4.6
+Tested up to: 4.7
 Stable tag: trunk
 
 Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly. Provides tool to delete all comments or according to post type.
@@ -60,7 +60,7 @@ The plugin provides the option to **completely disable the commenting feature in
 * The X-Pingback HTTP header is removed from all pages;
 * Outgoing pingbacks are disabled.
 
-**Please delete any existing comments on your site before applying this setting, otherwise (depending on your theme) those comments may still be displayed to visitors. You can now use the Delete Comments tool to delete any existing comments on your site.**
+**Please delete any existing comments on your site before applying this setting, otherwise (depending on your theme) those comments may still be displayed to visitors. You can use the Delete Comments tool to delete any existing comments on your site.**
 
 == Advanced Configuration ==
 
@@ -71,6 +71,9 @@ Some of the plugin's behaviour can be modified by site administrators and plugin
 These definitions can be made either in your main `wp-config.php` or in your theme's `functions.php` file.
 
 == Changelog ==
+
+= 1.6 =
+* Added a tool for deleting comments in bulk.
 
 = 1.5.2 =
 * Fix Javascript errors when the Meta widget is enabled.
