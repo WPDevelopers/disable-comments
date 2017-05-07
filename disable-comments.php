@@ -28,7 +28,7 @@ class Disable_Comments {
 		return self::$instance;
 	}
 
-	private function __construct() {
+	function __construct() {
 		// are we network activated?
 		$this->networkactive = ( is_multisite() && array_key_exists( plugin_basename( __FILE__ ), (array) get_site_option( 'active_sitewide_plugins' ) ) );
 
