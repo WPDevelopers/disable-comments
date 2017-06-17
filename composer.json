@@ -1,5 +1,5 @@
 {
-  "name": "solarissmoke/disable-comments",
+  "name": "solaris/disable-comments",
   "type": "wordpress-plugin",
   "license": "GPL-2.0",
   "description": "Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly.",
