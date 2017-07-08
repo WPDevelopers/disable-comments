@@ -72,6 +72,9 @@ These definitions can be made either in your main `wp-config.php` or in your the
 
 == Changelog ==
 
+= 1.7 =
+* Dropped logic to try and hide the comments link from the Meta widget. Administrators should manually add styling to hide this link, or replace the Meta widget with an alternative.
+
 = 1.6 =
 * Added a tool for deleting comments in bulk.
 
