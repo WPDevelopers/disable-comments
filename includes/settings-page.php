@@ -46,7 +46,7 @@ if ( isset( $_POST['submit'] ) ) {
 ?>
 <style> .indent {padding-left: 2em} </style>
 <div class="wrap">
-<h1><?php _e( 'Disable Comments', 'disable-comments') ?></h1>
+<h1><?php _e( 'Disable Comments', 'settings page title', 'disable-comments') ?></h1>
 <?php
 if( $this->networkactive )
 	echo '<div class="updated"><p>' . __( '<em>Disable Comments</em> is Network Activated. The settings below will affect <strong>all sites</strong> in this network.', 'disable-comments') . '</p></div>';

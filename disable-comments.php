@@ -388,7 +388,7 @@ jQuery(document).ready(function($){
 	}
 
 	public function settings_menu() {
-		$title = __( 'Disable Comments', 'disable-comments' );
+		$title = _x( 'Disable Comments', 'settings menu title', 'disable-comments' );
 		if( $this->networkactive )
 			add_submenu_page( 'settings.php', $title, $title, 'manage_network_plugins', 'disable_comments_settings', array( $this, 'settings_page' ) );
 		else
