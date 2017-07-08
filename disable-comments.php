@@ -436,8 +436,6 @@ jQuery(document).ready(function($){
 		if( defined( 'DISABLE_COMMENTS_ALLOW_PERSISTENT_MODE' ) && DISABLE_COMMENTS_ALLOW_PERSISTENT_MODE == false ) {
 			return false;
 		}
-		// The filter below is deprecated and will be removed in future versions. Use the define instead.
-		return apply_filters( 'disable_comments_allow_persistent_mode', true );
 	}
 
 	public function single_site_deactivate() {

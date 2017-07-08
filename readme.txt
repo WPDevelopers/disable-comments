@@ -74,6 +74,7 @@ These definitions can be made either in your main `wp-config.php` or in your the
 
 = 1.7 =
 * Dropped logic to try and hide the comments link from the Meta widget. Administrators should manually add styling to hide this link, or replace the Meta widget with an alternative.
+* Removed the `disable_comments_allow_persistent_mode` filter. Define `DISABLE_COMMENTS_ALLOW_PERSISTENT_MODE` instead.
 
 = 1.6 =
 * Added a tool for deleting comments in bulk.
