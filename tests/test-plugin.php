@@ -1,5 +1,6 @@
 <?php
 use PHPUnit_Framework_TestCase;
+use Brain\Monkey;
 use Brain\Monkey\Functions;
 
 class RemoveEveryWhereTestCase extends WP_UnitTestCase {
@@ -12,6 +13,12 @@ class RemoveEveryWhereTestCase extends WP_UnitTestCase {
 			'disabled_post_types' => array( 'post', 'page', 'attachment' )
 		) );
 		$this->plugin_instance = new Disable_Comments();
+    }
+
+    function tearDown()
+    {
+        Monkey::tearDown();
+        parent::tearDown();
     }
 
 	function test_init_hooks_added() {
