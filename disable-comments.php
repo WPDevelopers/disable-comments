@@ -185,7 +185,7 @@ class Disable_Comments {
 
 			if( $this->options['remove_everywhere'] ) {
 				add_action( 'admin_menu', array( $this, 'filter_admin_menu' ), 9999 );	// do this as late as possible
-				add_action( 'admin_print_footer_scripts-index.php', array( $this, 'dashboard_js' ) );
+				add_action( 'admin_head-index.php', array( $this, 'dashboard_css' ) );
 				add_action( 'wp_dashboard_setup', array( $this, 'filter_dashboard' ) );
 				add_filter( 'pre_option_default_pingback_flag', '__return_zero' );
 			}
@@ -331,13 +331,15 @@ jQuery(document).ready(function($){
 		remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
 	}
 
-	public function dashboard_js(){
-		echo '<script>
-		jQuery(function($){
-			$("#dashboard_right_now .comment-count, #latest-comments").hide();
-		 	$("#welcome-panel .welcome-comments").parent().hide();
-		});
-		</script>';
+	public function dashboard_css(){
+		echo '<style>
+			#dashboard_right_now .comment-count,
+			#dashboard_right_now .comment-mod-count,
+			#latest-comments,
+			#welcome-panel .welcome-comments {
+				display: none !important;
+			}
+		</style>';
 	}
 
 	public function filter_existing_comments($comments, $post_id) {
