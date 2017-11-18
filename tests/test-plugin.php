@@ -43,6 +43,14 @@ class RemoveEveryWhereTestCase extends WP_UnitTestCase {
 		$this->assertFalse( post_type_supports( 'attachment', 'comments' ) );
 	}
 
+    function test_wp_loaded_admin_actions() {
+        Functions::when( 'is_admin' )->justReturn(true);
+		$this->plugin_instance->init_wploaded_filters();
+
+        $this->assertEquals( 10,  has_action( 'admin_print_styles-index.php', array( $this->plugin_instance, 'admin_css' ) ) );
+        $this->assertEquals( 10,  has_action( 'admin_print_styles-profile.php', array( $this->plugin_instance, 'admin_css' ) ) );
+	}
+
 	function test_comment_template_filter() {
 		Functions::when( 'is_singular' )->justReturn(true);
 		Functions::when( 'wp_deregister_script' )->justReturn(true);
