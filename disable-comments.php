@@ -155,7 +155,11 @@ class Disable_Comments {
 			add_filter( 'comments_open', array( $this, 'filter_comment_status' ), 20, 2 );
 			add_filter( 'pings_open', array( $this, 'filter_comment_status' ), 20, 2 );
 		}
-		elseif( is_admin() ) {
+		elseif( is_admin() && !$this->options['remove_everywhere'] ) {
+			// It is possible that $disabled_post_types is empty if other
+			// plugins have disabled comments. Hence we also check for
+			// remove_everywhere. If you still get a warning you probably
+			// shouldn't be using this plugin.
 			add_action( 'all_admin_notices', array( $this, 'setup_notice' ) );
 		}
 
