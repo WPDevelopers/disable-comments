@@ -360,6 +360,9 @@ jQuery(document).ready(function($){
 
 	public function disable_rc_widget() {
 		unregister_widget( 'WP_Widget_Recent_Comments' );
+		// The widget has added a style action when it was constructed - which will
+		// still fire even if we now unregister the widget... so filter that out
+		add_filter( 'show_recent_comments_widget_style', '__return_false');
 	}
 
 	public function set_plugin_meta( $links, $file ) {

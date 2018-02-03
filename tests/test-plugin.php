@@ -51,6 +51,11 @@ class RemoveEveryWhereTestCase extends WP_UnitTestCase {
         $this->assertEquals( 10,  has_action( 'admin_print_styles-profile.php', array( $this->plugin_instance, 'admin_css' ) ) );
 	}
 
+    function test_widget_init_actions() {
+        $this->plugin_instance->disable_rc_widget();
+        $this->assertEquals( 10,  has_filter( 'show_recent_comments_widget_style', '__return_false' ) );
+    }
+
 	function test_comment_template_filter() {
 		Functions::when( 'is_singular' )->justReturn(true);
 		Functions::when( 'wp_deregister_script' )->justReturn(true);
