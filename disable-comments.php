@@ -325,11 +325,15 @@ jQuery(document).ready(function($){
 	public function filter_admin_menu(){
 		global $pagenow;
 
-		if ( $pagenow == 'comment.php' || $pagenow == 'edit-comments.php' || ( ! $this->discussion_settings_allowed() && $pagenow == 'options-discussion.php' ) )
+		if ( $pagenow == 'comment.php' || $pagenow == 'edit-comments.php' )
 			wp_die( __( 'Comments are closed.' ), '', array( 'response' => 403 ) );
-
+		
 		remove_menu_page( 'edit-comments.php' );
+
 		if ( ! $this->discussion_settings_allowed() ) {
+			if ( $pagenow == 'options-discussion.php' )
+				wp_die( __( 'Comments are closed.' ), '', array( 'response' => 403 ) );
+
 			remove_submenu_page( 'options-general.php', 'options-discussion.php' );
 		}
 	}
@@ -452,8 +456,8 @@ jQuery(document).ready(function($){
 	}
 
 	private function discussion_settings_allowed() {
-		if( defined( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS' ) && DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS == false ) {
-			return false;
+		if( defined( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS' ) && DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS == true ) {
+			return true;
 		}
 	}
 	
