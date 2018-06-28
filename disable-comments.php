@@ -178,7 +178,7 @@ class Disable_Comments {
 					register_deactivation_hook( __FILE__, array( $this, 'single_site_deactivate' ) );
 			}
 
-			add_action( 'admin_print_footer_scripts', array( $this, 'discussion_notice' ) );
+			add_action( 'admin_notices', array( $this, 'discussion_notice' ) );
 			add_filter( 'plugin_row_meta', array( $this, 'set_plugin_meta' ), 10, 2 );
 
 			// if only certain types are disabled, remember the original post status
@@ -281,19 +281,14 @@ class Disable_Comments {
 		}
 	}
 
-	public function discussion_notice(){
+	public function discussion_notice() {
 		$disabled_post_types = $this->get_disabled_post_types();
 		if( get_current_screen()->id == 'options-discussion' && !empty( $disabled_post_types ) ) {
 			$names = array();
 			foreach( $disabled_post_types as $type )
 				$names[$type] = get_post_type_object( $type )->labels->name;
-?>
-<script>
-jQuery(document).ready(function($){
-	$(".wrap h2").first().after( <?php echo json_encode( '<div style="color: #900"><p>' . sprintf( __( 'Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types.', 'disable-comments' ), implode( __( ', ' ), $names ) ) . '</p></div>' );?> );
-});
-</script>
-<?php
+			
+			echo '<div class="notice notice-warning"><p>' . sprintf( __( 'Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types.', 'disable-comments' ), implode( __( ', ' ), $names ) ) . '</p></div>';
 		}
 	}
 
