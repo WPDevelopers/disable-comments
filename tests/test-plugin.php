@@ -150,3 +150,56 @@ class RemoveIndividualTestCase extends WP_UnitTestCase {
 		$this->assertEquals( 'open', $output );
 	}
 }
+
+class AllowDiscussionSettingsTestCase extends WP_UnitTestCase {
+
+    protected $preserveGlobalState = FALSE;
+    protected $runTestInSeparateProcess = TRUE;
+
+    function setUp() {
+        parent::setUp();
+		$this->reset_post_types();
+		update_option( 'disable_comments_options', array(
+			'db_version' => Disable_Comments::DB_VERSION,
+			'remove_everywhere' => true,
+			'disabled_post_types' => array( 'post', 'page', 'attachment' )
+		) );
+		$this->plugin_instance = new Disable_Comments();
+    }
+
+    function tearDown()
+    {
+        Monkey::tearDown();
+        parent::tearDown();
+    }
+
+    function discussion_settings_exist() {
+    	global $submenu;
+    	if ( isset( $submenu['options-general.php'] ) ) {
+    		foreach( $submenu['options-general.php'] as $i => $item ) {
+    			if ( $item[2] == 'options-discussion.php' ) {
+    				return true;
+    			}
+    		}
+    	}
+    	return false;
+    }
+
+    function test_no_discussion_settings_allowed() {
+    	$this->assertFalse( $this->plugin_instance->discussion_settings_allowed() );
+    	$this->assertFalse( $this->discussion_settings_exist() );
+    }
+
+    function test_enable_discussion_settings_allowed() {
+    	// Test defined constant
+    	define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', true );
+    	$this->assertTrue( $this->plugin_instance->discussion_settings_allowed() );
+    	$this->assertTrue( $this->discussion_settings_exist() );
+    }
+
+    function test_disable_discussion_settings_allowed() {
+		define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', false );
+    	$this->assertFalse( $this->plugin_instance->discussion_settings_allowed() );
+    	$this->assertFalse( $this->discussion_settings_exist() );
+    }
+}
