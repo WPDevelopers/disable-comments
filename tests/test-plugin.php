@@ -182,7 +182,6 @@ class AllowDiscussionSettingsTestCase extends WP_UnitTestCase {
 		Functions::when( 'is_admin' )->justReturn(true);
 		$this->plugin_instance->init_wploaded_filters();
         Functions::expect( 'wp_die' )->once();
-		$this->plugin_instance->filter_admin_menu();
         set_current_screen( 'options-discussion.php' );
     }
 
@@ -193,7 +192,6 @@ class AllowDiscussionSettingsTestCase extends WP_UnitTestCase {
 		Functions::when( 'is_admin' )->justReturn(true);
 		$this->plugin_instance->init_wploaded_filters();
         Functions::expect( 'wp_die' )->never();
-		$this->plugin_instance->filter_admin_menu();
         set_current_screen( 'options-discussion.php' );
     }
 
@@ -203,7 +201,6 @@ class AllowDiscussionSettingsTestCase extends WP_UnitTestCase {
 		Functions::when( 'is_admin' )->justReturn(true);
 		$this->plugin_instance->init_wploaded_filters();
         Functions::expect( 'wp_die' )->once();
-		$this->plugin_instance->filter_admin_menu();
         set_current_screen( 'options-discussion.php' );
     }
 }
