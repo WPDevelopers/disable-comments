@@ -190,7 +190,7 @@ class AllowDiscussionSettingsTestCase extends WP_UnitTestCase {
 		Functions::when( 'is_admin' )->justReturn(true);
 		$this->plugin_instance->init_wploaded_filters();
 		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
-        $this->assertEmpty( menu_page_url( 'options-discussion.php' ) );
+        $this->assertNotEmpty( menu_page_url( 'options-discussion.php' ) );
     }
 
     function test_disable_discussion_settings_allowed() {
