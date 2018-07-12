@@ -188,11 +188,8 @@ class EnableDiscussionSettingsTestCase extends WP_UnitTestCase {
     protected $preserveGlobalState = FALSE;
     protected $runTestInSeparateProcess = TRUE;
 
-    public static function setUpBeforeClass() {
-    	define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', true );
-    }
-
     public function setUp() {
+    	define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', true );
         parent::setUp();
 		$this->reset_post_types();
 		update_option( 'disable_comments_options', array(
@@ -224,11 +221,8 @@ class DisableDiscussionSettingsTestCase extends WP_UnitTestCase {
     protected $preserveGlobalState = FALSE;
     protected $runTestInSeparateProcess = TRUE;
 
-    public static function setUpBeforeClass() {
-    	define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', false );
-    }
-
     public function setUp() {
+    	define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', false );
         parent::setUp();
 		$this->reset_post_types();
 		update_option( 'disable_comments_options', array(
