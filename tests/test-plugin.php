@@ -180,6 +180,7 @@ class AllowDiscussionSettingsTestCase extends WP_UnitTestCase {
 		Functions::when( 'is_admin' )->justReturn(true);
 		$this->plugin_instance->init_wploaded_filters();
 		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
+		$this->assertFalse( defined( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS' ) && DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS == true  );
         $this->assertEmpty( menu_page_url( 'options-discussion.php' ) );
     }
 
@@ -190,6 +191,7 @@ class AllowDiscussionSettingsTestCase extends WP_UnitTestCase {
 		Functions::when( 'is_admin' )->justReturn(true);
 		$this->plugin_instance->init_wploaded_filters();
 		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
+		$this->assertTrue( defined( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS' ) && DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS == true  );
         $this->assertNotEmpty( menu_page_url( 'options-discussion.php' ) );
     }
 
@@ -200,6 +202,7 @@ class AllowDiscussionSettingsTestCase extends WP_UnitTestCase {
 		Functions::when( 'is_admin' )->justReturn(true);
 		$this->plugin_instance->init_wploaded_filters();
 		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
+		$this->assertFalse( defined( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS' ) && DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS == true  );
         $this->assertEmpty( menu_page_url( 'options-discussion.php' ) );
     }
 }
