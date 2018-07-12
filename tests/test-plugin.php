@@ -156,7 +156,7 @@ class NoDiscussionSettingsTestCase extends WP_UnitTestCase {
     protected $preserveGlobalState = FALSE;
     protected $runTestInSeparateProcess = TRUE;
 
-    function setUp() {
+    protected function setUp() {
         parent::setUp();
 		$this->reset_post_types();
 		update_option( 'disable_comments_options', array(
@@ -167,13 +167,13 @@ class NoDiscussionSettingsTestCase extends WP_UnitTestCase {
 		$this->plugin_instance = new Disable_Comments();
     }
 
-    function tearDown()
+    protected function tearDown()
     {
         Monkey::tearDown();
         parent::tearDown();
     }
 
-    function test_no_discussion_settings_allowed() {
+    public function test_no_discussion_settings_allowed() {
 		Functions::when( 'is_admin' )->justReturn(true);
 		$this->plugin_instance->init_wploaded_filters();
 		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
@@ -188,11 +188,11 @@ class EnableDiscussionSettingsTestCase extends WP_UnitTestCase {
     protected $preserveGlobalState = FALSE;
     protected $runTestInSeparateProcess = TRUE;
 
-    function setUpBeforeClass() {
+    public static function setUpBeforeClass() {
     	define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', true );
     }
 
-    function setUp() {
+    protected function setUp() {
         parent::setUp();
 		$this->reset_post_types();
 		update_option( 'disable_comments_options', array(
@@ -203,13 +203,13 @@ class EnableDiscussionSettingsTestCase extends WP_UnitTestCase {
 		$this->plugin_instance = new Disable_Comments();
     }
 
-    function tearDown()
+    protected function tearDown()
     {
         Monkey::tearDown();
         parent::tearDown();
     }
 
-    function test_enable_discussion_settings_allowed() {
+    public function test_enable_discussion_settings_allowed() {
 		Functions::when( 'is_admin' )->justReturn(true);
 		$this->plugin_instance->init_wploaded_filters();
 		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
@@ -224,11 +224,11 @@ class DisableDiscussionSettingsTestCase extends WP_UnitTestCase {
     protected $preserveGlobalState = FALSE;
     protected $runTestInSeparateProcess = TRUE;
 
-    function setUpBeforeClass() {
+    public static function setUpBeforeClass() {
     	define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', false );
     }
 
-    function setUp() {
+    protected function setUp() {
         parent::setUp();
 		$this->reset_post_types();
 		update_option( 'disable_comments_options', array(
@@ -239,13 +239,13 @@ class DisableDiscussionSettingsTestCase extends WP_UnitTestCase {
 		$this->plugin_instance = new Disable_Comments();
     }
 
-    function tearDown()
+    protected function tearDown()
     {
         Monkey::tearDown();
         parent::tearDown();
     }
 
-    function test_disable_discussion_settings_allowed() {
+    public function test_disable_discussion_settings_allowed() {
 		Functions::when( 'is_admin' )->justReturn(true);
 		$this->plugin_instance->init_wploaded_filters();
 		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
