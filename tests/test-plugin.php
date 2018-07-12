@@ -151,7 +151,7 @@ class RemoveIndividualTestCase extends WP_UnitTestCase {
 	}
 }
 
-class AllowDiscussionSettingsTestCase extends WP_UnitTestCase {
+class NoDiscussionSettingsTestCase extends WP_UnitTestCase {
 
     protected $preserveGlobalState = FALSE;
     protected $runTestInSeparateProcess = TRUE;
@@ -165,8 +165,6 @@ class AllowDiscussionSettingsTestCase extends WP_UnitTestCase {
 			'disabled_post_types' => array( 'post', 'page', 'attachment' )
 		) );
 		$this->plugin_instance = new Disable_Comments();
-        $user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
-        $user = wp_set_current_user( $user_id );
     }
 
     function tearDown()
@@ -176,36 +174,82 @@ class AllowDiscussionSettingsTestCase extends WP_UnitTestCase {
     }
 
     function test_no_discussion_settings_allowed() {
-    	// Test no constant
 		Functions::when( 'is_admin' )->justReturn(true);
 		$this->plugin_instance->init_wploaded_filters();
 		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
 		$this->assertFalse( defined( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS' ) && DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS == true  );
-		do_action( 'admin_menu', '' );
         $this->assertEmpty( menu_page_url( 'options-discussion.php', false ) );
     }
 
-    function test_enable_discussion_settings_allowed() {
-    	// Test defined constant
-    	define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', true );
+}
 
+class EnableDiscussionSettingsTestCase extends WP_UnitTestCase {
+
+    protected $preserveGlobalState = FALSE;
+    protected $runTestInSeparateProcess = TRUE;
+
+    function setUpBeforeClass() {
+    	define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', true );
+    }
+
+    function setUp() {
+        parent::setUp();
+		$this->reset_post_types();
+		update_option( 'disable_comments_options', array(
+			'db_version' => Disable_Comments::DB_VERSION,
+			'remove_everywhere' => true,
+			'disabled_post_types' => array( 'post', 'page', 'attachment' )
+		) );
+		$this->plugin_instance = new Disable_Comments();
+    }
+
+    function tearDown()
+    {
+        Monkey::tearDown();
+        parent::tearDown();
+    }
+
+    function test_enable_discussion_settings_allowed() {
 		Functions::when( 'is_admin' )->justReturn(true);
 		$this->plugin_instance->init_wploaded_filters();
 		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
 		$this->assertTrue( defined( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS' ) && DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS == true  );
-		do_action( 'admin_menu', '' );
         $this->assertNotEmpty( menu_page_url( 'options-discussion.php', false ) );
     }
 
-    function test_disable_discussion_settings_allowed() {
-    	// Test disabled constant
-		define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', false );
+}
 
+class DisableDiscussionSettingsTestCase extends WP_UnitTestCase {
+
+    protected $preserveGlobalState = FALSE;
+    protected $runTestInSeparateProcess = TRUE;
+
+    function setUpBeforeClass() {
+    	define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', false );
+    }
+
+    function setUp() {
+        parent::setUp();
+		$this->reset_post_types();
+		update_option( 'disable_comments_options', array(
+			'db_version' => Disable_Comments::DB_VERSION,
+			'remove_everywhere' => true,
+			'disabled_post_types' => array( 'post', 'page', 'attachment' )
+		) );
+		$this->plugin_instance = new Disable_Comments();
+    }
+
+    function tearDown()
+    {
+        Monkey::tearDown();
+        parent::tearDown();
+    }
+
+    function test_disable_discussion_settings_allowed() {
 		Functions::when( 'is_admin' )->justReturn(true);
 		$this->plugin_instance->init_wploaded_filters();
 		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
 		$this->assertFalse( defined( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS' ) && DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS == true  );
-		do_action( 'admin_menu', '' );
         $this->assertEmpty( menu_page_url( 'options-discussion.php', false ) );
     }
 }
