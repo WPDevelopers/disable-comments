@@ -156,7 +156,7 @@ class NoDiscussionSettingsTestCase extends WP_UnitTestCase {
     protected $preserveGlobalState = FALSE;
     protected $runTestInSeparateProcess = TRUE;
 
-    protected function setUp() {
+    public function setUp() {
         parent::setUp();
 		$this->reset_post_types();
 		update_option( 'disable_comments_options', array(
@@ -167,7 +167,7 @@ class NoDiscussionSettingsTestCase extends WP_UnitTestCase {
 		$this->plugin_instance = new Disable_Comments();
     }
 
-    protected function tearDown()
+    public function tearDown()
     {
         Monkey::tearDown();
         parent::tearDown();
@@ -192,7 +192,7 @@ class EnableDiscussionSettingsTestCase extends WP_UnitTestCase {
     	define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', true );
     }
 
-    protected function setUp() {
+    public function setUp() {
         parent::setUp();
 		$this->reset_post_types();
 		update_option( 'disable_comments_options', array(
@@ -203,7 +203,7 @@ class EnableDiscussionSettingsTestCase extends WP_UnitTestCase {
 		$this->plugin_instance = new Disable_Comments();
     }
 
-    protected function tearDown()
+    public function tearDown()
     {
         Monkey::tearDown();
         parent::tearDown();
@@ -228,7 +228,7 @@ class DisableDiscussionSettingsTestCase extends WP_UnitTestCase {
     	define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', false );
     }
 
-    protected function setUp() {
+    public function setUp() {
         parent::setUp();
 		$this->reset_post_types();
 		update_option( 'disable_comments_options', array(
@@ -239,7 +239,7 @@ class DisableDiscussionSettingsTestCase extends WP_UnitTestCase {
 		$this->plugin_instance = new Disable_Comments();
     }
 
-    protected function tearDown()
+    public function tearDown()
     {
         Monkey::tearDown();
         parent::tearDown();
