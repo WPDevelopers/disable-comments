@@ -179,7 +179,15 @@ class NoDiscussionSettingsTestCase extends WP_UnitTestCase {
 		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
 		$this->assertFalse( defined( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS' ) && DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS == true  );
         global $submenu;
-        $this->assertFalse( is_array( array_search( 'options-discussion.php', array_column( $submenu['options-general.php'], 2 ) ) ) );
+        $this->assertTrue( isset( $submenu['options-general.php'] ) );
+        $discussion_settings = $submenu['options-general.php'];
+        $found = false;
+        foreach ( $discussion_settings as $i => $item ) {
+        	if ( $item[2] == 'options-discussion.php' ) {
+        		$found = true;
+        	}
+        }
+        $this->assertFalse( $found );
     }
 
 }
@@ -213,7 +221,15 @@ class EnableDiscussionSettingsTestCase extends WP_UnitTestCase {
 		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
 		$this->assertTrue( defined( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS' ) && DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS == true  );
         global $submenu;
-        $this->assertTrue( is_array( array_search( 'options-discussion.php', array_column( $submenu['options-general.php'], 2 ) ) ) );
+        $this->assertTrue( isset( $submenu['options-general.php'] ) );
+        $discussion_settings = $submenu['options-general.php'];
+        $found = false;
+        foreach ( $discussion_settings as $i => $item ) {
+        	if ( $item[2] == 'options-discussion.php' ) {
+        		$found = true;
+        	}
+        }
+        $this->assertTrue( $found );
     }
 
 }
@@ -247,6 +263,14 @@ class DisableDiscussionSettingsTestCase extends WP_UnitTestCase {
 		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
 		$this->assertFalse( defined( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS' ) && DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS == true  );
         global $submenu;
-        $this->assertFalse( is_array( array_search( 'options-discussion.php', array_column( $submenu['options-general.php'], 2 ) ) ) );
+        $this->assertTrue( isset( $submenu['options-general.php'] ) );
+        $discussion_settings = $submenu['options-general.php'];
+        $found = false;
+        foreach ( $discussion_settings as $i => $item ) {
+        	if ( $item[2] == 'options-discussion.php' ) {
+        		$found = true;
+        	}
+        }
+        $this->assertFalse( $found );
     }
 }
