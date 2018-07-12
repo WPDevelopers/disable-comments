@@ -167,46 +167,39 @@ class AllowDiscussionSettingsTestCase extends WP_UnitTestCase {
 		$this->plugin_instance = new Disable_Comments();
         $user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
         $user = wp_set_current_user( $user_id );
-        set_current_screen( 'front' );
     }
 
     function tearDown()
     {
         Monkey::tearDown();
         parent::tearDown();
-        set_current_screen( 'front' );
     }
 
     function test_no_discussion_settings_allowed() {
-    	//$this->assertFalse( $this->plugin_instance->discussion_settings_allowed() );
+    	// Test no constant
 		Functions::when( 'is_admin' )->justReturn(true);
-        Functions::expect( 'wp_die' )->once();
-        global $pagenow;
-        $pagenow == 'options-discussion.php';
-        set_current_screen( 'options-discussion.php' );
-		$this->plugin_instance->filter_admin_menu();
+		$this->plugin_instance->init_wploaded_filters();
+		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
+        $this->assertEmpty( menu_page_url( 'options-discussion.php' ) );
     }
 
     function test_enable_discussion_settings_allowed() {
     	// Test defined constant
     	define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', true );
-    	//$this->assertTrue( $this->plugin_instance->discussion_settings_allowed() );
+
 		Functions::when( 'is_admin' )->justReturn(true);
-        Functions::expect( 'wp_die' )->never();
-        global $pagenow;
-        $pagenow == 'options-discussion.php';
-        set_current_screen( 'options-discussion.php' );
-		$this->plugin_instance->filter_admin_menu();
+		$this->plugin_instance->init_wploaded_filters();
+		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
+        $this->assertEmpty( menu_page_url( 'options-discussion.php' ) );
     }
 
     function test_disable_discussion_settings_allowed() {
+    	// Test disabled constant
 		define( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS', false );
-    	//$this->assertFalse( $this->plugin_instance->discussion_settings_allowed() );
+
 		Functions::when( 'is_admin' )->justReturn(true);
-        Functions::expect( 'wp_die' )->once();
-        global $pagenow;
-        $pagenow == 'options-discussion.php';
-        set_current_screen( 'options-discussion.php' );
-		$this->plugin_instance->filter_admin_menu();
+		$this->plugin_instance->init_wploaded_filters();
+		$this->assertEquals( 9999,  has_action( 'admin_menu', array( $this->plugin_instance, 'filter_admin_menu' ) ) );
+        $this->assertEmpty( menu_page_url( 'options-discussion.php' ) );
     }
 }
