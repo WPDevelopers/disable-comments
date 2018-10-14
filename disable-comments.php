@@ -320,11 +320,17 @@ class Disable_Comments {
 	public function filter_admin_menu(){
 		global $pagenow;
 
-		if ( $pagenow == 'comment.php' || $pagenow == 'edit-comments.php' || $pagenow == 'options-discussion.php' )
+		if ( $pagenow == 'comment.php' || $pagenow == 'edit-comments.php' )
 			wp_die( __( 'Comments are closed.' ), '', array( 'response' => 403 ) );
-
+		
 		remove_menu_page( 'edit-comments.php' );
-		remove_submenu_page( 'options-general.php', 'options-discussion.php' );
+
+		if ( ! $this->discussion_settings_allowed() ) {
+			if ( $pagenow == 'options-discussion.php' )
+				wp_die( __( 'Comments are closed.' ), '', array( 'response' => 403 ) );
+
+			remove_submenu_page( 'options-general.php', 'options-discussion.php' );
+		}
 	}
 
 	public function filter_dashboard(){
@@ -444,6 +450,12 @@ class Disable_Comments {
 		}
 	}
 
+	private function discussion_settings_allowed() {
+		if( defined( 'DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS' ) && DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS == true ) {
+			return true;
+		}
+	}
+	
 	public function single_site_deactivate() {
 		// for single sites, delete the options upon deactivation, not uninstall
 		delete_option( 'disable_comments_options' );
