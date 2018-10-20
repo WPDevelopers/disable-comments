@@ -3,7 +3,7 @@
 Plugin Name: Disable Comments
 Plugin URI: https://wordpress.org/plugins/disable-comments/
 Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type.
-Version: 1.7.1
+Version: 1.8.0
 Author: Samir Shah
 Author URI: http://www.rayofsolaris.net/
 License: GPL2
@@ -52,11 +52,11 @@ class Disable_Comments {
 	}
 
 	private function check_compatibility() {
-		if ( version_compare( $GLOBALS['wp_version'], '3.9', '<' ) ) {
+		if ( version_compare( $GLOBALS['wp_version'], '4.7', '<' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 			deactivate_plugins( __FILE__ );
 			if ( isset( $_GET['action'] ) && ( $_GET['action'] == 'activate' || $_GET['action'] == 'error_scrape' ) ) {
-				exit( sprintf( __( 'Disable Comments requires WordPress version %s or greater.', 'disable-comments' ), '3.9' ) );
+				exit( sprintf( __( 'Disable Comments requires WordPress version %s or greater.', 'disable-comments' ), '4.7' ) );
 			}
 		}
 	}
@@ -287,7 +287,7 @@ class Disable_Comments {
 			$names = array();
 			foreach( $disabled_post_types as $type )
 				$names[$type] = get_post_type_object( $type )->labels->name;
-			
+
 			echo '<div class="notice notice-warning"><p>' . sprintf( __( 'Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types.', 'disable-comments' ), implode( __( ', ' ), $names ) ) . '</p></div>';
 		}
 	}
@@ -322,7 +322,7 @@ class Disable_Comments {
 
 		if ( $pagenow == 'comment.php' || $pagenow == 'edit-comments.php' )
 			wp_die( __( 'Comments are closed.' ), '', array( 'response' => 403 ) );
-		
+
 		remove_menu_page( 'edit-comments.php' );
 
 		if ( ! $this->discussion_settings_allowed() ) {
@@ -455,7 +455,7 @@ class Disable_Comments {
 			return true;
 		}
 	}
-	
+
 	public function single_site_deactivate() {
 		// for single sites, delete the options upon deactivation, not uninstall
 		delete_option( 'disable_comments_options' );
