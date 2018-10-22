@@ -59,7 +59,10 @@ if ( isset( $_POST['delete'] ) && isset( $_POST['delete_mode'] ) ) {
                 $wpdb->query( "DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$delete_post_type'" );
                 $wpdb->query( "DELETE comments FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$delete_post_type'" );
                 $wpdb->query( "UPDATE $wpdb->posts SET comment_count = 0 WHERE post_author != 0 AND post_type = '$delete_post_type'" );
-				echo "<p style='color:green'><strong>" . sprintf( __( 'All comments have been deleted for %ss.', 'disable-comments' ), $delete_post_type ) . "</strong></p>";
+
+                $post_type_object = get_post_type_object( $delete_post_type );
+                $post_type_label = $post_type_object ? $post_type_object->labels->name : $delete_post_type;
+				echo "<p style='color:green'><strong>" . sprintf( __( 'All comments have been deleted for %s.', 'disable-comments' ), $post_type_label ) . "</strong></p>";
 			}
 
             $wpdb->query( "OPTIMIZE TABLE $wpdb->commentmeta" );
