@@ -36,6 +36,7 @@ class RemoveEveryWhereTestCase extends WP_UnitTestCase {
 		$this->assertEquals( 20,  has_action( 'comments_array', array( $this->plugin_instance, 'filter_existing_comments' ) ) );
 		$this->assertEquals( 20,  has_action( 'comments_open', array( $this->plugin_instance, 'filter_comment_status' ) ) );
 		$this->assertEquals( 20,  has_action( 'pings_open', array( $this->plugin_instance, 'filter_comment_status' ) ) );
+		$this->assertEquals( 20,  has_action( 'get_comments_number', array( $this->plugin_instance, 'filter_comments_number' ) ) );
 
 		// Check that comment suport has been removed from all the post types
 		$this->assertFalse( post_type_supports( 'post', 'comments' ) );
@@ -94,6 +95,12 @@ class RemoveEveryWhereTestCase extends WP_UnitTestCase {
 		$output = $this->plugin_instance->filter_comment_status( 'open', $post_id );
 		$this->assertFalse($output);
 	}
+
+	function test_filter_comments_number() {
+		$post_id = $this->factory->post->create();
+		$output = $this->plugin_instance->filter_comments_number( 5, $post_id );
+		$this->assertEquals(0, $output);
+	}
 }
 
 
@@ -120,6 +127,7 @@ class RemoveIndividualTestCase extends WP_UnitTestCase {
 		$this->assertEquals( 20,  has_action( 'comments_array', array( $this->plugin_instance, 'filter_existing_comments' ) ) );
 		$this->assertEquals( 20,  has_action( 'comments_open', array( $this->plugin_instance, 'filter_comment_status' ) ) );
 		$this->assertEquals( 20,  has_action( 'pings_open', array( $this->plugin_instance, 'filter_comment_status' ) ) );
+		$this->assertEquals( 20,  has_action( 'get_comments_number', array( $this->plugin_instance, 'filter_comments_number' ) ) );
 
 		// Check that comment suport has been removed only from posts
 		$this->assertFalse( post_type_supports( 'post', 'comments' ) );
@@ -148,5 +156,17 @@ class RemoveIndividualTestCase extends WP_UnitTestCase {
 		$post_id = $this->factory->post->create( array( 'post_type' => 'page' ) );
 		$output = $this->plugin_instance->filter_comment_status( 'open', $post_id );
 		$this->assertEquals( 'open', $output );
+	}
+
+	function test_filter_comments_number_on_disabled_type() {
+		$post_id = $this->factory->post->create();
+		$output = $this->plugin_instance->filter_comments_number( 5, $post_id );
+		$this->assertEquals(0, $output);
+	}
+
+	function test_filter_comments_number_on_enabled_type() {
+		$post_id = $this->factory->post->create( array( 'post_type' => 'page' ) );
+		$output = $this->plugin_instance->filter_comments_number( 5, $post_id );
+		$this->assertEquals(5, $output);
 	}
 }
