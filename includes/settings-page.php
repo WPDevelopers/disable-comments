@@ -13,8 +13,6 @@ foreach( array_keys( $types ) as $type ) {
 		unset( $types[$type] );
 }
 
-$persistent_allowed = $this->persistent_mode_allowed();
-
 if ( isset( $_POST['submit'] ) ) {
 	check_admin_referer( 'disable-comments-admin' );
 	$this->options['remove_everywhere'] = ( $_POST['mode'] == 'remove_everywhere' );
@@ -26,12 +24,7 @@ if ( isset( $_POST['submit'] ) ) {
 
 	$disabled_post_types = array_intersect( $disabled_post_types, array_keys( $types ) );
 
-	// entering permanent mode, or post types have changed
-	if( $persistent_allowed && !empty( $_POST['permanent'] ) && ( !$this->options['permanent'] || $disabled_post_types != $this->options['disabled_post_types'] ) )
-		$this->enter_permanent_mode();
-
 	$this->options['disabled_post_types'] = $disabled_post_types;
-	$this->options['permanent'] = $persistent_allowed && isset( $_POST['permanent'] );
 
 	// Extra custom post types
 	if( $this->networkactive && !empty( $_POST['extra_post_types'] ) ) {
@@ -71,20 +64,6 @@ if( WP_CACHE )
 </li>
 </ul>
 
-<?php if( $persistent_allowed && $this->options['permanent'] ): ?>
-<h2><?php _e( 'Other options', 'disable-comments') ?></h2>
-<ul>
-	<li>
-	<?php
-	echo '<label for="permanent"><input type="checkbox" name="permanent" id="permanent" '. checked( $this->options['permanent'], true, false ) . '> <strong>' . __( 'Use persistent mode', 'disable-comments') . '</strong></label>';
-	echo '<p class="indent">' . sprintf( __( '%s: <strong>This will make persistent changes to your database &mdash; comments will remain closed even if you later disable the plugin!</strong> You should not use it if you only want to disable comments temporarily. Please <a href="%s" target="_blank">read the FAQ</a> before selecting this option.', 'disable-comments'), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>', 'https://wordpress.org/plugins/disable-comments/faq/' ) . '</p>';
-	if( $this->networkactive )
-		echo '<p class="indent">' . sprintf( __( '%s: Entering persistent mode on large multi-site networks requires a large number of database queries and can take a while. Use with caution!', 'disable-comments'), '<strong style="color: #900">' . __('Warning', 'disable-comments') . '</strong>' ) . '</p>';
-	?>
-	</li>
-</ul>
-<?php endif; ?>
-
 <?php wp_nonce_field( 'disable-comments-admin' ); ?>
 <p class="submit"><input class="button-primary" type="submit" name="submit" value="<?php _e( 'Save Changes', 'disable-comments') ?>"></p>
 </form>
@@ -105,10 +84,5 @@ jQuery(document).ready(function($){
 	});
 
 	disable_comments_uihelper();
-
-	$("#permanent").change( function() {
-		if( $(this).is(":checked") && ! confirm(<?php echo json_encode( sprintf( __( '%s: Selecting this option will make persistent changes to your database. Are you sure you want to enable it?', 'disable-comments'), __( 'Warning', 'disable-comments' ) ) );?>) )
-			$(this).attr("checked", false );
-	});
 });
 </script>

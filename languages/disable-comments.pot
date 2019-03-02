@@ -135,33 +135,8 @@ msgstr ""
 msgid "Other options"
 msgstr ""
 
-#: includes/settings-page.php:79
-msgid "Use persistent mode"
-msgstr ""
-
-#: includes/settings-page.php:80
-msgid ""
-"%s: <strong>This will make persistent changes to your database &mdash; "
-"comments will remain closed even if you later disable the plugin!</strong> "
-"You should not use it if you only want to disable comments temporarily. "
-"Please <a href=\"%s\" target=\"_blank\">read the FAQ</a> before selecting "
-"this option."
-msgstr ""
-
-#: includes/settings-page.php:82
-msgid ""
-"%s: Entering persistent mode on large multi-site networks requires a large "
-"number of database queries and can take a while. Use with caution!"
-msgstr ""
-
 #: includes/settings-page.php:89
 msgid "Save Changes"
-msgstr ""
-
-#: includes/settings-page.php:110
-msgid ""
-"%s: Selecting this option will make persistent changes to your database. Are "
-"you sure you want to enable it?"
 msgstr ""
 
 #: includes/tools-page.php:13 includes/tools-page.php:75

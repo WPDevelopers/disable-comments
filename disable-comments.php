@@ -3,7 +3,7 @@
 Plugin Name: Disable Comments
 Plugin URI: https://wordpress.org/plugins/disable-comments/
 Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type.
-Version: 1.8.0
+Version: 1.9.0
 Author: Samir Shah
 Author URI: http://www.rayofsolaris.net/
 License: GPL2
@@ -76,7 +76,7 @@ class Disable_Comments {
 					unset( $this->options[$v] );
 			}
 
-			foreach( array( 'remove_everywhere', 'permanent', 'extra_post_types' ) as $v ) {
+			foreach( array( 'remove_everywhere', 'extra_post_types' ) as $v ) {
 				if( !isset( $this->options[$v] ) ) {
 					$this->options[$v] = false;
 				}
@@ -181,12 +181,6 @@ class Disable_Comments {
 			add_action( 'admin_notices', array( $this, 'discussion_notice' ) );
 			add_filter( 'plugin_row_meta', array( $this, 'set_plugin_meta' ), 10, 2 );
 
-			// if only certain types are disabled, remember the original post status
-			if( !( $this->persistent_mode_allowed() && $this->options['permanent'] ) && !$this->options['remove_everywhere'] ) {
-				add_action( 'edit_form_advanced', array( $this, 'edit_form_inputs' ) );
-				add_action( 'edit_page_form', array( $this, 'edit_form_inputs' ) );
-			}
-
 			if( $this->options['remove_everywhere'] ) {
 				add_action( 'admin_menu', array( $this, 'filter_admin_menu' ), 9999 );	// do this as late as possible
 				add_action( 'admin_print_styles-index.php', array( $this, 'admin_css' ) );
@@ -270,14 +264,6 @@ class Disable_Comments {
 		else {
 			// We have no way to know whether the plugin is active on other sites, so only remove this one
 			$wp_admin_bar->remove_menu( 'blog-' . get_current_blog_id() . '-c' );
-		}
-	}
-
-	public function edit_form_inputs() {
-		global $post;
-		// Without a dicussion meta box, comment_status will be set to closed on new/updated posts
-		if( in_array( $post->post_type, $this->modified_types ) ) {
-			echo '<input type="hidden" name="comment_status" value="' . $post->comment_status . '" /><input type="hidden" name="ping_status" value="' . $post->ping_status . '" />';
 		}
 	}
 
@@ -414,40 +400,6 @@ class Disable_Comments {
 
 	public function tools_page() {
 		include dirname( __FILE__ ) . '/includes/tools-page.php';
-	}
-
-	private function enter_permanent_mode() {
-		$types = $this->get_disabled_post_types();
-		if( empty( $types ) )
-			return;
-
-		global $wpdb;
-
-		if( $this->networkactive ) {
-			// NOTE: this can be slow on large networks!
-			$blogs = $wpdb->get_col( $wpdb->prepare( "SELECT blog_id FROM $wpdb->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND deleted = '0'", $wpdb->siteid ) );
-
-			foreach ( $blogs as $id ) {
-				switch_to_blog( $id );
-				$this->close_comments_in_db( $types );
-				restore_current_blog();
-			}
-		}
-		else {
-			$this->close_comments_in_db( $types );
-		}
-	}
-
-	private function close_comments_in_db( $types ){
-		global $wpdb;
-		$bits = implode( ', ', array_pad( array(), count( $types ), '%s' ) );
-		$wpdb->query( $wpdb->prepare( "UPDATE `$wpdb->posts` SET `comment_status` = 'closed', ping_status = 'closed' WHERE `post_type` IN ( $bits )", $types ) );
-	}
-
-	private function persistent_mode_allowed() {
-		if( defined( 'DISABLE_COMMENTS_ALLOW_PERSISTENT_MODE' ) && DISABLE_COMMENTS_ALLOW_PERSISTENT_MODE == false ) {
-			return false;
-		}
 	}
 
 	private function discussion_settings_allowed() {
