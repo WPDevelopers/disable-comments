@@ -154,6 +154,7 @@ class Disable_Comments {
 			add_filter( 'comments_array', array( $this, 'filter_existing_comments' ), 20, 2 );
 			add_filter( 'comments_open', array( $this, 'filter_comment_status' ), 20, 2 );
 			add_filter( 'pings_open', array( $this, 'filter_comment_status' ), 20, 2 );
+			add_filter( 'get_comments_number', array( $this, 'filter_comments_number' ), 20, 2 );
 		}
 		elseif( is_admin() && !$this->options['remove_everywhere'] ) {
 			// It is possible that $disabled_post_types is empty if other
@@ -343,6 +344,11 @@ class Disable_Comments {
 	public function filter_comment_status( $open, $post_id ) {
 		$post = get_post( $post_id );
 		return ( $this->options['remove_everywhere'] || $this->is_post_type_disabled( $post->post_type ) ) ? false : $open;
+	}
+
+	public function filter_comments_number( $count, $post_id ) {
+		$post = get_post( $post_id );
+		return ( $this->options['remove_everywhere'] || $this->is_post_type_disabled( $post->post_type ) ) ? 0 : $count;
 	}
 
 	public function disable_rc_widget() {
