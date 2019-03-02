@@ -2,8 +2,8 @@
 Contributors: solarissmoke
 Donate link: http://www.rayofsolaris.net/donate/
 Tags: comments, disable, global
-Requires at least: 4.7
-Tested up to: 5.0
+Requires at least: 5.0
+Tested up to: 5.1
 Stable tag: trunk
 
 Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly. Provides tool to delete all comments or according to post type.
@@ -73,6 +73,10 @@ Some of the plugin's behaviour can be modified by site administrators and plugin
 These definitions can be made either in your main `wp-config.php` or in your theme's `functions.php` file.
 
 == Changelog ==
+
+= 1.9.0 =
+* Fix compatibility with WordPress 5.0 and above.
+* Remove deprecated "persistent mode" feature.
 
 = 1.8.0 =
 * Added `DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS` configuration.
