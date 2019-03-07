@@ -46,7 +46,7 @@ You can also bulk-edit the comment status of multiple posts from the [posts scre
 
 = I want to delete comments from my database. What do I do? =
 
-Go to the settings page for the disable comments plugin and utlize the Delete Comments tool to delete all comments or according to the specified post types from your database.
+Go to the tools page for the Disable Comments plugin and utlize the Delete Comments tool to delete all comments or according to the specified post types from your database.
 
 == Details ==
 
