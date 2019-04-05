@@ -30,8 +30,8 @@ if ( isset( $_POST['delete'] ) && isset( $_POST['delete_mode'] ) ) {
 	check_admin_referer( 'delete-comments-admin' );
 
 	if( $_POST['delete_mode'] == 'delete_everywhere' ) {
-		if ( $wpdb->query( "TRUNCATE $wpdb->commentmeta" ) != FALSE ){
-            if ( $wpdb->query( "TRUNCATE $wpdb->comments" ) != FALSE ){
+		if ( $wpdb->query( "TRUNCATE $wpdb->commentmeta" ) != false ){
+            if ( $wpdb->query( "TRUNCATE $wpdb->comments" ) != false ){
                 $wpdb->query( "UPDATE $wpdb->posts SET comment_count = 0 WHERE post_author != 0" );
                 $wpdb->query( "OPTIMIZE TABLE $wpdb->commentmeta" );
                 $wpdb->query( "OPTIMIZE TABLE $wpdb->comments" );
