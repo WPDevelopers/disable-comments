@@ -1,5 +1,5 @@
 === Disable Comments ===
-Contributors: solarissmoke
+Contributors: solarissmoke, garrett-eclipse
 Donate link: http://www.rayofsolaris.net/donate/
 Tags: comments, disable, global
 Requires at least: 5.0
