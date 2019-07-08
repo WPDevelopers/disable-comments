@@ -256,6 +256,9 @@ class Disable_Comments {
 		}
 	}
 
+	/**
+	 * Determines if scripts should be enqueued
+	 */
 	public function filter_gutenberg_blocks($hook) {
 		if (!in_array($hook, array('post-new.php', 'post.php'), true)) {
 			return;
@@ -272,6 +275,9 @@ class Disable_Comments {
 		}
 	}
 
+	/**
+	 * Enqueues scripts
+	 */
 	public function disable_comments_script() {
 		wp_enqueue_script('disable-comments-gutenberg', plugin_dir_url(__FILE__) . 'assets/disable-comments.js', array( 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ));
 		wp_localize_script('disable-comments-gutenberg', 'disable_comments', array(
