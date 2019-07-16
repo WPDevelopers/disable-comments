@@ -1,4 +1,10 @@
 <?php
+/**
+ * Unit tests of this plugin
+ *
+ * @package Disable_Comments
+ */
+
 use PHPUnit_Framework_TestCase;
 use Brain\Monkey;
 use Brain\Monkey\Functions;
@@ -40,7 +46,7 @@ class RemoveEveryWhereTestCase extends WP_UnitTestCase {
 		$this->assertEquals( 20, has_action( 'pings_open', array( $this->plugin_instance, 'filter_comment_status' ) ) );
 		$this->assertEquals( 20, has_action( 'get_comments_number', array( $this->plugin_instance, 'filter_comments_number' ) ) );
 
-		// Check that comment suport has been removed from all the post types
+		// Check that comment suport has been removed from all the post types.
 		$this->assertFalse( post_type_supports( 'post', 'comments' ) );
 		$this->assertFalse( post_type_supports( 'page', 'comments' ) );
 		$this->assertFalse( post_type_supports( 'attachment', 'comments' ) );
@@ -63,7 +69,7 @@ class RemoveEveryWhereTestCase extends WP_UnitTestCase {
 		Functions::when( 'is_singular' )->justReturn( true );
 		Functions::when( 'wp_deregister_script' )->justReturn( true );
 		$this->plugin_instance->check_comment_template();
-		// Check that this action was removed
+		// Check that this action was removed.
 		$this->assertFalse( has_action( 'wp_head', 'feed_links_extra' ) );
 	}
 
@@ -134,7 +140,7 @@ class RemoveIndividualTestCase extends WP_UnitTestCase {
 		$this->assertEquals( 20, has_action( 'pings_open', array( $this->plugin_instance, 'filter_comment_status' ) ) );
 		$this->assertEquals( 20, has_action( 'get_comments_number', array( $this->plugin_instance, 'filter_comments_number' ) ) );
 
-		// Check that comment suport has been removed only from posts
+		// Check that comment suport has been removed only from posts.
 		$this->assertFalse( post_type_supports( 'post', 'comments' ) );
 		$this->assertTrue( post_type_supports( 'page', 'comments' ) );
 	}

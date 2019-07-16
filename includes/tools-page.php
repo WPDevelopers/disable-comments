@@ -1,4 +1,10 @@
 <?php
+/**
+ * Tools page.
+ *
+ * @package Disable_Comments
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -19,11 +25,11 @@ if ( $comments_count <= 0 ) {
 
 $typeargs = array( 'public' => true );
 if ( $this->networkactive ) {
-	$typeargs['_builtin'] = true;   // stick to known types for network
+	$typeargs['_builtin'] = true;   // stick to known types for network.
 }
 $types = get_post_types( $typeargs, 'objects' );
 foreach ( array_keys( $types ) as $type ) {
-	if ( ! in_array( $type, $this->modified_types ) && ! post_type_supports( $type, 'comments' ) ) {   // the type doesn't support comments anyway
+	if ( ! in_array( $type, $this->modified_types ) && ! post_type_supports( $type, 'comments' ) ) {   // the type doesn't support comments anyway.
 		unset( $types[ $type ] );
 	}
 }
@@ -48,15 +54,15 @@ if ( isset( $_POST['delete'] ) && isset( $_POST['delete_mode'] ) ) {
 		$delete_post_types = empty( $_POST['delete_types'] ) ? array() : (array) $_POST['delete_types'];
 		$delete_post_types = array_intersect( $delete_post_types, array_keys( $types ) );
 
-		// Extra custom post types
+		// Extra custom post types.
 		if ( $this->networkactive && ! empty( $_POST['delete_extra_post_types'] ) ) {
 			$delete_extra_post_types = array_filter( array_map( 'sanitize_key', explode( ',', $_POST['delete_extra_post_types'] ) ) );
-			$delete_extra_post_types = array_diff( $delete_extra_post_types, array_keys( $types ) );    // Make sure we don't double up builtins
+			$delete_extra_post_types = array_diff( $delete_extra_post_types, array_keys( $types ) );    // Make sure we don't double up builtins.
 			$delete_post_types       = array_merge( $delete_post_types, $delete_extra_post_types );
 		}
 
 		if ( ! empty( $delete_post_types ) ) {
-			// Loop through post_types and remove comments/meta and set posts comment_count to 0
+			// Loop through post_types and remove comments/meta and set posts comment_count to 0.
 			foreach ( $delete_post_types as $delete_post_type ) {
 				$wpdb->query( "DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$delete_post_type'" );
 				$wpdb->query( "DELETE comments FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$delete_post_type'" );
