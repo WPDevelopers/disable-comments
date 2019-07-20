@@ -2,6 +2,9 @@ module.exports = function( grunt ) {
 
 	'use strict';
 	var banner = '/**\n * <%= pkg.homepage %>\n * Copyright (c) <%= grunt.template.today("yyyy") %>\n * This file is generated automatically. Do not edit.\n */\n';
+
+	require('load-grunt-tasks')(grunt);
+
 	// Project configuration
 	grunt.initConfig( {
 
@@ -41,12 +44,25 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
+
+		babel: {
+			options: {
+				sourceMap: true,
+				presets: ['@babel/preset-env']
+			},
+			dist: {
+				files: {
+					'assets/disable-comments.js': 'src/disable-comments.js'
+				}
+			}
+		}
 	} );
 
 	grunt.loadNpmTasks( 'grunt-wp-i18n' );
 	grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
 	grunt.registerTask( 'i18n', ['addtextdomain', 'makepot'] );
 	grunt.registerTask( 'readme', ['wp_readme_to_markdown'] );
+	grunt.registerTask( 'default', ['babel'] );
 
 	grunt.util.linefeed = '\n';
 

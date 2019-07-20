@@ -134,6 +134,9 @@ class Disable_Comments {
 		// These can happen later
 		add_action( 'plugins_loaded', array( $this, 'register_text_domain' ) );
 		add_action( 'wp_loaded', array( $this, 'init_wploaded_filters' ) );
+
+		// Disable "Latest comments" block in Gutenberg
+		add_action( 'admin_enqueue_scripts', array( $this, 'filter_gutenberg_blocks') );
 	}
 
 	public function register_text_domain() {
@@ -251,6 +254,35 @@ class Disable_Comments {
 				add_action( 'admin_bar_menu', array( $this, 'remove_network_comment_links' ), 500 );
 			}
 		}
+	}
+
+	/**
+	 * Determines if scripts should be enqueued
+	 */
+	public function filter_gutenberg_blocks($hook) {
+		if (!in_array($hook, array('post-new.php', 'post.php'), true)) {
+			return;
+		}
+
+		if ($this->options['remove_everywhere']) {
+			return $this->disable_comments_script();
+		}
+
+		global $post;
+
+		if (isset($post->post_type) && in_array($post->post_type, $this->get_disabled_post_types(), true)) {
+			return $this->disable_comments_script();
+		}
+	}
+
+	/**
+	 * Enqueues scripts
+	 */
+	public function disable_comments_script() {
+		wp_enqueue_script('disable-comments-gutenberg', plugin_dir_url(__FILE__) . 'assets/disable-comments.js', array( 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ));
+		wp_localize_script('disable-comments-gutenberg', 'disable_comments', array(
+			'disabled_blocks' => array('core/latest-comments'),
+		));
 	}
 
 	/*
