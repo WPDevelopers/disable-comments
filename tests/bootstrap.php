@@ -5,8 +5,8 @@
  * @package Disable_Comments
  */
 
-require_once(dirname(__DIR__) . '/vendor/antecedent/patchwork/Patchwork.php');
-require_once(dirname(__DIR__) . '/vendor/autoload.php');
+require_once( dirname( __DIR__ ) . '/vendor/antecedent/patchwork/Patchwork.php' );
+require_once( dirname( __DIR__ ) . '/vendor/autoload.php' );
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 if ( ! $_tests_dir ) {
