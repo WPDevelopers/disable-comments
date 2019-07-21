@@ -258,7 +258,7 @@ class Disable_Comments {
 	/**
 	 * Determines if scripts should be enqueued
 	 */
-	public function filter_gutenberg_blocks($hook) {
+	public function filter_gutenberg_blocks( $hook ) {
 		global $post;
 
 		if ( $this->options['remove_everywhere'] || ( isset( $post->post_type ) && in_array( $post->post_type, $this->get_disabled_post_types(), true ) ) ) {
@@ -270,10 +270,14 @@ class Disable_Comments {
 	 * Enqueues scripts
 	 */
 	public function disable_comments_script() {
-		wp_enqueue_script('disable-comments-gutenberg', plugin_dir_url(__FILE__) . 'assets/disable-comments.js', array(), false, true);
-		wp_localize_script('disable-comments-gutenberg', 'disable_comments', array(
-			'disabled_blocks' => array('core/latest-comments'),
-		));
+		wp_enqueue_script( 'disable-comments-gutenberg', plugin_dir_url( __FILE__ ) . 'assets/disable-comments.js', array(), false, true );
+		wp_localize_script(
+			'disable-comments-gutenberg',
+			'disable_comments',
+			array(
+				'disabled_blocks' => array( 'core/latest-comments' ),
+			)
+		);
 	}
 
 	/*
