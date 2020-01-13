@@ -5,7 +5,7 @@
   "author": "Samir Shah",
   "devDependencies": {
     "@babel/core": "^7.7.4",
-    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-env": "^7.8.2",
     "grunt": "~0.4.5",
     "grunt-babel": "^8.0.0",
     "grunt-wp-i18n": "~0.5.0",
