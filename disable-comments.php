@@ -129,6 +129,9 @@ class Disable_Comments {
 			// Admin bar filtering has to happen here since WP 3.6
 			add_action( 'template_redirect', array( $this, 'filter_admin_bar' ) );
 			add_action( 'admin_init', array( $this, 'filter_admin_bar' ) );
+
+			// Disable Comments REST API Endpoint
+			add_filter( 'rest_endpoints', array( $this, 'filter_rest_endpoints' ) );
 		}
 
 		// These can happen later
@@ -253,6 +256,14 @@ class Disable_Comments {
 				add_action( 'admin_bar_menu', array( $this, 'remove_network_comment_links' ), 500 );
 			}
 		}
+	}
+
+	/**
+	 * Remove the comments endpoint for the REST API
+	 */
+	public function filter_rest_endpoints( $endpoints ) {
+		unset( $endpoints['comments'] );
+		return $endpoints;
 	}
 
 	/**
