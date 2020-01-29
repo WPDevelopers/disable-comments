@@ -271,13 +271,6 @@ class Disable_Comments {
 	 */
 	public function disable_comments_script() {
 		wp_enqueue_script( 'disable-comments-gutenberg', plugin_dir_url( __FILE__ ) . 'assets/disable-comments.js', array(), false, true );
-		wp_localize_script(
-			'disable-comments-gutenberg',
-			'disable_comments',
-			array(
-				'disabled_blocks' => array( 'core/latest-comments' ),
-			)
-		);
 	}
 
 	/*
