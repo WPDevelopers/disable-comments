@@ -1,15 +1,17 @@
 <?php
-/*
-Plugin Name: Disable Comments
-Plugin URI: https://wordpress.org/plugins/disable-comments/
-Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type.
-Version: 1.10.2
-Author: Samir Shah
-Author URI: http://www.rayofsolaris.net/
-License: GPL2
-Text Domain: disable-comments
-Domain Path: /languages/
-*/
+/**
+ * Plugin Name: Disable Comments
+ * Plugin URI: https://wordpress.org/plugins/disable-comments/
+ * Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type.
+ * Version: 1.10.2
+ * Author: Samir Shah
+ * Author URI: http://www.rayofsolaris.net/
+ * License: GPL2
+ * Text Domain: disable-comments
+ * Domain Path: /languages/
+ *
+ * @package Disable_Comments
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -33,19 +35,19 @@ class Disable_Comments {
 		// are we network activated?
 		$this->networkactive = ( is_multisite() && array_key_exists( plugin_basename( __FILE__ ), (array) get_site_option( 'active_sitewide_plugins' ) ) );
 
-		// Load options
+		// Load options.
 		if ( $this->networkactive ) {
 			$this->options = get_site_option( 'disable_comments_options', array() );
 		} else {
 			$this->options = get_option( 'disable_comments_options', array() );
 		}
 
-		// If it looks like first run, check compat
+		// If it looks like first run, check compat.
 		if ( empty( $this->options ) ) {
 			$this->check_compatibility();
 		}
 
-		// Upgrade DB if necessary
+		// Upgrade DB if necessary.
 		$this->check_db_upgrades();
 
 		$this->init_filters();
@@ -65,12 +67,12 @@ class Disable_Comments {
 		$old_ver = isset( $this->options['db_version'] ) ? $this->options['db_version'] : 0;
 		if ( $old_ver < self::DB_VERSION ) {
 			if ( $old_ver < 2 ) {
-				// upgrade options from version 0.2.1 or earlier to 0.3
+				// upgrade options from version 0.2.1 or earlier to 0.3.
 				$this->options['disabled_post_types'] = get_option( 'disable_comments_post_types', array() );
 				delete_option( 'disable_comments_post_types' );
 			}
 			if ( $old_ver < 5 ) {
-				// simple is beautiful - remove multiple settings in favour of one
+				// simple is beautiful - remove multiple settings in favour of one.
 				$this->options['remove_everywhere'] = isset( $this->options['remove_admin_menu_comments'] ) ? $this->options['remove_admin_menu_comments'] : false;
 				foreach ( array( 'remove_admin_menu_comments', 'remove_admin_bar_comments', 'remove_recent_comments', 'remove_discussion', 'remove_rc_widget' ) as $v ) {
 					unset( $this->options[ $v ] );
@@ -96,12 +98,12 @@ class Disable_Comments {
 		}
 	}
 
-	/*
+	/**
 	 * Get an array of disabled post type.
 	 */
 	private function get_disabled_post_types() {
 		$types = $this->options['disabled_post_types'];
-		// Not all extra_post_types might be registered on this particular site
+		// Not all extra_post_types might be registered on this particular site.
 		if ( $this->networkactive ) {
 			foreach ( (array) $this->options['extra_post_types'] as $extra ) {
 				if ( post_type_exists( $extra ) ) {
@@ -112,7 +114,7 @@ class Disable_Comments {
 		return $types;
 	}
 
-	/*
+	/**
 	 * Check whether comments have been disabled on a given post type.
 	 */
 	private function is_post_type_disabled( $type ) {
@@ -120,13 +122,13 @@ class Disable_Comments {
 	}
 
 	private function init_filters() {
-		// These need to happen now
+		// These need to happen now.
 		if ( $this->options['remove_everywhere'] ) {
 			add_action( 'widgets_init', array( $this, 'disable_rc_widget' ) );
 			add_filter( 'wp_headers', array( $this, 'filter_wp_headers' ) );
-			add_action( 'template_redirect', array( $this, 'filter_query' ), 9 );   // before redirect_canonical
+			add_action( 'template_redirect', array( $this, 'filter_query' ), 9 );   // before redirect_canonical.
 
-			// Admin bar filtering has to happen here since WP 3.6
+			// Admin bar filtering has to happen here since WP 3.6.
 			add_action( 'template_redirect', array( $this, 'filter_admin_bar' ) );
 			add_action( 'admin_init', array( $this, 'filter_admin_bar' ) );
 
@@ -134,11 +136,10 @@ class Disable_Comments {
 			add_filter( 'rest_endpoints', array( $this, 'filter_rest_endpoints' ) );
 		}
 
-		// These can happen later
+		// These can happen later.
 		add_action( 'plugins_loaded', array( $this, 'register_text_domain' ) );
 		add_action( 'wp_loaded', array( $this, 'init_wploaded_filters' ) );
-
-		// Disable "Latest comments" block in Gutenberg
+		// Disable "Latest comments" block in Gutenberg.
 		add_action( 'enqueue_block_editor_assets', array( $this, 'filter_gutenberg_blocks') );
 	}
 
@@ -150,7 +151,7 @@ class Disable_Comments {
 		$disabled_post_types = $this->get_disabled_post_types();
 		if ( ! empty( $disabled_post_types ) ) {
 			foreach ( $disabled_post_types as $type ) {
-				// we need to know what native support was for later
+				// we need to know what native support was for later.
 				if ( post_type_supports( $type, 'comments' ) ) {
 					$this->modified_types[] = $type;
 					remove_post_type_support( $type, 'comments' );
@@ -162,14 +163,16 @@ class Disable_Comments {
 			add_filter( 'pings_open', array( $this, 'filter_comment_status' ), 20, 2 );
 			add_filter( 'get_comments_number', array( $this, 'filter_comments_number' ), 20, 2 );
 		} elseif ( is_admin() && ! $this->options['remove_everywhere'] ) {
-			// It is possible that $disabled_post_types is empty if other
-			// plugins have disabled comments. Hence we also check for
-			// remove_everywhere. If you still get a warning you probably
-			// shouldn't be using this plugin.
+			/**
+			 * It is possible that $disabled_post_types is empty if other
+			 * plugins have disabled comments. Hence we also check for
+			 * remove_everywhere. If you still get a warning you probably
+			 * shouldn't be using this plugin.
+			 */
 			add_action( 'all_admin_notices', array( $this, 'setup_notice' ) );
 		}
 
-		// Filters for the admin only
+		// Filters for the admin only.
 		if ( is_admin() ) {
 			if ( $this->networkactive ) {
 				add_action( 'network_admin_menu', array( $this, 'settings_menu' ) );
@@ -188,14 +191,14 @@ class Disable_Comments {
 			add_filter( 'plugin_row_meta', array( $this, 'set_plugin_meta' ), 10, 2 );
 
 			if ( $this->options['remove_everywhere'] ) {
-				add_action( 'admin_menu', array( $this, 'filter_admin_menu' ), 9999 );  // do this as late as possible
+				add_action( 'admin_menu', array( $this, 'filter_admin_menu' ), 9999 );  // do this as late as possible.
 				add_action( 'admin_print_styles-index.php', array( $this, 'admin_css' ) );
 				add_action( 'admin_print_styles-profile.php', array( $this, 'admin_css' ) );
 				add_action( 'wp_dashboard_setup', array( $this, 'filter_dashboard' ) );
 				add_filter( 'pre_option_default_pingback_flag', '__return_zero' );
 			}
 		}
-		// Filters for front end only
+		// Filters for front end only.
 		else {
 			add_action( 'template_redirect', array( $this, 'check_comment_template' ) );
 
@@ -205,7 +208,7 @@ class Disable_Comments {
 		}
 	}
 
-	/*
+	/**
 	 * Replace the theme's comment template with a blank one.
 	 * To prevent this, define DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE
 	 * and set it to True
@@ -216,9 +219,9 @@ class Disable_Comments {
 				// Kill the comments template.
 				add_filter( 'comments_template', array( $this, 'dummy_comments_template' ), 20 );
 			}
-			// Remove comment-reply script for themes that include it indiscriminately
+			// Remove comment-reply script for themes that include it indiscriminately.
 			wp_deregister_script( 'comment-reply' );
-			// feed_links_extra inserts a comments RSS link
+			// feed_links_extra inserts a comments RSS link.
 			remove_action( 'wp_head', 'feed_links_extra', 3 );
 		}
 	}
@@ -228,7 +231,7 @@ class Disable_Comments {
 	}
 
 
-	/*
+	/**
 	 * Remove the X-Pingback HTTP header
 	 */
 	public function filter_wp_headers( $headers ) {
@@ -236,7 +239,7 @@ class Disable_Comments {
 		return $headers;
 	}
 
-	/*
+	/**
 	 * Issue a 403 for all comment feed requests.
 	 */
 	public function filter_query() {
@@ -245,12 +248,12 @@ class Disable_Comments {
 		}
 	}
 
-	/*
+	/**
 	 * Remove comment links from the admin bar.
 	 */
 	public function filter_admin_bar() {
 		if ( is_admin_bar_showing() ) {
-			// Remove comments links from admin bar
+			// Remove comments links from admin bar.
 			remove_action( 'admin_bar_menu', 'wp_admin_bar_comments_menu', 60 );
 			if ( is_multisite() ) {
 				add_action( 'admin_bar_menu', array( $this, 'remove_network_comment_links' ), 500 );
@@ -284,7 +287,7 @@ class Disable_Comments {
 		wp_enqueue_script( 'disable-comments-gutenberg', plugin_dir_url( __FILE__ ) . 'assets/disable-comments.js', array(), false, true );
 	}
 
-	/*
+	/**
 	 * Remove comment links from the admin bar in a multisite network.
 	 */
 	public function remove_network_comment_links( $wp_admin_bar ) {
@@ -293,7 +296,7 @@ class Disable_Comments {
 				$wp_admin_bar->remove_menu( 'blog-' . $blog->userblog_id . '-c' );
 			}
 		} else {
-			// We have no way to know whether the plugin is active on other sites, so only remove this one
+			// We have no way to know whether the plugin is active on other sites, so only remove this one.
 			$wp_admin_bar->remove_menu( 'blog-' . get_current_blog_id() . '-c' );
 		}
 	}
@@ -387,8 +390,10 @@ class Disable_Comments {
 
 	public function disable_rc_widget() {
 		unregister_widget( 'WP_Widget_Recent_Comments' );
-		// The widget has added a style action when it was constructed - which will
-		// still fire even if we now unregister the widget... so filter that out
+		/**
+		 * The widget has added a style action when it was constructed - which will
+		 * still fire even if we now unregister the widget... so filter that out
+		 */
 		add_filter( 'show_recent_comments_widget_style', '__return_false' );
 	}
 
@@ -451,7 +456,7 @@ class Disable_Comments {
 	}
 
 	public function single_site_deactivate() {
-		// for single sites, delete the options upon deactivation, not uninstall
+		// for single sites, delete the options upon deactivation, not uninstall.
 		delete_option( 'disable_comments_options' );
 	}
 }

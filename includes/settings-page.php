@@ -1,15 +1,21 @@
 <?php
+/**
+ * Setting page.
+ *
+ * @package Disable_Comments
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 $typeargs = array( 'public' => true );
 if ( $this->networkactive ) {
-	$typeargs['_builtin'] = true;   // stick to known types for network
+	$typeargs['_builtin'] = true;   // stick to known types for network.
 }
 $types = get_post_types( $typeargs, 'objects' );
 foreach ( array_keys( $types ) as $type ) {
-	if ( ! in_array( $type, $this->modified_types ) && ! post_type_supports( $type, 'comments' ) ) {   // the type doesn't support comments anyway
+	if ( ! in_array( $type, $this->modified_types ) && ! post_type_supports( $type, 'comments' ) ) {   // the type doesn't support comments anyway.
 		unset( $types[ $type ] );
 	}
 }
@@ -28,10 +34,10 @@ if ( isset( $_POST['submit'] ) ) {
 
 	$this->options['disabled_post_types'] = $disabled_post_types;
 
-	// Extra custom post types
+	// Extra custom post types.
 	if ( $this->networkactive && ! empty( $_POST['extra_post_types'] ) ) {
 		$extra_post_types                  = array_filter( array_map( 'sanitize_key', explode( ',', $_POST['extra_post_types'] ) ) );
-		$this->options['extra_post_types'] = array_diff( $extra_post_types, array_keys( $types ) ); // Make sure we don't double up builtins
+		$this->options['extra_post_types'] = array_diff( $extra_post_types, array_keys( $types ) ); // Make sure we don't double up builtins.
 	}
 
 	$this->update_options();
