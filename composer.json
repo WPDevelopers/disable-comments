@@ -23,6 +23,6 @@
     "composer/installers": "~1.0"
   },
   "require-dev": {
-    "brain/monkey": "1.4.2"
+    "brain/monkey": "2.4.0"
   }
 }

@@ -29,6 +29,10 @@ matrix:
   allow_failures:
     - php: 7.1
       env: WP_TRAVISCI=phpcs
+      
+branches:
+  only:
+  - master
 
 before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"

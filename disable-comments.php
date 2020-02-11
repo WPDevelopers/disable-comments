@@ -3,7 +3,7 @@
  * Plugin Name: Disable Comments
  * Plugin URI: https://wordpress.org/plugins/disable-comments/
  * Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type.
- * Version: 1.10.0
+ * Version: 1.10.2
  * Author: Samir Shah
  * Author URI: http://www.rayofsolaris.net/
  * License: GPL2
@@ -131,14 +131,16 @@ class Disable_Comments {
 			// Admin bar filtering has to happen here since WP 3.6.
 			add_action( 'template_redirect', array( $this, 'filter_admin_bar' ) );
 			add_action( 'admin_init', array( $this, 'filter_admin_bar' ) );
+
+			// Disable Comments REST API Endpoint
+			add_filter( 'rest_endpoints', array( $this, 'filter_rest_endpoints' ) );
 		}
 
 		// These can happen later.
 		add_action( 'plugins_loaded', array( $this, 'register_text_domain' ) );
 		add_action( 'wp_loaded', array( $this, 'init_wploaded_filters' ) );
-
 		// Disable "Latest comments" block in Gutenberg.
-		add_action( 'admin_enqueue_scripts', array( $this, 'filter_gutenberg_blocks') );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'filter_gutenberg_blocks') );
 	}
 
 	public function register_text_domain() {
@@ -260,20 +262,20 @@ class Disable_Comments {
 	}
 
 	/**
+	 * Remove the comments endpoint for the REST API
+	 */
+	public function filter_rest_endpoints( $endpoints ) {
+		unset( $endpoints['comments'] );
+		return $endpoints;
+	}
+
+	/**
 	 * Determines if scripts should be enqueued
 	 */
-	public function filter_gutenberg_blocks($hook) {
-		if (!in_array($hook, array('post-new.php', 'post.php'), true)) {
-			return;
-		}
-
-		if ($this->options['remove_everywhere']) {
-			return $this->disable_comments_script();
-		}
-
+	public function filter_gutenberg_blocks( $hook ) {
 		global $post;
 
-		if (isset($post->post_type) && in_array($post->post_type, $this->get_disabled_post_types(), true)) {
+		if ( $this->options['remove_everywhere'] || ( isset( $post->post_type ) && in_array( $post->post_type, $this->get_disabled_post_types(), true ) ) ) {
 			return $this->disable_comments_script();
 		}
 	}
@@ -282,10 +284,7 @@ class Disable_Comments {
 	 * Enqueues scripts
 	 */
 	public function disable_comments_script() {
-		wp_enqueue_script('disable-comments-gutenberg', plugin_dir_url(__FILE__) . 'assets/disable-comments.js', array( 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ));
-		wp_localize_script('disable-comments-gutenberg', 'disable_comments', array(
-			'disabled_blocks' => array('core/latest-comments'),
-		));
+		wp_enqueue_script( 'disable-comments-gutenberg', plugin_dir_url( __FILE__ ) . 'assets/disable-comments.js', array(), false, true );
 	}
 
 	/**

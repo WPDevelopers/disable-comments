@@ -4,12 +4,12 @@
   "main": "Gruntfile.js",
   "author": "Samir Shah",
   "devDependencies": {
-    "@babel/core": "^7.5.0",
-    "@babel/preset-env": "^7.5.0",
-    "grunt": "~0.4.5",
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "grunt": "^1.0.4",
     "grunt-babel": "^8.0.0",
-    "grunt-wp-i18n": "~0.5.0",
-    "grunt-wp-readme-to-markdown": "~1.0.0",
-    "load-grunt-tasks": "^5.0.0"
+    "grunt-wp-i18n": "~1.0.3",
+    "grunt-wp-readme-to-markdown": "~2.0.1",
+    "load-grunt-tasks": "^5.1.0"
   }
 }
