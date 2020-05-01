@@ -1,186 +1,188 @@
-# Copyright (C) 2017 Disable Comments
-# This file is distributed under the same license as the Disable Comments package.
+# Copyright (C) 2020 Samir Shah
+# This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Disable Comments 1.6\n"
+"Project-Id-Version: Disable Comments 1.10.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/disable-comments\n"
-"POT-Creation-Date: 2017-07-08 03:05:14+00:00\n"
+"POT-Creation-Date: 2020-05-01 06:45:42+00:00\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: grunt-wp-i18n 1.0.3\n"
 
-#: disable-comments.php:59
+#: disable-comments.php:61
 msgid "Disable Comments requires WordPress version %s or greater."
 msgstr ""
 
-#: disable-comments.php:240 disable-comments.php:325
+#: disable-comments.php:247 disable-comments.php:346 disable-comments.php:353
 msgid "Comments are closed."
 msgstr ""
 
-#: disable-comments.php:289
+#: disable-comments.php:312
 msgid ""
-"Note: The <em>Disable Comments</em> plugin is currently active, and comments "
-"are completely disabled on: %s. Many of the settings below will not be "
-"applicable for those post types."
+"Note: The <em>Disable Comments</em> plugin is currently active, and "
+"comments are completely disabled on: %s. Many of the settings below will "
+"not be applicable for those post types."
 msgstr ""
 
-#: disable-comments.php:289
+#: disable-comments.php:312
 msgid ", "
 msgstr ""
 
-#: disable-comments.php:317
+#: disable-comments.php:338
 msgid ""
 "The <em>Disable Comments</em> plugin is active, but isn't configured to do "
 "anything yet. Visit the <a href=\"%s\">configuration page</a> to choose "
 "which post types to disable comments on."
 msgstr ""
 
-#: disable-comments.php:382
+#: disable-comments.php:418
 msgid "Settings"
 msgstr ""
 
-#: disable-comments.php:383
+#: disable-comments.php:419
 msgid "Tools"
 msgstr ""
 
-#: disable-comments.php:391
-msgctxt "settings menu title"
-msgid "Disable Comments"
-msgstr ""
-
-#: disable-comments.php:403 includes/tools-page.php:7
-#: includes/tools-page.php:103
+#: disable-comments.php:440 includes/tools-page.php:13
+#: includes/tools-page.php:116
 msgid "Delete Comments"
 msgstr ""
 
-#: includes/settings-page.php:43
+#: includes/settings-page.php:44
 msgid ""
 "If a caching/performance plugin is active, please invalidate its cache to "
 "ensure that changes are reflected immediately."
 msgstr ""
 
-#: includes/settings-page.php:44
+#: includes/settings-page.php:45
 msgid ""
 "Options updated. Changes to the Admin Menu and Admin Bar will not appear "
 "until you leave or reload this page."
 msgstr ""
 
-#. #-#-#-#-#  disable-comments.pot (Disable Comments 1.6)  #-#-#-#-#
-#. Plugin Name of the plugin/theme
-#: includes/settings-page.php:49
-msgid "Disable Comments"
-msgstr ""
-
-#: includes/settings-page.php:52
+#: includes/settings-page.php:53
 msgid ""
 "<em>Disable Comments</em> is Network Activated. The settings below will "
 "affect <strong>all sites</strong> in this network."
 msgstr ""
 
-#: includes/settings-page.php:54
+#: includes/settings-page.php:56
 msgid ""
 "It seems that a caching/performance plugin is active on this site. Please "
 "manually invalidate that plugin's cache after making any changes to the "
 "settings below."
 msgstr ""
 
-#: includes/settings-page.php:58 includes/tools-page.php:85
+#: includes/settings-page.php:61 includes/tools-page.php:95
 msgid "Everywhere"
 msgstr ""
 
-#: includes/settings-page.php:58
+#: includes/settings-page.php:61
 msgid "Disable all comment-related controls and settings in WordPress."
 msgstr ""
 
-#: includes/settings-page.php:59
+#: includes/settings-page.php:62
 msgid ""
-"%s: This option is global and will affect your entire site. Use it only if "
-"you want to disable comments <em>everywhere</em>. A complete description of "
-"what this option does is <a href=\"%s\" target=\"_blank\">available here</a>."
+"%1$s: This option is global and will affect your entire site. Use it only "
+"if you want to disable comments <em>everywhere</em>. A complete description "
+"of what this option does is <a href=\"%2$s\" target=\"_blank\">available "
+"here</a>."
 msgstr ""
 
-#: includes/settings-page.php:59 includes/settings-page.php:80
-#: includes/settings-page.php:82 includes/settings-page.php:110
-#: includes/tools-page.php:86 includes/tools-page.php:97
+#: includes/settings-page.php:62 includes/tools-page.php:96
+#: includes/tools-page.php:110
 msgid "Warning"
 msgstr ""
 
-#: includes/settings-page.php:61
+#: includes/settings-page.php:64
 msgid "On certain post types"
 msgstr ""
 
-#: includes/settings-page.php:67 includes/tools-page.php:94
+#: includes/settings-page.php:73 includes/tools-page.php:107
 msgid ""
 "Only the built-in post types appear above. If you want to disable comments "
-"on other custom post types on the entire network, you can supply a comma-"
-"separated list of post types below (use the slug that identifies the post "
-"type)."
+"on other custom post types on the entire network, you can supply a "
+"comma-separated list of post types below (use the slug that identifies the "
+"post type)."
 msgstr ""
 
-#: includes/settings-page.php:68 includes/tools-page.php:95
+#: includes/settings-page.php:74 includes/tools-page.php:108
 msgid "Custom post types:"
 msgstr ""
 
-#: includes/settings-page.php:70
+#: includes/settings-page.php:76
 msgid ""
-"Disabling comments will also disable trackbacks and pingbacks. All comment-"
-"related fields will also be hidden from the edit/quick-edit screens of the "
-"affected posts. These settings cannot be overridden for individual posts."
+"Disabling comments will also disable trackbacks and pingbacks. All "
+"comment-related fields will also be hidden from the edit/quick-edit screens "
+"of the affected posts. These settings cannot be overridden for individual "
+"posts."
 msgstr ""
 
-#: includes/settings-page.php:75
-msgid "Other options"
-msgstr ""
-
-#: includes/settings-page.php:89
+#: includes/settings-page.php:81
 msgid "Save Changes"
 msgstr ""
 
-#: includes/tools-page.php:13 includes/tools-page.php:75
+#: includes/tools-page.php:20 includes/tools-page.php:86
 msgid "No comments available for deletion."
 msgstr ""
 
-#: includes/tools-page.php:38
+#: includes/tools-page.php:46
 msgid "All comments have been deleted."
 msgstr ""
 
-#: includes/tools-page.php:40 includes/tools-page.php:43
+#: includes/tools-page.php:48 includes/tools-page.php:51
 msgid "Internal error occured. Please try again later."
 msgstr ""
 
-#: includes/tools-page.php:62
-msgid "All comments have been deleted for %ss."
+#: includes/tools-page.php:73
+msgid "All comments have been deleted for %s."
 msgstr ""
 
-#: includes/tools-page.php:68
+#: includes/tools-page.php:79
 msgid "Comment Deletion Complete"
 msgstr ""
 
-#: includes/tools-page.php:85
+#: includes/tools-page.php:95
 msgid "Delete all comments in WordPress."
 msgstr ""
 
-#: includes/tools-page.php:86
+#: includes/tools-page.php:96
 msgid ""
 "%s: This function and will affect your entire site. Use it only if you want "
 "to delete comments <em>everywhere</em>."
 msgstr ""
 
-#: includes/tools-page.php:88
+#: includes/tools-page.php:98
 msgid "For certain post types"
 msgstr ""
 
-#: includes/tools-page.php:97
+#: includes/tools-page.php:110
 msgid ""
 "%s: Deleting comments will remove existing comment entries in the database "
 "and cannot be reverted without a database backup."
 msgstr ""
 
-#: includes/tools-page.php:102
+#: includes/tools-page.php:115
 msgid "Total Comments:"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Disable Comments"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
@@ -199,4 +201,14 @@ msgstr ""
 
 #. Author URI of the plugin/theme
 msgid "http://www.rayofsolaris.net/"
+msgstr ""
+
+#: disable-comments.php:427
+msgctxt "settings menu title"
+msgid "Disable Comments"
+msgstr ""
+
+#: includes/settings-page.php:50
+msgctxt "settings page title"
+msgid "Disable Comments"
 msgstr ""

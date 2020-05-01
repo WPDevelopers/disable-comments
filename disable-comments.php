@@ -244,7 +244,7 @@ class Disable_Comments {
 	 */
 	public function filter_query() {
 		if ( is_comment_feed() ) {
-			wp_die( __( 'Comments are closed.' ), '', array( 'response' => 403 ) );
+			wp_die( __( 'Comments are closed.', 'disable-comments' ), '', array( 'response' => 403 ) );
 		}
 	}
 
@@ -309,7 +309,7 @@ class Disable_Comments {
 				$names[ $type ] = get_post_type_object( $type )->labels->name;
 			}
 
-			echo '<div class="notice notice-warning"><p>' . sprintf( __( 'Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types.', 'disable-comments' ), implode( __( ', ' ), $names ) ) . '</p></div>';
+			echo '<div class="notice notice-warning"><p>' . sprintf( __( 'Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types.', 'disable-comments' ), implode( __( ', ', 'disable-comments' ), $names ) ) . '</p></div>';
 		}
 	}
 
@@ -343,14 +343,14 @@ class Disable_Comments {
 		global $pagenow;
 
 		if ( $pagenow == 'comment.php' || $pagenow == 'edit-comments.php' ) {
-			wp_die( __( 'Comments are closed.' ), '', array( 'response' => 403 ) );
+			wp_die( __( 'Comments are closed.', 'disable-comments' ), '', array( 'response' => 403 ) );
 		}
 
 		remove_menu_page( 'edit-comments.php' );
 
 		if ( ! $this->discussion_settings_allowed() ) {
 			if ( $pagenow == 'options-discussion.php' ) {
-				wp_die( __( 'Comments are closed.' ), '', array( 'response' => 403 ) );
+				wp_die( __( 'Comments are closed.', 'disable-comments' ), '', array( 'response' => 403 ) );
 			}
 
 			remove_submenu_page( 'options-general.php', 'options-discussion.php' );
@@ -415,8 +415,8 @@ class Disable_Comments {
 		if ( $file == $plugin && current_user_can( 'manage_options' ) ) {
 			array_unshift(
 				$links,
-				sprintf( '<a href="%s">%s</a>', esc_attr( $this->settings_page_url() ), __( 'Settings' ) ),
-				sprintf( '<a href="%s">%s</a>', esc_attr( $this->tools_page_url() ), __( 'Tools' ) )
+				sprintf( '<a href="%s">%s</a>', esc_attr( $this->settings_page_url() ), __( 'Settings', 'disable-comments' ) ),
+				sprintf( '<a href="%s">%s</a>', esc_attr( $this->tools_page_url() ), __( 'Tools', 'disable-comments' ) )
 			);
 		}
 
