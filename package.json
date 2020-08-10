@@ -4,7 +4,7 @@
   "main": "Gruntfile.js",
   "author": "Samir Shah",
   "devDependencies": {
-    "@babel/core": "^7.11.0",
+    "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0",
     "grunt": "^1.2.1",
     "grunt-babel": "^8.0.0",
