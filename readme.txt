@@ -1,10 +1,13 @@
 === Disable Comments ===
-Contributors: solarissmoke, garrett-eclipse
-Donate link: http://www.rayofsolaris.net/donate/
-Tags: comments, disable, global
+Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, solarissmoke, garrett-eclipse
+Donate link: https://wpdeveloper.net/
+Tags: comments, disable, global, disable comments, delete comments, stop spam, bulk comment delete, comment management
 Requires at least: 5.0
-Tested up to: 5.4
-Stable tag: trunk
+Tested up to: 5.5
+Requires PHP: 5.4
+Stable tag: 1.10.3
+License: GPL-3.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly. Provides tool to delete all comments or according to post type.
 
@@ -18,9 +21,85 @@ Additionally, comment-related items can be removed from the Dashboard, Widgets, 
 
 If you come across any bugs or have suggestions, please use the plugin support forum. I can't fix it if I don't know it's broken! Please check the [FAQ](https://wordpress.org/plugins/disable-comments/faq/) for common issues.
 
-Want to contribute? Here's the [GitHub development repository](https://github.com/solarissmoke/disable-comments).
+Want to contribute? Here's the [GitHub development repository](https://github.com/WPDevelopers/disable-comments).
 
-A [must-use version](https://github.com/solarissmoke/disable-comments-mu) of the plugin is also available.
+A [must-use version](https://github.com/WPDevelopers/disable-comments-mu) of the plugin is also available.
+
+
+###  Details 
+
+The plugin provides the option to **completely disable the commenting feature in WordPress**. When this option is selected, the following changes are made:
+
+* All "Comments" links are hidden from the Admin Menu and Admin Bar;
+* All comment-related sections ("Recent Comments", "Discussion" etc.) are hidden from the WordPress Dashboard;
+* All comment-related widgets are disabled (so your theme cannot use them);
+* The "Discussion" settings page is hidden;
+* All comment RSS/Atom feeds are disabled (and requests for these will be redirected to the parent post);
+* The X-Pingback HTTP header is removed from all pages;
+* Outgoing pingbacks are disabled.
+
+**Please delete any existing comments on your site before applying this setting, otherwise (depending on your theme) those comments may still be displayed to visitors. You can use the Delete Comments tool to delete any existing comments on your site.**
+
+### Advanced Configuration 
+
+Some of the plugin's behaviour can be modified by site administrators and plugin/theme developers through code:
+
+* Define `DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE` and set it to `false` to prevent the plugin from replacing the theme's comment template with an empty one.
+
+* Define `DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS` and set it to `true` to prevent the plugin from hiding the Discussion settings page.
+
+These definitions can be made either in your main `wp-config.php` or in your theme's `functions.php` file.
+
+
+### This plugin is maintained by the [WPDeveloper](https://wpdeveloper.net/).
+
+
+### 💙 LOVED Disable Comments?
+
+-   Join our [Facebook Group](https://www.facebook.com/groups/wpdeveloper.net/)
+
+-   If you love Disable Comments, [rate us on WordPress](https://wordpress.org/support/plugin/disable-comments/reviews/?filter=5)
+
+
+🔥 GET FREEBIES FOR YOUR WORDPRESS SITE
+
+Consider checking out our other WordPress solutions & boost your WordPress website:
+
+🔝 [Essential Addons For Elementor](https://wordpress.org/plugins/essential-addons-for-elementor-lite/): Most popular Elementor addons with 70+ widgets & ready blocks
+
+🔔[NotificationX](https://notificationx.com/) – Best Social Proof & FOMO Marketing Solution to increase conversion rates.
+
+📄 [EmbedPress](https://wordpress.org/plugins/embedpress/): EmbedPress lets you embed videos, images, posts, audio, maps and upload PDF, DOC, PPT & all other types of content into your WordPress site with one-click and showcase it beautifully for the visitors. 
+
+☁ [Templately](https://wordpress.org/plugins/templately/): Free templates library for Elementor & Gutenberg along with the cloud collaboration for WordPress.
+
+📚 [BetterDocs](https://wordpress.org/plugins/betterdocs/): Best Documentation & Knowledge Base Plugin for WordPress reduce manual support tickets & improve user experience.
+
+⏰ [WP Scheduled Posts](https://wordpress.org/plugins/wp-scheduled-posts/): Advanced editorial calendar & complete solution for WordPress Post Scheduling, social sharing, missed scheduled alerts and more.
+
+⭐ [ReviewX](https://wordpress.org/plugins/reviewx/): WooCommerce Product review plugin that allows users to submit product reviews with multiple criteria, photos, video and more.
+
+⚡ [Flexia](http://wordpress.org/plugins/flexia): Most lightweight, customizable & multi purpose theme for WordPress.
+
+
+Visit [WPDeveloper](https://wpdeveloper.net/) to learn more about how to do better in WordPress with [Help Tutorial, Tips & Tricks](https://wpdeveloper.net/blog).
+
+
+
+== Installation ==
+
+= Modern Way: =
+1. Go to the WordPress Dashboard "Add New Plugin" section.
+2. Search For "Disable Comments". 
+3. Install, then Activate it.
+4. The plugin settings can be accessed via the 'Settings' menu in the administration area (either your site administration for single-site installs, or your network administration for network installs).
+
+= Old Way: =
+1. Upload the plugin folder to the `/wp-content/plugins/` directory
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. The plugin settings can be accessed via the 'Settings' menu in the administration area (either your site administration for single-site installs, or your network administration for network installs).
+
+
 
 == Frequently Asked Questions ==
 
@@ -48,31 +127,23 @@ You can also bulk-edit the comment status of multiple posts from the [posts scre
 
 Go to the tools page for the Disable Comments plugin and utlize the Delete Comments tool to delete all comments or according to the specified post types from your database.
 
-== Details ==
 
-The plugin provides the option to **completely disable the commenting feature in WordPress**. When this option is selected, the following changes are made:
 
-* All "Comments" links are hidden from the Admin Menu and Admin Bar;
-* All comment-related sections ("Recent Comments", "Discussion" etc.) are hidden from the WordPress Dashboard;
-* All comment-related widgets are disabled (so your theme cannot use them);
-* The "Discussion" settings page is hidden;
-* All comment RSS/Atom feeds are disabled (and requests for these will be redirected to the parent post);
-* The X-Pingback HTTP header is removed from all pages;
-* Outgoing pingbacks are disabled.
+== Screenshots ==
 
-**Please delete any existing comments on your site before applying this setting, otherwise (depending on your theme) those comments may still be displayed to visitors. You can use the Delete Comments tool to delete any existing comments on your site.**
+1. Setting Screen for Disable Comments
+2. Delete Comments under Tools menu.
 
-== Advanced Configuration ==
 
-Some of the plugin's behaviour can be modified by site administrators and plugin/theme developers through code:
-
-* Define `DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE` and set it to `false` to prevent the plugin from replacing the theme's comment template with an empty one.
-
-* Define `DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS` and set it to `true` to prevent the plugin from hiding the Discussion settings page.
-
-These definitions can be made either in your main `wp-config.php` or in your theme's `functions.php` file.
 
 == Changelog ==
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
+and this project adheres to [Semantic Versioning](http://semver.org/).
+This will be maiintained from August 19, 2020 - @asif2bd
+
+= [1.10.3] - 2020-07-29 =
+* Minor fix - changelog backported.
 
 = 1.10.0 =
 * Disable "recent comments" Gutenberg block.
@@ -205,8 +276,7 @@ These definitions can be made either in your main `wp-config.php` or in your the
 = 0.2 =
 * Bugfix: Make sure pingbacks are also prevented when comments are disabled.
 
-== Installation ==
 
-1. Upload the plugin folder to the `/wp-content/plugins/` directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. The plugin settings can be accessed via the 'Settings' menu in the administration area (either your site administration for single-site installs, or your network administration for network installs).
+== Upgrade Notice ==
+
+Minor Update: Bug Fix
