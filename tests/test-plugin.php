@@ -5,10 +5,6 @@
  * @package Disable_Comments
  */
 
-use PHPUnit_Framework_TestCase;
-use Brain\Monkey;
-use Brain\Monkey\Functions;
-
 class RemoveEveryWhereTestCase extends WP_UnitTestCase {
 
 	function setUp() {
@@ -25,7 +21,7 @@ class RemoveEveryWhereTestCase extends WP_UnitTestCase {
 	}
 
 	function tearDown() {
-		Monkey::tearDown();
+		\Brain\Monkey\tearDown();
 		parent::tearDown();
 	}
 
@@ -53,7 +49,7 @@ class RemoveEveryWhereTestCase extends WP_UnitTestCase {
 	}
 
 	function test_wp_loaded_admin_actions() {
-		Functions::when( 'is_admin' )->justReturn( true );
+		\Brain\Monkey\Functions\when( 'is_admin' )->justReturn( true );
 		$this->plugin_instance->init_wploaded_filters();
 
 		$this->assertEquals( 10, has_action( 'admin_print_styles-index.php', array( $this->plugin_instance, 'admin_css' ) ) );
@@ -66,8 +62,8 @@ class RemoveEveryWhereTestCase extends WP_UnitTestCase {
 	}
 
 	function test_comment_template_filter() {
-		Functions::when( 'is_singular' )->justReturn( true );
-		Functions::when( 'wp_deregister_script' )->justReturn( true );
+		\Brain\Monkey\Functions\when( 'is_singular' )->justReturn( true );
+		\Brain\Monkey\Functions\when( 'wp_deregister_script' )->justReturn( true );
 		$this->plugin_instance->check_comment_template();
 		// Check that this action was removed.
 		$this->assertFalse( has_action( 'wp_head', 'feed_links_extra' ) );
@@ -80,13 +76,13 @@ class RemoveEveryWhereTestCase extends WP_UnitTestCase {
 	}
 
 	function test_comment_feed_403() {
-		Functions::when( 'is_comment_feed' )->justReturn( true );
-		Functions::expect( 'wp_die' )->once();
+		\Brain\Monkey\Functions\when( 'is_comment_feed' )->justReturn( true );
+		\Brain\Monkey\Functions\expect( 'wp_die' )->once();
 		$this->plugin_instance->filter_query();
 	}
 
 	function test_admin_bar_filter() {
-		Functions::when( 'is_admin_bar_showing' )->justReturn( true );
+		\Brain\Monkey\Functions\when( 'is_admin_bar_showing' )->justReturn( true );
 		add_action( 'admin_bar_menu', 'wp_admin_bar_comments_menu', 60 );
 		$this->plugin_instance->filter_admin_bar();
 		$this->assertFalse( has_action( 'admin_bar_menu', 'wp_admin_bar_comments_menu' ) );
