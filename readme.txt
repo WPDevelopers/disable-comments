@@ -1,15 +1,15 @@
 === Disable Comments ===
 Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, solarissmoke, garrett-eclipse
 Donate link: https://wpdeveloper.net/
-Tags: comments, disable, global, disable comments, delete comments, stop spam, bulk comment delete, comment management
+Tags: comments, disable, disable comments, delete comments, stop spam, bulk comment delete, comment management, global, stop comment
 Requires at least: 5.0
 Tested up to: 5.5
 Requires PHP: 5.4
-Stable tag: 1.10.3
+Stable tag: 1.11.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly. Provides tool to delete all comments or according to post type.
+Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly. Provides tool to delete comments according to post type.
 
 == Description ==
 
@@ -37,6 +37,7 @@ The plugin provides the option to **completely disable the commenting feature in
 * All comment RSS/Atom feeds are disabled (and requests for these will be redirected to the parent post);
 * The X-Pingback HTTP header is removed from all pages;
 * Outgoing pingbacks are disabled.
+* **[New]** Delete comments by type.
 
 **Please delete any existing comments on your site before applying this setting, otherwise (depending on your theme) those comments may still be displayed to visitors. You can use the Delete Comments tool to delete any existing comments on your site.**
 
@@ -51,7 +52,7 @@ Some of the plugin's behaviour can be modified by site administrators and plugin
 These definitions can be made either in your main `wp-config.php` or in your theme's `functions.php` file.
 
 
-### This plugin is maintained by the [WPDeveloper](https://wpdeveloper.net/).
+### This plugin is now maintained by the Team [WPDeveloper](https://wpdeveloper.net/).
 
 
 ### 💙 LOVED Disable Comments?
@@ -141,6 +142,11 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
+
+= [1.11.0] - 2020-08-22 =
+* Introducing Delete Comment by Type - Contribution by garretthyder
+* PHP 7.4 Tested
+* WordPress 5.5 Compatible Tested
 
 = [1.10.3] - 2020-07-29 =
 * Minor fix - changelog backported.
@@ -279,4 +285,4 @@ This will be maiintained from August 19, 2020 - @asif2bd
 
 == Upgrade Notice ==
 
-Minor Update: Bug Fix
+Minor Update: Tools update
