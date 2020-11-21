@@ -194,6 +194,7 @@ class Disable_Comments
 		// Filters for the admin only.
 		if (is_admin()) {
 			if ($this->networkactive) {
+				add_action('network_admin_menu', array($this, 'settings_menu'));
 				add_filter('network_admin_plugin_action_links', array($this, 'plugin_actions_links'), 10, 2);
 			} else {
 				add_action('admin_menu', array($this, 'settings_menu'));
@@ -354,7 +355,7 @@ class Disable_Comments
 	 */
 	private function settings_page_url()
 	{
-		$base = admin_url('admin.php');
+		$base = $this->networkactive ? network_admin_url('admin.php') : admin_url('admin.php');
 		return add_query_arg('page', DC_PLUGIN_SLUG, $base);
 	}
 
