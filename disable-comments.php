@@ -354,17 +354,8 @@ class Disable_Comments
 	 */
 	private function settings_page_url()
 	{
-		$base = $this->networkactive ? network_admin_url('settings.php') : admin_url('options-general.php');
-		return add_query_arg('page', 'disable_comments_settings', $base);
-	}
-
-	/**
-	 * Return context-aware tools page URL
-	 */
-	private function tools_page_url()
-	{
-		$base = $this->networkactive ? network_admin_url('settings.php') : admin_url('tools.php');
-		return add_query_arg('page', 'disable_comments_tools', $base);
+		$base = admin_url('admin.php');
+		return add_query_arg('page', DC_PLUGIN_SLUG, $base);
 	}
 
 	public function setup_notice()
@@ -463,8 +454,7 @@ class Disable_Comments
 		if ($file == $plugin && current_user_can('manage_options')) {
 			array_unshift(
 				$links,
-				sprintf('<a href="%s">%s</a>', esc_attr($this->settings_page_url()), __('Settings', 'disable-comments')),
-				sprintf('<a href="%s">%s</a>', esc_attr($this->tools_page_url()), __('Tools', 'disable-comments'))
+				sprintf('<a href="%s">%s</a>', esc_attr($this->settings_page_url()), __('Settings', 'disable-comments'))
 			);
 		}
 
