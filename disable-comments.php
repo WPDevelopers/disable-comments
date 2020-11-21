@@ -37,6 +37,10 @@ class Disable_Comments
 
 	function __construct()
 	{
+		define('DC_PLUGIN_SLUG', 'disable-comments');
+		define('DC_PLUGIN_ROOT_URI', plugins_url("/", __FILE__));
+		define('DC_ASSETS_URI', DC_PLUGIN_ROOT_URI . 'assets/');
+
 		// are we network activated?
 		$this->networkactive = (is_multisite() && array_key_exists(plugin_basename(__FILE__), (array) get_site_option('active_sitewide_plugins')));
 
@@ -152,6 +156,8 @@ class Disable_Comments
 		add_action('wp_loaded', array($this, 'init_wploaded_filters'));
 		// Disable "Latest comments" block in Gutenberg.
 		add_action('enqueue_block_editor_assets', array($this, 'filter_gutenberg_blocks'));
+		// settings page assets
+		add_action('admin_enqueue_scripts', array($this, 'settings_page_assets'));
 	}
 
 	public function register_text_domain()
@@ -302,7 +308,17 @@ class Disable_Comments
 	 */
 	public function disable_comments_script()
 	{
-		wp_enqueue_script('disable-comments-gutenberg', plugin_dir_url(__FILE__) . 'assets/disable-comments.js', array(), false, true);
+		wp_enqueue_script('disable-comments-gutenberg', plugin_dir_url(__FILE__) . 'assets/js/disable-comments.js', array(), false, true);
+	}
+
+	/**
+	 * Enqueues Scripts for Settings Page
+	 */
+	public function settings_page_assets($hook_suffix)
+	{
+		if ($hook_suffix !== 'toplevel_page_' . DC_PLUGIN_SLUG) return;
+		// css
+		wp_enqueue_style('disable-comments-style',  DC_ASSETS_URI . 'css/style.css', [], false);
 	}
 
 	/**
@@ -457,8 +473,8 @@ class Disable_Comments
 
 	public function settings_menu()
 	{
-		$title = _x('Disable Comments', 'settings menu title', 'disable-comments');
-		add_menu_page($title, $title, 'manage_options', 'disable_comments_settings', array($this, 'settings_page'));
+		$title = __('Disable Comments', 'disable-comments');
+		add_menu_page($title, $title, 'manage_options', DC_PLUGIN_SLUG, array($this, 'settings_page'));
 	}
 
 	public function settings_page()

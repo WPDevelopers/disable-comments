@@ -1,0 +1,58 @@
+
+
+.dc-tutorials {
+    border-radius: 5px;
+    max-width: 450px;
+    h3 {
+        font-size: 2.4rem;
+        font-weight: 700;
+        color: $dark;
+        font-family: $bodyFont;
+        margin-bottom: 30px;
+    }
+    .tutorial__list {
+        .tutorial__item {
+            display: flex;
+            &:not(:last-child) {
+                margin-bottom: 30px;
+            }
+            .icon {
+                flex: 0 0 70px;
+                height: 70px;
+                border-radius: 5px;
+                background: $grey;
+                padding: 15px;
+                margin-right: 15px;
+                svg {
+                    path {
+                        fill: $grey3;
+                        transition: all .3s ease;
+                    }
+                }
+            }
+            h4 {
+                font-size: 1.6rem;
+                line-height: 1.8;
+                font-weight: 500;
+                color: $grey3;
+                font-family: $bodyFont;
+                transition: all .3s ease;
+                @include respond-below(xxl) {
+                    font-size: 1.4rem;
+                }
+            }
+            &:hover {
+                .icon {
+                    svg {
+                        path {
+                            fill: $success;
+                        }
+                    }
+                }
+                h4 {
+                    color: $dark;
+                }
+            }
+        }
+    }
+}

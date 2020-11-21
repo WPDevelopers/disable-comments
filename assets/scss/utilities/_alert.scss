@@ -1,0 +1,39 @@
+
+
+.disable__comment__alert {
+    display: flex;
+    align-items: center;
+    @include respond-below(sm) {
+        display: block;
+        .button__group {
+            margin-top: 20px;
+        }
+    }
+    .alert__content {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        padding-right: 20px;
+        @include respond-below(sm) {
+            padding-right: 0;
+        }
+        @include respond-below(xs) {
+            display: block;
+        }
+        img {
+            margin-right: 15px;
+            @include respond-below(xs) {
+                margin-bottom: 10px;
+            }
+        }
+        p {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: $dark;
+            font-family: $bodyFont;
+        }
+    }
+    .button__group {
+        flex: 0 0 208px;
+    }
+}

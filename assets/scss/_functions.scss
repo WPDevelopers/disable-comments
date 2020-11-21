@@ -1,0 +1,17 @@
+// color lightness check
+@function set-text-color($color, $opacity: 1) {
+	@if (lightness($color) > 80) {
+		@return rgba($dark, $opacity);
+	} @else {
+		@return rgba($white, $opacity);
+	}
+}
+
+// button lightness control
+@function set-button-color($color, $opacity: 1) {
+	@if (lightness($color) > 80) {
+		@return rgba($primary, $opacity);
+	} @else {
+		@return rgba($white, $opacity);
+	}
+}

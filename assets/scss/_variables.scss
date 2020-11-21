@@ -1,0 +1,131 @@
+:root{
+	--base-gutter: 30px;
+	--md-gutter: 50px;
+	--lg-gutter: 70px;
+	--xl-gutter: 100px;
+	--base-spacer-x: 16px;
+	--base-spacer-y: 16px;
+	--b-radius-6: 25px;
+	@include respond-below(xxl){
+		--base-gutter: 20px;
+		--md-gutter: 30px;
+		--lg-gutter: 50px;
+		--xl-gutter: 70px;
+	}
+	@include respond-below(xl){
+		--base-gutter: 20px;
+		--md-gutter: 30px;
+		--lg-gutter: 40px;
+		--xl-gutter: 50px;
+	}
+    @include respond-below(lg){
+		--base-spacer-x: 10px;
+		--base-spacer-y: 10px;
+		--md-gutter: 20px;
+		--lg-gutter: 30px;
+		--xl-gutter: 40px;
+    }
+    @include respond-below(md){
+		--base-spacer-x: 5px;
+		--base-spacer-y: 5px;
+		--md-gutter: 20px;
+		--lg-gutter: 30px;
+		--xl-gutter: 40px;
+    }
+}
+
+// opacity
+$alert-opacity: 0.1;
+$shadow-opacity: 0.3;
+
+// border-radius
+$b-radius-1: 3px;
+$b-radius-2: 5px;
+$b-radius-3: 10px;
+$b-radius-4: 15px;
+$b-radius-5: 20px;
+$b-radius-50: 50px;
+$b-radius-100: 100%;
+
+// Fonts
+$bodyFont: 'DM Sans', sans-serif;
+
+// color
+$primary: #623cea !default;
+$secondary: #fa7d51 !default;
+$success: #05cb6b !default;
+$danger: #e0061a !default;
+$info: #00b2fc !default;
+$dark: #22282d !default;
+$white: #ffffff !default;
+$black: #000000 !default;
+$grey: #f4f6fc !default;
+$grey2: #808da1 !default;
+$grey3: #687b95 !default;
+$darkGrey: #99a6b8 !default;
+$twitter: #1da1f2 !default;
+$linkedin: #0077b5 !default;
+$instagram: #e1306c !default;
+
+// template color
+// $template-color: #687b95; 
+
+// theme-color
+$theme-colors: () !default;
+$theme-colors: map-merge(
+	(
+		'primary': $primary,
+		'secondary': $secondary,
+		'success': $success,
+		'danger': $danger,
+		'info': $info,
+		'dark': $dark,
+		'white': $white,
+		'black': $black,
+		'grey': $grey,
+		'grey2': $grey2,
+		'twitter': $twitter,
+		'linkedin': $linkedin,
+		'instagram': $instagram,
+	),
+	$theme-colors
+);
+
+$spacers: (
+	'0-5': (
+		x:   calc( 0.5 * var(--base-spacer-x)),
+		y:   calc( 0.5 * var(--base-spacer-x)),
+	),
+	'1': (
+		x:   calc( 1 * var(--base-spacer-x)),
+		y:   calc( 1 * var(--base-spacer-x)),
+	),
+	'1-5': (
+		x:   calc( 1.5 * var(--base-spacer-x)),
+		y:   calc( 1.5 * var(--base-spacer-x)),
+	),
+	'2': (
+		x:   calc( 2 * var(--base-spacer-x)),
+		y:   calc( 2 * var(--base-spacer-y)),
+	),
+	'2-5': (
+		x:   calc( 2.5 * var(--base-spacer-x)),
+		y:   calc( 2.5 * var(--base-spacer-y)),
+	),
+	'3': (
+		x:   calc( 3 * var(--base-spacer-x)),
+		y:   calc( 3 * var(--base-spacer-y)),
+	),
+	'3-5': (
+		x:   calc( 3.5 * var(--base-spacer-x)),
+		y:   calc( 3.5 * var(--base-spacer-y)),
+	),
+	'4': (
+		x:   calc( 4 * var(--base-spacer-x)),
+		y:   calc( 4 * var(--base-spacer-x)),
+	),
+	'5': (
+		x:   calc( 5 * var(--base-spacer-x)),
+		y:   calc( 5 * var(--base-spacer-x)),
+	),
+);

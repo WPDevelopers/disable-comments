@@ -1,0 +1,14 @@
+@mixin transition($for: all, $duration: 0.3s, $type: ease-in-out, $delay: 0s) {
+	$prefixes: (webkit, moz, ms, o);
+	@each $prefix in $prefixes {
+		#{'-' + $prefix + '-transition'}: $for $duration $type $delay;
+	}
+	transition: $for $duration $type $delay;
+}
+@mixin transition-properties($for...) {
+	$prefixes: (webkit, moz, ms, o);
+	@each $prefix in $prefixes {
+		#{'-' + $prefix + '-transition-property'}: $for;
+	}
+	transition-property: $for;
+}

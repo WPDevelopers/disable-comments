@@ -1,0 +1,50 @@
+// content color
+@mixin color-emphasis-variant($parent, $color) {
+	#{$parent} {
+		color: $color !important;
+	}
+	a#{$parent} {
+		@include hover-focus {
+			@if $color != #000000 {
+				color: darken($color, 10%);
+				box-shadow: none;
+			}
+		}
+	}
+}
+
+// content background
+@mixin background-emphasis-variant($parent, $color) {
+	#{$parent} {
+		background-color: $color !important; 
+	}
+}
+
+
+// gradient background
+@mixin gradient-emphasis-variant($parent, $color, $to: bottom left) {
+	#{$parent} {
+        background-image: linear-gradient(180deg, rgba($color, 0.3), rgba($color, 0.05));
+		color: $color;
+	}
+}
+
+
+// counter card
+@mixin counter-emphasis-variant($parent, $color) {
+	#{$parent} {
+		.counter__card--icon{
+			color: set-text-color($color);
+			background: $color;
+			&:before{
+				background: $color;
+			}
+		}
+		.counter__card--content{
+			.count__number{
+				color: $color;
+			}
+		}
+	}
+}
+

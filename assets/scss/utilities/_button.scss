@@ -1,0 +1,56 @@
+// import files
+@import '../mixins/button';
+
+
+// button color control
+@each $parent, $color in $theme-colors {
+	@include button-emphasis-variant('.button__#{$parent}', $color);
+}
+
+.template--wrapper {
+	.button {
+		height: 50px;
+		line-height: 50px;
+		padding: 0;
+		border-radius: 5px;
+		color: $grey2;
+		font-size: 1.5rem;
+		border: 0;
+		font-weight: 700;
+		padding: 0 20px;
+		box-shadow: none;
+		font-family: $bodyFont;
+		&:hover,
+		&:focus {
+			box-shadow: none;
+			border: 0;
+			color: $white;
+			background: $success;
+		}
+		@include respond-below(md) {
+			height: 50px;
+			line-height: 46px;
+			font-size: 1.3rem;
+		}
+	}
+
+	.button__success {
+		color: $white;
+		&:hover,
+		&:focus {
+			background: rgba($success, .9);
+			color: $white;
+		}	
+	}
+
+	.button--sm {
+		height: 40px;
+		line-height: 40px;
+	}
+
+	.button__group {
+		.button:not(:last-child) {
+			margin-right: 15px;
+		}
+	}
+}

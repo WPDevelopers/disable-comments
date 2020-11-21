@@ -1,0 +1,23 @@
+
+
+$p-list: 50, 70, 110, 120, 150, 200, 300;
+
+@each $padding in $p-list {
+  .pt#{$padding} {
+    padding-top: $padding + px;
+  }
+  .pb#{$padding} {
+    padding-bottom: $padding + px;
+  }
+}
+
+$m-list: 20, 30, 50;
+
+@each $margin in $m-list {
+  .mt#{$margin} {
+    margin-top: $margin + px;
+  }
+  .mb#{$margin} {
+    margin-bottom: $margin + px;
+  }
+}

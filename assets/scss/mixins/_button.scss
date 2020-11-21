@@ -1,0 +1,77 @@
+// Button design
+@mixin button-emphasis-variant($parent, $color) {
+	#{$parent} {
+		&:not(.hover__highlight){
+			background: $color;
+			color: set-button-color($color);
+			border-color: $color;
+			@include transition;
+			@include transition-properties(background, color, box-shadow, border);
+			&:disabled{
+				cursor: not-allowed;
+				background: $secondary;
+			}
+			.icon{
+				color: $color;
+				background: set-button-color($color);
+			}
+		}
+		&.hover__highlight{
+			color: $primary;
+			border-color: rgba($primary, 0.2);
+			.icon{
+				background: $primary;
+				color: $white;
+			}
+		}
+	}
+
+	a#{$parent},
+	button#{$parent} {
+		&.active,
+		&:hover {
+			&:disabled{
+				cursor: not-allowed;
+				background: $secondary;
+				box-shadow: none;
+			}
+			@if $color != #000000 {
+				background: darken($color, 5%) ;
+				color: set-button-color($color);
+				border-color: darken($color, 5%) ;
+				text-shadow: 0 1px 1px rgba(set-button-color($color), 0.3);
+			}
+		}
+		&.hover__highlight{
+			&:hover {
+				.icon{
+					background: set-button-color($color);
+					color: $color;
+				}
+			}
+		}
+	}
+}
+
+
+// alert design
+@mixin alert-emphasis-variant($parent, $color) {
+	#{$parent} {
+		background: rgba($color, $alert-opacity) ;
+		color: $color;
+		border-color: transparent ;
+		@include transition;
+		@include transition-properties(background, color, box-shadow, border);
+	}
+	a#{$parent},
+	button#{$parent} {
+		&.active,
+		&:hover {
+			@if $color != #000000 {
+				background: $color;
+				color: set-text-color($color);
+				border-color: transparent;
+			}
+		}
+	}
+}
