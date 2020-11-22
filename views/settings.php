@@ -2,11 +2,11 @@
     <div class="dc-text__block disable__comment__alert mb30">
         <div class="alert__content">
             <img src="<?php echo DC_ASSETS_URI; ?>img/icon-logo.png" alt="">
-            <p>Want to help make Disable Comments even better?</p>
+            <p><?php _e('Want to help make Disable Comments even better?', 'disable-comments') ?></p>
         </div>
         <div class="button__group">
-            <a href="#" class="button button--sm button__success">Sure</a>
-            <a href="#" class="button button--sm">No Thanks</a>
+            <a href="#" class="button button--sm button__success"><?php _e('Sure', 'disable-comments'); ?></a>
+            <a href="#" class="button button--sm"><?php _e('No Thanks', 'disable-comments'); ?></a>
         </div>
     </div>
     <div class="disable__comment_block">
@@ -14,10 +14,10 @@
             <p class="plugin__version">Version 5.1.1</p>
             <ul class="disable__comment__nav">
                 <li class="disable__comment__nav__item">
-                    <a href="#" class="disable__comment__nav__link active">Disable Comments</a>
+                    <a href="#" class="disable__comment__nav__link active"><?php _e('Disable Comments', 'disable-comments'); ?></a>
                 </li>
                 <li class="disable__comment__nav__item">
-                    <a href="#" class="disable__comment__nav__link">Delete Comments</a>
+                    <a href="#" class="disable__comment__nav__link"><?php _e('Delete Comments', 'disable-comments'); ?></a>
                 </li>
             </ul>
         </div>

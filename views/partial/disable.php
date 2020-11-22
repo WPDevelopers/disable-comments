@@ -2,16 +2,16 @@
     <input type="hidden" name="action" value="disable_comments_save_settings">
     <?php wp_nonce_field('disable_comments_save_settings', 'dc_settings_nonce'); ?>
     <div class="disable__comment__option mb50">
-        <h3 class="title">Settings</h3>
-        <p class="subtitle">Configure the settings below to disable comments globally or on specific types of post</p>
+        <h3 class="title"><?php _e('Settings', 'disable-comments'); ?></h3>
+        <p class="subtitle"><?php _e('Configure the settings below to disable comments globally or on specific types of post', 'disable-comments'); ?></p>
         <div class="disable_option dc-text__block mb30 mt30">
             <input type="radio" id="remove_everywhere" name="mode" value="<?php echo esc_attr('remove_everywhere') ?>" <?php checked($this->options['remove_everywhere']); ?> />
-            <label for="remove_everywhere">Everywhere: <span>Disable comments globally on your entire website</span></label>
-            <p class="disable__option__description"><span class="danger">Warnings:</span> This will disable comments from every page and post on your website. Use this setting if you do not want to show comments anywhere</p>
+            <label for="remove_everywhere"><?php _e('Everywhere:', 'disable-comments'); ?> <span><?php _e('Disable comments globally on your entire website', 'disable-comments'); ?></span></label>
+            <p class="disable__option__description"><span class="danger"><?php _e('Warnings:', 'disable-comments'); ?></span> <?php _e('This will disable comments from every page and post on your website. Use this setting if you do not want to show comments anywhere', 'disable-comments'); ?></p>
         </div>
         <div class="disable_option dc-text__block">
             <input type="radio" id="selected_types" name="mode" value="<?php echo esc_attr('selected_types'); ?>" <?php checked(!$this->options['remove_everywhere']); ?> />
-            <label for="selected_types">On Specific Post Types:</label>
+            <label for="selected_types"><?php _e('On Specific Post Types:', 'disable-comments'); ?></label>
             <div class="remove__checklist">
                 <?php
                 $types = $this->get_all_post_types();
@@ -30,37 +30,37 @@
                 <?php endif; ?>
                 <p class="indent"><?php _e('Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts.', 'disable-comments'); ?></p>
             </div>
-            <p class="disable__option__description">This will disable comments from the selected post type(s) only. Comments will be visible on all other post types</p>
+            <p class="disable__option__description"><?php _e('This will disable comments from the selected post type(s) only. Comments will be visible on all other post types', 'disable-comments'); ?></p>
         </div>
     </div>
     <div class="disable__comment__option mb50">
-        <h3 class="title">Disable Comments With API</h3>
-        <p class="subtitle">You can disable comments made on your website using WordPress specifications</p>
+        <h3 class="title"><?php _e('Disable Comments With API', 'disable-comments'); ?></h3>
+        <p class="subtitle"><?php _e('You can disable comments made on your website using WordPress specifications', 'disable-comments'); ?></p>
         <div class="disable_option dc-text__block mt30">
             <div class="disable__switchs">
                 <div class="dissable__switch__item">
                     <input type="checkbox" id="switch-xml" checked>
                     <label for="switch-xml">
                         <span class="switch">
-                            <span class="switch__text on">On</span>
-                            <span class="switch__text off">Off</span>
+                            <span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
+                            <span class="switch__text off"><?php _e('Off', 'disable-comments'); ?></span>
                         </span>
-                        Disable Comments via XML-RPC
+                        <?php _e('Disable Comments via XML-RPC', 'disable-comments'); ?>
                     </label>
                 </div>
                 <div class="dissable__switch__item">
                     <input type="checkbox" id="switch-api">
                     <label for="switch-api">
                         <span class="switch">
-                            <span class="switch__text on">On</span>
-                            <span class="switch__text off">Off</span>
-                        </span>Disable Comments via REST API
+                            <span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
+                            <span class="switch__text off"><?php _e('Off', 'disable-comments'); ?></span>
+                        </span><?php _e('Disable Comments via REST API', 'disable-comments'); ?>
                     </label>
                 </div>
             </div>
-            <p class="disable__option__description">Turning on these settings will disable any comments made on your website via XML-RPC or REST API specifications</p>
+            <p class="disable__option__description"><?php _e('Turning on these settings will disable any comments made on your website via XML-RPC or REST API specifications', 'disable-comments'); ?></p>
         </div>
     </div>
     <!-- save -->
-    <button class="button button__success">Save Changes</button>
+    <button class="button button__success"><?php _e('Save Changes', 'disable-comments'); ?></button>
 </form>

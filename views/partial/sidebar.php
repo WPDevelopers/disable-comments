@@ -1,6 +1,6 @@
 <div class="sidebar__widget__wrap">
     <div class="dc-tutorials dc-text__block mb50">
-        <h3>Read Our Tutorials</h3>
+        <h3><?php _e('Read Our Tutorials', 'disable-comments'); ?></h3>
         <div class="tutorial__list">
             <div class="tutorial__item">
                 <div class="icon">
@@ -23,7 +23,7 @@
                         </g>
                     </svg>
                 </div>
-                <h4><a href="#">What Does This Disable Comments Plugin Do</a></h4>
+                <h4><a href="#"><?php _e('What Does This Disable Comments Plugin Do', 'disable-comments'); ?></a></h4>
             </div>
             <div class="tutorial__item">
                 <div class="icon">
@@ -46,7 +46,7 @@
                         </g>
                     </svg>
                 </div>
-                <h4><a href="#">What Does This Disable Comments Plugin Do</a></h4>
+                <h4><a href="#"><?php _e('What Does This Disable Comments Plugin Do', 'disable-comments'); ?></a></h4>
             </div>
             <div class="tutorial__item">
                 <div class="icon">
@@ -69,7 +69,7 @@
                         </g>
                     </svg>
                 </div>
-                <h4><a href="#">What Does This Disable Comments Plugin Do</a></h4>
+                <h4><a href="#"><?php _e('What Does This Disable Comments Plugin Do', 'disable-comments'); ?></a></h4>
             </div>
         </div>
     </div>
@@ -79,7 +79,7 @@
             <a href="#" class="play__btn"><span></span></a>
         </div>
         <div class="blog__post__content">
-            <h4><a href="#">How to Disable Comments in WordPress & Stop The Spammers</a></h4>
+            <h4><a href="#"><?php _e('How to Disable Comments in WordPress & Stop The Spammers', 'disable-comments'); ?></a></h4>
         </div>
     </article>
 </div>
