@@ -157,6 +157,16 @@ class Disable_Comments
 			add_filter('rest_endpoints', array($this, 'filter_rest_endpoints'));
 		}
 
+		// remove create comment via xmlrpc
+		if (isset($this->options['remove_xmlrpc_comments']) && intval($this->options['remove_xmlrpc_comments']) === 1) {
+			add_filter('xmlrpc_methods', array($this, 'disable_xmlrc_comments'));
+		}
+		// rest API Comment Block
+		if (isset($this->options['remove_rest_API_comments']) && intval($this->options['remove_rest_API_comments']) === 1) {
+			add_filter('rest_pre_insert_comment', array($this, 'disable_rest_API_comments'));
+		}
+
+
 		// These can happen later.
 		add_action('plugins_loaded', array($this, 'register_text_domain'));
 		add_action('wp_loaded', array($this, 'init_wploaded_filters'));
@@ -263,6 +273,20 @@ class Disable_Comments
 	{
 		unset($headers['X-Pingback']);
 		return $headers;
+	}
+
+	/**
+	 * remove method wp.newComment
+	 */
+	public function disable_xmlrc_comments($methods)
+	{
+		unset($methods['wp.newComment']);
+		return $methods;
+	}
+
+	public function disable_rest_API_comments($prepared_comment, $request)
+	{
+		return;
 	}
 
 	/**
@@ -542,6 +566,11 @@ class Disable_Comments
 				$extra_post_types                  = array_filter(array_map('sanitize_key', explode(',', $_POST['extra_post_types'])));
 				$this->options['extra_post_types'] = array_diff($extra_post_types, array_keys($post_types)); // Make sure we don't double up builtins.
 			}
+			// xml rpc
+			$this->options['remove_xmlrpc_comments'] = (isset($_POST['remove_xmlrpc_comments']) ? intval($_POST['remove_xmlrpc_comments']) : 0);
+			// rest api comments
+			$this->options['remove_rest_API_comments'] = (isset($_POST['remove_rest_API_comments']) ? intval($_POST['remove_rest_API_comments']) : 0);
+
 			// save settings
 			$this->update_options();
 		}

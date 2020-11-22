@@ -39,7 +39,7 @@
         <div class="disable_option dc-text__block mt30">
             <div class="disable__switchs">
                 <div class="dissable__switch__item">
-                    <input type="checkbox" id="switch-xml" checked>
+                    <input type="checkbox" id="switch-xml" name="remove_xmlrpc_comments" value="1" <?php checked((isset($this->options['remove_xmlrpc_comments']) ? $this->options['remove_xmlrpc_comments'] : 0)); ?>>
                     <label for="switch-xml">
                         <span class="switch">
                             <span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
@@ -49,7 +49,7 @@
                     </label>
                 </div>
                 <div class="dissable__switch__item">
-                    <input type="checkbox" id="switch-api">
+                    <input type="checkbox" id="switch-api" name="remove_rest_API_comments" value="1" <?php checked((isset($this->options['remove_rest_API_comments']) ? $this->options['remove_rest_API_comments'] : 0)); ?>>
                     <label for="switch-api">
                         <span class="switch">
                             <span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
