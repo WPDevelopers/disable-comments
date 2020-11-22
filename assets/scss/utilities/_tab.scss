@@ -6,7 +6,7 @@
     position: relative;
     .plugin__version {
         position: absolute;
-        font-size: 1.6rem;
+        font-size: 1.6em;
         font-weight: 500;
         color: $grey3;
         font-family: $bodyFont;
@@ -27,7 +27,7 @@
         .disable__comment__nav__item {
             margin-bottom: 0;
             .disable__comment__nav__link {
-                font-size: 2.4rem;
+                font-size: 2.4em;
                 font-weight: 700;
                 color: $grey3;
                 font-family: $bodyFont;
@@ -52,14 +52,14 @@
         @include respond-below(md) {
             .disable__comment__nav__item {
                 .disable__comment__nav__link {
-                    font-size: 1.8rem;
+                    font-size: 1.8em;
                 }
             }
         }
         @include respond-below(xs) {
             .disable__comment__nav__item {
                 .disable__comment__nav__link {
-                    font-size: 1.6rem;
+                    font-size: 1.6em;
                 }
             }
         }
@@ -79,14 +79,14 @@
 
 .disable__comment__option {
     .title {
-        font-size: 2.4rem;
+        font-size: 2.4em;
         font-weight: 500;
         color: $dark;
         margin-bottom: 15px;
     }
     .subtitle {
         color: $grey3;
-        font-size: 1.4rem;
+        font-size: 1.4em;
         font-family: $bodyFont;
         font-weight: 400;
         padding-left: 0;
@@ -110,7 +110,7 @@
             }
         }
         input[type="radio"] ~ label {
-            font-size: 1.8rem;
+            font-size: 1.8em;
             font-weight: 500;
             color: $dark;
             font-family: $bodyFont;
@@ -143,7 +143,7 @@
                 transition: all .3s ease;
             }
             span {
-                font-size: 1.6rem;
+                font-size: .88em;
                 font-weight: 400;
                 color: $grey3;
             }
@@ -169,7 +169,7 @@
                     }
                 }
                 label {
-                    font-size: 1.8rem;
+                    font-size: 1.8em;
                     font-weight: 500;
                     color: $grey3;
                     font-family: $bodyFont;
@@ -224,12 +224,15 @@
                     }
                 }
                 label {
-                    font-size: 1.8rem;
+                    font-size: 1.8em;
                     font-weight: 500;
                     color: $grey3;
                     font-family: $bodyFont;
                     display: inline-flex;
                     align-items: center;
+                    @include respond-below(xxs) {
+                        font-size: 1.4em;
+                    }
                     .switch {
                         flex: 0 0 44px;
                         height: 20px;
@@ -238,7 +241,7 @@
                         border-radius: 10px;
                         background: $darkGrey;
                         display: inline-block;
-                        font-size: 1rem;
+                        font-size: .55em;
                         text-transform: uppercase;
                         font-weight: 400;
                         color: $white;
@@ -246,6 +249,9 @@
                         padding: 2px 5px;
                         position: relative;
                         transition: all .3s ease;
+                        @include respond-below(xxs) {
+                            font-size: .714em;
+                        }
                         &:before {
                             position: absolute;
                             top: 4px;
@@ -291,7 +297,7 @@
                     padding-left: 3px;
                 }
                 a {
-                    font-size: 1.8rem;
+                    font-size: 1.8em;
                     font-weight: 500;
                     color: $grey3;
                     outline: none;
@@ -300,7 +306,7 @@
             }
         }
         .disable__option__description {
-            font-size: 1.6rem;
+            font-size: 1.6em;
             font-weight: 400;
             color: $grey3;
             font-family: $bodyFont;

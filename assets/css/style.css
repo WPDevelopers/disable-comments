@@ -43,24 +43,8 @@
   }
 }
 
-::selection {
-  color: #ffffff;
-  background: rgba(98, 60, 234, 0.8);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  outline: none;
-  border: none;
-  box-sizing: border-box;
-}
-
-html {
-  font-size: 62.5%;
-}
-
-body {
+.disablecommentswrap {
+  font-size: 10px;
   font-family: "DM Sans", sans-serif;
   line-height: 1.7;
   font-weight: 400;
@@ -68,50 +52,9 @@ body {
   min-height: 100vh;
   background: #ffffff;
   color: #000000;
-  -webkit-font-smoothing: antialiased;
-  -moz-font-smoothing: antialiased;
-  -ms-font-smoothing: antialiased;
-  -o-font-smoothing: antialiased;
-  font-smoothing: antialiased;
-  -webkit-text-rendering: optimizeLegibility;
-  -moz-text-rendering: optimizeLegibility;
-  -ms-text-rendering: optimizeLegibility;
-  -o-text-rendering: optimizeLegibility;
-  text-rendering: optimizeLegibility;
-  -webkit-scroll-behavior: smooth;
-  -moz-scroll-behavior: smooth;
-  -ms-scroll-behavior: smooth;
-  -o-scroll-behavior: smooth;
-  scroll-behavior: smooth;
-}
-body::-webkit-scrollbar {
-  width: 10px;
-}
-body::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px rgba(250, 125, 81, 0.1);
-  background-image: linear-gradient(to right bottom, rgba(98, 60, 234, 0.3), rgba(0, 178, 252, 0.3));
-}
-body::-webkit-scrollbar-thumb {
-  border-radius: 5px;
-  background-image: linear-gradient(to right bottom, rgba(98, 60, 234, 0.8), rgba(0, 178, 252, 0.8));
-}
-@media (max-width: 1599.98px) {
-  body {
-    font-size: 16px;
-  }
-}
-@media (max-width: 1399.98px) {
-  body {
-    font-size: 14px;
-  }
-}
-@media (max-width: 1199.98px) {
-  body {
-    font-size: 13px;
-  }
-}
-
-.template--wrapper {
+  outline: none;
+  border: none;
+  box-sizing: border-box;
   overflow: hidden;
   -webkit-display: flex;
   -moz-display: flex;
@@ -122,53 +65,53 @@ body::-webkit-scrollbar-thumb {
   -o-flex-direction: column;
   flex-direction: column;
 }
-
-ul,
-li {
+.disablecommentswrap * {
+  box-sizing: border-box;
+}
+.disablecommentswrap ::selection {
+  color: #ffffff;
+  background: rgba(98, 60, 234, 0.8);
+}
+.disablecommentswrap ul,
+.disablecommentswrap li {
   list-style: none;
 }
-
-a {
+.disablecommentswrap a {
   color: initial;
   transition: all 0.3s linear;
   text-decoration: none;
   display: inline-block;
 }
-
-label {
+.disablecommentswrap label {
   margin-bottom: 0;
 }
-
-.button {
+.disablecommentswrap .button {
   vertical-align: middle;
-  background: unset;
   font-family: "DM Sans", sans-serif;
-  font-weight: 500 !important;
+  font-weight: 500;
 }
-.button:hover, .button:focus {
+.disablecommentswrap .button:hover, .disablecommentswrap .button:focus {
   outline: none;
 }
-.button:not(:disabled) {
+.disablecommentswrap .button:not(:disabled) {
   cursor: pointer;
 }
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
+.disablecommentswrap h1,
+.disablecommentswrap h2,
+.disablecommentswrap h3,
+.disablecommentswrap h4,
+.disablecommentswrap h5,
+.disablecommentswrap h6,
+.disablecommentswrap p {
   margin: 0;
   padding: 0;
 }
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+.disablecommentswrap h1,
+.disablecommentswrap h2,
+.disablecommentswrap h3,
+.disablecommentswrap h4,
+.disablecommentswrap h5,
+.disablecommentswrap h6 {
   font-family: "DM Sans", sans-serif;
   font-weight: 700;
   line-height: 1.3;
@@ -176,30 +119,28 @@ h6 {
   margin-bottom: 0;
   color: inherit;
 }
-h1 a,
-h2 a,
-h3 a,
-h4 a,
-h5 a,
-h6 a {
+.disablecommentswrap h1 a,
+.disablecommentswrap h2 a,
+.disablecommentswrap h3 a,
+.disablecommentswrap h4 a,
+.disablecommentswrap h5 a,
+.disablecommentswrap h6 a {
   color: inherit;
 }
-h1 a:hover,
-h2 a:hover,
-h3 a:hover,
-h4 a:hover,
-h5 a:hover,
-h6 a:hover {
+.disablecommentswrap h1 a:hover,
+.disablecommentswrap h2 a:hover,
+.disablecommentswrap h3 a:hover,
+.disablecommentswrap h4 a:hover,
+.disablecommentswrap h5 a:hover,
+.disablecommentswrap h6 a:hover {
   color: inherit;
 }
-
-ul,
-ol {
+.disablecommentswrap ul,
+.disablecommentswrap ol {
   margin-bottom: 0;
 }
-
-img,
-video {
+.disablecommentswrap img,
+.disablecommentswrap video {
   max-width: 100%;
 }
 
@@ -1180,11 +1121,11 @@ a.color__instagram:hover, a.color__instagram:focus {
   padding-right: auto;
 }
 
-.template--wrapper {
+.disablecommentswrap {
   padding: 30px 50px;
 }
 @media (max-width: 575.98px) {
-  .template--wrapper {
+  .disablecommentswrap {
     padding: 30px;
   }
 }
@@ -1837,44 +1778,46 @@ button.button__instagram.hover__highlight:hover .icon {
   color: #e1306c;
 }
 
-.template--wrapper .button {
+.disablecommentswrap .button {
   height: 50px;
   line-height: 50px;
   padding: 0;
   border-radius: 5px;
   color: #808da1;
-  font-size: 1.5rem;
+  font-size: 1.5em;
   border: 0;
   font-weight: 700;
   padding: 0 20px;
   box-shadow: none;
   font-family: "DM Sans", sans-serif;
+  background: #f4f6fc;
 }
-.template--wrapper .button:hover, .template--wrapper .button:focus {
+.disablecommentswrap .button:hover, .disablecommentswrap .button:focus {
   box-shadow: none;
   border: 0;
   color: #ffffff;
   background: #05cb6b;
 }
 @media (max-width: 991.98px) {
-  .template--wrapper .button {
+  .disablecommentswrap .button {
     height: 50px;
     line-height: 46px;
-    font-size: 1.3rem;
+    font-size: 1.3em;
   }
 }
-.template--wrapper .button__success {
+.disablecommentswrap .button__success {
   color: #ffffff;
+  background: #05cb6b;
 }
-.template--wrapper .button__success:hover, .template--wrapper .button__success:focus {
+.disablecommentswrap .button__success:hover, .disablecommentswrap .button__success:focus {
   background: rgba(5, 203, 107, 0.9);
   color: #ffffff;
 }
-.template--wrapper .button--sm {
+.disablecommentswrap .button--sm {
   height: 40px;
   line-height: 40px;
 }
-.template--wrapper .button__group .button:not(:last-child) {
+.disablecommentswrap .button__group .button:not(:last-child) {
   margin-right: 15px;
 }
 
@@ -1915,7 +1858,7 @@ button.button__instagram.hover__highlight:hover .icon {
   }
 }
 .disable__comment__alert .alert__content p {
-  font-size: 1.8rem;
+  font-size: 1.8em;
   font-weight: 500;
   color: #22282d;
   font-family: "DM Sans", sans-serif;
@@ -1929,7 +1872,7 @@ button.button__instagram.hover__highlight:hover .icon {
   margin-bottom: 50px;
 }
 .section__header h2 {
-  font-size: 2.4rem;
+  font-size: 2.4em;
   font-weight: 700;
   color: #22282d;
   font-family: "DM Sans", sans-serif;
@@ -1942,7 +1885,7 @@ button.button__instagram.hover__highlight:hover .icon {
 }
 .disable__comment__nav__wrap .plugin__version {
   position: absolute;
-  font-size: 1.6rem;
+  font-size: 1.6em;
   font-weight: 500;
   color: #687b95;
   font-family: "DM Sans", sans-serif;
@@ -1966,7 +1909,7 @@ button.button__instagram.hover__highlight:hover .icon {
   margin-bottom: 0;
 }
 .disable__comment__nav__wrap .disable__comment__nav .disable__comment__nav__item .disable__comment__nav__link {
-  font-size: 2.4rem;
+  font-size: 2.4em;
   font-weight: 700;
   color: #687b95;
   font-family: "DM Sans", sans-serif;
@@ -1989,12 +1932,12 @@ button.button__instagram.hover__highlight:hover .icon {
 }
 @media (max-width: 991.98px) {
   .disable__comment__nav__wrap .disable__comment__nav .disable__comment__nav__item .disable__comment__nav__link {
-    font-size: 1.8rem;
+    font-size: 1.8em;
   }
 }
 @media (max-width: 575.98px) {
   .disable__comment__nav__wrap .disable__comment__nav .disable__comment__nav__item .disable__comment__nav__link {
-    font-size: 1.6rem;
+    font-size: 1.6em;
   }
 }
 
@@ -2010,14 +1953,14 @@ button.button__instagram.hover__highlight:hover .icon {
 }
 
 .disable__comment__option .title {
-  font-size: 2.4rem;
+  font-size: 2.4em;
   font-weight: 500;
   color: #22282d;
   margin-bottom: 15px;
 }
 .disable__comment__option .subtitle {
   color: #687b95;
-  font-size: 1.4rem;
+  font-size: 1.4em;
   font-family: "DM Sans", sans-serif;
   font-weight: 400;
   padding-left: 0;
@@ -2040,7 +1983,7 @@ button.button__instagram.hover__highlight:hover .icon {
   opacity: 1;
 }
 .disable__comment__option .disable_option input[type=radio] ~ label {
-  font-size: 1.8rem;
+  font-size: 1.8em;
   font-weight: 500;
   color: #22282d;
   font-family: "DM Sans", sans-serif;
@@ -2074,7 +2017,7 @@ button.button__instagram.hover__highlight:hover .icon {
   transition: all 0.3s ease;
 }
 .disable__comment__option .disable_option input[type=radio] ~ label span {
-  font-size: 1.6rem;
+  font-size: 0.88em;
   font-weight: 400;
   color: #687b95;
 }
@@ -2099,7 +2042,7 @@ button.button__instagram.hover__highlight:hover .icon {
   opacity: 1;
 }
 .disable__comment__option .disable_option .disable__checklist .disable__checklist__item label {
-  font-size: 1.8rem;
+  font-size: 1.8em;
   font-weight: 500;
   color: #687b95;
   font-family: "DM Sans", sans-serif;
@@ -2150,12 +2093,17 @@ button.button__instagram.hover__highlight:hover .icon {
   display: none;
 }
 .disable__comment__option .disable_option .disable__switchs .dissable__switch__item label {
-  font-size: 1.8rem;
+  font-size: 1.8em;
   font-weight: 500;
   color: #687b95;
   font-family: "DM Sans", sans-serif;
   display: inline-flex;
   align-items: center;
+}
+@media (max-width: 479.98px) {
+  .disable__comment__option .disable_option .disable__switchs .dissable__switch__item label {
+    font-size: 1.4em;
+  }
 }
 .disable__comment__option .disable_option .disable__switchs .dissable__switch__item label .switch {
   flex: 0 0 44px;
@@ -2165,7 +2113,7 @@ button.button__instagram.hover__highlight:hover .icon {
   border-radius: 10px;
   background: #99a6b8;
   display: inline-block;
-  font-size: 1rem;
+  font-size: 0.55em;
   text-transform: uppercase;
   font-weight: 400;
   color: #ffffff;
@@ -2173,6 +2121,11 @@ button.button__instagram.hover__highlight:hover .icon {
   padding: 2px 5px;
   position: relative;
   transition: all 0.3s ease;
+}
+@media (max-width: 479.98px) {
+  .disable__comment__option .disable_option .disable__switchs .dissable__switch__item label .switch {
+    font-size: 0.714em;
+  }
 }
 .disable__comment__option .disable_option .disable__switchs .dissable__switch__item label .switch:before {
   position: absolute;
@@ -2215,14 +2168,14 @@ button.button__instagram.hover__highlight:hover .icon {
   padding-left: 3px;
 }
 .disable__comment__option .disable_option .delete__feedback .delete__feedback__item a {
-  font-size: 1.8rem;
+  font-size: 1.8em;
   font-weight: 500;
   color: #687b95;
   outline: none;
   box-shadow: none;
 }
 .disable__comment__option .disable_option .disable__option__description {
-  font-size: 1.6rem;
+  font-size: 1.6em;
   font-weight: 400;
   color: #687b95;
   font-family: "DM Sans", sans-serif;
@@ -2253,14 +2206,14 @@ button.button__instagram.hover__highlight:hover .icon {
   text-align: center;
 }
 .dc-item__card .card__content h3 {
-  font-size: 2rem;
+  font-size: 2em;
   font-weight: 500;
   font-family: "DM Sans", sans-serif;
   color: #22282d;
   margin-bottom: 10px;
 }
 .dc-item__card .card__content p {
-  font-size: 1.4rem;
+  font-size: 1.4em;
   font-weight: 400;
   color: #687b95;
   line-height: 2.14;
@@ -2272,7 +2225,7 @@ button.button__instagram.hover__highlight:hover .icon {
   max-width: 450px;
 }
 .dc-tutorials h3 {
-  font-size: 2.4rem;
+  font-size: 2.4em;
   font-weight: 700;
   color: #22282d;
   font-family: "DM Sans", sans-serif;
@@ -2280,7 +2233,7 @@ button.button__instagram.hover__highlight:hover .icon {
 }
 @media (max-width: 479.98px) {
   .dc-tutorials h3 {
-    font-size: 2rem;
+    font-size: 2em;
   }
 }
 .dc-tutorials .tutorial__list .tutorial__item {
@@ -2303,7 +2256,7 @@ button.button__instagram.hover__highlight:hover .icon {
   transition: all 0.3s ease;
 }
 .dc-tutorials .tutorial__list .tutorial__item h4 {
-  font-size: 1.6rem;
+  font-size: 1.6em;
   line-height: 1.8;
   font-weight: 500;
   color: #687b95;
@@ -2312,7 +2265,7 @@ button.button__instagram.hover__highlight:hover .icon {
 }
 @media (max-width: 1599.98px) {
   .dc-tutorials .tutorial__list .tutorial__item h4 {
-    font-size: 1.4rem;
+    font-size: 1.4em;
   }
 }
 .dc-tutorials .tutorial__list .tutorial__item:hover .icon svg path {
@@ -2368,7 +2321,7 @@ button.button__instagram.hover__highlight:hover .icon {
   padding: 5px 10px;
 }
 .blog__post .blog__post__content h4 {
-  font-size: 1.6rem;
+  font-size: 1.6em;
   font-weight: 500;
   color: #22282d;
   line-height: 1.8;
@@ -2402,7 +2355,7 @@ button.button__instagram.hover__highlight:hover .icon {
   content: "";
 }
 .footer__content .footer__nav ul li a {
-  font-size: 1.6rem;
+  font-size: 1.6em;
   font-weight: 400;
   color: #687b95;
   line-height: inherit;

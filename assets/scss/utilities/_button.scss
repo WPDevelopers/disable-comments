@@ -7,19 +7,20 @@
 	@include button-emphasis-variant('.button__#{$parent}', $color);
 }
 
-.template--wrapper {
+.disablecommentswrap {
 	.button {
 		height: 50px;
 		line-height: 50px;
 		padding: 0;
 		border-radius: 5px;
 		color: $grey2;
-		font-size: 1.5rem;
+		font-size: 1.5em;
 		border: 0;
 		font-weight: 700;
 		padding: 0 20px;
 		box-shadow: none;
 		font-family: $bodyFont;
+		background: $grey;
 		&:hover,
 		&:focus {
 			box-shadow: none;
@@ -30,12 +31,13 @@
 		@include respond-below(md) {
 			height: 50px;
 			line-height: 46px;
-			font-size: 1.3rem;
+			font-size: 1.3em;
 		}
 	}
 
 	.button__success {
 		color: $white;
+		background: $success;
 		&:hover,
 		&:focus {
 			background: rgba($success, .9);
