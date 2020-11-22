@@ -524,13 +524,13 @@ class Disable_Comments
 	{
 		$nonce = (isset($_POST['dc_settings_nonce']) ? $_POST['dc_settings_nonce'] : '');
 		if (wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
-			$this->options['remove_everywhere'] = ($_POST['mode'] == 'remove_everywhere');
+			$this->options['remove_everywhere'] = (sanitize_text_field($_POST['mode']) == 'remove_everywhere');
 			$post_types = $this->get_all_post_types();
 
 			if ($this->options['remove_everywhere']) {
 				$disabled_post_types = array_keys($post_types);
 			} else {
-				$disabled_post_types = empty($_POST['disabled_types']) ? array() : (array) $_POST['disabled_types'];
+				$disabled_post_types = empty($_POST['disabled_types']) ? array() : array_map('sanitize_key', (array) $_POST['disabled_types']);
 			}
 
 			$disabled_post_types = array_intersect($disabled_post_types, array_keys($post_types));

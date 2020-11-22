@@ -16,7 +16,7 @@
                     <div class="card__content">
                         <h3>Essential Addons For Elementor</h3>
                         <p>Design stunning webpages using the best elements addons for Elementor pagebuilder</p>
-                        <a href="#" class="button button--sm">Learn More</a>
+                        <a href="http://wpdeveloper.net/plugins/essential-addons-elementor/" class="button button--sm">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     <div class="card__content">
                         <h3>NotificationX</h3>
                         <p>The ultimate WordPress marketing solution to skyrocket your website conversion rates</p>
-                        <a href="#" class="button button--sm">Learn More</a>
+                        <a href="https://wpdeveloper.net/plugins/notificationx/" class="button button--sm">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                     <div class="card__content">
                         <h3>BetterDocs</h3>
                         <p>Accelerate customer support with the most powerful WordPress knowledge base solution</p>
-                        <a href="#" class="button button--sm">Learn More</a>
+                        <a href="https://wpdeveloper.net/plugins/betterdocs/" class="button button--sm">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                     <div class="card__content">
                         <h3>WP Scheduled Posts</h3>
                         <p>Powerful content management solution with Schedule Calendar, Auto Scheduler and more.</p>
-                        <a href="#" class="button button--sm">Learn More</a>
+                        <a href="https://wpdeveloper.net/plugins/wp-scheduled-posts/" class="button button--sm">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -72,7 +72,7 @@
                     <div class="card__content">
                         <h3>ReviewX</h3>
                         <p>Boost sales with the ultimate multi-criteria reviews and ratings solution for WooCommerce</p>
-                        <a href="#" class="button button--sm">Learn More</a>
+                        <a href="https://wpdeveloper.net/plugins/reviewx/" class="button button--sm">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                     <div class="card__content">
                         <h3>EmbedPress</h3>
                         <p>Create high performing and engaging content by embedding anything on your WordPress site</p>
-                        <a href="#" class="button button--sm">Learn More</a>
+                        <a href="https://wpdeveloper.net/plugins/embedpress/" class="button button--sm">Learn More</a>
                     </div>
                 </div>
             </div>

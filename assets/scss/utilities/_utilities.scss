@@ -1,35 +1,31 @@
-
-
 .disablecommentswrap {
-    padding: 30px 50px;
-    @include respond-below(xs) {
-        padding: 30px;
-    }
+	padding: 30px 50px;
+	@include respond-below(xs) {
+		padding: 30px;
+	}
 }
 
 .sidebar__widget__wrap {
-    @include respond-below(lg) {
-        margin-top: 50px;
-    }
+	margin-top: 50px;
 }
 
 .dc-text__block {
-    background: $white;
-    padding: 30px;
-    border-radius: 10px;
+	background: $white;
+	padding: 30px;
+	border-radius: 10px;
 }
 
 .dc-row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
+	display: flex;
+	flex-wrap: wrap;
+	margin-right: -15px;
+	margin-left: -15px;
 }
 
 .dc-col {
-    flex-basis: 0;
-    flex-grow: 1;
-    max-width: 100%;
+	flex-basis: 0;
+	flex-grow: 1;
+	max-width: 100%;
 }
 
 .dc-col,
@@ -39,39 +35,39 @@
 .dc-col-lg-4,
 .dc-col-lg-3,
 .dc-col-lg-9 {
-    padding-left: 15px;
-    padding-right: 15px;
-    width: 100%;
+	padding-left: 15px;
+	padding-right: 15px;
+	width: 100%;
 }
 @include respond-above(xs) {
-    .dc-col-xs-6 {
-        flex: 0 0 50%;
-        max-width: 50%;
-    }
+	.dc-col-xs-6 {
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
 }
 @include respond-above(sm) {
-    .dc-col-sm-6 {
-        flex: 0 0 50%;
-        max-width: 50%;
-    }
+	.dc-col-sm-6 {
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
 }
 @include respond-above(md) {
-    .dc-col-md-6 {
-        flex: 0 0 50%;
-        max-width: 50%;
-    }
+	.dc-col-md-6 {
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
 }
 @include respond-above(lg) {
-    .dc-col-lg-3 {
-        flex: 0 0 25%;
-        max-width: 25%;
-    }
-    .dc-col-lg-4 {
-        flex: 0 0 33.33%;
-        max-width: 33.33%;
-    }
-    .dc-col-lg-9 {
-        flex: 0 0 75%;
-        max-width: 75%;
-    }
+	.dc-col-lg-3 {
+		flex: 0 0 25%;
+		max-width: 25%;
+	}
+	.dc-col-lg-4 {
+		flex: 0 0 33.33%;
+		max-width: 33.33%;
+	}
+	.dc-col-lg-9 {
+		flex: 0 0 75%;
+		max-width: 75%;
+	}
 }

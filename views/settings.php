@@ -36,10 +36,6 @@
                 <?php include DC_PLUGIN_VIEWS_PATH . 'partial/sidebar.php'; ?>
             </div>
             <div>
-
-
-
-
             </div>
             <?php
             include DC_PLUGIN_VIEWS_PATH . 'partial/product.php';
