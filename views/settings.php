@@ -1,4 +1,4 @@
-<div class="template--wrapper background__grey">
+<div id="disablecommentswrap" class="template--wrapper background__grey">
     <div class="dc-text__block disable__comment__alert mb30">
         <div class="alert__content">
             <img src="<?php echo DC_ASSETS_URI; ?>img/icon-logo.png" alt="">
@@ -86,7 +86,6 @@
                                 <p class="disable__option__description">Turning on these settings will disable any comments made on your website via XML-RPC or REST API specifications</p>
                             </div>
                         </div>
-                        <button class="button button__success">Save Changes</button>
                     </div>
                     <div class="dc-col-lg-3">
                         <div class="sidebar__widget__wrap">
@@ -310,6 +309,8 @@
                     </div>
                 </div>
             </div>
+            <!-- save -->
+            <button class="button button__success">Save Changes</button>
         </div>
     </div>
 

@@ -320,6 +320,8 @@ class Disable_Comments
 		if ($hook_suffix !== 'toplevel_page_' . DC_PLUGIN_SLUG) return;
 		// css
 		wp_enqueue_style('disable-comments-style',  DC_ASSETS_URI . 'css/style.css', [], false);
+		// js
+		wp_enqueue_script('disable-comments-scripts', DC_ASSETS_URI . 'js/disable-comments-settings-scripts.js', array(), false, true);
 	}
 
 	/**

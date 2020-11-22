@@ -43,7 +43,7 @@ body {
 		border-radius: 5px;
 		background-image: linear-gradient(to right bottom, rgba($primary, 0.8), rgba($info, 0.8));
 	}
-	font-size: 18px;
+	// font-size: 18px;
 	@include respond-below(xxl){
 		font-size: 16px;
 	}
@@ -78,7 +78,7 @@ a {
 label {
 	margin-bottom: 0;
 }
-button {
+.button {
 	vertical-align: middle;
 	background: unset;
 	font-family: $bodyFont;
@@ -91,6 +91,11 @@ button {
 		cursor: pointer;
 	}
 }
+
+// #collapse-button {
+// 	font-size: 13.3333px;
+// }
+
 h1,
 h2,
 h3,

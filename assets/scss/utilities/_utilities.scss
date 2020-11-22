@@ -2,6 +2,9 @@
 
 .template--wrapper {
     padding: 30px 50px;
+    @include respond-below(xs) {
+        padding: 30px;
+    }
 }
 
 .sidebar__widget__wrap {
