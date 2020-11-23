@@ -25,20 +25,20 @@
             <div class="dc-col-lg-9">
                 <div class="disable__comment__tab">
                     <div class="disable__comment__tab__item show">
-                        <?php include DC_PLUGIN_VIEWS_PATH . 'partial/disable.php'; ?>
+                        <?php include DC_PLUGIN_VIEWS_PATH . 'partials/_disable.php'; ?>
                     </div>
                     <div class="disable__comment__tab__item">
-                        <?php include DC_PLUGIN_VIEWS_PATH . 'partial/delete.php'; ?>
+                        <?php include DC_PLUGIN_VIEWS_PATH . 'partials/_delete.php'; ?>
                     </div>
                 </div>
             </div>
             <div class="dc-col-lg-3">
-                <?php include DC_PLUGIN_VIEWS_PATH . 'partial/sidebar.php'; ?>
+                <?php include DC_PLUGIN_VIEWS_PATH . 'partials/_sidebar.php'; ?>
             </div>
             <div>
             </div>
             <?php
-            include DC_PLUGIN_VIEWS_PATH . 'partial/product.php';
-            include DC_PLUGIN_VIEWS_PATH . 'partial/footer.php';
+            include DC_PLUGIN_VIEWS_PATH . 'partials/_product.php';
+            include DC_PLUGIN_VIEWS_PATH . 'partials/_footer.php';
             ?>
         </div>
