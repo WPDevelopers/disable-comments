@@ -605,8 +605,8 @@ class Disable_Comments
 
 	public function delete_comments_settings()
 	{
+		$log = array();
 		$nonce = (isset($_POST['nonce']) ? $_POST['nonce'] : '');
-		$log = [];
 		if (wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
 			$formArray = $this->form_data_modify($_POST['data']);
 			$types = $this->get_all_post_types();
@@ -622,10 +622,12 @@ class Disable_Comments
 							$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
 							$log[] = __('All comments have been deleted.', 'disable-comments');
 						} else {
-							$log[] = __('Internal error occured. Please try again later.', 'disable-comments');
+							wp_send_json_error(array('message' => __('Internal error occured. Please try again later.', 'disable-comments')));
+							wp_die();
 						}
 					} else {
-						$log[] = __('Internal error occured. Please try again later.', 'disable-comments');
+						wp_send_json_error(array('message' => __('Internal error occured. Please try again later.', 'disable-comments')));
+						wp_die();
 					}
 				} elseif ($formArray['delete_mode'] == 'selected_delete_types') {
 					$delete_post_types = empty($formArray['delete_types']) ? array() : (array) $formArray['delete_types'];
