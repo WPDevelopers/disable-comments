@@ -1129,6 +1129,15 @@ a.color__instagram:hover, a.color__instagram:focus {
     padding: 30px;
   }
 }
+.disablecommentswrap .delete-comments-not-found {
+  width: 60%;
+  margin: 0 auto;
+  text-align: center;
+}
+.disablecommentswrap .delete-comments-not-found .error-message {
+  margin-top: 30px;
+  color: #444;
+}
 
 .sidebar__widget__wrap {
   margin-top: 50px;
