@@ -37,6 +37,7 @@ class Disable_Comments
 
 	function __construct()
 	{
+		define('DC_VERSION', '1.11.0');
 		define('DC_PLUGIN_SLUG', 'disable-comments');
 		define('DC_PLUGIN_ROOT_PATH', dirname(__FILE__));
 		define('DC_PLUGIN_VIEWS_PATH', DC_PLUGIN_ROOT_PATH . '/views/');

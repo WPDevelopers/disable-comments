@@ -11,7 +11,7 @@
     </div>
     <div class="disable__comment_block">
         <div class="disable__comment__nav__wrap">
-            <p class="plugin__version">Version 5.1.1</p>
+            <p class="plugin__version"><?php echo _e('Version', 'disable-comments') . ' ' . DC_VERSION; ?></p>
             <ul class="disable__comment__nav">
                 <li class="disable__comment__nav__item">
                     <a href="#" class="disable__comment__nav__link active"><?php _e('Disable Comments', 'disable-comments'); ?></a>
