@@ -11,7 +11,7 @@
             <div class="dc-item__card_wrap">
                 <div class="dc-item__card">
                     <div class="thumb">
-                        <img src="<?php echo DC_ASSETS_URI; ?>img/card/thumb-1.jpg" alt="">
+                        <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/card/thumb-1.jpg'); ?>" alt="<?php esc_attr_e('Essential Addons For Elementor', 'disable-comments'); ?>">
                     </div>
                     <div class="card__content">
                         <h3><?php _e('Essential Addons For Elementor', 'disable-comments'); ?></h3>
@@ -25,7 +25,7 @@
             <div class="dc-item__card_wrap">
                 <div class="dc-item__card">
                     <div class="thumb">
-                        <img src="<?php echo DC_ASSETS_URI; ?>img/card/thumb-2.jpg" alt="">
+                        <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/card/thumb-2.jpg'); ?>" alt="<?php esc_attr_e('NotificationX', 'disable-comments'); ?>">
                     </div>
                     <div class="card__content">
                         <h3><?php _e('NotificationX', 'disable-comments'); ?></h3>
@@ -39,7 +39,7 @@
             <div class="dc-item__card_wrap">
                 <div class="dc-item__card">
                     <div class="thumb">
-                        <img src="<?php echo DC_ASSETS_URI; ?>img/card/thumb-3.jpg" alt="">
+                        <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/card/thumb-3.jpg'); ?>" alt="<?php esc_attr_e('BetterDocs', 'disable-comments'); ?>">
                     </div>
                     <div class="card__content">
                         <h3><?php _e('BetterDocs', 'disable-comments'); ?></h3>
@@ -53,7 +53,7 @@
             <div class="dc-item__card_wrap">
                 <div class="dc-item__card">
                     <div class="thumb">
-                        <img src="<?php echo DC_ASSETS_URI; ?>img/card/thumb-4.jpg" alt="">
+                        <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/card/thumb-4.jpg'); ?>" alt="<?php esc_attr_e('WP Scheduled Posts', 'disable-comments'); ?>">
                     </div>
                     <div class="card__content">
                         <h3><?php _e('WP Scheduled Posts', 'disable-comments'); ?></h3>
@@ -67,7 +67,7 @@
             <div class="dc-item__card_wrap">
                 <div class="dc-item__card">
                     <div class="thumb">
-                        <img src="<?php echo DC_ASSETS_URI; ?>img/card/thumb-5.jpg" alt="">
+                        <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/card/thumb-5.jpg'); ?>" alt="<?php esc_attr_e('ReviewX', 'disable-comments'); ?>">
                     </div>
                     <div class="card__content">
                         <h3><?php _e('ReviewX', 'disable-comments'); ?></h3>
@@ -81,7 +81,7 @@
             <div class="dc-item__card_wrap">
                 <div class="dc-item__card">
                     <div class="thumb">
-                        <img src="<?php echo DC_ASSETS_URI; ?>img/card/thumb-6.jpg" alt="">
+                        <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/card/thumb-6.jpg'); ?>" alt="<?php esc_attr_e('EmbedPress', 'disable-comments') ?>">
                     </div>
                     <div class="card__content">
                         <h3><?php _e('EmbedPress', 'disable-comments'); ?></h3>

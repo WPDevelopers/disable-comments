@@ -23,7 +23,7 @@
                         </g>
                     </svg>
                 </div>
-                <h4><a href="#"><?php _e('What Does This Disable Comments Plugin Do', 'disable-comments'); ?></a></h4>
+                <h4><a href="<?php echo esc_url('https://wpdeveloper.net/docs/disable-comments-plugin/'); ?>" target="_blank" rel="nofollow"><?php _e('What Does This Disable Comments Plugin Do', 'disable-comments'); ?></a></h4>
             </div>
             <div class="tutorial__item">
                 <div class="icon">
@@ -46,7 +46,7 @@
                         </g>
                     </svg>
                 </div>
-                <h4><a href="#"><?php _e('What Does This Disable Comments Plugin Do', 'disable-comments'); ?></a></h4>
+                <h4><a href="<?php echo esc_url('https://wpdeveloper.net/docs/disable-comments-for-some-particular-post/'); ?>" target="_blank" rel="nofollow"><?php _e('Disable Comments For Some Particular Post', 'disable-comments'); ?></a></h4>
             </div>
             <div class="tutorial__item">
                 <div class="icon">
@@ -69,17 +69,17 @@
                         </g>
                     </svg>
                 </div>
-                <h4><a href="#"><?php _e('What Does This Disable Comments Plugin Do', 'disable-comments'); ?></a></h4>
+                <h4><a href="<?php echo esc_url('https://wpdeveloper.net/docs/disable-comment-for-wordpress-media-files/'); ?>" target="_blank" rel="nofollow"><?php _e('Disable Comment For WordPress Media Files', 'disable-comments'); ?></a></h4>
             </div>
         </div>
     </div>
     <article class="blog__post">
         <div class="thumb">
-            <img src="<?php echo DC_ASSETS_URI; ?>img/blog/thumb-1.jpg" alt="">
-            <a href="#" class="play__btn"><span></span></a>
+            <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/blog/thumb-1.jpg'); ?>" alt="">
+            <a href="<?php echo esc_url('https://wpdeveloper.net/docs/disable-comments-for-wordpress-pages/'); ?>" class="play__btn" target="_blank" rel="nofollow"><span></span></a>
         </div>
         <div class="blog__post__content">
-            <h4><a href="#"><?php _e('How to Disable Comments in WordPress & Stop The Spammers', 'disable-comments'); ?></a></h4>
+            <h4><a href="<?php echo esc_url('https://wpdeveloper.net/docs/disable-comments-for-wordpress-pages/'); ?>" target="_blank" rel="nofollow"><?php _e('Disable Comments For WordPress Pages', 'disable-comments'); ?></a></h4>
         </div>
     </article>
 </div>
