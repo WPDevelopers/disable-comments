@@ -24,7 +24,7 @@ class Disable_Comments
 	const DB_VERSION         = 6;
 	private static $instance = null;
 	private $options;
-	private $networkactive;
+	public  $networkactive;
 	private $modified_types = array();
 
 	public static function get_instance()
@@ -47,8 +47,15 @@ class Disable_Comments
 		add_action('admin_post_disable_comments_save_settings', array($this, 'disable_comments_settings'));
 		add_action('admin_post_delete_comments_settings', array($this, 'delete_comments_settings'));
 
+		// Including cli.php
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			require_once dirname( __FILE__ ) . "/cli.php";
+			new Disable_Comment_Command($this);
+		}
+		
 		// are we network activated?
 		$this->networkactive = (is_multisite() && array_key_exists(plugin_basename(__FILE__), (array) get_site_option('active_sitewide_plugins')));
+		$this->is_CLI = defined( 'WP_CLI' ) && WP_CLI;
 
 		// Load options.
 		if ($this->networkactive) {
