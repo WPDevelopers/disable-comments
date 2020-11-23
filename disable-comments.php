@@ -509,7 +509,7 @@ class Disable_Comments
 	public function settings_menu()
 	{
 		$title = __('Disable Comments', 'disable-comments');
-		add_menu_page($title, $title, 'manage_options', DC_PLUGIN_SLUG, array($this, 'settings_page'));
+		add_menu_page($title, $title, 'manage_options', DC_PLUGIN_SLUG, array($this, 'settings_page'), esc_url(DC_ASSETS_URI . 'img/icon-logo-small.png'));
 	}
 
 	public function get_all_comments_number()
