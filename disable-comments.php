@@ -349,8 +349,10 @@ class Disable_Comments
 	{
 		if ($hook_suffix !== 'toplevel_page_' . DC_PLUGIN_SLUG) return;
 		// css
+		wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/vendor/sweetalert2.min.css', [], false);
 		wp_enqueue_style('disable-comments-style',  DC_ASSETS_URI . 'css/style.css', [], false);
 		// js
+		wp_enqueue_script('sweetalert2', DC_ASSETS_URI . 'js/vendor/sweetalert2.all.min.js', array('jquery'), false, true);
 		wp_enqueue_script('disable-comments-scripts', DC_ASSETS_URI . 'js/disable-comments-settings-scripts.js', array('jquery'), false, true);
 		wp_localize_script(
 			'disable-comments-scripts',
@@ -683,7 +685,7 @@ class Disable_Comments
 				}
 			}
 		}
-		wp_send_json_success(array('message' => $log));
+		wp_send_json_success(array('message' => ((count($log) !== 0 ? $log : [__('No comments available for deletion', 'disable-comments')]))));
 		wp_die();
 	}
 

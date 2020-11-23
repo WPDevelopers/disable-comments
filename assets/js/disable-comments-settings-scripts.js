@@ -98,19 +98,46 @@ jQuery(document).ready(function () {
 			data: jQuery(this).serializeArray(),
 		};
 		jQuery.post(ajaxurl, data, function (response) {
-			console.log(response);
+			if (response.success) {
+				Swal.fire({
+					icon: "success",
+					title: response.data.message,
+					timer: 3000,
+					showConfirmButton: false,
+				});
+			}
 		});
 	});
 	jQuery("#deleteCommentSettings").on("submit", function (e) {
 		e.preventDefault();
+		Swal.fire({
+			icon: "info",
+			title: "Request Sending...",
+			text: "Please wait.",
+			showConfirmButton: false,
+		});
 		var data = {
 			action: disableCommentsObj.delete_action,
 			nonce: disableCommentsObj._nonce,
 			data: jQuery(this).serializeArray(),
 		};
-		console.log(data);
 		jQuery.post(ajaxurl, data, function (response) {
-			console.log(response);
+			if (response.success) {
+				Swal.fire({
+					icon: "success",
+					title: "complete",
+					text: response.data.message.toString(),
+					timer: 3000,
+					showConfirmButton: false,
+				});
+			} else {
+				Swal.fire({
+					icon: "error",
+					title: "Oops...",
+					text: response.data.message.toString(),
+					showConfirmButton: true,
+				});
+			}
 		});
 	});
 });
