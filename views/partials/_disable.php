@@ -1,6 +1,4 @@
-<form action="<?php echo admin_url('admin-post.php'); ?>" method="POST">
-    <input type="hidden" name="action" value="disable_comments_save_settings">
-    <?php wp_nonce_field('disable_comments_save_settings', 'dc_settings_nonce'); ?>
+<form id="disableCommentSaveSettings" action="#">
     <div class="disable__comment__option mb50">
         <h3 class="title"><?php _e('Settings', 'disable-comments'); ?></h3>
         <p class="subtitle"><?php _e('Configure the settings below to disable comments globally or on specific types of post', 'disable-comments'); ?></p>

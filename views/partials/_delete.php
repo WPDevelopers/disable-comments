@@ -1,6 +1,4 @@
-<form action="<?php echo admin_url('admin-post.php'); ?>" method="POST">
-    <input type="hidden" name="action" value="delete_comments_settings">
-    <?php wp_nonce_field('delete_comments_settings', 'dc_delete_settings_nonce'); ?>
+<form id="deleteCommentSettings" action="#">
     <?php
     if ($this->get_all_comments_number() > 0) :
     ?>
@@ -55,8 +53,6 @@
     <?php
     endif;
     ?>
-    <!-- delete -->
-    <p>
-        <input class="button button__success" type="submit" name="delete" value="<?php _e('Delete Comments', 'disable-comments'); ?>">
-    </p>
+    <!-- save -->
+    <button class="button button__success"><?php _e('Delete Comments', 'disable-comments'); ?></button>
 </form>

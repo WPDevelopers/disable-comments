@@ -1,4 +1,7 @@
 jQuery(document).ready(function () {
+	/**
+	 * Settings Scripts
+	 */
 	if (jQuery("#disablecommentswrap").length) {
 		// tabs
 		function disbale_comments_tabs() {
@@ -84,4 +87,30 @@ jQuery(document).ready(function () {
 		});
 		delete_comments_uihelper();
 	}
+	/**
+	 * Settings Ajax Request
+	 */
+	jQuery("#disableCommentSaveSettings").on("submit", function (e) {
+		e.preventDefault();
+		var data = {
+			action: disableCommentsObj.save_action,
+			nonce: disableCommentsObj._nonce,
+			data: jQuery(this).serializeArray(),
+		};
+		jQuery.post(ajaxurl, data, function (response) {
+			console.log(response);
+		});
+	});
+	jQuery("#deleteCommentSettings").on("submit", function (e) {
+		e.preventDefault();
+		var data = {
+			action: disableCommentsObj.delete_action,
+			nonce: disableCommentsObj._nonce,
+			data: jQuery(this).serializeArray(),
+		};
+		console.log(data);
+		jQuery.post(ajaxurl, data, function (response) {
+			console.log(response);
+		});
+	});
 });
