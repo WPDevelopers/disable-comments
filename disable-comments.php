@@ -67,7 +67,25 @@ class Disable_Comments
 		$this->check_db_upgrades();
 
 		$this->init_filters();
+
+		$this->start_plugin_usage_tracking();
 	}
+
+	public function start_plugin_usage_tracking() {
+		if( ! class_exists( 'DisableComments_Plugin_Tracker') ) {
+			include_once( DC_PLUGIN_ROOT_PATH . '/includes/class-plugin-usage-tracker.php' );
+		}
+        $tracker = DisableComments_Plugin_Tracker::get_instance( __FILE__, [
+			'opt_in'       => true,
+			'goodbye_form' => true,
+			'item_id'      => 'b0112c9030af6ba53de4'
+		] );
+		$tracker->set_notice_options(array(
+			'notice' => __( 'Want to help make Disable Comments even better?', 'disable-comments-on-attachments' ),
+			'extra_notice' => __( 'We collect non-sensitive diagnostic data and plugin usage information. Your site URL, WordPress & PHP version, plugins & themes and email address to send you the discount coupon. This data lets us make sure this plugin always stays compatible with the most popular plugins and themes. No spam, I promise.', 'disable-comments-on-attachments' ),
+		));
+		$tracker->init();
+    }
 
 	private function check_compatibility()
 	{
