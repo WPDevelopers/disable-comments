@@ -2810,6 +2810,10 @@ button.button__instagram.hover__highlight:hover .icon {
   color: #ffffff;
 }
 
+#dcQuickPreviousBtn {
+  visibility: hidden;
+}
+
 .dc-quick__setup__wrap .button__group {
   display: flex;
   flex-wrap: wrap;

@@ -99,6 +99,7 @@ jQuery(document).ready(function () {
 		var btnPrevious = "#dcQuickPreviousBtn";
 		var btnNext = "#dcQuickNextBtn";
 		var btnSkip = "#dcQuickSkipBtn";
+		var finishStepFlug = false;
 		var tabPosition = localStorage.getItem("dcqTabPostion");
 		tabPosition = parseInt(
 			tabPosition ? tabPosition : localStorage.setItem("dcqTabPostion", 1)
@@ -108,14 +109,20 @@ jQuery(document).ready(function () {
 		// click button
 		jQuery(btnPrevious).on("click", function (e) {
 			e.preventDefault();
+			finishStepFlug = false;
 			updateTabPosition(localStorage.getItem("dcqTabPostion"), true);
 		});
 		jQuery(btnNext).on("click", function (e) {
 			e.preventDefault();
 			updateTabPosition(localStorage.getItem("dcqTabPostion"));
+			save_settings(
+				parseInt(localStorage.getItem("dcqTabPostion") - 1),
+				jQuery(this).text()
+			);
 		});
 		jQuery(btnSkip).on("click", function (e) {
 			e.preventDefault();
+			finishStepFlug = false;
 			updateTabPosition(localStorage.getItem("dcqTabPostion"));
 		});
 
@@ -129,8 +136,8 @@ jQuery(document).ready(function () {
 					++tabPosition;
 				}
 			}
-			changeTab(tabPosition);
 			localStorage.setItem("dcqTabPostion", tabPosition);
+			changeTab(tabPosition);
 		}
 		function changeTab(nthChildNumber) {
 			for (var i = 1; i <= 4; i++) {
@@ -143,11 +150,37 @@ jQuery(document).ready(function () {
 						"ul.dc-quick__setup__nav li:nth-child(" + i + ")"
 					).removeClass("active");
 				}
+				// active tab
 				if (nthChildNumber == i) {
 					jQuery("#dcqTabBody_" + nthChildNumber).addClass("active");
 				} else {
 					jQuery("#dcqTabBody_" + i).removeClass("active");
 				}
+				// active tab control
+				if (nthChildNumber == 1) {
+					jQuery(btnPrevious).css("visibility", "hidden");
+				} else {
+					jQuery(btnPrevious).css("visibility", "visible");
+					jQuery(btnSkip).css("visibility", "visible");
+				}
+				if (nthChildNumber == 4) {
+					jQuery(btnSkip).css("visibility", "hidden");
+					jQuery(btnNext).text("Finish");
+				} else {
+					jQuery(btnNext).text("Next");
+				}
+			}
+		}
+		function save_settings(tabPosition, buttonText) {
+			if (finishStepFlug) {
+				console.log("Last Tab ajax request");
+			} else {
+				console.log("send ajax request for tab ", tabPosition);
+			}
+
+			// set last flag
+			if (tabPosition == 3) {
+				finishStepFlug = true;
 			}
 		}
 	}
