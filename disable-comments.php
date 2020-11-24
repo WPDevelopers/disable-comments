@@ -127,7 +127,7 @@ class Disable_Comments
 	/**
 	 * Get an array of disabled post type.
 	 */
-	private function get_disabled_post_types()
+	public function get_disabled_post_types()
 	{
 		$types = $this->options['disabled_post_types'];
 		// Not all extra_post_types might be registered on this particular site.

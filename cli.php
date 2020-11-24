@@ -41,6 +41,18 @@ class Disable_Comment_Command
                 'description' => 'Disable Comments via REST API.',
                 'optional'    => true,
             ),
+            array(
+                'type'        => 'flag',
+                'name'        => 'add',
+                'description' => 'Enable the passed disabled-types.', // check specified checkbox in `On Specific Post Types:`
+                'optional'    => true,
+            ),
+            array(
+                'type'        => 'flag',
+                'name'        => 'remove',
+                'description' => 'Disable the passed disabled-types.', // uncheck specified checkbox in `On Specific Post Types:`
+                'optional'    => true,
+            ),
         );
         if ($this->dc_instance->networkactive){
             $disable_synopsis[] = array(
@@ -116,6 +128,8 @@ wp dc delete --mode=selected_delete_comment_types --delete-comment-types=comment
         $disable_comments_settings = array();
         $mode = WP_CLI\Utils\get_flag_value($assoc_args, 'mode');
         $types = WP_CLI\Utils\get_flag_value($assoc_args, 'disabled-types');
+        $add = WP_CLI\Utils\get_flag_value($assoc_args, 'add');
+        $remove = WP_CLI\Utils\get_flag_value($assoc_args, 'remove');
         $extra_post_types = WP_CLI\Utils\get_flag_value($assoc_args, 'extra-post-types');
         $remove_xmlrpc_comments = WP_CLI\Utils\get_flag_value($assoc_args, 'xmlrpc');
         $remove_rest_API_comments = WP_CLI\Utils\get_flag_value($assoc_args, 'rest-api');
@@ -125,7 +139,19 @@ wp dc delete --mode=selected_delete_comment_types --delete-comment-types=comment
             $msg .= "Comments disabled everywhere. ";
         } elseif(!empty($types)) {
             $disable_comments_settings['mode'] = 'selected_types';
-            $disable_comments_settings['disabled_types'] = array_map('trim', explode(',', $types));
+            $_types = array_map('trim', explode(',', $types));
+            $disabled_post_types = $this->dc_instance->get_disabled_post_types();
+            print_r($disabled_post_types);
+            print_r($_types);
+        
+            if(!empty($add)){
+                $_types = array_unique(array_merge($disabled_post_types, $_types));
+            }
+            if(!empty($remove)){
+                $_types = array_diff($disabled_post_types, $_types);
+            }
+
+            $disable_comments_settings['disabled_types'] = $_types;
             $msg .= "Comments disabled for \"$types\". ";
         }
 
