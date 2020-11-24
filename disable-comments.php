@@ -49,14 +49,14 @@ class Disable_Comments
 		add_action('wp_ajax_disable_comments_delete_comments', array($this, 'delete_comments_settings'));
 
 		// Including cli.php
-		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			require_once dirname( __FILE__ ) . "/cli.php";
+		if (defined('WP_CLI') && WP_CLI) {
+			require_once dirname(__FILE__) . "/cli.php";
 			new Disable_Comment_Command($this);
 		}
-		
+
 		// are we network activated?
 		$this->networkactive = (is_multisite() && array_key_exists(plugin_basename(__FILE__), (array) get_site_option('active_sitewide_plugins')));
-		$this->is_CLI = defined( 'WP_CLI' ) && WP_CLI;
+		$this->is_CLI = defined('WP_CLI') && WP_CLI;
 
 		// Load options.
 		if ($this->networkactive) {
@@ -357,10 +357,10 @@ class Disable_Comments
 	{
 		if ($hook_suffix !== 'toplevel_page_' . DC_PLUGIN_SLUG) return;
 		// css
-		wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/vendor/sweetalert2.min.css', [], false);
+		wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/sweetalert2.min.css', [], false);
 		wp_enqueue_style('disable-comments-style',  DC_ASSETS_URI . 'css/style.css', [], false);
 		// js
-		wp_enqueue_script('sweetalert2', DC_ASSETS_URI . 'js/vendor/sweetalert2.all.min.js', array('jquery'), false, true);
+		wp_enqueue_script('sweetalert2', DC_ASSETS_URI . 'js/sweetalert2.all.min.js', array('jquery'), false, true);
 		wp_enqueue_script('disable-comments-scripts', DC_ASSETS_URI . 'js/disable-comments-settings-scripts.js', array('jquery'), false, true);
 		wp_localize_script(
 			'disable-comments-scripts',
@@ -580,14 +580,13 @@ class Disable_Comments
 
 	public function disable_comments_settings($_args = array())
 	{
-		
+
 		$nonce = (isset($_POST['nonce']) ? $_POST['nonce'] : '');
 		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
 
-			if(!empty($_args)){
-				$formArray = wp_parse_args( $_args );
-			}
-			else{
+			if (!empty($_args)) {
+				$formArray = wp_parse_args($_args);
+			} else {
 				$formArray = $this->form_data_modify($_POST['data']);
 			}
 
@@ -617,7 +616,7 @@ class Disable_Comments
 			// save settings
 			$this->update_options();
 		}
-		if ( !$this->is_CLI ) {
+		if (!$this->is_CLI) {
 			wp_send_json_success(array('message' => __('Saved', 'disable-comments')));
 			wp_die();
 		}
@@ -628,11 +627,10 @@ class Disable_Comments
 		$log = array();
 		$nonce = (isset($_POST['nonce']) ? $_POST['nonce'] : '');
 		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
-			
-			if(!empty($_args)){
-				$formArray = wp_parse_args( $_args );
-			}
-			else{
+
+			if (!empty($_args)) {
+				$formArray = wp_parse_args($_args);
+			} else {
 				$formArray = $this->form_data_modify($_POST['data']);
 			}
 
@@ -710,7 +708,7 @@ class Disable_Comments
 				}
 			}
 		}
-		if ( !$this->is_CLI ) {
+		if (!$this->is_CLI) {
 			wp_send_json_success(array('message' => ((count($log) !== 0 ? $log : [__('No comments available for deletion', 'disable-comments')]))));
 			wp_die();
 		}
