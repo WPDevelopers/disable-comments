@@ -49,9 +49,9 @@ class Disable_Comments
 		add_action('wp_ajax_disable_comments_delete_comments', array($this, 'delete_comments_settings'));
 
 		// Including cli.php
-		if (defined('WP_CLI') && WP_CLI) {
-			require_once dirname(__FILE__) . "/cli.php";
-			new Disable_Comment_Command($this);
+		if ( defined('WP_CLI') && WP_CLI ) {
+			require_once DC_PLUGIN_ROOT_PATH . "/includes/cli.php";
+			new Disable_Comment_Command( $this );
 		}
 
 		// are we network activated?
