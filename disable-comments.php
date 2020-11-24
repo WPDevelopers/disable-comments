@@ -24,7 +24,7 @@ class Disable_Comments
 	const DB_VERSION         = 6;
 	private static $instance = null;
 	private $options;
-	private $networkactive;
+	public  $networkactive;
 	private $modified_types = array();
 
 	public static function get_instance()
@@ -48,8 +48,15 @@ class Disable_Comments
 		add_action('wp_ajax_disable_comments_save_settings', array($this, 'disable_comments_settings'));
 		add_action('wp_ajax_disable_comments_delete_comments', array($this, 'delete_comments_settings'));
 
+		// Including cli.php
+		if (defined('WP_CLI') && WP_CLI) {
+			require_once dirname(__FILE__) . "/cli.php";
+			new Disable_Comment_Command($this);
+		}
+
 		// are we network activated?
 		$this->networkactive = (is_multisite() && array_key_exists(plugin_basename(__FILE__), (array) get_site_option('active_sitewide_plugins')));
+		$this->is_CLI = defined('WP_CLI') && WP_CLI;
 
 		// Load options.
 		if ($this->networkactive) {
@@ -138,7 +145,7 @@ class Disable_Comments
 	/**
 	 * Get an array of disabled post type.
 	 */
-	private function get_disabled_post_types()
+	public function get_disabled_post_types()
 	{
 		$types = $this->options['disabled_post_types'];
 		// Not all extra_post_types might be registered on this particular site.
@@ -368,10 +375,10 @@ class Disable_Comments
 	{
 		if ($hook_suffix !== 'toplevel_page_' . DC_PLUGIN_SLUG) return;
 		// css
-		wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/vendor/sweetalert2.min.css', [], false);
+		wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/sweetalert2.min.css', [], false);
 		wp_enqueue_style('disable-comments-style',  DC_ASSETS_URI . 'css/style.css', [], false);
 		// js
-		wp_enqueue_script('sweetalert2', DC_ASSETS_URI . 'js/vendor/sweetalert2.all.min.js', array('jquery'), false, true);
+		wp_enqueue_script('sweetalert2', DC_ASSETS_URI . 'js/sweetalert2.all.min.js', array('jquery'), false, true);
 		wp_enqueue_script('disable-comments-scripts', DC_ASSETS_URI . 'js/disable-comments-settings-scripts.js', array('jquery'), false, true);
 		wp_localize_script(
 			'disable-comments-scripts',
@@ -589,11 +596,18 @@ class Disable_Comments
 		return $formArray;
 	}
 
-	public function disable_comments_settings()
+	public function disable_comments_settings($_args = array())
 	{
+
 		$nonce = (isset($_POST['nonce']) ? $_POST['nonce'] : '');
-		if (wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
-			$formArray = $this->form_data_modify($_POST['data']);
+		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
+
+			if (!empty($_args)) {
+				$formArray = wp_parse_args($_args);
+			} else {
+				$formArray = $this->form_data_modify($_POST['data']);
+			}
+
 			$this->options['remove_everywhere'] = (sanitize_text_field($formArray['mode']) == 'remove_everywhere');
 			$post_types = $this->get_all_post_types();
 
@@ -620,16 +634,24 @@ class Disable_Comments
 			// save settings
 			$this->update_options();
 		}
-		wp_send_json_success(array('message' => __('Saved', 'disable-comments')));
-		wp_die();
+		if (!$this->is_CLI) {
+			wp_send_json_success(array('message' => __('Saved', 'disable-comments')));
+			wp_die();
+		}
 	}
 
-	public function delete_comments_settings()
+	public function delete_comments_settings($_args = array())
 	{
 		$log = array();
 		$nonce = (isset($_POST['nonce']) ? $_POST['nonce'] : '');
-		if (wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
-			$formArray = $this->form_data_modify($_POST['data']);
+		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
+
+			if (!empty($_args)) {
+				$formArray = wp_parse_args($_args);
+			} else {
+				$formArray = $this->form_data_modify($_POST['data']);
+			}
+
 			$types = $this->get_all_post_types();
 			$commenttypes = $this->get_all_comment_types();
 			global $wpdb;
@@ -655,7 +677,7 @@ class Disable_Comments
 					$delete_post_types = array_intersect($delete_post_types, array_keys($types));
 
 					// Extra custom post types.
-					if ($this->networkactive && !empty($_POST['delete_extra_post_types'])) {
+					if ($this->networkactive && !empty($formArray['delete_extra_post_types'])) {
 						$delete_extra_post_types = array_filter(array_map('sanitize_key', explode(',', $formArray['delete_extra_post_types'])));
 						$delete_extra_post_types = array_diff($delete_extra_post_types, array_keys($types));    // Make sure we don't double up builtins.
 						$delete_post_types       = array_merge($delete_post_types, $delete_extra_post_types);
@@ -678,7 +700,7 @@ class Disable_Comments
 						$log[] = __('Comment Deletion Complete', 'disable-comments');
 					}
 				} elseif ($formArray['delete_mode'] == 'selected_delete_comment_types') {
-					$delete_comment_types = empty($_POST['delete_comment_types']) ? array() : (array) $formArray['delete_comment_types'];
+					$delete_comment_types = empty($formArray['delete_comment_types']) ? array() : (array) $formArray['delete_comment_types'];
 					$delete_comment_types = array_intersect($delete_comment_types, array_keys($commenttypes));
 
 					if (!empty($delete_comment_types)) {
@@ -704,8 +726,10 @@ class Disable_Comments
 				}
 			}
 		}
-		wp_send_json_success(array('message' => ((count($log) !== 0 ? $log : [__('No comments available for deletion', 'disable-comments')]))));
-		wp_die();
+		if (!$this->is_CLI) {
+			wp_send_json_success(array('message' => ((count($log) !== 0 ? $log : [__('No comments available for deletion', 'disable-comments')]))));
+			wp_die();
+		}
 	}
 
 	private function discussion_settings_allowed()
