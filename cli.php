@@ -67,7 +67,9 @@ class Disable_Comment_Command
             'when' => 'after_wp_load',
             'longdesc' =>   "## EXAMPLES 
 wp dc disable --mode=everywhere 
-wp dc disable --mode=selected_types --disabled-types=post,page 
+wp dc disable --mode=selected_types --disabled-types=post
+wp dc disable --mode=selected_types --disabled-types=page --add
+wp dc disable --mode=selected_types --disabled-types=attachment --remove
 wp dc disable --xmlrpc --rest-api 
 wp dc disable --xmlrpc=false --rest-api=false ",
         ]);
@@ -141,8 +143,6 @@ wp dc delete --mode=selected_delete_comment_types --delete-comment-types=comment
             $disable_comments_settings['mode'] = 'selected_types';
             $_types = array_map('trim', explode(',', $types));
             $disabled_post_types = $this->dc_instance->get_disabled_post_types();
-            print_r($disabled_post_types);
-            print_r($_types);
         
             if(!empty($add)){
                 $_types = array_unique(array_merge($disabled_post_types, $_types));
