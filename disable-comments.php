@@ -355,22 +355,23 @@ class Disable_Comments
 	 */
 	public function settings_page_assets($hook_suffix)
 	{
-		if ($hook_suffix !== 'toplevel_page_' . DC_PLUGIN_SLUG) return;
-		// css
-		wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/sweetalert2.min.css', [], false);
-		wp_enqueue_style('disable-comments-style',  DC_ASSETS_URI . 'css/style.css', [], false);
-		// js
-		wp_enqueue_script('sweetalert2', DC_ASSETS_URI . 'js/sweetalert2.all.min.js', array('jquery'), false, true);
-		wp_enqueue_script('disable-comments-scripts', DC_ASSETS_URI . 'js/disable-comments-settings-scripts.js', array('jquery'), false, true);
-		wp_localize_script(
-			'disable-comments-scripts',
-			'disableCommentsObj',
-			array(
-				'save_action' => 'disable_comments_save_settings',
-				'delete_action' => 'disable_comments_delete_comments',
-				'_nonce' => wp_create_nonce('disable_comments_save_settings')
-			)
-		);
+		if ($hook_suffix === 'toplevel_page_' . DC_PLUGIN_SLUG || $hook_suffix === 'admin_page_' . DC_PLUGIN_SLUG . '-setup') {
+			// css
+			wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/sweetalert2.min.css', [], false);
+			wp_enqueue_style('disable-comments-style',  DC_ASSETS_URI . 'css/style.css', [], false);
+			// js
+			wp_enqueue_script('sweetalert2', DC_ASSETS_URI . 'js/sweetalert2.all.min.js', array('jquery'), false, true);
+			wp_enqueue_script('disable-comments-scripts', DC_ASSETS_URI . 'js/disable-comments-settings-scripts.js', array('jquery'), false, true);
+			wp_localize_script(
+				'disable-comments-scripts',
+				'disableCommentsObj',
+				array(
+					'save_action' => 'disable_comments_save_settings',
+					'delete_action' => 'disable_comments_delete_comments',
+					'_nonce' => wp_create_nonce('disable_comments_save_settings')
+				)
+			);
+		}
 	}
 
 	/**
@@ -517,6 +518,14 @@ class Disable_Comments
 	{
 		$title = __('Disable Comments', 'disable-comments');
 		add_menu_page($title, $title, 'manage_options', DC_PLUGIN_SLUG, array($this, 'settings_page'), esc_url(DC_ASSETS_URI . 'img/icon-logo-small.png'));
+		add_submenu_page(
+			null,
+			$title,
+			$title,
+			'manage_options',
+			DC_PLUGIN_SLUG . '-setup',
+			array($this, 'setup_settings_page'),
+		);
 	}
 
 	public function get_all_comments_number()
@@ -561,6 +570,11 @@ class Disable_Comments
 	public function settings_page()
 	{
 		include dirname(__FILE__) . '/views/settings.php';
+	}
+
+	public function setup_settings_page()
+	{
+		include dirname(__FILE__) . '/views/setup-settings.php';
 	}
 
 	public function form_data_modify($form_data)
