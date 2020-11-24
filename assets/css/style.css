@@ -224,6 +224,22 @@
   margin-bottom: 50px;
 }
 
+.mt80 {
+  margin-top: 80px;
+}
+
+.mb80 {
+  margin-bottom: 80px;
+}
+
+.mt100 {
+  margin-top: 100px;
+}
+
+.mb100 {
+  margin-bottom: 100px;
+}
+
 .color__primary {
   color: #623cea !important;
 }
@@ -1148,6 +1164,22 @@ a.color__instagram:hover, a.color__instagram:focus {
   padding: 30px;
   border-radius: 10px;
 }
+.dc-text__block__big__pad {
+  padding: 100px 50px;
+  background: #ffffff;
+  border-radius: 10px;
+}
+@media (max-width: 767.98px) {
+  .dc-text__block__big__pad {
+    padding: 50px 25px;
+  }
+}
+
+.dc-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
 .dc-row {
   display: flex;
@@ -2028,27 +2060,27 @@ button.button__instagram.hover__highlight:hover .icon {
   font-weight: 400;
   color: #687b95;
 }
-.disable__comment__option .disable_option .delete__checklist {
+.disable__comment__option .disable_option .disable__checklist {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 10px;
 }
-.disable__comment__option .disable_option .delete__checklist .delete__checklist__item {
+.disable__comment__option .disable_option .disable__checklist .disable__checklist__item {
   flex: 0 0 150px;
   margin-right: 10px;
   margin-bottom: 10px;
 }
-.disable__comment__option .disable_option .delete__checklist .delete__checklist__item input {
+.disable__comment__option .disable_option .disable__checklist .disable__checklist__item input {
   display: none;
 }
-.disable__comment__option .disable_option .delete__checklist .delete__checklist__item input:checked ~ label:before {
+.disable__comment__option .disable_option .disable__checklist .disable__checklist__item input:checked ~ label:before {
   border-color: #00b2fc;
   background: #00b2fc;
 }
-.disable__comment__option .disable_option .delete__checklist .delete__checklist__item input:checked ~ label:after {
+.disable__comment__option .disable_option .disable__checklist .disable__checklist__item input:checked ~ label:after {
   opacity: 1;
 }
-.disable__comment__option .disable_option .delete__checklist .delete__checklist__item label {
+.disable__comment__option .disable_option .disable__checklist .disable__checklist__item label {
   font-size: 1.8em;
   font-weight: 500;
   color: #687b95;
@@ -2058,7 +2090,7 @@ button.button__instagram.hover__highlight:hover .icon {
   padding-left: 25px;
   display: block;
 }
-.disable__comment__option .disable_option .delete__checklist .delete__checklist__item label:before {
+.disable__comment__option .disable_option .disable__checklist .disable__checklist__item label:before {
   position: absolute;
   top: 4px;
   left: 0;
@@ -2067,7 +2099,7 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 1px solid #687b95;
   content: "";
 }
-.disable__comment__option .disable_option .delete__checklist .delete__checklist__item label:after {
+.disable__comment__option .disable_option .disable__checklist .disable__checklist__item label:after {
   position: absolute;
   top: -2px;
   left: 2px;
@@ -2389,24 +2421,22 @@ button.button__instagram.hover__highlight:hover .icon {
   width: 100%;
   text-align: center;
 }
-.footer .footer__content {
+
+.footer__content {
   text-align: center;
 }
-.footer .footer__content .footer__nav {
-  padding-top: 50px;
-}
-.footer .footer__content .footer__nav ul {
+.footer__content .footer__nav ul {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
-.footer .footer__content .footer__nav ul li {
+.footer__content .footer__nav ul li {
   margin-bottom: 15px;
   padding: 0 10px;
   position: relative;
   line-height: 1;
 }
-.footer .footer__content .footer__nav ul li:not(:last-child):before {
+.footer__content .footer__nav ul li:not(:last-child):before {
   position: absolute;
   top: 2px;
   bottom: 2px;
@@ -2415,9 +2445,388 @@ button.button__instagram.hover__highlight:hover .icon {
   background: #687b95;
   content: "";
 }
-.footer .footer__content .footer__nav ul li a {
+.footer__content .footer__nav ul li a {
   font-size: 1.6em;
   font-weight: 400;
   color: #687b95;
   line-height: inherit;
+  outline: none;
+  box-shadow: none;
+}
+@media (max-width: 767.98px) {
+  .footer__content .footer__nav ul li a {
+    font-size: 1.4em;
+  }
+}
+
+.dc-quick__setup__wrap {
+  padding: 150px 30px 100px;
+}
+
+.dc-logo img {
+  max-width: 100%;
+  max-height: 100px;
+}
+
+.dc-logo__center {
+  text-align: center;
+}
+
+.dc-quick__setup__nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+@media (max-width: 767.98px) {
+  .dc-quick__setup__nav {
+    flex-wrap: wrap;
+  }
+}
+.dc-quick__setup__nav .quick__setup__item {
+  padding: 0 25px;
+  position: relative;
+}
+.dc-quick__setup__nav .quick__setup__item:not(:last-child):before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%);
+  height: 3px;
+  width: 100%;
+  content: "";
+  background: #d8dde7;
+}
+@media (max-width: 767.98px) {
+  .dc-quick__setup__nav .quick__setup__item:not(:last-child):before {
+    height: 0;
+    width: 0;
+  }
+}
+@media (max-width: 1199.98px) {
+  .dc-quick__setup__nav .quick__setup__item {
+    padding: 0 15px;
+  }
+}
+.dc-quick__setup__nav .quick__setup__item .quick__setup__link {
+  text-transform: uppercase;
+  font-size: 1.4em;
+  font-weight: 500;
+  color: #22282d;
+  width: 200px;
+  text-align: center;
+  padding: 13px 0;
+  background: #ffffff;
+  border-radius: 5px;
+  position: relative;
+  z-index: 1;
+  outline: none;
+  box-shadow: none;
+}
+@media (max-width: 1199.98px) {
+  .dc-quick__setup__nav .quick__setup__item .quick__setup__link {
+    width: auto;
+    padding: 13px 20px;
+  }
+}
+@media (max-width: 767.98px) {
+  .dc-quick__setup__nav .quick__setup__item .quick__setup__link {
+    font-size: 1.2em;
+  }
+}
+.dc-quick__setup__nav .quick__setup__item.active:not(:last-child):before {
+  background: #e10619;
+}
+.dc-quick__setup__nav .quick__setup__item.active .quick__setup__link {
+  background: #e10619;
+  color: #ffffff;
+}
+
+.dc-quick__step__item {
+  display: none;
+}
+.dc-quick__step__item.active {
+  display: block;
+}
+
+.dc-quick__step__item .quick__setup__item__header h2 {
+  font-size: 3.6em;
+  font-weight: 700;
+  color: #22282d;
+  font-family: "DM Sans", sans-serif;
+  text-align: center;
+  margin-bottom: 22px;
+}
+@media (max-width: 767.98px) {
+  .dc-quick__step__item .quick__setup__item__header h2 {
+    font-size: 2.8em;
+  }
+}
+.dc-quick__step__item .quick__setup__item__header p {
+  text-align: center;
+  font-size: 1.8em;
+  color: #687b95;
+  max-width: 780px;
+  margin: 0 auto;
+}
+@media (max-width: 767.98px) {
+  .dc-quick__step__item .quick__setup__item__header p {
+    font-size: 1.4em;
+  }
+}
+.dc-quick__step__item .dc-video__area {
+  min-height: 500px;
+  height: 100%;
+  max-width: 900px;
+  background: #f4f6fc;
+  margin: 0 auto;
+  position: relative;
+}
+@media (max-width: 1199.98px) {
+  .dc-quick__step__item .dc-video__area {
+    min-height: 300px;
+  }
+}
+.dc-quick__step__item .dc-video__area .play__btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  background: #05cb6b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  box-shadow: none;
+}
+.dc-quick__step__item .dc-video__area .play__btn span {
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 10px solid #ffffff;
+}
+@media (max-width: 767.98px) {
+  .dc-quick__step__item .dc-video__area .play__btn {
+    height: 50px;
+    width: 50px;
+  }
+}
+.dc-quick__step__item .dc-form__group {
+  padding: 32px 70px;
+  border-radius: 10px;
+  background: #f4f6fc;
+  margin: 50px auto 0;
+  max-width: 900px;
+}
+@media (max-width: 767.98px) {
+  .dc-quick__step__item .dc-form__group {
+    padding: 15px 20px;
+    padding-left: 45px;
+  }
+}
+.dc-quick__step__item .dc-form__group input {
+  display: none;
+}
+.dc-quick__step__item .dc-form__group input:checked ~ label:before {
+  border-color: #00b2fc;
+  background: #00b2fc;
+}
+.dc-quick__step__item .dc-form__group input:checked ~ label:after {
+  opacity: 1;
+}
+.dc-quick__step__item .dc-form__group label {
+  font-size: 1.8em;
+  font-weight: 500;
+  color: #22282d;
+  font-family: "DM Sans", sans-serif;
+  position: relative;
+}
+@media (max-width: 767.98px) {
+  .dc-quick__step__item .dc-form__group label {
+    font-size: 1.6em;
+  }
+}
+.dc-quick__step__item .dc-form__group label:before {
+  position: absolute;
+  top: 5px;
+  left: -27px;
+  height: 12px;
+  width: 12px;
+  border: 1px solid #687b95;
+  content: "";
+}
+.dc-quick__step__item .dc-form__group label:after {
+  position: absolute;
+  top: -5px;
+  left: -25px;
+  height: 13px;
+  width: 13px;
+  border: 0;
+  content: url(../img/check.png);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.dc-quick__step__item .disable_option {
+  border-radius: 5px;
+}
+.dc-quick__step__item .disable_option.dc-text__block {
+  background: #f4f6fc;
+}
+.dc-quick__step__item .disable_option input[type=radio] {
+  display: none;
+}
+.dc-quick__step__item .disable_option input[type=radio]:checked ~ label:before {
+  border-color: #05cb6b;
+}
+.dc-quick__step__item .disable_option input[type=radio]:checked ~ label:after {
+  opacity: 1;
+}
+.dc-quick__step__item .disable_option input[type=radio] ~ label {
+  font-size: 1.8em;
+  font-weight: 500;
+  color: #22282d;
+  font-family: "DM Sans", sans-serif;
+  position: relative;
+  line-height: 1.3;
+  padding-left: 25px;
+  display: block;
+  margin-bottom: 15px;
+}
+.dc-quick__step__item .disable_option input[type=radio] ~ label:before {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  border: 1px solid #687b95;
+  content: "";
+}
+.dc-quick__step__item .disable_option input[type=radio] ~ label:after {
+  position: absolute;
+  top: 7px;
+  left: 3px;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  border: 0;
+  background: #05cb6b;
+  content: "";
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.dc-quick__step__item .disable_option input[type=radio] ~ label span {
+  font-size: 0.88em;
+  font-weight: 400;
+  color: #687b95;
+}
+.dc-quick__step__item .disable_option .disable__checklist {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.dc-quick__step__item .disable_option .disable__checklist .disable__checklist__item {
+  flex: 0 0 150px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.dc-quick__step__item .disable_option .disable__checklist .disable__checklist__item input {
+  display: none;
+}
+.dc-quick__step__item .disable_option .disable__checklist .disable__checklist__item input:checked ~ label:before {
+  border-color: #00b2fc;
+  background: #00b2fc;
+}
+.dc-quick__step__item .disable_option .disable__checklist .disable__checklist__item input:checked ~ label:after {
+  opacity: 1;
+}
+.dc-quick__step__item .disable_option .disable__checklist .disable__checklist__item label {
+  font-size: 1.8em;
+  font-weight: 500;
+  color: #687b95;
+  font-family: "DM Sans", sans-serif;
+  position: relative;
+  line-height: 1.3;
+  padding-left: 25px;
+  display: block;
+}
+.dc-quick__step__item .disable_option .disable__checklist .disable__checklist__item label:before {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: 12px;
+  width: 12px;
+  border: 1px solid #687b95;
+  content: "";
+}
+.dc-quick__step__item .disable_option .disable__checklist .disable__checklist__item label:after {
+  position: absolute;
+  top: -2px;
+  left: 2px;
+  height: 13px;
+  width: 13px;
+  border: 0;
+  content: url(../img/check.png);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.dc-quick__step__item .disable_option .disable__option__description {
+  font-size: 1.6em;
+  font-weight: 400;
+  color: #687b95;
+  font-family: "DM Sans", sans-serif;
+}
+.dc-quick__step__item .disable_option .disable__option__description .danger {
+  color: #e0061a;
+  font-weight: 500;
+}
+.dc-quick__step__item .finalize-thumb {
+  text-align: center;
+  padding: 30px 0;
+}
+.dc-quick__step__item .doc__button__wrap {
+  text-align: center;
+}
+.dc-quick__step__item .doc__button__wrap .doc__button {
+  font-size: 1.6em;
+  font-weight: 500;
+  font-family: "DM Sans", sans-serif;
+  color: #22282d;
+  text-transform: uppercase;
+  border: 1px solid #e10619;
+  border-radius: 5px;
+  padding: 10px 35px;
+  outline: none;
+  box-shadow: none;
+}
+.dc-quick__step__item .doc__button__wrap .doc__button:hover {
+  background: #e10619;
+  color: #ffffff;
+}
+
+.dc-quick__setup__wrap .button__group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.dc-quick__setup__wrap .button__group .button {
+  width: 160px;
+  text-align: center;
+}
+.dc-quick__setup__wrap .button__group .button.button--sm {
+  width: 110px;
+}
+@media (max-width: 767.98px) {
+  .dc-quick__setup__wrap .button__group .button {
+    width: unset;
+  }
+  .dc-quick__setup__wrap .button__group .button.button--sm {
+    width: unset;
+  }
 }

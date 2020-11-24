@@ -22,6 +22,20 @@
 	background: $white;
 	padding: 30px;
 	border-radius: 10px;
+	&__big__pad {
+		padding: 100px 50px;
+		background: $white;
+		border-radius: 10px;
+		@include respond-below(sm) {
+			padding: 50px 25px;
+		}
+	}
+}
+
+.dc-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .dc-row {

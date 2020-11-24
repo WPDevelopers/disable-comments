@@ -1,0 +1,367 @@
+
+.dc-quick__setup__wrap {
+    padding: 150px 30px 100px;
+}
+
+.dc-logo {
+    img {
+        max-width: 100%;
+        max-height: 100px;
+    }
+}
+.dc-logo__center {
+    text-align: center;
+}
+
+.dc-quick__setup__nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    @include respond-below(sm) {
+        flex-wrap: wrap;
+    }
+    .quick__setup__item {
+        padding: 0 25px;
+        position: relative;
+        &:not(:last-child) {
+            &:before {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translateY(-50%);
+                height: 3px;
+                width: 100%;
+                content: '';
+                background: $grey4;
+                @include respond-below(sm) {
+                    height: 0;
+                    width: 0;
+                }
+            }
+        }
+        @include respond-below(lg) {
+            padding: 0 15px
+        }
+        .quick__setup__link {
+            text-transform: uppercase;
+            font-size: 1.4em;
+            font-weight: 500;
+            color: $dark;
+            width: 200px;
+            text-align: center;
+            padding: 13px 0;
+            background: $white;
+            border-radius: 5px;
+            position: relative;
+            z-index: 1;
+            outline: none;
+            box-shadow: none;
+            @include respond-below(lg) {
+                width: auto;
+                padding: 13px 20px;
+            }
+            @include respond-below(sm) {
+                font-size: 1.2em;
+            }
+        }
+        &.active {
+            &:not(:last-child) {
+                &:before {
+                    background: $red;
+                }
+            }
+            .quick__setup__link {
+                background: $red;
+                color: $white;
+            }
+        }
+    }
+}
+
+.dc-quick__step__item {
+    display: none;
+    &.active {
+        display: block;
+    }
+}
+
+.dc-quick__step__item {
+    .quick__setup__item__header {
+        h2 {
+            font-size: 3.6em;
+            font-weight: 700;
+            color: $dark;
+            font-family: $bodyFont;
+            text-align: center;
+            margin-bottom: 22px;
+            @include respond-below(sm) {
+                font-size: 2.8em;
+            }
+        }
+        p {
+            text-align: center;
+            font-size: 1.8em;
+            color: $grey3;
+            max-width: 780px;
+            margin: 0 auto;
+            @include respond-below(sm) {
+                font-size: 1.4em;
+            }
+        }
+    }
+    .dc-video__area {
+        min-height: 500px;
+        height: 100%;
+        max-width: 900px;
+        background: $grey;
+        margin: 0 auto;
+        position: relative;
+        @include respond-below(lg) {
+            min-height: 300px;
+        }
+        .play__btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 70px;
+            width: 70px;
+            border-radius: 50%;
+            background: $success;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            outline: none;
+            box-shadow: none;
+            span {
+                width: 0; 
+                height: 0; 
+                border-top: 8px solid transparent;
+                border-bottom: 8px solid transparent;
+                border-left: 10px solid $white;
+            }
+            @include respond-below(sm) {
+                height: 50px;
+                width: 50px;
+            }
+        }
+    }
+    .dc-form__group {
+        padding: 32px 70px;
+        border-radius: 10px;
+        background: $grey;
+        margin: 50px auto 0;
+        max-width: 900px;
+        @include respond-below(sm) {
+            padding: 15px 20px;
+            padding-left: 45px;
+        }
+        input {
+            display: none;
+        }
+        input:checked ~ label {
+            &:before {
+                border-color: $info;
+                background: $info;
+            }
+            &:after {
+                opacity: 1;
+            }
+        }
+        label {
+            font-size: 1.8em;
+            font-weight: 500;
+            color: $dark;
+            font-family: $bodyFont;
+            position: relative;
+            @include respond-below(sm) {
+                font-size: 1.6em;
+            }
+            &:before {
+                position: absolute;
+                top: 5px;
+                left: -27px;
+                height: 12px;
+                width: 12px;
+                border: 1px solid $grey3;
+                content: "";
+            }
+            &:after {
+                position: absolute;
+                top: -5px;
+                left: -25px;
+                height: 13px;
+                width: 13px;
+                border: 0;
+                content: url(../img/check.png);
+                opacity: 0;
+                transition: all 0.3s ease;
+            }
+        }
+    }
+    .disable_option {
+        border-radius: 5px;
+        &.dc-text__block {
+            background: $grey;
+        }
+		input[type="radio"] {
+			display: none;
+		}
+		input[type="radio"]:checked ~ label {
+			&:before {
+				border-color: $success;
+			}
+			&:after {
+				opacity: 1;
+			}
+		}
+		input[type="radio"] ~ label {
+			font-size: 1.8em;
+			font-weight: 500;
+			color: $dark;
+			font-family: $bodyFont;
+			position: relative;
+			line-height: 1.3;
+			padding-left: 25px;
+			display: block;
+			margin-bottom: 15px;
+			&:before {
+				position: absolute;
+				top: 4px;
+				left: 0;
+				height: 12px;
+				width: 12px;
+				border-radius: 50%;
+				border: 1px solid $grey3;
+				content: "";
+			}
+			&:after {
+				position: absolute;
+				top: 7px;
+				left: 3px;
+				height: 8px;
+				width: 8px;
+				border-radius: 50%;
+				border: 0;
+				background: $success;
+				content: "";
+				opacity: 0;
+				transition: all 0.3s ease;
+			}
+			span {
+				font-size: 0.88em;
+				font-weight: 400;
+				color: $grey3;
+			}
+		}
+		.disable__checklist {
+			display: flex;
+			flex-wrap: wrap;
+			margin-bottom: 10px;
+			.disable__checklist__item {
+				flex: 0 0 150px;
+				margin-right: 10px;
+				margin-bottom: 10px;
+				input {
+					display: none;
+				}
+				input:checked ~ label {
+					&:before {
+						border-color: $info;
+						background: $info;
+					}
+					&:after {
+						opacity: 1;
+					}
+				}
+				label {
+					font-size: 1.8em;
+					font-weight: 500;
+					color: $grey3;
+					font-family: $bodyFont;
+					position: relative;
+					line-height: 1.3;
+					padding-left: 25px;
+					display: block;
+					&:before {
+						position: absolute;
+						top: 4px;
+						left: 0;
+						height: 12px;
+						width: 12px;
+						border: 1px solid $grey3;
+						content: "";
+					}
+					&:after {
+						position: absolute;
+						top: -2px;
+						left: 2px;
+						height: 13px;
+						width: 13px;
+						border: 0;
+						content: url(../img/check.png);
+						opacity: 0;
+						transition: all 0.3s ease;
+					}
+				}
+			}
+		}
+		.disable__option__description {
+			font-size: 1.6em;
+			font-weight: 400;
+			color: $grey3;
+			font-family: $bodyFont;
+			.danger {
+				color: $danger;
+				font-weight: 500;
+			}
+		}
+    }
+    .finalize-thumb {
+        text-align: center;
+        padding: 30px 0;
+    }
+    .doc__button__wrap {
+        text-align: center;
+        .doc__button {
+            font-size: 1.6em;
+            font-weight: 500;
+            font-family: $bodyFont;
+            color: $dark;
+            text-transform: uppercase;
+            border: 1px solid $red;
+            border-radius: 5px;
+            padding: 10px 35px;
+            outline: none;
+            box-shadow: none;
+            &:hover {
+                background: $red;
+                color: $white;
+            }
+        }
+    }
+}
+
+.dc-quick__setup__wrap {
+    .button__group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        .button {
+            width: 160px;
+            text-align: center;
+            &.button--sm {
+                width: 110px;
+            }
+            @include respond-below(sm) {
+                width: unset;
+                &.button--sm {
+                    width: unset;
+                }
+            }
+        }
+    }
+}
