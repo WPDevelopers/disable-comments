@@ -27,7 +27,6 @@ class Disable_Comment_Command
                 'name'        => 'disabled-types',
                 'description' => 'Which post types of post are to be disabled.',
                 'optional'    => true,
-                // 'default'     => '',
                 'options'     => $post_types,
             ),
             array(
