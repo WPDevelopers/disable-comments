@@ -17,7 +17,7 @@ class Disable_Comment_Command
             array(
                 'type'        => 'assoc',
                 'name'        => 'mode',
-                'description' => 'Which post types of post are to be disabled.',
+                'description' => 'Configure the settings to disable comments globally or on specific types of post.',
                 'optional'    => true,
                 'default'     => 'everywhere',
                 'options'     => ['everywhere', 'selected_types'],
@@ -25,7 +25,7 @@ class Disable_Comment_Command
             array(
                 'type'        => 'assoc',
                 'name'        => 'disabled-types',
-                'description' => 'Which post types of post are to be disabled.',
+                'description' => 'Disable comments from the selected post type(s) only.',
                 'optional'    => true,
                 'options'     => $post_types,
             ),
@@ -44,13 +44,13 @@ class Disable_Comment_Command
             array(
                 'type'        => 'flag',
                 'name'        => 'add',
-                'description' => 'Enable the passed disabled-types.', // check specified checkbox in `On Specific Post Types:`
+                'description' => 'Check specified checkbox in On Specific Post Types.', // check specified checkbox in `On Specific Post Types:`
                 'optional'    => true,
             ),
             array(
                 'type'        => 'flag',
                 'name'        => 'remove',
-                'description' => 'Disable the passed disabled-types.', // uncheck specified checkbox in `On Specific Post Types:`
+                'description' => 'Uncheck specified checkbox in `On Specific Post Types.', // uncheck specified checkbox in `On Specific Post Types:`
                 'optional'    => true,
             ),
         );
@@ -62,21 +62,23 @@ class Disable_Comment_Command
                 'optional'    => true,
             );
         }
-        WP_CLI::add_command('dc disable', [$this, 'disable'], [
+        WP_CLI::add_command('disable-comments settings', [$this, 'disable'], [
             'synopsis' => $disable_synopsis,
             'when' => 'after_wp_load',
             'longdesc' =>   "## EXAMPLES 
-wp dc disable --mode=everywhere 
-wp dc disable --mode=selected_types --disabled-types=post,page 
-wp dc disable --xmlrpc --rest-api 
-wp dc disable --xmlrpc=false --rest-api=false ",
+wp disable-comments settings --mode=everywhere 
+wp disable-comments settings --mode=selected_types --disabled-types=post
+wp disable-comments settings --mode=selected_types --disabled-types=page --add
+wp disable-comments settings --mode=selected_types --disabled-types=attachment --remove
+wp disable-comments settings --xmlrpc --rest-api 
+wp disable-comments settings --xmlrpc=false --rest-api=false ",
         ]);
 
         $delete_synopsis = array(
             array(
                 'type'        => 'assoc',
                 'name'        => 'mode',
-                'description' => 'Which post types of post are to be disabled.',
+                'description' => 'Configure the settings to Delete Comments globally or on specific types of post.',
                 'optional'    => true,
                 // 'default'     => 'everywhere',
                 'options'     => ['delete_everywhere', 'selected_delete_types', 'selected_delete_comment_types'],
@@ -84,7 +86,7 @@ wp dc disable --xmlrpc=false --rest-api=false ",
             array(
                 'type'        => 'assoc',
                 'name'        => 'deleted-types',
-                'description' => 'Which post types of post are to be disabled.',
+                'description' => 'Remove existing comments entries for the selected post type(s) in the database and cannot be reverted without a database backups.',
                 'optional'    => true,
                 // 'default'     => '',
                 'options'     => $post_types,
@@ -92,7 +94,7 @@ wp dc disable --xmlrpc=false --rest-api=false ",
             array(
                 'type'        => 'assoc',
                 'name'        => 'delete-comment-types',
-                'description' => 'Which post types of post are to be disabled.',
+                'description' => 'Remove existing comment entries for the selected comment type(s) in the database and cannot be reverted without a database backups.',
                 'optional'    => true,
                 // 'default'     => '',
                 'options'     => $comment_types,
@@ -106,20 +108,20 @@ wp dc disable --xmlrpc=false --rest-api=false ",
                 'optional'    => true,
             );
         }
-        WP_CLI::add_command('dc delete', [$this, 'delete'], [
+        WP_CLI::add_command('disable-comments delete', [$this, 'delete'], [
             'synopsis' => $delete_synopsis,
             'when' => 'after_wp_load',
             'longdesc' =>   "## EXAMPLES 
-wp dc delete --mode=delete_everywhere 
-wp dc delete --mode=selected_delete_types --deleted-types=post,page
-wp dc delete --mode=selected_delete_types --deleted-types=post,page  --extra-post-types=contact
-wp dc delete --mode=selected_delete_comment_types --delete-comment-types=comment "
+wp disable-comments delete --mode=delete_everywhere 
+wp disable-comments delete --mode=selected_delete_types --deleted-types=post,page
+wp disable-comments delete --mode=selected_delete_types --deleted-types=post,page  --extra-post-types=contact
+wp disable-comments delete --mode=selected_delete_comment_types --delete-comment-types=comment "
         ]);
 
     }
 
     /**
-     * Disable comments for WordPress.
+     * Disable Comments on your website.
      *
      */
     function disable($args, $assoc_args)
@@ -141,8 +143,6 @@ wp dc delete --mode=selected_delete_comment_types --delete-comment-types=comment
             $disable_comments_settings['mode'] = 'selected_types';
             $_types = array_map('trim', explode(',', $types));
             $disabled_post_types = $this->dc_instance->get_disabled_post_types();
-            print_r($disabled_post_types);
-            print_r($_types);
         
             if(!empty($add)){
                 $_types = array_unique(array_merge($disabled_post_types, $_types));
@@ -176,7 +176,7 @@ wp dc delete --mode=selected_delete_comment_types --delete-comment-types=comment
     }
 
     /**
-     * Deletes comments for WordPress.
+     * Deletes Comments on your website.
      *
      */
     function delete($args, $assoc_args)
