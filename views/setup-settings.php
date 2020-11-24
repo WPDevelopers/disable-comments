@@ -1,4 +1,4 @@
-<div class="disablecommentswrap background__grey dc-quick__setup__wrap">
+<div id="disablecommentssetupwrap" class="disablecommentswrap background__grey dc-quick__setup__wrap">
     <div class="dc-container">
         <div class="dc-row">
             <div class="dc-col">
@@ -28,7 +28,7 @@
                     </ul>
                 </div>
                 <div class="dc-quick__setup__step dc-text__block__big__pad">
-                    <div class="dc-quick__step__item active">
+                    <div id="dcqTabBody_1" class="dc-quick__step__item">
                         <div class="quick__setup__item__header mb50">
                             <h2>Getting Started</h2>
                             <p>Easily get started with this easy setup wizard and complete setting up your Knowledge Base.</p>
@@ -41,7 +41,7 @@
                             <label for="feedback__checkbox">Want to help make Disable Comments even better?</label>
                         </div>
                     </div>
-                    <div class="dc-quick__step__item">
+                    <div id="dcqTabBody_2" class="dc-quick__step__item">
                         <div class="quick__setup__item__header mb50">
                             <h2>Disable Comments</h2>
                             <p>Easily get started with this easy setup wizard and complete setting up your Knowledge Base.</p>
@@ -75,7 +75,7 @@
                             <p class="disable__option__description"><span class="danger">Warnings:</span> This will remove existing comment entries for the selected post type(s) in the database and cannot be reverted without a database backups</p>
                         </div>
                     </div>
-                    <div class="dc-quick__step__item">
+                    <div id="dcqTabBody_3" class="dc-quick__step__item">
                         <div class="quick__setup__item__header mb50">
                             <h2>Delete Comments</h2>
                             <p>Easily get started with this easy setup wizard and complete setting up your Knowledge Base.</p>
@@ -109,7 +109,7 @@
                             <p class="disable__option__description"><span class="danger">Warnings:</span> This will remove existing comment entries for the selected post type(s) in the database and cannot be reverted without a database backups</p>
                         </div>
                     </div>
-                    <div class="dc-quick__step__item">
+                    <div id="dcqTabBody_4" class="dc-quick__step__item">
                         <div class="quick__setup__item__header">
                             <h2>Great Job!</h2>
                             <p>Your documentation page is ready! Make sure to add more articles and assign them to proper categories and you are good to go.</p>
@@ -122,9 +122,9 @@
                         </div>
                     </div>
                     <div class="button__group mt50">
-                        <a href="#" class="button button--sm">Previous</a>
-                        <a href="#" class="button button__success">Next</a>
-                        <a href="#" class="button button--sm">Skip</a>
+                        <a id="dcQuickPreviousBtn" href="#" class="button button--sm">Previous</a>
+                        <a id="dcQuickNextBtn" href="#" class="button button__success">Next</a>
+                        <a id="dcQuickSkipBtn" href="#" class="button button--sm">Skip</a>
                     </div>
                 </div>
 
