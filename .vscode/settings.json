@@ -1,5 +1,0 @@
-{
-    "phpcs.enable": false,
-    "phpcs.standard": "WordPress",
-    "phpcs.composerJsonPath": "C:\\laragon\\www\\disable-comments\\composer.json"
-}
