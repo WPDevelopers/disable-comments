@@ -729,6 +729,8 @@ class Disable_Comments
 		if (!$this->is_CLI) {
 			wp_send_json_success(array('message' => ((count($log) !== 0 ? $log : [__('No comments available for deletion', 'disable-comments')]))));
 			wp_die();
+		} else {
+			return $log;
 		}
 	}
 
