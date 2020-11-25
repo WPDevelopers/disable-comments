@@ -1,6 +1,6 @@
 
 .dc-quick__setup__wrap {
-    padding: 80px 30px 50px;
+    padding: 50px 30px 50px;
 }
 
 .dc-logo {
@@ -155,7 +155,7 @@
         padding-left: 27px;
         text-align: center;
         border-radius: 10px;
-        margin: 30px auto 0;
+        margin: 15px auto 0;
         max-width: 800px;
         @include respond-below(xs) {
             text-align: left;

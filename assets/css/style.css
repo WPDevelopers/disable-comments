@@ -1175,13 +1175,13 @@ a.color__instagram:hover, a.color__instagram:focus {
   border-radius: 10px;
 }
 .dc-text__block__big__pad {
-  padding: 50px 50px;
+  padding: 40px 50px;
   background: #ffffff;
   border-radius: 10px;
 }
 @media (max-width: 767.98px) {
   .dc-text__block__big__pad {
-    padding: 50px 25px;
+    padding: 40px 25px;
   }
 }
 
@@ -2474,7 +2474,7 @@ button.button__instagram.hover__highlight:hover .icon {
 }
 
 .dc-quick__setup__wrap {
-  padding: 80px 30px 50px;
+  padding: 50px 30px 50px;
 }
 
 .dc-logo img {
@@ -2639,7 +2639,7 @@ button.button__instagram.hover__highlight:hover .icon {
   padding-left: 27px;
   text-align: center;
   border-radius: 10px;
-  margin: 30px auto 0;
+  margin: 15px auto 0;
   max-width: 800px;
 }
 @media (max-width: 575.98px) {

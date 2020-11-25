@@ -169,10 +169,17 @@ jQuery(document).ready(function () {
 			}
 		}
 		function save_settings(tabPosition) {
+			// get all form data
+
 			if (finishStepFlug) {
 				console.log("Last Tab ajax request");
 			} else {
-				console.log("send ajax request for tab ", tabPosition);
+				if (
+					tabPosition == 1 &&
+					jQuery("[name=dc_is_optin]").is(":checked")
+				) {
+					console.log("optin ajax request send....");
+				}
 			}
 
 			// set last flag

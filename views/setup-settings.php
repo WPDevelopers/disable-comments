@@ -3,7 +3,7 @@
         <div class="dc-row">
             <div class="dc-col">
                 <div class="dc-quick__setup">
-                    <div class="dc-logo dc-logo__center mb100">
+                    <div class="dc-logo dc-logo__center mb50">
                         <img src="<?php echo DC_ASSETS_URI; ?>img/logo.png" alt="">
                     </div>
                 </div>
@@ -27,9 +27,9 @@
                         </li>
                     </ul>
                 </div>
-                <div class="dc-quick__setup__step dc-text__block__big__pad">
+                <form id="disableCommentSetupSettings" class="dc-quick__setup__step dc-text__block__big__pad" action="#">
                     <div id="dcqTabBody_1" class="dc-quick__step__item">
-                        <div class="quick__setup__item__header mb50">
+                        <div class="quick__setup__item__header mb30">
                             <h2>Getting Started</h2>
                             <p>Easily get started with this easy setup wizard and complete setting up your Knowledge Base.</p>
                         </div>
@@ -37,7 +37,7 @@
                             <a href="#" class="play__btn"><span></span></a>
                         </div>
                         <div class="dc-form__group">
-                            <input type="checkbox" id="feedback__checkbox">
+                            <input name="dc_is_optin" type="checkbox" id="feedback__checkbox">
                             <label for="feedback__checkbox">Want to help make Disable Comments even better?</label>
                         </div>
                     </div>
@@ -121,12 +121,12 @@
                             <a href="#" class="doc__button">VISIT YOUR DOCUMENTATION PAGE</a>
                         </div>
                     </div>
-                    <div class="button__group mt50">
+                    <div class="button__group mt30">
                         <a id="dcQuickPreviousBtn" href="#" class="button button--sm">Previous</a>
                         <a id="dcQuickNextBtn" href="#" class="button button__success">Next</a>
                         <a id="dcQuickSkipBtn" href="#" class="button button--sm">Skip</a>
                     </div>
-                </div>
+                </form>
 
                 <div class="footer__content mt80">
                     <?php
