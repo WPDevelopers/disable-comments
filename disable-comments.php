@@ -669,7 +669,6 @@ class Disable_Comments
 
 	public function disable_comments_settings($_args = array())
 	{
-
 		$nonce = (isset($_POST['nonce']) ? $_POST['nonce'] : '');
 		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
 
@@ -685,11 +684,9 @@ class Disable_Comments
 			if ($this->options['remove_everywhere']) {
 				$disabled_post_types = array_keys($post_types);
 			} else {
-				$disabled_post_types = empty($formArray['disabled_types']) ? $this->options['disabled_post_types'] : array_map('sanitize_key', (array) $formArray['disabled_types']);
+				$disabled_post_types = (isset($formArray['disabled_types']) ? array_map('sanitize_key', (array) $formArray['disabled_types']) : []);
 			}
-
 			$disabled_post_types = array_intersect($disabled_post_types, array_keys($post_types));
-
 			$this->options['disabled_post_types'] = $disabled_post_types;
 
 			// Extra custom post types.
