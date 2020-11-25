@@ -413,6 +413,7 @@ class Disable_Comments
 				array(
 					'save_action' => 'disable_comments_save_settings',
 					'delete_action' => 'disable_comments_delete_comments',
+					'settings_URI' => $this->settings_page_url(),
 					'_nonce' => wp_create_nonce('disable_comments_save_settings')
 				)
 			);
@@ -452,7 +453,7 @@ class Disable_Comments
 	 */
 	private function settings_page_url()
 	{
-		$base = $this->networkactive ? network_admin_url('admin.php') : admin_url('admin.php');
+		$base = $this->networkactive ? network_admin_url('settings.php') : admin_url('options-general.php');
 		return add_query_arg('page', DC_PLUGIN_SLUG, $base);
 	}
 

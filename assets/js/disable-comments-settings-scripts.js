@@ -181,7 +181,7 @@ jQuery(document).ready(function () {
 			// get all form data
 
 			if (finishStepFlug) {
-				console.log("Last Tab ajax request");
+				window.location = disableCommentsObj.settings_URI;
 			} else {
 				if (
 					tabPosition == 1 &&
@@ -190,7 +190,6 @@ jQuery(document).ready(function () {
 					console.log("optin ajax request send....");
 				} else if (tabPosition == 2) {
 					finishStepFlug = true;
-
 					var data = {
 						action: disableCommentsObj.save_action,
 						nonce: disableCommentsObj._nonce,
