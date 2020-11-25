@@ -26,9 +26,9 @@
                     <p class="indent" id="extratypes"><?php _e('Only the built-in post types appear above. If you want to disable comments on other custom post types on the entire network, you can supply a comma-separated list of post types below (use the slug that identifies the post type).', 'disable-comments'); ?>
                         <br /><label><?php _e('Custom post types:', 'disable-comments'); ?> <input type="text" name="extra_post_types" size="30" value="<?php echo esc_attr($extradisabletypes); ?>" /></label></p>
                 <?php endif; ?>
-                <p class="indent"><?php _e('Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts.', 'disable-comments'); ?></p>
             </div>
-            <p class="disable__option__description"><?php _e('This will disable comments from the selected post type(s) only. Comments will be visible on all other post types', 'disable-comments'); ?></p>
+            <p class="disable__option__description"><?php _e('Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts.', 'disable-comments'); ?></p>
+            <p class="disable__option__description"><?php _e('This will disable comments from the selected post type(s) only. Comments will be visible on all other post types.', 'disable-comments'); ?></p>
         </div>
     </div>
     <div class="disable__comment__option mb50">

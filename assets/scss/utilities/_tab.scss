@@ -199,12 +199,64 @@
 				}
 			}
 		}
+		.delete__checklist {
+			display: flex;
+			flex-wrap: wrap;
+			margin-bottom: 10px;
+			.delete__checklist__item {
+				flex: 0 0 130px;
+				margin-right: 10px;
+				margin-bottom: 10px;
+				input {
+					display: none;
+				}
+				input:checked ~ label {
+					&:before {
+						border-color: $info;
+						background: $info;
+					}
+					&:after {
+						opacity: 1;
+					}
+				}
+				label {
+					font-size: 18px;
+					font-weight: 500;
+					color: $grey3;
+					font-family: $bodyFont;
+					position: relative;
+					line-height: 1.3;
+					padding-left: 25px;
+					display: block;
+					&:before {
+						position: absolute;
+						top: 4px;
+						left: 0;
+						height: 12px;
+						width: 12px;
+						border: 1px solid $grey3;
+						content: "";
+					}
+					&:after {
+						position: absolute;
+						top: -2px;
+						left: 2px;
+						height: 13px;
+						width: 13px;
+						border: 0;
+						content: url(../img/check.png);
+						opacity: 0;
+						transition: all 0.3s ease;
+					}
+				}
+			}
+		}
 		.remove__checklist {
 			display: flex;
 			flex-wrap: wrap;
 			margin-bottom: 10px;
 			.remove__checklist__item {
-				flex: 0 0 150px;
+				flex: 0 0 130px;
 				margin-right: 10px;
 				margin-bottom: 10px;
 				input {
@@ -330,6 +382,9 @@
 		}
 		.delete__feedback {
 			margin-bottom: 10px;
+			label {
+				font-size: 14px;
+			}
 			.delete__feedback__item {
 				position: relative;
 				display: inline-block;
@@ -368,5 +423,9 @@
 				font-weight: 500;
 			}
 		}
+	}
+	.total-comments {
+		font-size: 16px;
+		line-height: 26px;
 	}
 }

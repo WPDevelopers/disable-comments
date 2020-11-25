@@ -1,10 +1,9 @@
 // import files
-@import '../mixins/button';
-
+@import "../mixins/button";
 
 // button color control
 @each $parent, $color in $theme-colors {
-	@include button-emphasis-variant('.button__#{$parent}', $color);
+	@include button-emphasis-variant(".button__#{$parent}", $color);
 }
 
 .disablecommentswrap {
@@ -35,14 +34,23 @@
 		}
 	}
 
+	.button__delete {
+		color: $white;
+		background: #e0061a;
+		&:hover,
+		&:focus {
+			background: rgba(255, 0, 0, 1);
+			color: $white;
+		}
+	}
 	.button__success {
 		color: $white;
 		background: $success;
 		&:hover,
 		&:focus {
-			background: rgba($success, .9);
+			background: rgba($success, 0.9);
 			color: $white;
-		}	
+		}
 	}
 
 	.button--sm {

@@ -1,5 +1,5 @@
 <div class="sidebar__widget__wrap">
-    <div class="dc-tutorials dc-text__block mb50">
+    <div class="dc-tutorials dc-text__block mt50 mb50">
         <h3><?php _e('Read Our Tutorials', 'disable-comments'); ?></h3>
         <div class="tutorial__list">
             <div class="tutorial__item">

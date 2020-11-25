@@ -129,7 +129,7 @@ jQuery(document).ready(function () {
 					--tabPosition;
 				}
 			} else {
-				if (4 > tabPosition) {
+				if (3 > tabPosition) {
 					++tabPosition;
 				}
 			}
@@ -137,7 +137,7 @@ jQuery(document).ready(function () {
 			changeTab(tabPosition);
 		}
 		function changeTab(nthChildNumber) {
-			for (var i = 1; i <= 4; i++) {
+			for (var i = 1; i <= 3; i++) {
 				if (i <= nthChildNumber) {
 					jQuery(
 						"ul.dc-quick__setup__nav li:nth-child(" + i + ")"
@@ -160,7 +160,7 @@ jQuery(document).ready(function () {
 					jQuery(btnPrevious).css("visibility", "visible");
 					jQuery(btnSkip).css("visibility", "visible");
 				}
-				if (nthChildNumber == 4) {
+				if (nthChildNumber == 3) {
 					jQuery(btnSkip).css("visibility", "hidden");
 					jQuery(btnNext).text("Finish");
 				} else {
@@ -179,12 +179,20 @@ jQuery(document).ready(function () {
 					jQuery("[name=dc_is_optin]").is(":checked")
 				) {
 					console.log("optin ajax request send....");
-				}
-			}
+				} else if (tabPosition == 2) {
+					finishStepFlug = true;
 
-			// set last flag
-			if (tabPosition == 3) {
-				finishStepFlug = true;
+					var data = {
+						action: disableCommentsObj.save_action,
+						nonce: disableCommentsObj._nonce,
+						data: jQuery(
+							"#disableCommentSetupSettings"
+						).serializeArray(),
+					};
+					jQuery.post(ajaxurl, data, function (response) {
+						console.log(response);
+					});
+				}
 			}
 		}
 	}

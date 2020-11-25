@@ -1854,6 +1854,14 @@ button.button__instagram.hover__highlight:hover .icon {
     font-size: 13px;
   }
 }
+.disablecommentswrap .button__delete {
+  color: #ffffff;
+  background: #e0061a;
+}
+.disablecommentswrap .button__delete:hover, .disablecommentswrap .button__delete:focus {
+  background: red;
+  color: #ffffff;
+}
 .disablecommentswrap .button__success {
   color: #ffffff;
   background: #05cb6b;
@@ -1884,11 +1892,10 @@ button.button__instagram.hover__highlight:hover .icon {
   }
 }
 .disable__comment__alert .alert__content {
+  flex-grow: 1;
   display: flex;
   align-items: center;
   padding-right: 20px;
-  flex-wrap: wrap;
-  flex: 1;
 }
 @media (max-width: 767.98px) {
   .disable__comment__alert .alert__content {
@@ -1915,21 +1922,8 @@ button.button__instagram.hover__highlight:hover .icon {
   color: #22282d;
   font-family: "DM Sans", sans-serif;
 }
-
-.disable__comment__alert .alert__content a.wpinsights-disable-comments-collect {
-  color: #05cb6b;
-}
-
-.disable__comment__alert .alert__content a.wpinsights-disable-comments-collect:hover,
-.disable__comment__alert .alert__content a.wpinsights-disable-comments-collect:visited,
-.disable__comment__alert .alert__content a.wpinsights-disable-comments-collect:focus {
-  outline: none;
-  border: none;
-  box-shadow: none;
-}
-
-.disable__comment__alert .alert__content .wpinsights-data p {
-  font-size: 13px;
+.disable__comment__alert .button__group {
+  flex: 0 0 208px;
 }
 
 .section__header {
@@ -2137,13 +2131,63 @@ button.button__instagram.hover__highlight:hover .icon {
   opacity: 0;
   transition: all 0.3s ease;
 }
+.disable__comment__option .disable_option .delete__checklist {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.disable__comment__option .disable_option .delete__checklist .delete__checklist__item {
+  flex: 0 0 130px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.disable__comment__option .disable_option .delete__checklist .delete__checklist__item input {
+  display: none;
+}
+.disable__comment__option .disable_option .delete__checklist .delete__checklist__item input:checked ~ label:before {
+  border-color: #00b2fc;
+  background: #00b2fc;
+}
+.disable__comment__option .disable_option .delete__checklist .delete__checklist__item input:checked ~ label:after {
+  opacity: 1;
+}
+.disable__comment__option .disable_option .delete__checklist .delete__checklist__item label {
+  font-size: 18px;
+  font-weight: 500;
+  color: #687b95;
+  font-family: "DM Sans", sans-serif;
+  position: relative;
+  line-height: 1.3;
+  padding-left: 25px;
+  display: block;
+}
+.disable__comment__option .disable_option .delete__checklist .delete__checklist__item label:before {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  height: 12px;
+  width: 12px;
+  border: 1px solid #687b95;
+  content: "";
+}
+.disable__comment__option .disable_option .delete__checklist .delete__checklist__item label:after {
+  position: absolute;
+  top: -2px;
+  left: 2px;
+  height: 13px;
+  width: 13px;
+  border: 0;
+  content: url(../img/check.png);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
 .disable__comment__option .disable_option .remove__checklist {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 10px;
 }
 .disable__comment__option .disable_option .remove__checklist .remove__checklist__item {
-  flex: 0 0 150px;
+  flex: 0 0 130px;
   margin-right: 10px;
   margin-bottom: 10px;
 }
@@ -2269,6 +2313,9 @@ button.button__instagram.hover__highlight:hover .icon {
 .disable__comment__option .disable_option .delete__feedback {
   margin-bottom: 10px;
 }
+.disable__comment__option .disable_option .delete__feedback label {
+  font-size: 14px;
+}
 .disable__comment__option .disable_option .delete__feedback .delete__feedback__item {
   position: relative;
   display: inline-block;
@@ -2303,6 +2350,10 @@ button.button__instagram.hover__highlight:hover .icon {
 .disable__comment__option .disable_option .disable__option__description .danger {
   color: #e0061a;
   font-weight: 500;
+}
+.disable__comment__option .total-comments {
+  font-size: 16px;
+  line-height: 26px;
 }
 
 .dc-item__card_wrap {
@@ -2576,6 +2627,9 @@ button.button__instagram.hover__highlight:hover .icon {
 }
 .dc-quick__step__item.active {
   display: block;
+}
+.dc-quick__step__item .button {
+  display: none;
 }
 
 .dc-quick__step__item .quick__setup__item__header h2 {
