@@ -19,7 +19,7 @@ class Disable_Comment_Command
                 'name'        => 'mode',
                 'description' => 'Configure the settings to disable comments globally or on specific types of post.',
                 'optional'    => true,
-                'default'     => 'everywhere',
+                // 'default'     => 'everywhere',
                 'options'     => ['everywhere', 'selected_types'],
             ),
             array(
@@ -65,12 +65,12 @@ class Disable_Comment_Command
         WP_CLI::add_command('disable-comments settings', [$this, 'disable'], [
             'synopsis' => $disable_synopsis,
             'when' => 'after_wp_load',
-            'longdesc' =>   "## EXAMPLES 
-wp disable-comments settings --mode=everywhere 
+            'longdesc' =>   "## EXAMPLES
+wp disable-comments settings --mode=everywhere
 wp disable-comments settings --mode=selected_types --disabled-types=post
 wp disable-comments settings --mode=selected_types --disabled-types=page --add
 wp disable-comments settings --mode=selected_types --disabled-types=attachment --remove
-wp disable-comments settings --xmlrpc --rest-api 
+wp disable-comments settings --xmlrpc --rest-api
 wp disable-comments settings --xmlrpc=false --rest-api=false ",
         ]);
 
@@ -111,8 +111,8 @@ wp disable-comments settings --xmlrpc=false --rest-api=false ",
         WP_CLI::add_command('disable-comments delete', [$this, 'delete'], [
             'synopsis' => $delete_synopsis,
             'when' => 'after_wp_load',
-            'longdesc' =>   "## EXAMPLES 
-wp disable-comments delete --mode=delete_everywhere 
+            'longdesc' =>   "## EXAMPLES
+wp disable-comments delete --mode=delete_everywhere
 wp disable-comments delete --mode=selected_delete_types --deleted-types=post,page
 wp disable-comments delete --mode=selected_delete_types --deleted-types=post,page  --extra-post-types=contact
 wp disable-comments delete --mode=selected_delete_comment_types --delete-comment-types=comment "
@@ -143,16 +143,17 @@ wp disable-comments delete --mode=selected_delete_comment_types --delete-comment
             $disable_comments_settings['mode'] = 'selected_types';
             $_types = array_map('trim', explode(',', $types));
             $disabled_post_types = $this->dc_instance->get_disabled_post_types();
-        
+
             if(!empty($add)){
                 $_types = array_unique(array_merge($disabled_post_types, $_types));
+                $msg .= "Comments disabled for \"$types\". ";
             }
             if(!empty($remove)){
                 $_types = array_diff($disabled_post_types, $_types);
+                $msg .= "Comments enabled for \"$types\". ";
             }
 
             $disable_comments_settings['disabled_types'] = $_types;
-            $msg .= "Comments disabled for \"$types\". ";
         }
 
         // for network.

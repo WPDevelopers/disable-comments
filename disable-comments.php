@@ -614,7 +614,7 @@ class Disable_Comments
 			if ($this->options['remove_everywhere']) {
 				$disabled_post_types = array_keys($post_types);
 			} else {
-				$disabled_post_types = empty($formArray['disabled_types']) ? array() : array_map('sanitize_key', (array) $formArray['disabled_types']);
+				$disabled_post_types = empty($formArray['disabled_types']) ? $this->options['disabled_post_types'] : array_map('sanitize_key', (array) $formArray['disabled_types']);
 			}
 
 			$disabled_post_types = array_intersect($disabled_post_types, array_keys($post_types));
@@ -627,9 +627,9 @@ class Disable_Comments
 				$this->options['extra_post_types'] = array_diff($extra_post_types, array_keys($post_types)); // Make sure we don't double up builtins.
 			}
 			// xml rpc
-			$this->options['remove_xmlrpc_comments'] = (isset($formArray['remove_xmlrpc_comments']) ? intval($formArray['remove_xmlrpc_comments']) : 0);
+			$this->options['remove_xmlrpc_comments'] = (isset($formArray['remove_xmlrpc_comments']) ? intval($formArray['remove_xmlrpc_comments']) : ( isset( $this->options['remove_xmlrpc_comments'] ) ? $this->options['remove_xmlrpc_comments'] : 0 ));
 			// rest api comments
-			$this->options['remove_rest_API_comments'] = (isset($formArray['remove_rest_API_comments']) ? intval($formArray['remove_rest_API_comments']) : 0);
+			$this->options['remove_rest_API_comments'] = (isset($formArray['remove_rest_API_comments']) ? intval($formArray['remove_rest_API_comments']) : ( isset( $this->options['remove_rest_API_comments'] ) ? $this->options['remove_rest_API_comments'] : 0 ));
 
 			// save settings
 			$this->update_options();
