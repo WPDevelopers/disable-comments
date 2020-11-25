@@ -38,7 +38,7 @@ class Disable_Comments
 	function __construct()
 	{
 		define('DC_VERSION', '1.11.0');
-		define('DC_PLUGIN_SLUG', 'disable-comments');
+		define('DC_PLUGIN_SLUG', 'disable_comments_settings');
 		define('DC_PLUGIN_ROOT_PATH', dirname(__FILE__));
 		define('DC_PLUGIN_VIEWS_PATH', DC_PLUGIN_ROOT_PATH . '/views/');
 		define('DC_PLUGIN_ROOT_URI', plugins_url("/", __FILE__));
@@ -49,9 +49,9 @@ class Disable_Comments
 		add_action('wp_ajax_disable_comments_delete_comments', array($this, 'delete_comments_settings'));
 
 		// Including cli.php
-		if ( defined('WP_CLI') && WP_CLI ) {
+		if (defined('WP_CLI') && WP_CLI) {
 			require_once DC_PLUGIN_ROOT_PATH . "/includes/cli.php";
-			new Disable_Comment_Command( $this );
+			new Disable_Comment_Command($this);
 		}
 
 		// are we network activated?
@@ -78,21 +78,22 @@ class Disable_Comments
 		$this->start_plugin_usage_tracking();
 	}
 
-	public function start_plugin_usage_tracking() {
-		if( ! class_exists( 'DisableComments_Plugin_Tracker') ) {
-			include_once( DC_PLUGIN_ROOT_PATH . '/includes/class-plugin-usage-tracker.php' );
+	public function start_plugin_usage_tracking()
+	{
+		if (!class_exists('DisableComments_Plugin_Tracker')) {
+			include_once(DC_PLUGIN_ROOT_PATH . '/includes/class-plugin-usage-tracker.php');
 		}
-        $tracker = DisableComments_Plugin_Tracker::get_instance( __FILE__, [
+		$tracker = DisableComments_Plugin_Tracker::get_instance(__FILE__, [
 			'opt_in'       => true,
 			'goodbye_form' => true,
 			'item_id'      => 'b0112c9030af6ba53de4'
-		] );
+		]);
 		$tracker->set_notice_options(array(
-			'notice' => __( 'Want to help make Disable Comments even better?', 'disable-comments-on-attachments' ),
-			'extra_notice' => __( 'We collect non-sensitive diagnostic data and plugin usage information. Your site URL, WordPress & PHP version, plugins & themes and email address to send you the discount coupon. This data lets us make sure this plugin always stays compatible with the most popular plugins and themes. No spam, I promise.', 'disable-comments-on-attachments' ),
+			'notice' => __('Want to help make Disable Comments even better?', 'disable-comments-on-attachments'),
+			'extra_notice' => __('We collect non-sensitive diagnostic data and plugin usage information. Your site URL, WordPress & PHP version, plugins & themes and email address to send you the discount coupon. This data lets us make sure this plugin always stays compatible with the most popular plugins and themes. No spam, I promise.', 'disable-comments-on-attachments'),
 		));
 		$tracker->init();
-    }
+	}
 
 	private function check_compatibility()
 	{
@@ -237,9 +238,11 @@ class Disable_Comments
 		if (is_admin()) {
 			if ($this->networkactive) {
 				add_action('network_admin_menu', array($this, 'settings_menu'));
+				add_action('network_admin_menu', array($this, 'tools_menu'));
 				add_filter('network_admin_plugin_action_links', array($this, 'plugin_actions_links'), 10, 2);
 			} else {
 				add_action('admin_menu', array($this, 'settings_menu'));
+				add_action('admin_menu', array($this, 'tools_menu'));
 				add_filter('plugin_action_links', array($this, 'plugin_actions_links'), 10, 2);
 				if (is_multisite()) {    // We're on a multisite setup, but the plugin isn't network activated.
 					register_deactivation_hook(__FILE__, array($this, 'single_site_deactivate'));
@@ -373,7 +376,7 @@ class Disable_Comments
 	 */
 	public function settings_page_assets($hook_suffix)
 	{
-		if ($hook_suffix === 'toplevel_page_' . DC_PLUGIN_SLUG || $hook_suffix === 'admin_page_' . DC_PLUGIN_SLUG . '-setup') {
+		if ($hook_suffix === 'settings_page_' . DC_PLUGIN_SLUG || $hook_suffix === 'options-general_' . DC_PLUGIN_SLUG || $hook_suffix === 'admin_page_' . DC_PLUGIN_SLUG . '_setup') {
 			// css
 			wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/sweetalert2.min.css', [], false);
 			wp_enqueue_style('disable-comments-style',  DC_ASSETS_URI . 'css/style.css', [], false);
@@ -534,16 +537,40 @@ class Disable_Comments
 
 	public function settings_menu()
 	{
-		$title = __('Disable Comments', 'disable-comments');
-		add_menu_page($title, $title, 'manage_options', DC_PLUGIN_SLUG, array($this, 'settings_page'), esc_url(DC_ASSETS_URI . 'img/icon-logo-small.png'));
+		$title = _x('Disable Comments', 'settings menu title', 'disable-comments');
+		if ($this->networkactive) {
+			add_submenu_page('settings.php', $title, $title, 'manage_network_plugins', DC_PLUGIN_SLUG, array($this, 'settings_page'),);
+		} else {
+			add_submenu_page('options-general.php', $title, $title, 'manage_options', DC_PLUGIN_SLUG, array($this, 'settings_page'));
+		}
 		add_submenu_page(
 			null,
 			$title,
 			$title,
 			'manage_options',
-			DC_PLUGIN_SLUG . '-setup',
+			DC_PLUGIN_SLUG . '_setup',
 			array($this, 'setup_settings_page'),
 		);
+	}
+	public function tools_menu()
+	{
+		$title = __('Delete Comments', 'disable-comments');
+		$hook = '';
+		if ($this->networkactive) {
+			$hook = add_submenu_page('settings.php', $title, $title, 'manage_network_plugins', 'disable_comments_tools', array($this, 'tools_page'));
+		} else {
+			$hook = add_submenu_page('tools.php', $title, $title, 'manage_options', 'disable_comments_tools', array($this, 'tools_page'));
+		}
+		add_action('load-' . $hook, array($this, 'redirectToMainSettingsPage'));
+	}
+
+	public function redirectToMainSettingsPage()
+	{
+		if ($this->networkactive) {
+			wp_redirect(admin_url('settings.php?page=' . DC_PLUGIN_SLUG . '#delete'));
+		} else {
+			wp_redirect(admin_url('options-general.php?page=' . DC_PLUGIN_SLUG . '#delete'));
+		}
 	}
 
 	public function get_all_comments_number()
@@ -583,6 +610,11 @@ class Disable_Comments
 			}
 		}
 		return $types;
+	}
+
+	public function tools_page()
+	{
+		return;
 	}
 
 	public function settings_page()
@@ -641,9 +673,9 @@ class Disable_Comments
 				$this->options['extra_post_types'] = array_diff($extra_post_types, array_keys($post_types)); // Make sure we don't double up builtins.
 			}
 			// xml rpc
-			$this->options['remove_xmlrpc_comments'] = (isset($formArray['remove_xmlrpc_comments']) ? intval($formArray['remove_xmlrpc_comments']) : ( $this->is_CLI &&isset( $this->options['remove_xmlrpc_comments'] ) ? $this->options['remove_xmlrpc_comments'] : 0 ));
+			$this->options['remove_xmlrpc_comments'] = (isset($formArray['remove_xmlrpc_comments']) ? intval($formArray['remove_xmlrpc_comments']) : ($this->is_CLI && isset($this->options['remove_xmlrpc_comments']) ? $this->options['remove_xmlrpc_comments'] : 0));
 			// rest api comments
-			$this->options['remove_rest_API_comments'] = (isset($formArray['remove_rest_API_comments']) ? intval($formArray['remove_rest_API_comments']) : ( $this->is_CLI && isset( $this->options['remove_rest_API_comments'] ) ? $this->options['remove_rest_API_comments'] : 0 ));
+			$this->options['remove_rest_API_comments'] = (isset($formArray['remove_rest_API_comments']) ? intval($formArray['remove_rest_API_comments']) : ($this->is_CLI && isset($this->options['remove_rest_API_comments']) ? $this->options['remove_rest_API_comments'] : 0));
 
 			// save settings
 			$this->update_options();

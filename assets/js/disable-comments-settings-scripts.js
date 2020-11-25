@@ -5,6 +5,7 @@ jQuery(document).ready(function () {
 	if (jQuery("#disablecommentswrap").length) {
 		// tabs
 		function disbale_comments_tabs() {
+			var hash = window.location.hash;
 			var tabNavItem =
 				"ul.disable__comment__nav li.disable__comment__nav__item";
 			var tabBodyItem =
@@ -17,6 +18,12 @@ jQuery(document).ready(function () {
 				jQuery(this).toggleClass("active");
 				jQuery(tabBodyItem).toggleClass("show");
 			});
+			if (hash === "#delete") {
+				jQuery("#disableCommentsNav > a").removeClass("active");
+				jQuery("#disableComments").removeClass("show");
+				jQuery("#deleteCommentsNav > a").addClass("active");
+				jQuery("#deleteComments").addClass("show");
+			}
 		}
 		disbale_comments_tabs();
 		// UI Helper
@@ -102,7 +109,9 @@ jQuery(document).ready(function () {
 		var finishStepFlug = false;
 		var tabPosition = localStorage.getItem("dcqTabPostion");
 		tabPosition = parseInt(
-			tabPosition ? tabPosition : localStorage.setItem("dcqTabPostion", 1)
+			tabPosition !== null
+				? tabPosition
+				: localStorage.setItem("dcqTabPostion", 1)
 		);
 		changeTab(tabPosition); // window load
 
