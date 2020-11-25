@@ -1881,7 +1881,7 @@ button.button__instagram.hover__highlight:hover .icon {
 .disable__comment__alert {
   display: flex;
   align-items: center;
-  padding: 15px 20px;
+  padding: 10px 20px;
 }
 @media (max-width: 767.98px) {
   .disable__comment__alert {
@@ -1923,7 +1923,35 @@ button.button__instagram.hover__highlight:hover .icon {
   font-family: "DM Sans", sans-serif;
 }
 .disable__comment__alert .button__group {
-  flex: 0 0 208px;
+  flex-grow: 1;
+  text-align: right;
+}
+@media (max-width: 767.98px) {
+  .disable__comment__alert .button__group {
+    text-align: left;
+  }
+}
+.disable__comment__alert .button__group .button {
+  margin-right: 0;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.disable__comment__alert .button__group .button:not(:last-child) {
+  margin-right: 0;
+}
+.disable__comment__alert .button__group .button:not(:first-child) {
+  margin-left: 15px;
+}
+@media (max-width: 767.98px) {
+  .disable__comment__alert .button__group .button {
+    margin-right: 10px;
+  }
+  .disable__comment__alert .button__group .button:not(:last-child) {
+    margin-right: 10px;
+  }
+  .disable__comment__alert .button__group .button:not(:first-child) {
+    margin-left: 0;
+  }
 }
 
 .section__header {

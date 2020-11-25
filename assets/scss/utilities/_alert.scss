@@ -1,41 +1,63 @@
-
-
 .disable__comment__alert {
-    display: flex;
-    align-items: center;
-    padding: 15px 20px;
-    @include respond-below(sm) {
-        display: block;
-        .button__group {
-            margin-top: 20px;
-        }
-    }
-    .alert__content {
-        flex-grow: 1;
-        display: flex;
-        align-items: center;
-        padding-right: 20px;
-        @include respond-below(sm) {
-            padding-right: 0;
-        }
-        @include respond-below(xs) {
-            display: block;
-        }
-        img {
-            margin-right: 15px;
-            height: 30px;
-            @include respond-below(xs) {
-                margin-bottom: 10px;
-            }
-        }
-        p {
-            font-size: 18px;
-            font-weight: 500;
-            color: $dark;
-            font-family: $bodyFont;
-        }
-    }
-    .button__group {
-        flex: 0 0 208px;
-    }
+	display: flex;
+	align-items: center;
+	padding: 10px 20px;
+	@include respond-below(sm) {
+		display: block;
+		.button__group {
+			margin-top: 20px;
+		}
+	}
+	.alert__content {
+		flex-grow: 1;
+		display: flex;
+		align-items: center;
+		padding-right: 20px;
+		@include respond-below(sm) {
+			padding-right: 0;
+		}
+		@include respond-below(xs) {
+			display: block;
+		}
+		img {
+			margin-right: 15px;
+			height: 30px;
+			@include respond-below(xs) {
+				margin-bottom: 10px;
+			}
+		}
+		p {
+			font-size: 18px;
+			font-weight: 500;
+			color: $dark;
+			font-family: $bodyFont;
+		}
+	}
+	.button__group {
+		flex-grow: 1;
+		text-align: right;
+		@include respond-below(sm) {
+			text-align: left;
+		}
+		.button {
+			margin-right: 0;
+			margin-top: 5px;
+			margin-bottom: 5px;
+			&:not(:last-child) {
+				margin-right: 0;
+			}
+			&:not(:first-child) {
+				margin-left: 15px;
+			}
+			@include respond-below(sm) {
+				margin-right: 10px;
+				&:not(:last-child) {
+					margin-right: 10px;
+				}
+				&:not(:first-child) {
+					margin-left: 0;
+				}
+			}
+		}
+	}
 }
