@@ -115,10 +115,7 @@ jQuery(document).ready(function () {
 		jQuery(btnNext).on("click", function (e) {
 			e.preventDefault();
 			updateTabPosition(localStorage.getItem("dcqTabPostion"));
-			save_settings(
-				parseInt(localStorage.getItem("dcqTabPostion") - 1),
-				jQuery(this).text()
-			);
+			save_settings(parseInt(localStorage.getItem("dcqTabPostion") - 1));
 		});
 		jQuery(btnSkip).on("click", function (e) {
 			e.preventDefault();
@@ -171,7 +168,7 @@ jQuery(document).ready(function () {
 				}
 			}
 		}
-		function save_settings(tabPosition, buttonText) {
+		function save_settings(tabPosition) {
 			if (finishStepFlug) {
 				console.log("Last Tab ajax request");
 			} else {

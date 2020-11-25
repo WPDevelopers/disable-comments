@@ -3,6 +3,7 @@
 .disable__comment__alert {
     display: flex;
     align-items: center;
+    padding: 15px 20px;
     @include respond-below(sm) {
         display: block;
         .button__group {
@@ -22,12 +23,13 @@
         }
         img {
             margin-right: 15px;
+            height: 30px;
             @include respond-below(xs) {
                 margin-bottom: 10px;
             }
         }
         p {
-            font-size: 1.8em;
+            font-size: 18px;
             font-weight: 500;
             color: $dark;
             font-family: $bodyFont;

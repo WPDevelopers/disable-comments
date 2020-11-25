@@ -15,15 +15,17 @@
 }
 
 .sidebar__widget__wrap {
-	margin-top: 50px;
+	@include respond-below(lg) {
+		margin-top: 50px;
+	}
 }
 
 .dc-text__block {
 	background: $white;
-	padding: 30px;
+	padding: 20px;
 	border-radius: 10px;
 	&__big__pad {
-		padding: 100px 50px;
+		padding: 50px 50px;
 		background: $white;
 		border-radius: 10px;
 		@include respond-below(sm) {

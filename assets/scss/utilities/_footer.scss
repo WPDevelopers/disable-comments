@@ -27,14 +27,14 @@
 					}
 				}
 				a {
-					font-size: 1.6em;
+					font-size: 16px;
 					font-weight: 400;
 					color: $grey3;
 					line-height: inherit;
 					outline: none;
 					box-shadow: none;
 					@include respond-below(sm) {
-						font-size: 1.4em;
+						font-size: 14px;
 					}
 				}
 			}
