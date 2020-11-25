@@ -457,6 +457,16 @@ class Disable_Comments
 		return add_query_arg('page', DC_PLUGIN_SLUG, $base);
 	}
 
+	/**
+	 * Return context-aware tools page URL
+	 */
+	private function tools_page_url()
+	{
+		$base = $this->networkactive ? network_admin_url('settings.php') : admin_url('tools.php');
+		return add_query_arg('page', 'disable_comments_tools', $base);
+	}
+
+
 	public function setup_notice()
 	{
 		if (strpos(get_current_screen()->id, 'settings_page_disable_comments_settings') === 0) {
@@ -553,7 +563,8 @@ class Disable_Comments
 		if ($file == $plugin && current_user_can('manage_options')) {
 			array_unshift(
 				$links,
-				sprintf('<a href="%s">%s</a>', esc_attr($this->settings_page_url()), __('Settings', 'disable-comments'))
+				sprintf('<a href="%s">%s</a>', esc_attr($this->settings_page_url()), __('Settings', 'disable-comments')),
+				sprintf('<a href="%s">%s</a>', esc_attr($this->tools_page_url()), __('Tools', 'disable-comments'))
 			);
 		}
 
@@ -671,14 +682,14 @@ class Disable_Comments
 	{
 		$nonce = (isset($_POST['nonce']) ? $_POST['nonce'] : '');
 		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
-
 			if (!empty($_args)) {
 				$formArray = wp_parse_args($_args);
 			} else {
-				$formArray = $this->form_data_modify($_POST['data']);
+				$formArray = (isset($_POST['data']) ? $this->form_data_modify($_POST['data']) : []);
 			}
-
-			$this->options['remove_everywhere'] = (sanitize_text_field($formArray['mode']) == 'remove_everywhere');
+			if (isset($formArray['mode'])) {
+				$this->options['remove_everywhere'] = (sanitize_text_field($formArray['mode']) == 'remove_everywhere');
+			}
 			$post_types = $this->get_all_post_types();
 
 			if ($this->options['remove_everywhere']) {

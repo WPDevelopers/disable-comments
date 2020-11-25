@@ -193,7 +193,7 @@ jQuery(document).ready(function () {
 						action: disableCommentsObj.save_action,
 						nonce: disableCommentsObj._nonce,
 						data: jQuery(
-							"#disableCommentSetupSettings"
+							"#disableCommentSaveSettings"
 						).serializeArray(),
 					};
 					jQuery.post(ajaxurl, data, function (response) {
