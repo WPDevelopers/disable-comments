@@ -1,14 +1,5 @@
 <div id="disablecommentswrap" class="disablecommentswrap background__grey">
-    <div class="dc-text__block disable__comment__alert mb30">
-        <div class="alert__content">
-            <img src="<?php echo DC_ASSETS_URI; ?>img/icon-logo.png" alt="">
-            <p><?php _e('Want to help make Disable Comments even better?', 'disable-comments') ?></p>
-        </div>
-        <div class="button__group">
-            <a href="#" class="button button--sm button__success"><?php _e('Sure', 'disable-comments'); ?></a>
-            <a href="#" class="button button--sm"><?php _e('No Thanks', 'disable-comments'); ?></a>
-        </div>
-    </div>
+    <?php do_action( 'disable_comments_notice' ); ?>
     <div class="disable__comment_block">
         <div class="disable__comment__nav__wrap">
             <p class="plugin__version"><?php echo _e('Version', 'disable-comments') . ' ' . DC_VERSION; ?></p>
@@ -37,8 +28,5 @@
             </div>
             <div>
             </div>
-            <?php
-            include DC_PLUGIN_VIEWS_PATH . 'partials/_product.php';
-            include DC_PLUGIN_VIEWS_PATH . 'partials/_footer.php';
-            ?>
+            <?php include DC_PLUGIN_VIEWS_PATH . 'partials/_footer.php'; ?>
         </div>

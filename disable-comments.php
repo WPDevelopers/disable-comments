@@ -49,9 +49,9 @@ class Disable_Comments
 		add_action('wp_ajax_disable_comments_delete_comments', array($this, 'delete_comments_settings'));
 
 		// Including cli.php
-		if (defined('WP_CLI') && WP_CLI) {
-			require_once dirname(__FILE__) . "/cli.php";
-			new Disable_Comment_Command($this);
+		if ( defined('WP_CLI') && WP_CLI ) {
+			require_once DC_PLUGIN_ROOT_PATH . "/includes/cli.php";
+			new Disable_Comment_Command( $this );
 		}
 
 		// are we network activated?
@@ -74,7 +74,25 @@ class Disable_Comments
 		$this->check_db_upgrades();
 
 		$this->init_filters();
+
+		$this->start_plugin_usage_tracking();
 	}
+
+	public function start_plugin_usage_tracking() {
+		if( ! class_exists( 'DisableComments_Plugin_Tracker') ) {
+			include_once( DC_PLUGIN_ROOT_PATH . '/includes/class-plugin-usage-tracker.php' );
+		}
+        $tracker = DisableComments_Plugin_Tracker::get_instance( __FILE__, [
+			'opt_in'       => true,
+			'goodbye_form' => true,
+			'item_id'      => 'b0112c9030af6ba53de4'
+		] );
+		$tracker->set_notice_options(array(
+			'notice' => __( 'Want to help make Disable Comments even better?', 'disable-comments-on-attachments' ),
+			'extra_notice' => __( 'We collect non-sensitive diagnostic data and plugin usage information. Your site URL, WordPress & PHP version, plugins & themes and email address to send you the discount coupon. This data lets us make sure this plugin always stays compatible with the most popular plugins and themes. No spam, I promise.', 'disable-comments-on-attachments' ),
+		));
+		$tracker->init();
+    }
 
 	private function check_compatibility()
 	{
@@ -127,7 +145,7 @@ class Disable_Comments
 	/**
 	 * Get an array of disabled post type.
 	 */
-	private function get_disabled_post_types()
+	public function get_disabled_post_types()
 	{
 		$types = $this->options['disabled_post_types'];
 		// Not all extra_post_types might be registered on this particular site.
@@ -610,7 +628,7 @@ class Disable_Comments
 			if ($this->options['remove_everywhere']) {
 				$disabled_post_types = array_keys($post_types);
 			} else {
-				$disabled_post_types = empty($formArray['disabled_types']) ? array() : array_map('sanitize_key', (array) $formArray['disabled_types']);
+				$disabled_post_types = empty($formArray['disabled_types']) ? $this->options['disabled_post_types'] : array_map('sanitize_key', (array) $formArray['disabled_types']);
 			}
 
 			$disabled_post_types = array_intersect($disabled_post_types, array_keys($post_types));
@@ -623,9 +641,9 @@ class Disable_Comments
 				$this->options['extra_post_types'] = array_diff($extra_post_types, array_keys($post_types)); // Make sure we don't double up builtins.
 			}
 			// xml rpc
-			$this->options['remove_xmlrpc_comments'] = (isset($formArray['remove_xmlrpc_comments']) ? intval($formArray['remove_xmlrpc_comments']) : 0);
+			$this->options['remove_xmlrpc_comments'] = (isset($formArray['remove_xmlrpc_comments']) ? intval($formArray['remove_xmlrpc_comments']) : ( isset( $this->options['remove_xmlrpc_comments'] ) ? $this->options['remove_xmlrpc_comments'] : 0 ));
 			// rest api comments
-			$this->options['remove_rest_API_comments'] = (isset($formArray['remove_rest_API_comments']) ? intval($formArray['remove_rest_API_comments']) : 0);
+			$this->options['remove_rest_API_comments'] = (isset($formArray['remove_rest_API_comments']) ? intval($formArray['remove_rest_API_comments']) : ( isset( $this->options['remove_rest_API_comments'] ) ? $this->options['remove_rest_API_comments'] : 0 ));
 
 			// save settings
 			$this->update_options();
@@ -725,6 +743,8 @@ class Disable_Comments
 		if (!$this->is_CLI) {
 			wp_send_json_success(array('message' => ((count($log) !== 0 ? $log : [__('No comments available for deletion', 'disable-comments')]))));
 			wp_die();
+		} else {
+			return $log;
 		}
 	}
 
