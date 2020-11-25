@@ -44,6 +44,9 @@ class Disable_Comments
 		define('DC_PLUGIN_ROOT_URI', plugins_url("/", __FILE__));
 		define('DC_ASSETS_URI', DC_PLUGIN_ROOT_URI . 'assets/');
 
+		register_activation_hook(__FILE__, array($this, 'activate'));
+		add_action('wp_loaded', array($this, 'plugin_redirect'));
+
 		// save settings
 		add_action('wp_ajax_disable_comments_save_settings', array($this, 'disable_comments_settings'));
 		add_action('wp_ajax_disable_comments_delete_comments', array($this, 'delete_comments_settings'));
@@ -193,7 +196,6 @@ class Disable_Comments
 			add_filter('rest_pre_insert_comment', array($this, 'disable_rest_API_comments'));
 		}
 
-
 		// These can happen later.
 		add_action('plugins_loaded', array($this, 'register_text_domain'));
 		add_action('wp_loaded', array($this, 'init_wploaded_filters'));
@@ -201,6 +203,16 @@ class Disable_Comments
 		add_action('enqueue_block_editor_assets', array($this, 'filter_gutenberg_blocks'));
 		// settings page assets
 		add_action('admin_enqueue_scripts', array($this, 'settings_page_assets'));
+	}
+
+	/**
+	 * Do stuff upon plugin activation
+	 *
+	 * @return void
+	 */
+	public function activate()
+	{
+		update_option('dc_do_activation_redirect', true);
 	}
 
 	public function register_text_domain()
@@ -248,7 +260,6 @@ class Disable_Comments
 					register_deactivation_hook(__FILE__, array($this, 'single_site_deactivate'));
 				}
 			}
-
 			add_action('admin_notices', array($this, 'discussion_notice'));
 			add_filter('plugin_row_meta', array($this, 'set_plugin_meta'), 10, 2);
 
@@ -267,6 +278,15 @@ class Disable_Comments
 			if ($this->options['remove_everywhere']) {
 				add_filter('feed_links_show_comments_feed', '__return_false');
 			}
+		}
+	}
+
+	public function plugin_redirect()
+	{
+		if (get_option('dc_do_activation_redirect', false)) {
+			delete_option('dc_do_activation_redirect');
+			wp_safe_redirect(admin_url('admin.php?page=' . DC_PLUGIN_SLUG . '_setup'));
+			exit;
 		}
 	}
 
@@ -376,7 +396,11 @@ class Disable_Comments
 	 */
 	public function settings_page_assets($hook_suffix)
 	{
-		if ($hook_suffix === 'settings_page_' . DC_PLUGIN_SLUG || $hook_suffix === 'options-general_' . DC_PLUGIN_SLUG || $hook_suffix === 'admin_page_' . DC_PLUGIN_SLUG . '_setup') {
+		if (
+			$hook_suffix === 'settings_page_' . DC_PLUGIN_SLUG ||
+			$hook_suffix === 'options-general_' . DC_PLUGIN_SLUG ||
+			$hook_suffix === 'admin_page_' . DC_PLUGIN_SLUG . '_setup'
+		) {
 			// css
 			wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/sweetalert2.min.css', [], false);
 			wp_enqueue_style('disable-comments-style',  DC_ASSETS_URI . 'css/style.css', [], false);
