@@ -2,7 +2,6 @@
     <div class="dc-row">
         <div class="dc-col">
             <div class="footer__content">
-                <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/company-thumb.png'); ?>" alt="<?php esc_attr_e('wpdeveloper', 'disable-comments'); ?>">
                 <div class="footer__nav">
                     <ul>
                         <li><a href="<?php echo esc_url('https://wpdeveloper.net/about/'); ?>" target="_blank" rel="nofollow"><?php _e('About Us', 'disable-comments'); ?></a></li>

@@ -28,8 +28,5 @@
             </div>
             <div>
             </div>
-            <?php
-            include DC_PLUGIN_VIEWS_PATH . 'partials/_product.php';
-            include DC_PLUGIN_VIEWS_PATH . 'partials/_footer.php';
-            ?>
+            <?php include DC_PLUGIN_VIEWS_PATH . 'partials/_footer.php'; ?>
         </div>
