@@ -108,11 +108,10 @@ jQuery(document).ready(function () {
 		var btnSkip = "#dcQuickSkipBtn";
 		var finishStepFlug = false;
 		var tabPosition = localStorage.getItem("dcqTabPostion");
-		tabPosition = parseInt(
-			tabPosition !== null
-				? tabPosition
-				: localStorage.setItem("dcqTabPostion", 1)
-		);
+		if (!tabPosition || tabPosition == null || isNaN(tabPosition)) {
+			localStorage.setItem("dcqTabPostion", 1);
+			tabPosition = 1;
+		}
 		changeTab(tabPosition); // window load
 
 		// click button
