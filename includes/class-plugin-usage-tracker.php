@@ -572,6 +572,8 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 			return $data;
 		}
 		public function admin_notice(){
+			$options = (is_multisite() ? get_site_option('disable_comments_options', array()) :  get_option('disable_comments_options', array()));
+			if($options['remove_everywhere'] || empty($options['disabled_post_types'])) return;
 			$current_screen = get_current_screen()->id;
 			if( ! in_array( $current_screen, ['admin_page_disable_comments_settings_setup', 'settings_page_disable_comments_settings', 'settings_page_disable_comments_settings_setup' ])) {
 				$this->notice();
