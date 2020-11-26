@@ -184,7 +184,16 @@ jQuery(document).ready(function () {
 					tabPosition == 1 &&
 					jQuery("[name=dc_is_optin]").is(":checked")
 				) {
-					console.log("optin ajax request send....");
+					var data = {
+						action: "optin_wizard_action_disable_comments",
+					};
+					jQuery
+						.post(ajaxurl, data, function (response) {
+							console.log("Optin Success");
+						})
+						.fail(function () {
+							console.error("Optin Failed");
+						});
 				} else if (tabPosition == 2) {
 					finishStepFlug = true;
 					var data = {

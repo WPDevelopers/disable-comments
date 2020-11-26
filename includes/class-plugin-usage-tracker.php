@@ -70,16 +70,12 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 			$this->enable_self_cron     = $this->disabled_wp_cron == true ? true : false;
 
 			$this->event_hook = 'put_do_weekly_action';
-			// $this->event_hook = 'put_do_daily_action_for_' . $this->plugin_name;
-			// if( isset( $args['recurrence'] ) && $args['recurrence'] !== 'daily' ) {
-			// 	$this->event_hook = 'put_do_'. $args['recurrence'] .'_action_for_' . $this->plugin_name;
-			// }
 
 			$this->require_optin        = isset( $args['opt_in'] ) ? $args['opt_in'] : true;
 			$this->include_goodbye_form = isset( $args['goodbye_form'] ) ? $args['goodbye_form'] : true;
 			$this->marketing            = isset( $args['email_marketing'] ) ? $args['email_marketing'] : true;
 			$this->options              = isset( $args['options'] ) ? $args['options'] : [];
-			$this->item_id       = isset( $args['item_id'] ) ? $args['item_id'] : false;
+			$this->item_id              = isset( $args['item_id'] ) ? $args['item_id'] : false;
 			/**
 			 * Activation Hook
 			 */
@@ -157,6 +153,7 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 			// For Test
 			// add_action( 'admin_init', array( $this, 'force_tracking' ) );
 			add_action( 'disable_comments_notice', array( $this, 'notice' ) );
+			add_action( 'admin_notices', array( $this, 'admin_notice' ) );
 			/**
 			 * Deactivation Reason Form and Submit Data to Insights.
 			 */
@@ -573,6 +570,12 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 				}
 			}
 			return $data;
+		}
+		public function admin_notice( $hook ){
+			$current_screen = get_current_screen()->id;
+			if( $current_screen !== 'settings_page_disable_comments_settings' || $current_screen !== 'disable_comments_settings_setup' ) {
+				$this->notice();
+			}
 		}
 		/**
 		 * Display the admin notice to users to allow them to opt in
