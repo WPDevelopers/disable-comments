@@ -455,6 +455,8 @@ class Disable_Comments
 				)
 			);
 		}
+		// notice css
+		wp_enqueue_style('disable-comments-notice',  DC_ASSETS_URI . 'css/notice.css', [], false);
 	}
 
 	/**
