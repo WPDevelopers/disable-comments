@@ -667,9 +667,9 @@ class Disable_Comments
 	public function redirectToMainSettingsPage()
 	{
 		if ($this->networkactive) {
-			wp_redirect(admin_url('settings.php?page=' . DC_PLUGIN_SLUG . '#delete'));
+			wp_redirect($this->settings_page_url() . '#delete');
 		} else {
-			wp_redirect(admin_url('options-general.php?page=' . DC_PLUGIN_SLUG . '#delete'));
+			wp_redirect( $this->settings_page_url() . '#delete');
 		}
 	}
 
