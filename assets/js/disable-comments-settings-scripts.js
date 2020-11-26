@@ -239,8 +239,8 @@ jQuery(document).ready(function () {
 			if (response.success) {
 				Swal.fire({
 					icon: "success",
-					title: "complete",
-					html: response.data.message.join("<br />"),
+					title: "Deleted",
+					html: response.data.message,
 					timer: 3000,
 					showConfirmButton: false,
 				});
@@ -248,7 +248,7 @@ jQuery(document).ready(function () {
 				Swal.fire({
 					icon: "error",
 					title: "Oops...",
-					html: response.data.message.join("<br />"),
+					html: response.data.message,
 					showConfirmButton: true,
 				});
 			}

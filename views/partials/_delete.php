@@ -186,7 +186,7 @@
                 </g>
             </svg>
 
-            <p class="error-message"><strong><?php _e('No comments available for deletion.', 'disable-comments'); ?></strong></p>
+            <p class="error-message"><strong><?php _e('No comments are available for deletion.', 'disable-comments'); ?></strong></p>
         </div>
     <?php
     endif;
