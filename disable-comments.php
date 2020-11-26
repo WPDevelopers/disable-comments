@@ -496,6 +496,8 @@ class Disable_Comments
 		$base = $this->networkactive ? network_admin_url('settings.php') : admin_url('options-general.php');
 		return add_query_arg('page', DC_PLUGIN_SLUG, $base);
 	}
+	
+
 	/**
 	 * Return context-aware settings page URL
 	 */

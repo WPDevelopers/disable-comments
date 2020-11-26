@@ -162,6 +162,7 @@ jQuery(document).ready(function () {
 				// active tab control
 				if (nthChildNumber == 1) {
 					jQuery(btnPrevious).css("visibility", "hidden");
+					jQuery(btnSkip).css("visibility", "hidden");
 				} else {
 					jQuery(btnPrevious).css("visibility", "visible");
 					jQuery(btnSkip).css("visibility", "visible");
@@ -211,6 +212,12 @@ jQuery(document).ready(function () {
 				}
 			}
 		}
+
+		// what we collect toggle
+		jQuery("#whatWeCollect").on("click", function (e) {
+			e.preventDefault();
+			jQuery("#whatWeCollectMessage").slideToggle("fast");
+		});
 	}
 	/**
 	 * Settings Ajax Request

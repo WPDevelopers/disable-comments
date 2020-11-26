@@ -31,11 +31,15 @@
                             <p><?php _e('Easily get started with this easy setup wizard and complete setting up your Knowledge Base.', 'disable-comments'); ?></p>
                         </div>
                         <div class="dc-video__area">
-                            <iframe width="650" height="350" src="https://www.youtube.com/embed/2g9CapDFtkI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="650" height="350" src="https://www.youtube.com/embed/J9AteKzQpPs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                         <div class="dc-form__group">
                             <input name="dc_is_optin" type="checkbox" value="1" id="dc_option" checked>
-                            <label for="dc_option"><?php _e('Want to help make Disable Comments even better?', 'disable-comments'); ?></label>
+                            <label for="dc_option">
+                                <?php _e('Want to help make Disable Comments even better?', 'disable-comments'); ?>
+                                <a id="whatWeCollect" href="#"><?php _e('What we collect.', 'disable-comments'); ?></a>
+                                <p id="whatWeCollectMessage"><?php _e('We collect non-sensitive diagnostic data and plugin usage information. Your site URL, WordPress & PHP version, plugins, themes and email address to send you the discount coupon. This data lets us make sure this plugin always stays compatible with the most popular plugins and themes. No spam, I promise.', 'disable-comments'); ?></p>
+                            </label>
                         </div>
                     </div>
                     <div id="dcqTabBody_2" class="dc-quick__step__item">
@@ -61,7 +65,7 @@
                 </div>
 
                 <div class="footer__content mt50">
-                    <a href="<?php echo admin_url('options-general.php?page=disable_comments_settings&cancel=setup'); ?>" class="cancel-dc-setup">Return to Dashboard</a>
+                    <a href="<?php echo $this->settings_page_url() . '&cancel=setup'; ?>" class="cancel-dc-setup"><?php _e('Return to Dashboard', 'disable-comments'); ?></a>
                     <?php
                         include DC_PLUGIN_VIEWS_PATH . 'partials/_menu.php';
                     ?>

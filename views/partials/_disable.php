@@ -1,7 +1,7 @@
 <form id="disableCommentSaveSettings" action="#">
     <div class="disable__comment__option mb50">
         <h3 class="title"><?php _e('Settings', 'disable-comments'); ?></h3>
-        <p class="subtitle"><?php _e('Configure the settings below to disable comments globally or on specific types of post.', 'disable-comments'); ?></p>
+        <p class="subtitle"><?php _e('Configure the settings below to disable comments globally or on specific types of posts.', 'disable-comments'); ?></p>
         <div class="disable_option dc-text__block mb30 mt30">
             <input type="radio" id="remove_everywhere" name="mode" value="<?php echo esc_attr('remove_everywhere') ?>" <?php checked($this->options['remove_everywhere']); ?> />
             <label for="remove_everywhere"><?php _e('Everywhere:', 'disable-comments'); ?> <span><?php _e('Disable comments globally on your entire website', 'disable-comments'); ?></span></label>

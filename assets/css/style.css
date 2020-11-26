@@ -2954,6 +2954,14 @@ button.button__instagram.hover__highlight:hover .icon {
   background: #e10619;
   color: #ffffff;
 }
+.dc-quick__step__item #whatWeCollect {
+  color: #05cb6b;
+  outline: 0;
+  box-shadow: none;
+}
+.dc-quick__step__item #whatWeCollectMessage {
+  display: none;
+}
 
 .dc-quick__setup__wrap .button__group {
   display: flex;
