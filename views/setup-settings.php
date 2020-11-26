@@ -50,7 +50,7 @@
                             <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/finalize-thumb.png'); ?>" alt="">
                         </div>
                         <div class="doc__button__wrap">
-                            <a href="#" class="doc__button"><?php _e('VISIT YOUR DOCUMENTATION PAGE', 'disable-comments'); ?></a>
+                            <a href="<?php echo esc_url('https://wpdeveloper.net/docs-category/disable-comments/'); ?>" class="doc__button" target="_blank" rel="nofollow"><?php _e('VISIT OUR DOCUMENTATION PAGE', 'disable-comments'); ?></a>
                         </div>
                     </div>
                     <div class="button__group mt30">
