@@ -695,7 +695,7 @@ class Disable_Comments
 			wp_safe_redirect(admin_url('options-general.php?page=' . DC_PLUGIN_SLUG ));
 			exit;
 		}
-		// update_option('dc_setup_screen_seen', true);
+		update_option('dc_setup_screen_seen', true);
 		include_once DC_PLUGIN_VIEWS_PATH . 'setup-settings.php';
 	}
 
