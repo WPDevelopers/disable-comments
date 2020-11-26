@@ -122,7 +122,7 @@
     <article class="blog__post">
         <div class="thumb">
             <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/blog/thumb-1.jpg'); ?>" alt="">
-            <a href="<?php echo esc_url('https://www.youtube.com/watch?v=2g9CapDFtkI'); ?>" class="play__btn" target="_blank" rel="nofollow"><span></span></a>
+            <a href="<?php echo esc_url('https://youtu.be/J9AteKzQpPs'); ?>" class="play__btn" target="_blank" rel="nofollow"><span></span></a>
         </div>
         <div class="blog__post__content">
             <h4><a href="<?php echo esc_url('https://wpdeveloper.net/docs/disable-comments-for-wordpress-pages/'); ?>" target="_blank" rel="nofollow"><?php _e('Disable Comments For WordPress Pages', 'disable-comments'); ?></a></h4>

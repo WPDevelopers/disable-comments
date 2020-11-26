@@ -31,7 +31,7 @@
                             <p><?php _e('Easily get started with this easy setup wizard and complete setting up your Knowledge Base.', 'disable-comments'); ?></p>
                         </div>
                         <div class="dc-video__area">
-                            <iframe width="650" height="350" src="https://www.youtube.com/embed/J9AteKzQpPs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="622" height="350" src="https://www.youtube.com/embed/J9AteKzQpPs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                         <div class="dc-form__group">
                             <input name="dc_is_optin" type="checkbox" value="1" id="dc_option" checked>

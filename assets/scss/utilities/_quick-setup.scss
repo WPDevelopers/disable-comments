@@ -122,10 +122,7 @@
 		}
 	}
 	.dc-video__area {
-		min-height: 350px;
-		height: 100%;
-		max-width: 650px;
-		background: $grey;
+		text-align: center;
 		margin: 0 auto;
 		position: relative;
 		@include respond-below(lg) {

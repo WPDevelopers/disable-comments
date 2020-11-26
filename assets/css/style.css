@@ -2716,10 +2716,7 @@ button.button__instagram.hover__highlight:hover .icon {
   }
 }
 .dc-quick__step__item .dc-video__area {
-  min-height: 350px;
-  height: 100%;
-  max-width: 650px;
-  background: #f4f6fc;
+  text-align: center;
   margin: 0 auto;
   position: relative;
 }
