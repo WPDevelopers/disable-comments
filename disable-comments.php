@@ -53,8 +53,7 @@ class Disable_Comments
 
 		// Including cli.php
 		if (defined('WP_CLI') && WP_CLI) {
-			require_once DC_PLUGIN_ROOT_PATH . "/includes/cli.php";
-			new Disable_Comment_Command($this);
+			add_action('init', array($this, 'enable_cli'), 9999);
 		}
 
 		// are we network activated?
@@ -79,6 +78,14 @@ class Disable_Comments
 		$this->init_filters();
 
 		$this->start_plugin_usage_tracking();
+	}
+	/**
+	 * Enable CLI
+	 * @since 2.0.0
+	 */
+	public function enable_cli(){
+		require_once DC_PLUGIN_ROOT_PATH . "/includes/cli.php";
+		new Disable_Comment_Command($this);
 	}
 
 	public function start_plugin_usage_tracking()

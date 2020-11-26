@@ -14,7 +14,6 @@ class Disable_Comment_Command
         $comment_types = array_keys($this->dc_instance->get_all_comment_types());
         $post_types[] = $comment_types[] = 'all';
 
-
         $disable_synopsis = array(
             array(
                 'type'        => 'assoc',
@@ -105,6 +104,7 @@ wp disable-comments delete --comment-types=comment "
     /**
      * Disable Comments on your website.
      *
+     * @when after_wp_load
      */
     function disable($args, $assoc_args)
     {
@@ -161,6 +161,7 @@ wp disable-comments delete --comment-types=comment "
     /**
      * Deletes Comments on your website.
      *
+     * @when after_wp_load
      */
     function delete($args, $assoc_args)
     {
