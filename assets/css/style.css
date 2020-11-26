@@ -1146,7 +1146,7 @@ a.color__instagram:hover, a.color__instagram:focus {
 }
 
 .disablecommentswrap {
-  padding: 30px 50px;
+  padding: 30px;
 }
 @media (max-width: 575.98px) {
   .disablecommentswrap {
@@ -1924,6 +1924,22 @@ button.button__instagram.hover__highlight:hover .icon {
   color: #22282d;
   font-family: "DM Sans", sans-serif;
 }
+.disable__comment__alert .alert__content a.wpinsights-disable-comments-collect {
+  color: #05cb6b;
+}
+.disable__comment__alert .alert__content a.wpinsights-disable-comments-collect:hover,
+.disable__comment__alert .alert__content a.wpinsights-disable-comments-collect:visited,
+.disable__comment__alert .alert__content a.wpinsights-disable-comments-collect:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+.disable__comment__alert .alert__content .wpinsights-data {
+  margin-top: 10px;
+}
+.disable__comment__alert .alert__content .wpinsights-data p {
+  font-size: 13px;
+}
 .disable__comment__alert .button__group {
   text-align: right;
 }
@@ -2569,6 +2585,10 @@ button.button__instagram.hover__highlight:hover .icon {
   }
 }
 
+.cancel-dc-setup {
+  text-align: right;
+}
+
 .dc-quick__setup__wrap {
   padding: 50px 30px 50px;
 }
@@ -2953,27 +2973,4 @@ button.button__instagram.hover__highlight:hover .icon {
   .dc-quick__setup__wrap .button__group .button.button--sm {
     width: unset;
   }
-}
-
-.disable__comment__alert .alert__content a.wpinsights-disable-comments-collect {
-  color: #05cb6b;
-}
-
-.disable__comment__alert .alert__content a.wpinsights-disable-comments-collect:hover,
-.disable__comment__alert .alert__content a.wpinsights-disable-comments-collect:visited,
-.disable__comment__alert .alert__content a.wpinsights-disable-comments-collect:focus {
-  outline: none;
-  border: none;
-  box-shadow: none;
-}
-
-.disable__comment__alert .alert__content .wpinsights-data {
-  margin-top: 10px;
-}
-.disable__comment__alert .alert__content .wpinsights-data p {
-  font-size: 13px;
-}
-
-.cancel-dc-setup {
-  text-align: right;
 }

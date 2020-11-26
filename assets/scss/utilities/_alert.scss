@@ -2,6 +2,7 @@
 	display: flex;
 	align-items: center;
 	padding: 10px 20px;
+	border: 0;
 	@include respond-below(sm) {
 		display: block;
 		.button__group {
@@ -9,10 +10,11 @@
 		}
 	}
 	.alert__content {
-		flex-grow: 1;
 		display: flex;
 		align-items: center;
 		padding-right: 20px;
+		flex-wrap: wrap;
+		flex: 1;
 		@include respond-below(sm) {
 			padding-right: 0;
 		}
@@ -32,9 +34,24 @@
 			color: $dark;
 			font-family: $bodyFont;
 		}
+		a.wpinsights-disable-comments-collect {
+			color: #05cb6b;
+		}
+		a.wpinsights-disable-comments-collect:hover,
+		a.wpinsights-disable-comments-collect:visited,
+		a.wpinsights-disable-comments-collect:focus {
+			outline: none;
+			border: none;
+			box-shadow: none;
+		}
+		.wpinsights-data {
+			margin-top: 10px;
+			p {
+				font-size: 13px;
+			}
+		}
 	}
 	.button__group {
-		flex-grow: 1;
 		text-align: right;
 		@include respond-below(sm) {
 			text-align: left;

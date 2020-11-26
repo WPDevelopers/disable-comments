@@ -33,7 +33,7 @@
       display: block;
     }
   }
-  .disable__comment__alert .alert__content img {
+  .disable__comment__alert .alert__content img, .disable__comment__alert > img {
     margin-right: 15px;
     height: 30px;
   }
