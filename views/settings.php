@@ -1,5 +1,6 @@
 <div class="wrap">
     <div id="disablecommentswrap" class="disablecommentswrap background__grey">
+        <?php do_action('disable_comments_notice'); ?>
         <div class="disable__comment_block">
             <div class="disable__comment__nav__wrap">
                 <p class="plugin__version"><?php echo _e('Version', 'disable-comments') . ' ' . DC_VERSION; ?></p>

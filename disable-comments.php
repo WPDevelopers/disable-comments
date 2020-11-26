@@ -454,9 +454,10 @@ class Disable_Comments
 					'_nonce' => wp_create_nonce('disable_comments_save_settings')
 				)
 			);
+		} else {
+			// notice css
+			wp_enqueue_style('disable-comments-notice',  DC_ASSETS_URI . 'css/notice.css', [], false);
 		}
-		// notice css
-		wp_enqueue_style('disable-comments-notice',  DC_ASSETS_URI . 'css/notice.css', [], false);
 	}
 
 	/**

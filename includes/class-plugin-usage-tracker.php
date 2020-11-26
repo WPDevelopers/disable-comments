@@ -614,7 +614,7 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 			$extra_notice_text = $this->notice_options['extra_notice'];
 
 			$output = '';
-			$output .= '<div class="dc-text__block disable__comment__alert mb30">';
+			$output .= '<div class="notice dc-text__block disable__comment__alert mb30">';
 				$output .= '<div class="alert__content">';
                     $output .= '<img src="'. DC_ASSETS_URI .'img/icon-logo.png" alt="">';
                     $output .= '<p>'. $notice_text .'</p>';

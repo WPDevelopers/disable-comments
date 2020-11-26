@@ -1,5 +1,6 @@
 
 .disable__comment__alert {
+    border: 0px;
     background: #fff;
     display: flex;
     align-items: center;
@@ -42,7 +43,7 @@
     }
   }
   .disable__comment__alert .alert__content p {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 500;
     color: #22282d;
     font-family: "DM Sans", sans-serif;
@@ -59,6 +60,19 @@
     margin-right: 0;
     margin-top: 5px;
     margin-bottom: 5px;
+    color: #ffffff;
+    background: #05cb6b;
+    border: 0;
+    transition: all 0.3s ease 0s;
+  }
+  .disable__comment__alert .button__group .button:last-child {
+    background-color: #fff;
+    color: #808da1;
+  }
+
+  .disable__comment__alert .button__group .button:hover {
+    background: #05cb6b;
+    color: #ffffff;
   }
   .disable__comment__alert .button__group .button:not(:last-child) {
     margin-right: 0;
@@ -76,4 +90,8 @@
     .disable__comment__alert .button__group .button:not(:first-child) {
       margin-left: 0;
     }
+  }
+
+  .disable__comment__alert .alert__content .wpinsights-data {
+    font-size: 10px;
   }

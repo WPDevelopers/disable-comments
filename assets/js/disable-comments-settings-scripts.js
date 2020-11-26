@@ -203,9 +203,11 @@ jQuery(document).ready(function () {
 							"#disableCommentSaveSettings"
 						).serializeArray(),
 					};
-					jQuery.post(ajaxurl, data, function (response) {
-						console.log(response);
-					});
+					jQuery
+						.post(ajaxurl, data, function (response) {})
+						.fail(function () {
+							console.error("Settings failed to saved.");
+						});
 				}
 			}
 		}
