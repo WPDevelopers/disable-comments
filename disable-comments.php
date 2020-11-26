@@ -575,7 +575,7 @@ class Disable_Comments
 	{
 		$title = _x('Disable Comments', 'settings menu title', 'disable-comments');
 		if ($this->networkactive) {
-			add_submenu_page('settings.php', $title, $title, 'manage_network_plugins', DC_PLUGIN_SLUG, array($this, 'settings_page'),);
+			add_submenu_page('settings.php', $title, $title, 'manage_network_plugins', DC_PLUGIN_SLUG, array($this, 'settings_page'));
 		} else {
 			add_submenu_page('options-general.php', $title, $title, 'manage_options', DC_PLUGIN_SLUG, array($this, 'settings_page'));
 		}
@@ -585,7 +585,7 @@ class Disable_Comments
 			$title,
 			'manage_options',
 			DC_PLUGIN_SLUG . '_setup',
-			array($this, 'setup_settings_page'),
+			array($this, 'setup_settings_page')
 		);
 	}
 	public function tools_menu()
