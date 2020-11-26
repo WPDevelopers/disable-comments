@@ -426,7 +426,8 @@ class Disable_Comments
 		if (
 			$hook_suffix === 'settings_page_' . DC_PLUGIN_SLUG ||
 			$hook_suffix === 'options-general_' . DC_PLUGIN_SLUG ||
-			$hook_suffix === 'admin_page_' . DC_PLUGIN_SLUG . '_setup'
+			$hook_suffix === 'admin_page_' . DC_PLUGIN_SLUG . '_setup' ||
+			$hook_suffix === 'settings_page_' . DC_PLUGIN_SLUG . '_setup'
 		) {
 			// css
 			wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/sweetalert2.min.css', [], false);
@@ -694,7 +695,7 @@ class Disable_Comments
 			wp_safe_redirect(admin_url('options-general.php?page=' . DC_PLUGIN_SLUG ));
 			exit;
 		}
-		update_option('dc_setup_screen_seen', true);
+		// update_option('dc_setup_screen_seen', true);
 		include_once DC_PLUGIN_VIEWS_PATH . 'setup-settings.php';
 	}
 

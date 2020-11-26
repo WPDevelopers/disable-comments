@@ -571,9 +571,9 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 			}
 			return $data;
 		}
-		public function admin_notice( $hook ){
+		public function admin_notice(){
 			$current_screen = get_current_screen()->id;
-			if( $current_screen !== 'settings_page_disable_comments_settings' || $current_screen !== 'disable_comments_settings_setup' ) {
+			if( ! in_array( $current_screen, ['admin_page_disable_comments_settings_setup', 'settings_page_disable_comments_settings', 'settings_page_disable_comments_settings_setup' ])) {
 				$this->notice();
 			}
 		}
