@@ -234,7 +234,7 @@ class Disable_Comments
 	 */
 	public function activate()
 	{
-		update_option('dc_do_activation_redirect', true);
+		$this->update_option('dc_do_activation_redirect', true);
 	}
 
 	public function register_text_domain()
@@ -303,12 +303,21 @@ class Disable_Comments
 		}
 	}
 
+	public function get_option( $key, $default = false ){
+		return $this->networkactive ? get_site_option( $key, $default ) : get_option( $key, $default );
+	}
+	public function update_option( $option, $value ){
+		return $this->networkactive ? update_site_option( $option, $value ) : update_option( $option, $value );
+	}
+	public function delete_option( $option ){
+		return $this->networkactive ? delete_site_option( $option ) : delete_option( $option );
+	}
+
 	public function plugin_redirect()
 	{
-		if (get_option('dc_do_activation_redirect', false)) {
-			delete_option('dc_do_activation_redirect');
-
-			if( get_option('dc_setup_screen_seen', false ) ) {
+		if ( $this->get_option( 'dc_do_activation_redirect') ) {
+			$this->delete_option('dc_do_activation_redirect');
+			if( $this->get_option('dc_setup_screen_seen') ) {
 				wp_safe_redirect(admin_url('options-general.php?page=' . DC_PLUGIN_SLUG ));
 			} else {
 				wp_safe_redirect(admin_url('admin.php?page=' . DC_PLUGIN_SLUG . '_setup'));
@@ -500,6 +509,9 @@ class Disable_Comments
 		if (strpos(get_current_screen()->id, 'settings_page_disable_comments_settings') === 0) {
 			return;
 		}
+		if (strpos(get_current_screen()->id, 'admin_page_disable_comments_settings_setup') === 0) {
+			return;
+		}
 		$hascaps = $this->networkactive ? is_network_admin() && current_user_can('manage_network_plugins') : current_user_can('manage_options');
 		if ($hascaps) {
 			echo '<div class="updated fade"><p>' . sprintf(__('The <em>Disable Comments</em> plugin is active, but isn\'t configured to do anything yet. Visit the <a href="%s">configuration page</a> to choose which post types to disable comments on.', 'disable-comments'), esc_attr($this->settings_page_url())) . '</p></div>';
@@ -684,18 +696,14 @@ class Disable_Comments
 	public function settings_page()
 	{
 		if( isset( $_GET['cancel'] ) && trim( $_GET['cancel'] ) === 'setup' ){
-			update_option('dc_setup_screen_seen', true);
+			$this->update_option('dc_setup_screen_seen', true);
 		}
 		include_once DC_PLUGIN_VIEWS_PATH . 'settings.php';
 	}
 
 	public function setup_settings_page()
 	{
-		if( get_option('dc_setup_screen_seen', false ) ) {
-			wp_safe_redirect(admin_url('options-general.php?page=' . DC_PLUGIN_SLUG ));
-			exit;
-		}
-		update_option('dc_setup_screen_seen', true);
+		$this->update_option('dc_setup_screen_seen', true);
 		include_once DC_PLUGIN_VIEWS_PATH . 'setup-settings.php';
 	}
 
