@@ -1,5 +1,5 @@
 === Disable Comments ===
-Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, solarissmoke, garrett-eclipse
+Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, tusharimran, alimuzzamanalim, solarissmoke, garrett-eclipse
 Donate link: https://wpdeveloper.net/
 Tags: comments, disable, disable comments, delete comments, stop spam, bulk comment delete, comment management, global, stop comment
 Requires at least: 5.0
