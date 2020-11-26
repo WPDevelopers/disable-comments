@@ -695,8 +695,9 @@ class Disable_Comments
 			if ($this->options['remove_everywhere']) {
 				$disabled_post_types = array_keys($post_types);
 			} else {
-				$disabled_post_types = (isset($formArray['disabled_types']) ? array_map('sanitize_key', (array) $formArray['disabled_types']) : []);
+				$disabled_post_types = (isset($formArray['disabled_types']) ? array_map('sanitize_key', (array) $formArray['disabled_types']) : ( isset( $this->options['disabled_post_types'] ) ? $this->options['disabled_post_types'] : [] ));
 			}
+
 			$disabled_post_types = array_intersect($disabled_post_types, array_keys($post_types));
 			$this->options['disabled_post_types'] = $disabled_post_types;
 
