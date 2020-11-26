@@ -2972,3 +2972,7 @@ button.button__instagram.hover__highlight:hover .icon {
 .disable__comment__alert .alert__content .wpinsights-data p {
   font-size: 13px;
 }
+
+.cancel-dc-setup {
+  text-align: right;
+}

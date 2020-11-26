@@ -99,6 +99,7 @@ class Disable_Comments
 			$allow_tracking = get_option( 'wpins_allow_tracking', [] );
 			update_option('wpins_allow_tracking', array_merge( $allow_tracking, ['disable-comments' => 'disable-comments'] ));
 			$this->tracker->force_tracking();
+			$this->tracker->update_block_notice( 'disable-comments' );
 		}
 	}
 
@@ -306,7 +307,12 @@ class Disable_Comments
 	{
 		if (get_option('dc_do_activation_redirect', false)) {
 			delete_option('dc_do_activation_redirect');
-			wp_safe_redirect(admin_url('admin.php?page=' . DC_PLUGIN_SLUG . '_setup'));
+
+			if( get_option('dc_setup_screen_seen', false ) ) {
+				wp_safe_redirect(admin_url('options-general.php?page=' . DC_PLUGIN_SLUG ));
+			} else {
+				wp_safe_redirect(admin_url('admin.php?page=' . DC_PLUGIN_SLUG . '_setup'));
+			}
 			exit;
 		}
 	}
@@ -676,12 +682,20 @@ class Disable_Comments
 
 	public function settings_page()
 	{
-		include dirname(__FILE__) . '/views/settings.php';
+		if( isset( $_GET['cancel'] ) && trim( $_GET['cancel'] ) === 'setup' ){
+			update_option('dc_setup_screen_seen', true);
+		}
+		include_once DC_PLUGIN_VIEWS_PATH . 'settings.php';
 	}
 
 	public function setup_settings_page()
 	{
-		include dirname(__FILE__) . '/views/setup-settings.php';
+		if( get_option('dc_setup_screen_seen', false ) ) {
+			wp_safe_redirect(admin_url('options-general.php?page=' . DC_PLUGIN_SLUG ));
+			exit;
+		}
+		update_option('dc_setup_screen_seen', true);
+		include_once DC_PLUGIN_VIEWS_PATH . 'setup-settings.php';
 	}
 
 	public function form_data_modify($form_data)

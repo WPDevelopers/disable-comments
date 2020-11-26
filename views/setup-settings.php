@@ -62,10 +62,11 @@
 
                 <div class="footer__content mt80">
                     <?php
-                    include DC_PLUGIN_VIEWS_PATH . 'partials/_menu.php';
+                        include DC_PLUGIN_VIEWS_PATH . 'partials/_menu.php';
                     ?>
                 </div>
             </div>
         </div>
     </div>
+    <a href="<?php echo admin_url('options-general.php?page=disable_comments_settings&cancel=setup'); ?>" class="cancel-dc-setup">Cancel Setup</a>
 </div>
