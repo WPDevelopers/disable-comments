@@ -518,19 +518,19 @@ class Disable_Comments
 	public function filter_existing_comments($comments, $post_id)
 	{
 		$post = get_post($post_id);
-		return ($this->options['remove_everywhere'] || $this->is_post_type_disabled($post->post_type)) ? array() : $comments;
+		return ($this->options['remove_everywhere'] || $this->is_post_type_disabled($post->post_type)  ? array() : $comments);
 	}
 
 	public function filter_comment_status($open, $post_id)
 	{
 		$post = get_post($post_id);
-		return ($this->options['remove_everywhere'] || $this->is_post_type_disabled($post->post_type)) ? false : $open;
+		return ($this->options['remove_everywhere'] || $this->is_post_type_disabled($post->post_type) ? false : $open);
 	}
 
 	public function filter_comments_number($count, $post_id)
 	{
 		$post = get_post($post_id);
-		return ($this->options['remove_everywhere'] || $this->is_post_type_disabled($post->post_type)) ? 0 : $count;
+		return ($this->options['remove_everywhere'] || $this->is_post_type_disabled($post->post_type) ? 0 : $count);
 	}
 
 	public function disable_rc_widget()
