@@ -2382,6 +2382,8 @@ button.button__instagram.hover__highlight:hover .icon {
 .disable__comment__option .total-comments {
   font-size: 16px;
   line-height: 26px;
+  margin-top: 20px;
+  color: #A8B2C0;
 }
 
 .dc-item__card_wrap {

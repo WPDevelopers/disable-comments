@@ -44,8 +44,8 @@
                     ?>
                 </ul>
                 <p class="disable__option__description"><span class="danger"><?php _e('Warnings:', 'disable-comments'); ?></span> <?php _e('This will remove existing comment entries for the selected comment type(s) in the database.' . 'disable-comments'); ?></p>
-                <h4 class="total-comments"><?php _e('Total Comments:', 'disable-comments'); ?> <?php echo $this->get_all_comments_number(); ?></h4>
             </div>
+            <h4 class="total-comments"><?php _e('Total Comments:', 'disable-comments'); ?> <?php echo $this->get_all_comments_number(); ?></h4>
         </div>
         <!-- save -->
         <button class="button button__delete"><?php _e('Delete Comments', 'disable-comments'); ?></button>

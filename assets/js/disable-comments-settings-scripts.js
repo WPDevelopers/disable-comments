@@ -242,7 +242,7 @@ jQuery(document).ready(function () {
 				Swal.fire({
 					icon: "success",
 					title: "complete",
-					text: response.data.message.toString(),
+					html: response.data.message.join("<br />"),
 					timer: 3000,
 					showConfirmButton: false,
 				});
@@ -250,7 +250,7 @@ jQuery(document).ready(function () {
 				Swal.fire({
 					icon: "error",
 					title: "Oops...",
-					text: response.data.message.toString(),
+					html: response.data.message.join("<br />"),
 					showConfirmButton: true,
 				});
 			}
