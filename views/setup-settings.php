@@ -60,7 +60,8 @@
                     </div>
                 </div>
 
-                <div class="footer__content mt80">
+                <div class="footer__content mt50">
+                    <a href="<?php echo admin_url('options-general.php?page=disable_comments_settings&cancel=setup'); ?>" class="cancel-dc-setup">Return to Dashboard</a>
                     <?php
                         include DC_PLUGIN_VIEWS_PATH . 'partials/_menu.php';
                     ?>
@@ -68,5 +69,4 @@
             </div>
         </div>
     </div>
-    <a href="<?php echo admin_url('options-general.php?page=disable_comments_settings&cancel=setup'); ?>" class="cancel-dc-setup">Cancel Setup</a>
 </div>
