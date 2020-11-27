@@ -1,11 +1,11 @@
 === Disable Comments ===
 Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, tusharimran, alimuzzamanalim, solarissmoke, garrett-eclipse
 Donate link: https://wpdeveloper.net/
-Tags: comments, disable, disable comments, delete comments, stop spam, bulk comment delete, comment management, global, stop comment
+Tags: comments, delete comments, disable, disable comments, stop spam, remove comments, anti spam, disable xml-rpc, hide comment, XML-RPC, REST-API
 Requires at least: 5.0
 Tested up to: 5.5
 Requires PHP: 5.4
-Stable tag: 1.11.0
+Stable tag: 2.0.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -171,6 +171,13 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
+
+= [2.0.0] - 2020-11-27 =
+* Improved UI for Settings page
+* New feature: Manage Disable Comments settings with WP-CLI
+* New feature: Quick Setup Wizard
+* New feature: Disable Comments via REST-API
+* New feature: Disable Comments via XML-RPC
 
 = [1.11.0] - 2020-08-22 =
 * Introducing Delete Comment by Type - Contribution by garretthyder
