@@ -69,7 +69,7 @@
                         </g>
                     </svg>
                 </div>
-                <h4><a href="<?php echo esc_url('https://wpdeveloper.net/docs/disable-specific-types-of-posts/'); ?>" target="_blank" rel="nofollow"><?php _e('How To Disable Specific Types Of Posts', 'disable-comments'); ?></a></h4>
+                <h4><a href="<?php echo esc_url('https://wpdeveloper.net/docs/disable-specific-types-of-posts/'); ?>" target="_blank" rel="nofollow"><?php _e('How to Disable Comments on Specific Types Of Posts', 'disable-comments'); ?></a></h4>
             </div>
             <div class="tutorial__item">
                 <div class="icon">
