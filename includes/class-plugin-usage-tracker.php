@@ -153,7 +153,6 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 			// For Test
 			// add_action( 'admin_init', array( $this, 'force_tracking' ) );
 			add_action( 'disable_comments_notice', array( $this, 'notice' ) );
-			add_action( 'admin_notices', array( $this, 'admin_notice' ) );
 			/**
 			 * Deactivation Reason Form and Submit Data to Insights.
 			 */
@@ -355,7 +354,7 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 				include ABSPATH . '/wp-admin/includes/plugin.php';
 			}
 			$plugins = array_keys( get_plugins() );
-			$active_plugins = get_option( 'active_plugins', array() );
+			$active_plugins = is_network_admin() ? array_keys( get_site_option( 'active_sitewide_plugins', array() ) ) : get_option( 'active_plugins', array() );
 			foreach ( $plugins as $key => $plugin ) {
 				if ( in_array( $plugin, $active_plugins ) ) {
 					unset( $plugins[$key] );
@@ -570,14 +569,6 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 				}
 			}
 			return $data;
-		}
-		public function admin_notice(){
-			$options = (is_multisite() ? get_site_option('disable_comments_options', array()) :  get_option('disable_comments_options', array()));
-			if($options['remove_everywhere'] || empty($options['disabled_post_types'])) return;
-			$current_screen = get_current_screen()->id;
-			if( ! in_array( $current_screen, ['admin_page_disable_comments_settings_setup', 'settings_page_disable_comments_settings', 'settings_page_disable_comments_settings_setup' ])) {
-				$this->notice();
-			}
 		}
 		/**
 		 * Display the admin notice to users to allow them to opt in

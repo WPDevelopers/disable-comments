@@ -79,7 +79,7 @@ class Disable_Comments
 
 		$this->init_filters();
 
-		$this->start_plugin_usage_tracking();
+		add_action( 'wp_loaded', [ $this, 'start_plugin_usage_tracking'] );
 	}
 	/**
 	 * Enable CLI
@@ -100,6 +100,19 @@ class Disable_Comments
 			update_option('wpins_allow_tracking', array_merge( $allow_tracking, ['disable-comments' => 'disable-comments'] ));
 			$this->tracker->force_tracking();
 			$this->tracker->update_block_notice( 'disable-comments' );
+		}
+	}
+
+	public function admin_notice(){
+		if( $this->tracker instanceof DisableComments_Plugin_Tracker ) {
+			if( isset( $this->setup_notice_flag ) && $this->setup_notice_flag === true ) {
+				return;
+			}
+			$current_screen = get_current_screen()->id;
+			$hascaps = $this->networkactive ? is_network_admin() && current_user_can('manage_network_plugins') : current_user_can('manage_options');
+			if( ! in_array( $current_screen, ['admin_page_disable_comments_settings_setup', 'settings_page_disable_comments_settings', 'settings_page_disable_comments_settings_setup', 'settings_page_disable_comments_settings-network', 'settings_page_disable_comments_settings_setup-network', 'admin_page_disable_comments_settings_setup-network' ]) && $hascaps ) {
+				$this->tracker->notice();
+			}
 		}
 	}
 
@@ -270,6 +283,7 @@ class Disable_Comments
 
 		// Filters for the admin only.
 		if (is_admin()) {
+			add_action( 'all_admin_notices', array( $this, 'admin_notice' ) );
 			if ($this->networkactive) {
 				add_action('network_admin_menu', array($this, 'settings_menu'));
 				add_action('network_admin_menu', array($this, 'tools_menu'));
@@ -527,6 +541,7 @@ class Disable_Comments
 		}
 		$hascaps = $this->networkactive ? is_network_admin() && current_user_can('manage_network_plugins') : current_user_can('manage_options');
 		if ($hascaps) {
+			$this->setup_notice_flag = true;
 			echo '<div class="notice dc-text__block disable__comment__alert mb30"><img height="30" src="'. DC_ASSETS_URI .'img/icon-logo.png" alt=""><p>' . sprintf(__('The <strong>Disable Comments</strong> plugin is active, but isn\'t configured to do anything yet. Visit the <a href="%s">configuration page</a> to choose which post types to disable comments on.', 'disable-comments'), esc_attr($this->quick_setup_url())) . '</p></div>';
 		}
 	}
@@ -630,7 +645,9 @@ class Disable_Comments
 
 		$slug = DC_PLUGIN_SLUG;
 
-		if( ! $this->get_option('dc_setup_screen_seen') ) {
+		$is_setup_page = isset( $_GET['page'] ) && trim( $_GET['page'] ) === 'disable_comments_settings_setup';
+
+		if( ! $this->get_option('dc_setup_screen_seen') && ! $is_setup_page ) {
 			$slug = DC_PLUGIN_SLUG . '_setup';
 		}
 
