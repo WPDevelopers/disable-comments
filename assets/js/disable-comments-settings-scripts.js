@@ -8,13 +8,16 @@ jQuery(document).ready(function () {
 		var tabNavItem =
 			"ul.disable__comment__nav li.disable__comment__nav__item";
 		var tabBodyItem = ".disable__comment__tab .disable__comment__tab__item";
-		jQuery(tabNavItem + "> a").on("click", function (e) {
+		jQuery(tabNavItem).on("click", "a", function (e) {
 			e.preventDefault();
-			if (jQuery(tabNavItem + " a").hasClass("active")) {
-				jQuery(tabNavItem + " a").removeClass("active");
-			}
-			jQuery(this).toggleClass("active");
-			jQuery(tabBodyItem).toggleClass("show");
+			jQuery(this)
+				.addClass("active")
+				.parent()
+				.siblings()
+				.children()
+				.removeClass("active");
+			var target = jQuery(this).attr("href");
+			jQuery(target).addClass("show").siblings().removeClass("show");
 		});
 		if (hash === "#delete") {
 			jQuery("#disableCommentsNav > a").removeClass("active");
