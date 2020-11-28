@@ -1,7 +1,7 @@
 === Disable Comments - Remove Comments & Protect From Spam ===
 Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, tusharimran, alimuzzamanalim, solarissmoke, garrett-eclipse
 Donate link: https://wpdeveloper.net/
-Tags: comments, delete comments, disable, disable comments, stop spam, remove comments, anti spam, disable xml-rpc, hide comment, XML-RPC, REST-API, WP CLI
+Tags: comments, delete comments, disable, disable comments, stop spam, remove comments, anti spam, disable xml-rpc, hide comment, XML-RPC, REST-API, WP-CLI
 Requires at least: 5.0
 Tested up to: 5.5
 Requires PHP: 5.6
@@ -170,8 +170,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
 
 = [2.0.1] - 2020-11-28 =
-* Fix: Configuration Page URL Impprovement
-* Minor Typo
+* Bug Fix: Settings page URL issue fixed from plugins page.
+* Improvement: Quick Setup Wizard instructions.
 
 = [2.0.0] - 2020-11-28 =
 * Improved UI for Settings page
