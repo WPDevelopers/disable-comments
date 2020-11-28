@@ -17,7 +17,7 @@ Instantly allow or disallow comments from any post type in WordPress (Pages, Pos
 
 [More About Plugin](https://wpdeveloper.net/plugins/disable-comments/) ◼️ [Documentation](https://wpdeveloper.net/docs-category/disable-comments/) ◼️ [Support Forum](https://wordpress.org/support/plugin/disable-comments/)
 
-https://www.youtube.com/watch?v=2g9CapDFtkI
+https://www.youtube.com/watch?v=J9AteKzQpPs
 
 ## Take Global Control Over Your WordPress Site
 Override all comments-related settings throughout your website & manage your comments just the way you want.
