@@ -4,7 +4,7 @@ Donate link: https://wpdeveloper.net/
 Tags: comments, delete comments, disable, disable comments, stop spam, remove comments, anti spam, disable xml-rpc, hide comment, XML-RPC, REST-API, WP CLI
 Requires at least: 5.0
 Tested up to: 5.5
-Requires PHP: 5.4
+Requires PHP: 5.6
 Stable tag: 2.0.1
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -13,9 +13,9 @@ Allows administrators to globally disable comments on their site. Comments can b
 
 == Description ==
 
-Instantly allow or disallow comments from any post type in WordPress (Pages, Posts or Media) to stop the spammers and gain complete control over your full website.
+Instantly allow or disallow comments from any post type in WordPress (Pages, Posts or Media) to stop the spammers and gain complete control over your full website. WP-CLI Suppprt & Control comments via XML-RPC and REST-API too!
 
-[More About Plugin](https://wordpress.org/plugins/disable-comments/) ◼️ [Documentation](https://wpdeveloper.net/docs-category/disable-comments/) ◼️ [Support Forum](https://wordpress.org/support/plugin/disable-comments/)
+[More About Plugin](https://wpdeveloper.net/plugins/disable-comments/) ◼️ [Documentation](https://wpdeveloper.net/docs-category/disable-comments/) ◼️ [Support Forum](https://wordpress.org/support/plugin/disable-comments/)
 
 https://www.youtube.com/watch?v=J9AteKzQpPs
 
@@ -170,8 +170,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
 
 = [2.0.1] - 2020-11-28 =
-* Settings URL issue Fixed.
-* Some Improvements done.
+* Fix: Configuration Page URL Impprovement
+* Minor Typo
 
 = [2.0.0] - 2020-11-28 =
 * Improved UI for Settings page
@@ -322,4 +322,4 @@ This will be maiintained from August 19, 2020 - @asif2bd
 
 == Upgrade Notice ==
 
-Minor Update: Tools update
+Major Update: Complete new UI with WP-CLI featuures.
