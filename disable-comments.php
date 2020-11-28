@@ -518,7 +518,7 @@ class Disable_Comments
 	private function quick_setup_url()
 	{
 		$base = $this->networkactive ? network_admin_url('settings.php') : admin_url('admin.php');
-		return add_query_arg('page', DC_PLUGIN_SLUG . '_setup', $base);
+		return add_query_arg('page', $this->get_option('dc_setup_screen_seen') ? DC_PLUGIN_SLUG : DC_PLUGIN_SLUG . '_setup', $base);
 	}
 
 	/**
