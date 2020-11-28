@@ -4,7 +4,7 @@
  * Plugin Name: Disable Comments
  * Plugin URI: https://wordpress.org/plugins/disable-comments/
  * Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. You could bulk delete comments using Tools.
- * Version: 2.0.0
+ * Version: 2.0.1
  * Author: WPDeveloper
  * Author URI: https://wpdeveloper.net
  * License: GPL-3.0+
@@ -37,7 +37,7 @@ class Disable_Comments
 
 	function __construct()
 	{
-		define('DC_VERSION', '2.0.0');
+		define('DC_VERSION', '2.0.1');
 		define('DC_PLUGIN_SLUG', 'disable_comments_settings');
 		define('DC_PLUGIN_ROOT_PATH', dirname(__FILE__));
 		define('DC_PLUGIN_VIEWS_PATH', DC_PLUGIN_ROOT_PATH . '/views/');
@@ -642,32 +642,20 @@ class Disable_Comments
 	public function settings_menu()
 	{
 		$title = _x('Disable Comments', 'settings menu title', 'disable-comments');
-
-		$slug = DC_PLUGIN_SLUG;
-
-		$is_setup_page = isset( $_GET['page'] ) && trim( $_GET['page'] ) === 'disable_comments_settings_setup';
-
-		if( ! $this->get_option('dc_setup_screen_seen') && ! $is_setup_page ) {
-			$slug = DC_PLUGIN_SLUG . '_setup';
-		}
-
 		if ($this->networkactive) {
-			add_submenu_page('settings.php', $title, $title, 'manage_network_plugins', $slug, array($this, 'settings_page'));
+			$hook = add_submenu_page('settings.php', $title, $title, 'manage_network_plugins', DC_PLUGIN_SLUG, array($this, 'settings_page'));
 		} else {
-			if( $slug === 'disable_comments_settings_setup' ) {
-				add_submenu_page('options-general.php', $title, $title, 'manage_options', $slug, array($this, 'setup_settings_page'));
-			} else {
-				add_submenu_page('options-general.php', $title, $title, 'manage_options', $slug, array($this, 'settings_page'));
-			}
+			$hook = add_submenu_page('options-general.php', $title, $title, 'manage_options', DC_PLUGIN_SLUG, array($this, 'settings_page'));
 		}
-		add_submenu_page(
-			null,
-			$title,
-			$title,
-			'manage_options',
-			DC_PLUGIN_SLUG . '_setup',
-			array($this, 'setup_settings_page')
-		);
+		add_submenu_page(null, $title, $title, 'manage_options', DC_PLUGIN_SLUG . '_setup', array($this, 'setup_settings_page'));
+		add_action('load-' . $hook, array($this, 'root_redirect'));
+	}
+	public function root_redirect(){
+		$is_setup_page = isset( $_GET['page'] ) && trim( $_GET['page'] ) === 'disable_comments_settings_setup';
+		if( isset( $_GET['page'] ) && trim( $_GET['page'] ) === 'disable_comments_settings' && ! $this->get_option('dc_setup_screen_seen') && ! $is_setup_page ) {
+			wp_safe_redirect( $this->quick_setup_url(), 301 );
+			exit;
+		}
 	}
 	public function tools_menu()
 	{
@@ -683,11 +671,8 @@ class Disable_Comments
 
 	public function redirectToMainSettingsPage()
 	{
-		if ($this->networkactive) {
-			wp_redirect($this->settings_page_url() . '#delete');
-		} else {
-			wp_redirect( $this->settings_page_url() . '#delete');
-		}
+		wp_safe_redirect($this->settings_page_url() . '#delete');
+		exit;
 	}
 
 	public function get_all_comments_number()

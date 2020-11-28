@@ -28,7 +28,7 @@
                     <div id="dcqTabBody_1" class="dc-quick__step__item">
                         <div class="quick__setup__item__header mb30">
                             <h2><?php _e('Getting Started', 'disable-comments'); ?></h2>
-                            <p><?php _e('Easily get started with this easy setup wizard and complete setting up your Knowledge Base.', 'disable-comments'); ?></p>
+                            <p><?php _e('Easily get started with this easy setup wizard and complete setting up your Disable Comments', 'disable-comments'); ?></p>
                         </div>
                         <div class="dc-video__area">
                             <iframe width="622" height="350" src="https://www.youtube.com/embed/J9AteKzQpPs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -48,7 +48,7 @@
                     <div id="dcqTabBody_3" class="dc-quick__step__item">
                         <div class="quick__setup__item__header">
                             <h2><?php _e('Great Job!', 'disable-comments'); ?></h2>
-                            <p><?php _e('Your documentation page is ready! Make sure to add more articles and assign them to proper categories and you are good to go.', 'disable-comments'); ?></p>
+                            <p><?php _e('You are ready to go! You can manage your settings anytime from Settings > Disable Comments', 'disable-comments'); ?></p>
                         </div>
                         <div class="finalize-thumb">
                             <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/finalize-thumb.png'); ?>" alt="">
