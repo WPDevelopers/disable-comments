@@ -15,7 +15,7 @@ Allows administrators to globally disable comments on their site. Comments can b
 
 Instantly allow or disallow comments from any post type in WordPress (Pages, Posts or Media) to stop the spammers and gain complete control over your full website.
 
-[More About Plugin](https://wordpress.org/plugins/disable-comments/) ◼️ [Documentation](https://wpdeveloper.net/docs-category/disable-comments/) ◼️ [Support Forum](https://wordpress.org/support/plugin/disable-comments/)
+[More About Plugin](https://wpdeveloper.net/plugins/disable-comments/) ◼️ [Documentation](https://wpdeveloper.net/docs-category/disable-comments/) ◼️ [Support Forum](https://wordpress.org/support/plugin/disable-comments/)
 
 https://www.youtube.com/watch?v=2g9CapDFtkI
 
