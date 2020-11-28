@@ -5,7 +5,7 @@ Tags: comments, delete comments, disable, disable comments, stop spam, remove co
 Requires at least: 5.0
 Tested up to: 5.5
 Requires PHP: 5.4
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,7 +17,7 @@ Instantly allow or disallow comments from any post type in WordPress (Pages, Pos
 
 [More About Plugin](https://wordpress.org/plugins/disable-comments/) ◼️ [Documentation](https://wpdeveloper.net/docs-category/disable-comments/) ◼️ [Support Forum](https://wordpress.org/support/plugin/disable-comments/)
 
-https://www.youtube.com/watch?v=2g9CapDFtkI
+https://www.youtube.com/watch?v=J9AteKzQpPs
 
 ## Take Global Control Over Your WordPress Site
 Override all comments-related settings throughout your website & manage your comments just the way you want.
@@ -168,6 +168,10 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
+
+= [2.0.1] - 2020-11-28 =
+* Settings URL issue Fixed.
+* Some Improvements done.
 
 = [2.0.0] - 2020-11-28 =
 * Improved UI for Settings page
