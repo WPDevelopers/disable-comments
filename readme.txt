@@ -1,7 +1,7 @@
-=== Disable Comments ===
+=== Disable Comments - Remove Comments & Protect From Spam ===
 Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, tusharimran, alimuzzamanalim, solarissmoke, garrett-eclipse
 Donate link: https://wpdeveloper.net/
-Tags: comments, delete comments, disable, disable comments, stop spam, remove comments, anti spam, disable xml-rpc, hide comment, XML-RPC, REST-API
+Tags: comments, delete comments, disable, disable comments, stop spam, remove comments, anti spam, disable xml-rpc, hide comment, XML-RPC, REST-API, WP CLI
 Requires at least: 5.0
 Tested up to: 5.5
 Requires PHP: 5.4
@@ -17,7 +17,7 @@ Instantly allow or disallow comments from any post type in WordPress (Pages, Pos
 
 [More About Plugin](https://wordpress.org/plugins/disable-comments/) ◼️ [Documentation](https://wpdeveloper.net/docs-category/disable-comments/) ◼️ [Support Forum](https://wordpress.org/support/plugin/disable-comments/)
 
-https://www.youtube.com/watch?v=2g9CapDFtkI&t=14s
+https://www.youtube.com/watch?v=2g9CapDFtkI
 
 ## Take Global Control Over Your WordPress Site
 Override all comments-related settings throughout your website & manage your comments just the way you want.
@@ -147,8 +147,6 @@ If you still see the message, then it means your theme is overriding this behavi
 
 = I only want to disable comments on certain posts, not globally. What do I do? =
 
-Don't install this plugin!
-
 Go to the edit page for the post you want to disable comments on. Scroll down to the "Discussion" box, where you will find the comment options for that post. If you don't see a "Discussion" box, then click on "Screen Options" at the top of your screen, and make sure the "Discussion" checkbox is checked.
 
 You can also bulk-edit the comment status of multiple posts from the [posts screen](https://codex.wordpress.org/Posts_Screen).
@@ -165,14 +163,13 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 2. Delete Comments under Tools menu.
 
 
-
 == Changelog ==
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
 
-= [2.0.0] - 2020-11-27 =
+= [2.0.0] - 2020-11-28 =
 * Improved UI for Settings page
 * New feature: Manage Disable Comments settings with WP-CLI
 * New feature: Quick Setup Wizard
