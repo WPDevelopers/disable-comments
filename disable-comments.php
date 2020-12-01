@@ -124,8 +124,8 @@ class Disable_Comments
 			'item_id'      => 'b0112c9030af6ba53de4'
 		]);
 		$tracker->set_notice_options(array(
-			'notice' => __('Want to help make Disable Comments even better?', 'disable-comments-on-attachments'),
-			'extra_notice' => __('We collect non-sensitive diagnostic data and plugin usage information. Your site URL, WordPress & PHP version, plugins & themes and email address to send you the discount coupon. This data lets us make sure this plugin always stays compatible with the most popular plugins and themes. No spam, I promise.', 'disable-comments-on-attachments'),
+			'notice' => __('Want to help make Disable Comments even better?', 'disable-comments'),
+			'extra_notice' => __('We collect non-sensitive diagnostic data and plugin usage information. Your site URL, WordPress & PHP version, plugins & themes and email address to send you the discount coupon. This data lets us make sure this plugin always stays compatible with the most popular plugins and themes. No spam, I promise.', 'disable-comments'),
 		));
 		$tracker->init();
 	}
