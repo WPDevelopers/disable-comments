@@ -1,17 +1,17 @@
 # Copyright (C) 2020 WPDeveloper
-# This file is distributed under the GPL-3.0+.
+# This file is distributed under the same license as the Disable Comments plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Disable Comments 2.0.0\n"
+"Project-Id-Version: Disable Comments 2.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/disable-comments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-11-27T13:34:45+00:00\n"
+"POT-Creation-Date: 2020-12-01T10:43:49+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.5.0-alpha\n"
+"X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: disable-comments\n"
 
 #. Plugin Name of the plugin
@@ -35,65 +35,137 @@ msgstr ""
 msgid "https://wpdeveloper.net"
 msgstr ""
 
-#: disable-comments.php:142
+#: disable-comments.php:127
+msgid "Want to help make Disable Comments even better?"
+msgstr ""
+
+#: disable-comments.php:128
+msgid "We collect non-sensitive diagnostic data and plugin usage information. Your site URL, WordPress & PHP version, plugins & themes and email address to send you the discount coupon. This data lets us make sure this plugin always stays compatible with the most popular plugins and themes. No spam, I promise."
+msgstr ""
+
+#: disable-comments.php:139
 msgid "Disable Comments requires WordPress version %s or greater."
 msgstr ""
 
-#: disable-comments.php:397
-#: disable-comments.php:554
-#: disable-comments.php:561
+#: disable-comments.php:372
+#: disable-comments.php:514
+#: disable-comments.php:521
 msgid "Comments are closed."
 msgstr ""
 
-#: disable-comments.php:501
+#: disable-comments.php:474
 msgid "Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types."
 msgstr ""
 
-#: disable-comments.php:501
+#: disable-comments.php:474
 msgid ", "
 msgstr ""
 
-#: disable-comments.php:545
+#: disable-comments.php:505
 msgid "The <strong>Disable Comments</strong> plugin is active, but isn't configured to do anything yet. Visit the <a href=\"%s\">configuration page</a> to choose which post types to disable comments on."
 msgstr ""
 
-#: disable-comments.php:634
+#: disable-comments.php:594
 #: views/partials/_disable.php:3
 msgid "Settings"
 msgstr ""
 
-#: disable-comments.php:635
+#: disable-comments.php:595
 msgid "Tools"
 msgstr ""
 
-#: disable-comments.php:644
+#: disable-comments.php:604
 msgctxt "settings menu title"
 msgid "Disable Comments"
 msgstr ""
 
-#: disable-comments.php:674
+#: disable-comments.php:614
 #: views/partials/_delete.php:51
 #: views/settings.php:12
 msgid "Delete Comments"
 msgstr ""
 
-#: disable-comments.php:708
+#: disable-comments.php:645
 msgid "Default (no type)"
 msgstr ""
 
-#: disable-comments.php:803
+#: disable-comments.php:735
 msgid "Saved"
 msgstr ""
 
-#: disable-comments.php:832
-#: disable-comments.php:866
-#: disable-comments.php:889
+#: disable-comments.php:764
+#: disable-comments.php:798
+#: disable-comments.php:821
 msgid "All comments has been deleted"
 msgstr ""
 
-#: disable-comments.php:834
-#: disable-comments.php:838
+#: disable-comments.php:766
+#: disable-comments.php:770
 msgid "Internal error occured. Please try again later."
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:376
+msgid "We can't detect any plugin information. This is most probably because you have not included the code in the plugin main file."
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:637
+msgid "What we collect."
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:638
+msgid "Sure, I'd like to help"
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:639
+msgid "No Thanks."
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:732
+msgid "Sorry to see you go"
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:733
+msgid "Before you deactivate the plugin, would you quickly give us your reason for doing so?"
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:736
+msgid "I no longer need the plugin"
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:738
+msgid "I found a better plugin"
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:739
+msgid "Please share which plugin"
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:741
+msgid "I couldn't get the plugin to work"
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:742
+msgid "It's a temporary deactivation"
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:744
+msgid "Other"
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:745
+msgid "Please share the reason"
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:787
+msgid "Submitting form"
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:845
+msgid "Submit and Deactivate"
+msgstr ""
+
+#: includes/class-plugin-usage-tracker.php:845
+msgid "Just Deactivate"
 msgstr ""
 
 #: includes/cli.php:122
@@ -292,64 +364,4 @@ msgstr ""
 
 #: views/settings.php:6
 msgid "Version"
-msgstr ""
-
-#: views/setup-settings.php:17
-msgid "GETTING STARTED"
-msgstr ""
-
-#: views/setup-settings.php:20
-msgid "Disable comments"
-msgstr ""
-
-#: views/setup-settings.php:23
-msgid "FINALIZE"
-msgstr ""
-
-#: views/setup-settings.php:30
-msgid "Getting Started"
-msgstr ""
-
-#: views/setup-settings.php:31
-msgid "Easily get started with this easy setup wizard and complete setting up your Knowledge Base."
-msgstr ""
-
-#: views/setup-settings.php:39
-msgid "Want to help make Disable Comments even better?"
-msgstr ""
-
-#: views/setup-settings.php:40
-msgid "What we collect."
-msgstr ""
-
-#: views/setup-settings.php:41
-msgid "We collect non-sensitive diagnostic data and plugin usage information. Your site URL, WordPress & PHP version, plugins, themes and email address to send you the discount coupon. This data lets us make sure this plugin always stays compatible with the most popular plugins and themes. No spam, I promise."
-msgstr ""
-
-#: views/setup-settings.php:50
-msgid "Great Job!"
-msgstr ""
-
-#: views/setup-settings.php:51
-msgid "Your documentation page is ready! Make sure to add more articles and assign them to proper categories and you are good to go."
-msgstr ""
-
-#: views/setup-settings.php:57
-msgid "VISIT OUR DOCUMENTATION PAGE"
-msgstr ""
-
-#: views/setup-settings.php:61
-msgid "Previous"
-msgstr ""
-
-#: views/setup-settings.php:62
-msgid "Next"
-msgstr ""
-
-#: views/setup-settings.php:63
-msgid "Skip"
-msgstr ""
-
-#: views/setup-settings.php:68
-msgid "Return to Dashboard"
 msgstr ""
