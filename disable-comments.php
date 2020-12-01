@@ -43,10 +43,9 @@ class Disable_Comments
 		define('DC_PLUGIN_VIEWS_PATH', DC_PLUGIN_ROOT_PATH . '/views/');
 		define('DC_PLUGIN_ROOT_URI', plugins_url("/", __FILE__));
 		define('DC_ASSETS_URI', DC_PLUGIN_ROOT_URI . 'assets/');
-
 		register_activation_hook(__FILE__, array($this, 'activate'));
-		add_action('wp_loaded', array($this, 'plugin_redirect'));
 
+		add_action('wp_loaded', array($this, 'plugin_redirect'));
 		// save settings
 		add_action('wp_ajax_disable_comments_save_settings', array($this, 'disable_comments_settings'));
 		add_action('wp_ajax_disable_comments_delete_comments', array($this, 'delete_comments_settings'));
@@ -329,14 +328,16 @@ class Disable_Comments
 
 	public function plugin_redirect()
 	{
-		if ( $this->get_option( 'dc_do_activation_redirect') ) {
-			$this->delete_option('dc_do_activation_redirect');
-			if( $this->get_option('dc_setup_screen_seen') ) {
-				wp_safe_redirect($this->settings_page_url());
-			} else {
-				wp_safe_redirect($this->quick_setup_url());
+		if(current_user_can( 'manage_options' ) || current_user_can( 'manage_network_plugins' )){
+			if ( $this->get_option( 'dc_do_activation_redirect') ) {
+				$this->delete_option('dc_do_activation_redirect');
+				if( $this->get_option('dc_setup_screen_seen') ) {
+					wp_safe_redirect($this->settings_page_url());
+				} else {
+					wp_safe_redirect($this->quick_setup_url());
+				}
+				exit;
 			}
-			exit;
 		}
 	}
 
