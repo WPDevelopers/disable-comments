@@ -5,7 +5,7 @@ Tags: comments, delete comments, disable, disable comments, stop spam, remove co
 Requires at least: 5.0
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -168,6 +168,10 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
+
+= [2.0.2] - 2020-12-01 =
+* Removed: Quick Setup Wizard
+* Removed: Redirection settings page after activation
 
 = [2.0.1] - 2020-11-28 =
 * Bug Fix: Settings page URL issue fixed from plugins page.
