@@ -246,7 +246,9 @@ class Disable_Comments
 	 */
 	public function activate()
 	{
-		$this->update_option('dc_do_activation_redirect', true);
+		if(current_user_can( 'manage_options' ) || current_user_can( 'manage_network_plugins' )){ 
+			$this->update_option('dc_do_activation_redirect', true);
+		}
 	}
 
 	public function register_text_domain()
