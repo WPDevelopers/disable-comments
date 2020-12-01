@@ -171,7 +171,8 @@ This will be maiintained from August 19, 2020 - @asif2bd
 
 = [2.0.2] - 2020-12-01 =
 * Removed: Quick Setup Wizard
-* Removed: Redirection settings page after activation
+* Improved: Redirection settings page after activation.
+* Fixed: Text-Domain Issue.
 
 = [2.0.1] - 2020-11-28 =
 * Bug Fix: Settings page URL issue fixed from plugins page.
