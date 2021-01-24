@@ -274,6 +274,8 @@ class Disable_Comments
 		if (is_admin()) {
 			add_action( 'all_admin_notices', array( $this, 'admin_notice' ) );
 			if ($this->networkactive) {
+				add_action('admin_menu', array($this, 'settings_menu'));
+				add_action('admin_menu', array($this, 'tools_menu'));
 				add_action('network_admin_menu', array($this, 'settings_menu'));
 				add_action('network_admin_menu', array($this, 'tools_menu'));
 				add_filter('network_admin_plugin_action_links', array($this, 'plugin_actions_links'), 10, 2);
@@ -607,9 +609,9 @@ class Disable_Comments
 		$title = _x('Disable Comments', 'settings menu title', 'disable-comments');
 		if ($this->networkactive) {
 			add_submenu_page('settings.php', $title, $title, 'manage_network_plugins', DC_PLUGIN_SLUG, array($this, 'settings_page'));
-		} else {
-			add_submenu_page('options-general.php', $title, $title, 'manage_options', DC_PLUGIN_SLUG, array($this, 'settings_page'));
 		}
+
+		add_submenu_page('options-general.php', $title, $title, 'manage_options', DC_PLUGIN_SLUG, array($this, 'settings_page'));
 	}
 
 	public function tools_menu()
