@@ -634,15 +634,14 @@ class Disable_Comments
 	{
 		global $wpdb;
 		if ( is_network_admin() && function_exists( 'get_sites' ) && class_exists( 'WP_Site_Query' ) ) {
+			$count = 0;
 			$sites = get_sites();
 			foreach ( $sites as $site ) {
 				switch_to_blog( $site->blog_id );
-				$count = $wpdb->get_var("SELECT count(comment_id) from $wpdb->comments");
-				if($count){
-					return $count;
-				}
+				$count += $wpdb->get_var("SELECT count(comment_id) from $wpdb->comments");
 				restore_current_blog();
 			}
+			return $count;
 		}
 		else{
 			return $wpdb->get_var("SELECT count(comment_id) from $wpdb->comments");
