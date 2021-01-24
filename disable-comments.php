@@ -136,6 +136,7 @@ class Disable_Comments
 			require_once(ABSPATH . 'wp-admin/includes/plugin.php');
 			deactivate_plugins(__FILE__);
 			if (isset($_GET['action']) && ($_GET['action'] == 'activate' || $_GET['action'] == 'error_scrape')) {
+				// translators: %s: WordPress version no.
 				exit(sprintf(__('Disable Comments requires WordPress version %s or greater.', 'disable-comments'), '4.7'));
 			}
 		}
@@ -471,6 +472,7 @@ class Disable_Comments
 				$names[$type] = get_post_type_object($type)->labels->name;
 			}
 
+			// translators: %s: disabled post types.
 			echo '<div class="notice notice-warning"><p>' . sprintf(__('Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types.', 'disable-comments'), implode(__(', ', 'disable-comments'), $names)) . '</p></div>';
 		}
 	}
@@ -502,6 +504,7 @@ class Disable_Comments
 		$hascaps = $this->networkactive ? is_network_admin() && current_user_can('manage_network_plugins') : current_user_can('manage_options');
 		if ($hascaps) {
 			$this->setup_notice_flag = true;
+			// translators: %s: URL to Disabled Comment settings page.
 			echo '<div class="notice dc-text__block disable__comment__alert mb30"><img height="30" src="'. DC_ASSETS_URI .'img/icon-logo.png" alt=""><p>' . sprintf(__('The <strong>Disable Comments</strong> plugin is active, but isn\'t configured to do anything yet. Visit the <a href="%s">configuration page</a> to choose which post types to disable comments on.', 'disable-comments'), esc_attr($this->settings_page_url())) . '</p></div>';
 		}
 	}
@@ -630,7 +633,20 @@ class Disable_Comments
 	public function get_all_comments_number()
 	{
 		global $wpdb;
-		return $wpdb->get_var("SELECT count(comment_id) from $wpdb->comments");
+		if ( is_network_admin() && function_exists( 'get_sites' ) && class_exists( 'WP_Site_Query' ) ) {
+			$sites = get_sites();
+			foreach ( $sites as $site ) {
+				switch_to_blog( $site->blog_id );
+				$count = $wpdb->get_var("SELECT count(comment_id) from $wpdb->comments");
+				if($count){
+					return $count;
+				}
+				restore_current_blog();
+			}
+		}
+		else{
+			return $wpdb->get_var("SELECT count(comment_id) from $wpdb->comments");
+		}
 	}
 
 	public function get_all_comment_types()
@@ -743,84 +759,16 @@ class Disable_Comments
 		$deletedPostTypeNames = [];
 		$nonce = (isset($_POST['nonce']) ? $_POST['nonce'] : '');
 		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
-
-			if (!empty($_args)) {
-				$formArray = wp_parse_args($_args);
-			} else {
-				$formArray = $this->form_data_modify($_POST['data']);
-			}
-
-			$types = $this->get_all_post_types();
-			$commenttypes = $this->get_all_comment_types();
-			global $wpdb;
-			// comments delete
-			if (isset($formArray['delete_mode'])) {
-				if ($formArray['delete_mode'] == 'delete_everywhere') {
-					if ($wpdb->query("TRUNCATE $wpdb->commentmeta") != false) {
-						if ($wpdb->query("TRUNCATE $wpdb->comments") != false) {
-							$wpdb->query("UPDATE $wpdb->posts SET comment_count = 0");
-							$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
-							$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
-							$log = __('All comments has been deleted', 'disable-comments');
-						} else {
-							wp_send_json_error(array('message' => __('Internal error occured. Please try again later.', 'disable-comments')));
-							wp_die();
-						}
-					} else {
-						wp_send_json_error(array('message' => __('Internal error occured. Please try again later.', 'disable-comments')));
-						wp_die();
-					}
-				} elseif ($formArray['delete_mode'] == 'selected_delete_types') {
-					$delete_post_types = empty($formArray['delete_types']) ? array() : (array) $formArray['delete_types'];
-					$delete_post_types = array_intersect($delete_post_types, array_keys($types));
-
-					// Extra custom post types.
-					if ($this->networkactive && !empty($formArray['delete_extra_post_types'])) {
-						$delete_extra_post_types = array_filter(array_map('sanitize_key', explode(',', $formArray['delete_extra_post_types'])));
-						$delete_extra_post_types = array_diff($delete_extra_post_types, array_keys($types));    // Make sure we don't double up builtins.
-						$delete_post_types       = array_merge($delete_post_types, $delete_extra_post_types);
-					}
-
-					if (!empty($delete_post_types)) {
-						// Loop through post_types and remove comments/meta and set posts comment_count to 0.
-						foreach ($delete_post_types as $delete_post_type) {
-							$wpdb->query("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$delete_post_type'");
-							$wpdb->query("DELETE comments FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$delete_post_type'");
-							$wpdb->query("UPDATE $wpdb->posts SET comment_count = 0 WHERE post_author != 0 AND post_type = '$delete_post_type'");
-
-							$post_type_object = get_post_type_object($delete_post_type);
-							$post_type_label  = $post_type_object ? $post_type_object->labels->name : $delete_post_type;
-							$deletedPostTypeNames[] = $post_type_label;
-						}
-
-						$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
-						$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
-						$log = __('All comments has been deleted', 'disable-comments');
-					}
-				} elseif ($formArray['delete_mode'] == 'selected_delete_comment_types') {
-					$delete_comment_types = empty($formArray['delete_comment_types']) ? array() : (array) $formArray['delete_comment_types'];
-					$delete_comment_types = array_intersect($delete_comment_types, array_keys($commenttypes));
-
-					if (!empty($delete_comment_types)) {
-						// Loop through comment_types and remove comments/meta and set posts comment_count to 0.
-						foreach ($delete_comment_types as $delete_comment_type) {
-							$wpdb->query("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID WHERE comments.comment_type = '$delete_comment_type'");
-							$wpdb->query("DELETE comments FROM $wpdb->comments comments  WHERE comments.comment_type = '$delete_comment_type'");
-							$deletedPostTypeNames[] = $commenttypes[$delete_comment_type];
-						}
-
-						// Update comment_count on post_types
-						foreach ($types as $key => $value) {
-							$comment_count = $wpdb->get_var("SELECT COUNT(comments.comment_ID) FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$key'");
-							$wpdb->query("UPDATE $wpdb->posts SET comment_count = $comment_count WHERE post_author != 0 AND post_type = '$key'");
-						}
-
-						$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
-						$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
-
-						$log = __('All comments has been deleted', 'disable-comments');
-					}
+			if ( is_network_admin() && function_exists( 'get_sites' ) && class_exists( 'WP_Site_Query' ) ) {
+				$sites = get_sites();
+				foreach ( $sites as $site ) {
+					switch_to_blog( $site->blog_id );
+					$log = $this->delete_comments($_args);
+					restore_current_blog();
 				}
+			}
+			else{
+				$log = $this->delete_comments($_args);
 			}
 		}
 		// message
@@ -831,6 +779,89 @@ class Disable_Comments
 		} else {
 			return $log;
 		}
+	}
+
+	private function delete_comments($_args){
+
+		if (!empty($_args)) {
+			$formArray = wp_parse_args($_args);
+		} else {
+			$formArray = $this->form_data_modify($_POST['data']);
+		}
+
+		$types = $this->get_all_post_types();
+		$commenttypes = $this->get_all_comment_types();
+		global $wpdb;
+		// comments delete
+		if (isset($formArray['delete_mode'])) {
+			if ($formArray['delete_mode'] == 'delete_everywhere') {
+				if ($wpdb->query("TRUNCATE $wpdb->commentmeta") != false) {
+					if ($wpdb->query("TRUNCATE $wpdb->comments") != false) {
+						$wpdb->query("UPDATE $wpdb->posts SET comment_count = 0");
+						$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
+						$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
+						$log = __('All comments has been deleted', 'disable-comments');
+					} else {
+						wp_send_json_error(array('message' => __('Internal error occured. Please try again later.', 'disable-comments')));
+						wp_die();
+					}
+				} else {
+					wp_send_json_error(array('message' => __('Internal error occured. Please try again later.', 'disable-comments')));
+					wp_die();
+				}
+			} elseif ($formArray['delete_mode'] == 'selected_delete_types') {
+				$delete_post_types = empty($formArray['delete_types']) ? array() : (array) $formArray['delete_types'];
+				$delete_post_types = array_intersect($delete_post_types, array_keys($types));
+
+				// Extra custom post types.
+				if ($this->networkactive && !empty($formArray['delete_extra_post_types'])) {
+					$delete_extra_post_types = array_filter(array_map('sanitize_key', explode(',', $formArray['delete_extra_post_types'])));
+					$delete_extra_post_types = array_diff($delete_extra_post_types, array_keys($types));    // Make sure we don't double up builtins.
+					$delete_post_types       = array_merge($delete_post_types, $delete_extra_post_types);
+				}
+
+				if (!empty($delete_post_types)) {
+					// Loop through post_types and remove comments/meta and set posts comment_count to 0.
+					foreach ($delete_post_types as $delete_post_type) {
+						$wpdb->query("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$delete_post_type'");
+						$wpdb->query("DELETE comments FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$delete_post_type'");
+						$wpdb->query("UPDATE $wpdb->posts SET comment_count = 0 WHERE post_author != 0 AND post_type = '$delete_post_type'");
+
+						$post_type_object = get_post_type_object($delete_post_type);
+						$post_type_label  = $post_type_object ? $post_type_object->labels->name : $delete_post_type;
+						$deletedPostTypeNames[] = $post_type_label;
+					}
+
+					$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
+					$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
+					$log = __('All comments has been deleted', 'disable-comments');
+				}
+			} elseif ($formArray['delete_mode'] == 'selected_delete_comment_types') {
+				$delete_comment_types = empty($formArray['delete_comment_types']) ? array() : (array) $formArray['delete_comment_types'];
+				$delete_comment_types = array_intersect($delete_comment_types, array_keys($commenttypes));
+
+				if (!empty($delete_comment_types)) {
+					// Loop through comment_types and remove comments/meta and set posts comment_count to 0.
+					foreach ($delete_comment_types as $delete_comment_type) {
+						$wpdb->query("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID WHERE comments.comment_type = '$delete_comment_type'");
+						$wpdb->query("DELETE comments FROM $wpdb->comments comments  WHERE comments.comment_type = '$delete_comment_type'");
+						$deletedPostTypeNames[] = $commenttypes[$delete_comment_type];
+					}
+
+					// Update comment_count on post_types
+					foreach ($types as $key => $value) {
+						$comment_count = $wpdb->get_var("SELECT COUNT(comments.comment_ID) FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$key'");
+						$wpdb->query("UPDATE $wpdb->posts SET comment_count = $comment_count WHERE post_author != 0 AND post_type = '$key'");
+					}
+
+					$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
+					$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
+
+					$log = __('All comments has been deleted', 'disable-comments');
+				}
+			}
+		}
+		return $log;
 	}
 
 	private function discussion_settings_allowed()
