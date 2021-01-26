@@ -2,6 +2,15 @@
     <div class="disable__comment__option mb50">
         <h3 class="title"><?php _e('Settings', 'disable-comments'); ?></h3>
         <p class="subtitle"><?php _e('Configure the settings below to disable comments globally or on specific types of posts.', 'disable-comments'); ?></p>
+
+        <?php if(is_network_admin()):?>
+        <label>
+            <input type="hidden" name="sitewide_settings"value="0">
+            <input type="checkbox" name="sitewide_settings" id="sitewide_settings" value="1" <?php checked($this->options['sitewide_settings']); ?> >
+            Enable site wise settings.
+        </label>
+        <?php endif;?>
+
         <div class="disable_option dc-text__block mb30 mt30">
             <input type="radio" id="remove_everywhere" name="mode" value="<?php echo esc_attr('remove_everywhere') ?>" <?php checked($this->options['remove_everywhere']); ?> />
             <label for="remove_everywhere"><?php _e('Everywhere:', 'disable-comments'); ?> <span><?php _e('Disable comments globally on your entire website', 'disable-comments'); ?></span></label>
@@ -60,4 +69,7 @@
     </div>
     <!-- save -->
     <button class="button button__success"><?php _e('Save Changes', 'disable-comments'); ?></button>
+    <?php if(is_network_admin()):?>
+        <input type="hidden" name="is_network_admin" value="1">
+    <?php endif;?>
 </form>

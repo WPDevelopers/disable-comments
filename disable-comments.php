@@ -60,11 +60,14 @@ class Disable_Comments
 		$this->is_CLI = defined('WP_CLI') && WP_CLI;
 
 		// Load options.
-		if ($this->networkactive) {
+		if ($this->networkactive && is_network_admin()) {
 			$this->options = get_site_option('disable_comments_options', array());
 		} else {
 			$this->options = get_option('disable_comments_options', array());
 		}
+
+		$this->options['sitewide_settings'] = get_site_option('disable_comments_sitewide_settings', false);
+		$this->sitewide_settings = !empty($this->options['sitewide_settings']) && $this->options['sitewide_settings'] == '1';
 
 		// If it looks like first run, check compat.
 		if (empty($this->options)) {
@@ -172,9 +175,10 @@ class Disable_Comments
 
 	private function update_options()
 	{
-		if ($this->networkactive) {
+		if ((!empty($this->options['is_network_admin'])) || $this->networkactive && is_network_admin()) {
+			unset($this->options['is_network_admin']);
 			update_site_option('disable_comments_options', $this->options);
-		} else {
+		} elseif(!is_multisite() || $this->sitewide_settings) {
 			update_option('disable_comments_options', $this->options);
 		}
 	}
@@ -273,13 +277,11 @@ class Disable_Comments
 		// Filters for the admin only.
 		if (is_admin()) {
 			add_action( 'all_admin_notices', array( $this, 'admin_notice' ) );
-			if ($this->networkactive) {
-				add_action('admin_menu', array($this, 'settings_menu'));
-				add_action('admin_menu', array($this, 'tools_menu'));
+			if ($this->networkactive && is_network_admin()) {
 				add_action('network_admin_menu', array($this, 'settings_menu'));
 				add_action('network_admin_menu', array($this, 'tools_menu'));
 				add_filter('network_admin_plugin_action_links', array($this, 'plugin_actions_links'), 10, 2);
-			} else {
+			} elseif(!is_multisite() || $this->sitewide_settings) {
 				add_action('admin_menu', array($this, 'settings_menu'));
 				add_action('admin_menu', array($this, 'tools_menu'));
 				add_filter('plugin_action_links', array($this, 'plugin_actions_links'), 10, 2);
@@ -607,20 +609,20 @@ class Disable_Comments
 	public function settings_menu()
 	{
 		$title = _x('Disable Comments', 'settings menu title', 'disable-comments');
-		if ($this->networkactive) {
+		if ($this->networkactive && is_network_admin()) {
 			add_submenu_page('settings.php', $title, $title, 'manage_network_plugins', DC_PLUGIN_SLUG, array($this, 'settings_page'));
+		} elseif(!is_multisite() || $this->sitewide_settings) {
+			add_submenu_page('options-general.php', $title, $title, 'manage_options', DC_PLUGIN_SLUG, array($this, 'settings_page'));
 		}
-
-		add_submenu_page('options-general.php', $title, $title, 'manage_options', DC_PLUGIN_SLUG, array($this, 'settings_page'));
 	}
 
 	public function tools_menu()
 	{
 		$title = __('Delete Comments', 'disable-comments');
 		$hook = '';
-		if ($this->networkactive) {
+		if ($this->networkactive && is_network_admin()) {
 			$hook = add_submenu_page('settings.php', $title, $title, 'manage_network_plugins', 'disable_comments_tools', array($this, 'tools_page'));
-		} else {
+		} elseif(!is_multisite() || $this->sitewide_settings) {
 			$hook = add_submenu_page('tools.php', $title, $title, 'manage_options', 'disable_comments_tools', array($this, 'tools_page'));
 		}
 		add_action('load-' . $hook, array($this, 'redirectToMainSettingsPage'));
@@ -740,6 +742,14 @@ class Disable_Comments
 				$extra_post_types                  = array_filter(array_map('sanitize_key', explode(',', $formArray['extra_post_types'])));
 				$this->options['extra_post_types'] = array_diff($extra_post_types, array_keys($post_types)); // Make sure we don't double up builtins.
 			}
+
+			if(isset($formArray['sitewide_settings'])){
+				update_site_option('disable_comments_sitewide_settings', $formArray['sitewide_settings']);
+			}
+			if(isset($formArray['is_network_admin'])){
+				$this->options['is_network_admin'] = $formArray['is_network_admin'];
+			}
+
 			// xml rpc
 			$this->options['remove_xmlrpc_comments'] = (isset($formArray['remove_xmlrpc_comments']) ? intval($formArray['remove_xmlrpc_comments']) : ($this->is_CLI && isset($this->options['remove_xmlrpc_comments']) ? $this->options['remove_xmlrpc_comments'] : 0));
 			// rest api comments
