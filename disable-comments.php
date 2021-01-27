@@ -64,6 +64,9 @@ class Disable_Comments
 			$this->options = get_site_option('disable_comments_options', array());
 		} else {
 			$this->options = get_option('disable_comments_options', array());
+			if(empty($this->options) && is_multisite()){
+				$this->options = get_site_option('disable_comments_options', array());
+			}
 		}
 
 		$this->options['sitewide_settings'] = get_site_option('disable_comments_sitewide_settings', false);
