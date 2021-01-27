@@ -4,11 +4,21 @@
         <p class="subtitle"><?php _e('Configure the settings below to disable comments globally or on specific types of posts.', 'disable-comments'); ?></p>
 
         <?php if(is_network_admin()):?>
-        <label>
-            <input type="hidden" name="sitewide_settings"value="0">
-            <input type="checkbox" name="sitewide_settings" id="sitewide_settings" value="1" <?php checked($this->options['sitewide_settings']); ?> >
-            Enable site wise settings.
-        </label>
+        <div class="disable_option dc-text__block mb30 mt30">
+            <div class="dissable__switch__item">
+                <input type="hidden" name="sitewide_settings"value="0">
+                <input type="checkbox" name="sitewide_settings" id="sitewide_settings" value="1" <?php checked($this->options['sitewide_settings']); ?> >
+
+                <label for="sitewide_settings">
+                    <span class="switch">
+                        <span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
+                        <span class="switch__text off"><?php _e('Off', 'disable-comments'); ?></span>
+                    </span>
+                    Enable site wise settings.
+                </label>
+                <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('If you enable site wise settings, You need to configure your Disable Comments settings individually on every website in the network.', 'disable-comments'); ?></p>
+            </div>
+        </div>
         <?php endif;?>
 
         <div class="disable_option dc-text__block mb30 mt30">
