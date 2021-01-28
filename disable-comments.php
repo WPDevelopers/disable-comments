@@ -56,21 +56,23 @@ class Disable_Comments
 		}
 
 		// are we network activated?
-		$this->networkactive = (is_multisite() && array_key_exists(plugin_basename(__FILE__), (array) get_site_option('active_sitewide_plugins')));
+		$this->networkactive = (is_multisite() && array_key_exists(plugin_basename(__FILE__), (array) get_site_option('active_sitewide_plugins')) && is_network_admin());
 		$this->is_CLI = defined('WP_CLI') && WP_CLI;
 
+		$this->sitewide_settings = get_site_option('disable_comments_sitewide_settings', false);
 		// Load options.
-		if ($this->networkactive && is_network_admin()) {
+		if ($this->networkactive) {
 			$this->options = get_site_option('disable_comments_options', array());
 		} else {
 			$this->options = get_option('disable_comments_options', array());
-			if(empty($this->options) && is_multisite()){
+			$not_configured = empty($this->options) || empty($this->get_disabled_post_types()) && !$this->options['remove_everywhere'];
+
+			if(is_multisite() && $not_configured && $this->sitewide_settings == '1'){
 				$this->options = get_site_option('disable_comments_options', array());
 			}
 		}
 
-		$this->options['sitewide_settings'] = get_site_option('disable_comments_sitewide_settings', false);
-		$this->sitewide_settings = !empty($this->options['sitewide_settings']) && $this->options['sitewide_settings'] == '1';
+		$this->options['sitewide_settings'] = ($this->sitewide_settings == '1');
 
 		// If it looks like first run, check compat.
 		if (empty($this->options)) {
@@ -178,7 +180,7 @@ class Disable_Comments
 
 	private function update_options()
 	{
-		if ((!empty($this->options['is_network_admin'])) || $this->networkactive && is_network_admin()) {
+		if ((!empty($this->options['is_network_admin'])) || $this->networkactive) {
 			unset($this->options['is_network_admin']);
 			update_site_option('disable_comments_options', $this->options);
 		} elseif(!is_multisite() || $this->sitewide_settings) {
@@ -280,7 +282,7 @@ class Disable_Comments
 		// Filters for the admin only.
 		if (is_admin()) {
 			add_action( 'all_admin_notices', array( $this, 'admin_notice' ) );
-			if ($this->networkactive && is_network_admin()) {
+			if ($this->networkactive) {
 				add_action('network_admin_menu', array($this, 'settings_menu'));
 				add_action('network_admin_menu', array($this, 'tools_menu'));
 				add_filter('network_admin_plugin_action_links', array($this, 'plugin_actions_links'), 10, 2);
@@ -612,7 +614,7 @@ class Disable_Comments
 	public function settings_menu()
 	{
 		$title = _x('Disable Comments', 'settings menu title', 'disable-comments');
-		if ($this->networkactive && is_network_admin()) {
+		if ($this->networkactive) {
 			add_submenu_page('settings.php', $title, $title, 'manage_network_plugins', DC_PLUGIN_SLUG, array($this, 'settings_page'));
 		} elseif(!is_multisite() || $this->sitewide_settings) {
 			add_submenu_page('options-general.php', $title, $title, 'manage_options', DC_PLUGIN_SLUG, array($this, 'settings_page'));
@@ -623,7 +625,7 @@ class Disable_Comments
 	{
 		$title = __('Delete Comments', 'disable-comments');
 		$hook = '';
-		if ($this->networkactive && is_network_admin()) {
+		if ($this->networkactive) {
 			$hook = add_submenu_page('settings.php', $title, $title, 'manage_network_plugins', 'disable_comments_tools', array($this, 'tools_page'));
 		} elseif(!is_multisite() || $this->sitewide_settings) {
 			$hook = add_submenu_page('tools.php', $title, $title, 'manage_options', 'disable_comments_tools', array($this, 'tools_page'));
@@ -769,8 +771,8 @@ class Disable_Comments
 
 	public function delete_comments_settings($_args = array())
 	{
+		global $deletedPostTypeNames;
 		$log = '';
-		$deletedPostTypeNames = [];
 		$nonce = (isset($_POST['nonce']) ? $_POST['nonce'] : '');
 		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
 			if ( is_network_admin() && function_exists( 'get_sites' ) && class_exists( 'WP_Site_Query' ) ) {
@@ -796,7 +798,8 @@ class Disable_Comments
 	}
 
 	private function delete_comments($_args){
-
+		global $wpdb;
+		global $deletedPostTypeNames;
 		if (!empty($_args)) {
 			$formArray = wp_parse_args($_args);
 		} else {
@@ -805,7 +808,6 @@ class Disable_Comments
 
 		$types = $this->get_all_post_types();
 		$commenttypes = $this->get_all_comment_types();
-		global $wpdb;
 		// comments delete
 		if (isset($formArray['delete_mode'])) {
 			if ($formArray['delete_mode'] == 'delete_everywhere') {
