@@ -72,12 +72,12 @@ class Disable_Comments
 			}
 		}
 
-		$this->options['sitewide_settings'] = ($this->sitewide_settings == '1');
-
 		// If it looks like first run, check compat.
 		if (empty($this->options)) {
 			$this->check_compatibility();
 		}
+
+		$this->options['sitewide_settings'] = ($this->sitewide_settings == '1');
 
 		// Upgrade DB if necessary.
 		$this->check_db_upgrades();
