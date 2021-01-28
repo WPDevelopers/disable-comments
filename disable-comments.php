@@ -56,12 +56,12 @@ class Disable_Comments
 		}
 
 		// are we network activated?
-		$this->networkactive = (is_multisite() && array_key_exists(plugin_basename(__FILE__), (array) get_site_option('active_sitewide_plugins')) && is_network_admin());
+		$this->networkactive = (is_multisite() && array_key_exists(plugin_basename(__FILE__), (array) get_site_option('active_sitewide_plugins')));
 		$this->is_CLI = defined('WP_CLI') && WP_CLI;
 
 		$this->sitewide_settings = get_site_option('disable_comments_sitewide_settings', false);
 		// Load options.
-		if ($this->networkactive) {
+		if ($this->networkactive && (is_network_admin() || $this->sitewide_settings !== '1')) {
 			$this->options = get_site_option('disable_comments_options', array());
 		} else {
 			$this->options = get_option('disable_comments_options', array());
@@ -114,7 +114,7 @@ class Disable_Comments
 				return;
 			}
 			$current_screen = get_current_screen()->id;
-			$hascaps = $this->networkactive ? is_network_admin() && current_user_can('manage_network_plugins') : current_user_can('manage_options');
+			$hascaps = $this->networkactive && is_network_admin() ? current_user_can('manage_network_plugins') : current_user_can('manage_options');
 			if( ! in_array( $current_screen, ['settings_page_disable_comments_settings', 'settings_page_disable_comments_settings-network']) && $hascaps ) {
 				$this->tracker->notice();
 			}
@@ -180,10 +180,9 @@ class Disable_Comments
 
 	private function update_options()
 	{
-		if ((!empty($this->options['is_network_admin'])) || $this->networkactive) {
-			unset($this->options['is_network_admin']);
+		if ($this->networkactive && $this->options['is_network_admin']) {
 			update_site_option('disable_comments_options', $this->options);
-		} elseif(!is_multisite() || $this->sitewide_settings) {
+		} else{
 			update_option('disable_comments_options', $this->options);
 		}
 	}
@@ -195,7 +194,7 @@ class Disable_Comments
 	{
 		$types = $this->options['disabled_post_types'];
 		// Not all extra_post_types might be registered on this particular site.
-		if ($this->networkactive) {
+		if ($this->networkactive && is_network_admin()) {
 			foreach ((array) $this->options['extra_post_types'] as $extra) {
 				if (post_type_exists($extra)) {
 					$types[] = $extra;
@@ -282,11 +281,11 @@ class Disable_Comments
 		// Filters for the admin only.
 		if (is_admin()) {
 			add_action( 'all_admin_notices', array( $this, 'admin_notice' ) );
-			if ($this->networkactive) {
+			if ($this->networkactive && is_network_admin()) {
 				add_action('network_admin_menu', array($this, 'settings_menu'));
 				add_action('network_admin_menu', array($this, 'tools_menu'));
 				add_filter('network_admin_plugin_action_links', array($this, 'plugin_actions_links'), 10, 2);
-			} elseif(!is_multisite() || $this->sitewide_settings) {
+			} elseif(!$this->networkactive || $this->options['sitewide_settings']) {
 				add_action('admin_menu', array($this, 'settings_menu'));
 				add_action('admin_menu', array($this, 'tools_menu'));
 				add_filter('plugin_action_links', array($this, 'plugin_actions_links'), 10, 2);
@@ -315,15 +314,15 @@ class Disable_Comments
 		}
 	}
 
-	public function get_option( $key, $default = false ){
-		return $this->networkactive ? get_site_option( $key, $default ) : get_option( $key, $default );
-	}
-	public function update_option( $option, $value ){
-		return $this->networkactive ? update_site_option( $option, $value ) : update_option( $option, $value );
-	}
-	public function delete_option( $option ){
-		return $this->networkactive ? delete_site_option( $option ) : delete_option( $option );
-	}
+	// public function get_option( $key, $default = false ){
+	// 	return $this->networkactive ? get_site_option( $key, $default ) : get_option( $key, $default );
+	// }
+	// public function update_option( $option, $value ){
+	// 	return $this->networkactive ? update_site_option( $option, $value ) : update_option( $option, $value );
+	// }
+	// public function delete_option( $option ){
+	// 	return $this->networkactive ? delete_site_option( $option ) : delete_option( $option );
+	// }
 
 	/**
 	 * Replace the theme's comment template with a blank one.
@@ -462,7 +461,7 @@ class Disable_Comments
 	 */
 	public function remove_network_comment_links($wp_admin_bar)
 	{
-		if ($this->networkactive && is_user_logged_in()) {
+		if ($this->networkactive && is_network_admin() && is_user_logged_in()) {
 			foreach ((array) $wp_admin_bar->user->blogs as $blog) {
 				$wp_admin_bar->remove_menu('blog-' . $blog->userblog_id . '-c');
 			}
@@ -491,7 +490,7 @@ class Disable_Comments
 	 */
 	private function settings_page_url()
 	{
-		$base = $this->networkactive ? network_admin_url('settings.php') : admin_url('options-general.php');
+		$base = $this->networkactive && is_network_admin() ? network_admin_url('settings.php') : admin_url('options-general.php');
 		return add_query_arg('page', DC_PLUGIN_SLUG, $base);
 	}
 
@@ -500,7 +499,7 @@ class Disable_Comments
 	 */
 	private function tools_page_url()
 	{
-		$base = $this->networkactive ? network_admin_url('settings.php') : admin_url('tools.php');
+		$base = $this->networkactive && is_network_admin() ? network_admin_url('settings.php') : admin_url('tools.php');
 		return add_query_arg('page', 'disable_comments_tools', $base);
 	}
 
@@ -510,7 +509,7 @@ class Disable_Comments
 		if (strpos(get_current_screen()->id, 'settings_page_disable_comments_settings') === 0) {
 			return;
 		}
-		$hascaps = $this->networkactive ? is_network_admin() && current_user_can('manage_network_plugins') : current_user_can('manage_options');
+		$hascaps = $this->networkactive && is_network_admin() ? current_user_can('manage_network_plugins') : current_user_can('manage_options');
 		if ($hascaps) {
 			$this->setup_notice_flag = true;
 			// translators: %s: URL to Disabled Comment settings page.
@@ -614,9 +613,9 @@ class Disable_Comments
 	public function settings_menu()
 	{
 		$title = _x('Disable Comments', 'settings menu title', 'disable-comments');
-		if ($this->networkactive) {
+		if ($this->networkactive && is_network_admin()) {
 			add_submenu_page('settings.php', $title, $title, 'manage_network_plugins', DC_PLUGIN_SLUG, array($this, 'settings_page'));
-		} elseif(!is_multisite() || $this->sitewide_settings) {
+		} elseif(!$this->networkactive || $this->options['sitewide_settings']) {
 			add_submenu_page('options-general.php', $title, $title, 'manage_options', DC_PLUGIN_SLUG, array($this, 'settings_page'));
 		}
 	}
@@ -625,9 +624,9 @@ class Disable_Comments
 	{
 		$title = __('Delete Comments', 'disable-comments');
 		$hook = '';
-		if ($this->networkactive) {
+		if ($this->networkactive && is_network_admin()) {
 			$hook = add_submenu_page('settings.php', $title, $title, 'manage_network_plugins', 'disable_comments_tools', array($this, 'tools_page'));
-		} elseif(!is_multisite() || $this->sitewide_settings) {
+		} elseif(!$this->networkactive || $this->options['sitewide_settings']) {
 			$hook = add_submenu_page('tools.php', $title, $title, 'manage_options', 'disable_comments_tools', array($this, 'tools_page'));
 		}
 		add_action('load-' . $hook, array($this, 'redirectToMainSettingsPage'));
@@ -678,7 +677,7 @@ class Disable_Comments
 	public function get_all_post_types()
 	{
 		$typeargs = array('public' => true);
-		if ($this->networkactive) {
+		if ($this->networkactive && is_network_admin()) {
 			$typeargs['_builtin'] = true;   // stick to known types for network.
 		}
 		$types = get_post_types($typeargs, 'objects');
@@ -743,7 +742,7 @@ class Disable_Comments
 			$this->options['disabled_post_types'] = $disabled_post_types;
 
 			// Extra custom post types.
-			if ($this->networkactive && !empty($formArray['extra_post_types'])) {
+			if ($this->networkactive && is_network_admin() && !empty($formArray['extra_post_types'])) {
 				$extra_post_types                  = array_filter(array_map('sanitize_key', explode(',', $formArray['extra_post_types'])));
 				$this->options['extra_post_types'] = array_diff($extra_post_types, array_keys($post_types)); // Make sure we don't double up builtins.
 			}
@@ -751,10 +750,10 @@ class Disable_Comments
 			if(isset($formArray['sitewide_settings'])){
 				update_site_option('disable_comments_sitewide_settings', $formArray['sitewide_settings']);
 			}
-			if(isset($formArray['is_network_admin'])){
-				$this->options['is_network_admin'] = $formArray['is_network_admin'];
-			}
 
+			if(isset($formArray['is_network_admin'])){
+				$this->options['is_network_admin'] = $formArray['is_network_admin'] == '1';
+			}
 			// xml rpc
 			$this->options['remove_xmlrpc_comments'] = (isset($formArray['remove_xmlrpc_comments']) ? intval($formArray['remove_xmlrpc_comments']) : ($this->is_CLI && isset($this->options['remove_xmlrpc_comments']) ? $this->options['remove_xmlrpc_comments'] : 0));
 			// rest api comments
@@ -830,7 +829,7 @@ class Disable_Comments
 				$delete_post_types = array_intersect($delete_post_types, array_keys($types));
 
 				// Extra custom post types.
-				if ($this->networkactive && !empty($formArray['delete_extra_post_types'])) {
+				if ($this->networkactive && is_network_admin() && !empty($formArray['delete_extra_post_types'])) {
 					$delete_extra_post_types = array_filter(array_map('sanitize_key', explode(',', $formArray['delete_extra_post_types'])));
 					$delete_extra_post_types = array_diff($delete_extra_post_types, array_keys($types));    // Make sure we don't double up builtins.
 					$delete_post_types       = array_merge($delete_post_types, $delete_extra_post_types);
