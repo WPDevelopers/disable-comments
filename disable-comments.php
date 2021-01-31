@@ -180,7 +180,8 @@ class Disable_Comments
 
 	private function update_options()
 	{
-		if ($this->networkactive && $this->options['is_network_admin']) {
+		if ($this->networkactive && !empty($this->options['is_network_admin']) && $this->options['is_network_admin']) {
+			unset($this->options['is_network_admin']);
 			update_site_option('disable_comments_options', $this->options);
 		} else{
 			update_option('disable_comments_options', $this->options);
@@ -194,7 +195,7 @@ class Disable_Comments
 	{
 		$types = $this->options['disabled_post_types'];
 		// Not all extra_post_types might be registered on this particular site.
-		if ($this->networkactive && is_network_admin()) {
+		if ($this->networkactive) {
 			foreach ((array) $this->options['extra_post_types'] as $extra) {
 				if (post_type_exists($extra)) {
 					$types[] = $extra;
@@ -461,7 +462,7 @@ class Disable_Comments
 	 */
 	public function remove_network_comment_links($wp_admin_bar)
 	{
-		if ($this->networkactive && is_network_admin() && is_user_logged_in()) {
+		if ($this->networkactive && is_user_logged_in()) {
 			foreach ((array) $wp_admin_bar->user->blogs as $blog) {
 				$wp_admin_bar->remove_menu('blog-' . $blog->userblog_id . '-c');
 			}
@@ -742,7 +743,7 @@ class Disable_Comments
 			$this->options['disabled_post_types'] = $disabled_post_types;
 
 			// Extra custom post types.
-			if ($this->networkactive && is_network_admin() && !empty($formArray['extra_post_types'])) {
+			if ($this->networkactive && !empty($formArray['extra_post_types'])) {
 				$extra_post_types                  = array_filter(array_map('sanitize_key', explode(',', $formArray['extra_post_types'])));
 				$this->options['extra_post_types'] = array_diff($extra_post_types, array_keys($post_types)); // Make sure we don't double up builtins.
 			}
@@ -829,7 +830,7 @@ class Disable_Comments
 				$delete_post_types = array_intersect($delete_post_types, array_keys($types));
 
 				// Extra custom post types.
-				if ($this->networkactive && is_network_admin() && !empty($formArray['delete_extra_post_types'])) {
+				if ($this->networkactive && !empty($formArray['delete_extra_post_types'])) {
 					$delete_extra_post_types = array_filter(array_map('sanitize_key', explode(',', $formArray['delete_extra_post_types'])));
 					$delete_extra_post_types = array_diff($delete_extra_post_types, array_keys($types));    // Make sure we don't double up builtins.
 					$delete_post_types       = array_merge($delete_post_types, $delete_extra_post_types);
