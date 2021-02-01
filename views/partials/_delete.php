@@ -22,7 +22,7 @@
                                         </div>';
                     }
                     ?>
-                    <?php if ($this->networkactive) :
+                    <?php if ($this->networkactive && is_network_admin()) :
                         $extradeletetypes = implode(', ', (array) $this->options['extra_post_types']);
                     ?>
                         <p class="indent" id="extradeletetypes">

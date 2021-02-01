@@ -34,7 +34,7 @@
                 $types = $this->get_all_post_types();
                 foreach ($types as $key => $value) {
                     echo '<div class="remove__checklist__item">
-                                    <input type="checkbox" id="remove__checklist__item-' . $key . '" name="disabled_types[]" value="' . esc_attr($key) . '" ' . checked(in_array($key, $this->options['disabled_post_types']), true, false) . '>
+                                    <input type="checkbox" id="remove__checklist__item-' . $key . '" name="disabled_types[]" value="' . esc_attr($key) . '" ' . checked(in_array($key, $this->get_disabled_post_types()), true, false) . '>
                                     <label for="remove__checklist__item-' . $key . '">' . $value->labels->name . '</label>
                                 </div>';
                 }

@@ -195,7 +195,7 @@ class Disable_Comments
 	{
 		$types = $this->options['disabled_post_types'];
 		// Not all extra_post_types might be registered on this particular site.
-		if ($this->networkactive) {
+		if ($this->networkactive && !empty($this->options['extra_post_types'])) {
 			foreach ((array) $this->options['extra_post_types'] as $extra) {
 				if (post_type_exists($extra)) {
 					$types[] = $extra;
@@ -728,6 +728,7 @@ class Disable_Comments
 			} else {
 				$formArray = (isset($_POST['data']) ? $this->form_data_modify($_POST['data']) : []);
 			}
+			$this->options = [];
 			if (isset($formArray['mode'])) {
 				$this->options['remove_everywhere'] = (sanitize_text_field($formArray['mode']) == 'remove_everywhere');
 			}
@@ -743,7 +744,7 @@ class Disable_Comments
 			$this->options['disabled_post_types'] = $disabled_post_types;
 
 			// Extra custom post types.
-			if ($this->networkactive && !empty($formArray['extra_post_types'])) {
+			if ($this->networkactive && isset($formArray['extra_post_types'])) {
 				$extra_post_types                  = array_filter(array_map('sanitize_key', explode(',', $formArray['extra_post_types'])));
 				$this->options['extra_post_types'] = array_diff($extra_post_types, array_keys($post_types)); // Make sure we don't double up builtins.
 			}
@@ -760,6 +761,7 @@ class Disable_Comments
 			// rest api comments
 			$this->options['remove_rest_API_comments'] = (isset($formArray['remove_rest_API_comments']) ? intval($formArray['remove_rest_API_comments']) : ($this->is_CLI && isset($this->options['remove_rest_API_comments']) ? $this->options['remove_rest_API_comments'] : 0));
 
+			$this->options['db_version'] = self::DB_VERSION;
 			// save settings
 			$this->update_options();
 		}
