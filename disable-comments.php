@@ -675,10 +675,10 @@ class Disable_Comments
 		return $commenttypes;
 	}
 
-	public function get_all_post_types()
+	public function get_all_post_types($network = false)
 	{
 		$typeargs = array('public' => true);
-		if ($this->networkactive && is_network_admin()) {
+		if ($network || $this->networkactive && is_network_admin()) {
 			$typeargs['_builtin'] = true;   // stick to known types for network.
 		}
 		$types = get_post_types($typeargs, 'objects');
@@ -776,8 +776,10 @@ class Disable_Comments
 		global $deletedPostTypeNames;
 		$log = '';
 		$nonce = (isset($_POST['nonce']) ? $_POST['nonce'] : '');
+		$formArray = $this->form_data_modify($_POST['data']);
+
 		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
-			if ( is_network_admin() && function_exists( 'get_sites' ) && class_exists( 'WP_Site_Query' ) ) {
+			if ( !empty($formArray['is_network_admin']) && function_exists( 'get_sites' ) && class_exists( 'WP_Site_Query' ) ) {
 				$sites = get_sites();
 				foreach ( $sites as $site ) {
 					switch_to_blog( $site->blog_id );
@@ -790,7 +792,7 @@ class Disable_Comments
 			}
 		}
 		// message
-		$message = (count($deletedPostTypeNames) == 0 ? $log . '.' : $log . ' for ' . implode(", ", $deletedPostTypeNames) . '.');
+		$message = (count((array)$deletedPostTypeNames) == 0 ? $log . '.' : $log . ' for ' . implode(", ", $deletedPostTypeNames) . '.');
 		if (!$this->is_CLI) {
 			wp_send_json_success(array('message' => $message));
 			wp_die();
@@ -808,8 +810,9 @@ class Disable_Comments
 			$formArray = $this->form_data_modify($_POST['data']);
 		}
 
-		$types = $this->get_all_post_types();
+		$types = $this->get_all_post_types(!empty($formArray['is_network_admin']));
 		$commenttypes = $this->get_all_comment_types();
+		$log = "";
 		// comments delete
 		if (isset($formArray['delete_mode'])) {
 			if ($formArray['delete_mode'] == 'delete_everywhere') {
