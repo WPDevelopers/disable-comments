@@ -40,6 +40,7 @@
                 }
                 ?>
                 <?php if ($this->networkactive && is_network_admin()) :
+                    $this->options['extra_post_types'] = empty($this->options['extra_post_types']) ? [] : $this->options['extra_post_types'];
                     $extradisabletypes = implode(', ', (array) $this->options['extra_post_types']);
                 ?>
                     <p class="indent" id="extratypes"><?php _e('Only the built-in post types appear above. If you want to disable comments on other custom post types on the entire network, you can supply a comma-separated list of post types below (use the slug that identifies the post type).', 'disable-comments'); ?>
