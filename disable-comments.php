@@ -269,7 +269,7 @@ class Disable_Comments
 			add_filter('comments_open', array($this, 'filter_comment_status'), 20, 2);
 			add_filter('pings_open', array($this, 'filter_comment_status'), 20, 2);
 			add_filter('get_comments_number', array($this, 'filter_comments_number'), 20, 2);
-		} elseif (is_admin() && !$this->options['remove_everywhere']) {
+		} elseif (is_admin() && !$this->options['remove_everywhere'] && !$this->is_xmlrpc_rest()) {
 			/**
 			 * It is possible that $disabled_post_types is empty if other
 			 * plugins have disabled comments. Hence we also check for
@@ -349,6 +349,17 @@ class Disable_Comments
 		return dirname(__FILE__) . '/views/comments.php';
 	}
 
+	public function is_xmlrpc_rest(){
+		// remove create comment via xmlrpc
+		if (isset($this->options['remove_xmlrpc_comments']) && intval($this->options['remove_xmlrpc_comments']) === 1) {
+			return true;
+		}
+		// rest API Comment Block
+		if (isset($this->options['remove_rest_API_comments']) && intval($this->options['remove_rest_API_comments']) === 1) {
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * Remove the X-Pingback HTTP header
@@ -657,7 +668,23 @@ class Disable_Comments
 		}
 	}
 
-	public function get_all_comment_types()
+	public function get_all_comment_types(){
+		if($this->networkactive && is_network_admin()){
+			$comment_types = [];
+			$sites = get_sites();
+			foreach ( $sites as $site ) {
+				switch_to_blog( $site->blog_id );
+				$comment_types = array_merge($this->_get_all_comment_types(), $comment_types);
+				restore_current_blog();
+			}
+			return $comment_types;
+		}
+		else{
+			return $this->_get_all_comment_types();
+		}
+
+	}
+	public function _get_all_comment_types()
 	{
 		global $wpdb;
 		$commenttypes = array();
@@ -792,7 +819,8 @@ class Disable_Comments
 			}
 		}
 		// message
-		$message = (count((array)$deletedPostTypeNames) == 0 ? $log . '.' : $log . ' for ' . implode(", ", $deletedPostTypeNames) . '.');
+		$deletedPostTypeNames = array_unique((array) $deletedPostTypeNames);
+		$message = (count($deletedPostTypeNames) == 0 ? $log . '.' : $log . ' for ' . implode(", ", $deletedPostTypeNames) . '.');
 		if (!$this->is_CLI) {
 			wp_send_json_success(array('message' => $message));
 			wp_die();
