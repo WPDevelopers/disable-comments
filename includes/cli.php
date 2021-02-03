@@ -124,13 +124,16 @@ wp disable-comments delete --comment-types=comment "
             $disable_comments_settings['mode'] = 'selected_types';
             $_types = array_map('trim', explode(',', $types));
             $disabled_post_types = $this->dc_instance->get_disabled_post_types();
+            // translators: %s: post types to be disabled
             $new_msg = sprintf( __( 'Comments disabled for %s. ', 'disable-comments' ), $types );
             if(!empty($add)){
                 $_types = array_unique(array_merge($disabled_post_types, $_types));
+                // translators: %s: post types to be disabled
                 $new_msg = sprintf( __( 'Comments disabled for %s. ', 'disable-comments' ), $types );
             }
             if(!empty($remove)){
                 $_types = array_diff($disabled_post_types, $_types);
+                // translators: %s: post types to be enabled
                 $new_msg = sprintf( __( 'Comments enabled for %s. ', 'disable-comments' ), $types );
             }
 
@@ -141,6 +144,7 @@ wp disable-comments delete --comment-types=comment "
         // for network.
         if(!empty($extra_post_types)){
             $disable_comments_settings['extra_post_types'] = $extra_post_types;
+            // translators: %s: post types to be disabled in network
             $msg .= sprintf( __( 'Custom post types: %s. ', 'disable-comments' ), $extra_post_types );
         }
 

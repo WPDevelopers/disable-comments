@@ -22,7 +22,7 @@
                                         </div>';
                     }
                     ?>
-                    <?php if ($this->networkactive) :
+                    <?php if ($this->networkactive && is_network_admin()) :
                         $extradeletetypes = implode(', ', (array) $this->options['extra_post_types']);
                     ?>
                         <p class="indent" id="extradeletetypes">
@@ -47,6 +47,9 @@
             </div>
             <h4 class="total-comments"><?php _e('Total Comments:', 'disable-comments'); ?> <?php echo $this->get_all_comments_number(); ?></h4>
         </div>
+        <?php if(is_network_admin()):?>
+            <input type="hidden" name="is_network_admin" value="1">
+        <?php endif;?>
         <!-- save -->
         <button class="button button__delete"><?php _e('Delete Comments', 'disable-comments'); ?></button>
     <?php

@@ -59,17 +59,25 @@ class Disable_Comments
 		$this->networkactive = (is_multisite() && array_key_exists(plugin_basename(__FILE__), (array) get_site_option('active_sitewide_plugins')));
 		$this->is_CLI = defined('WP_CLI') && WP_CLI;
 
+		$this->sitewide_settings = get_site_option('disable_comments_sitewide_settings', false);
 		// Load options.
-		if ($this->networkactive) {
+		if ($this->networkactive && (is_network_admin() || $this->sitewide_settings !== '1')) {
 			$this->options = get_site_option('disable_comments_options', array());
 		} else {
 			$this->options = get_option('disable_comments_options', array());
+			$not_configured = empty($this->options) || empty($this->get_disabled_post_types()) && !$this->options['remove_everywhere'];
+
+			if(is_multisite() && $not_configured && $this->sitewide_settings == '1'){
+				$this->options = get_site_option('disable_comments_options', array());
+			}
 		}
 
 		// If it looks like first run, check compat.
 		if (empty($this->options)) {
 			$this->check_compatibility();
 		}
+
+		$this->options['sitewide_settings'] = ($this->sitewide_settings == '1');
 
 		// Upgrade DB if necessary.
 		$this->check_db_upgrades();
@@ -106,7 +114,7 @@ class Disable_Comments
 				return;
 			}
 			$current_screen = get_current_screen()->id;
-			$hascaps = $this->networkactive ? is_network_admin() && current_user_can('manage_network_plugins') : current_user_can('manage_options');
+			$hascaps = $this->networkactive && is_network_admin() ? current_user_can('manage_network_plugins') : current_user_can('manage_options');
 			if( ! in_array( $current_screen, ['settings_page_disable_comments_settings', 'settings_page_disable_comments_settings-network']) && $hascaps ) {
 				$this->tracker->notice();
 			}
@@ -136,6 +144,7 @@ class Disable_Comments
 			require_once(ABSPATH . 'wp-admin/includes/plugin.php');
 			deactivate_plugins(__FILE__);
 			if (isset($_GET['action']) && ($_GET['action'] == 'activate' || $_GET['action'] == 'error_scrape')) {
+				// translators: %s: WordPress version no.
 				exit(sprintf(__('Disable Comments requires WordPress version %s or greater.', 'disable-comments'), '4.7'));
 			}
 		}
@@ -171,9 +180,10 @@ class Disable_Comments
 
 	private function update_options()
 	{
-		if ($this->networkactive) {
+		if ($this->networkactive && !empty($this->options['is_network_admin']) && $this->options['is_network_admin']) {
+			unset($this->options['is_network_admin']);
 			update_site_option('disable_comments_options', $this->options);
-		} else {
+		} else{
 			update_option('disable_comments_options', $this->options);
 		}
 	}
@@ -185,7 +195,7 @@ class Disable_Comments
 	{
 		$types = $this->options['disabled_post_types'];
 		// Not all extra_post_types might be registered on this particular site.
-		if ($this->networkactive) {
+		if ($this->networkactive && !empty($this->options['extra_post_types'])) {
 			foreach ((array) $this->options['extra_post_types'] as $extra) {
 				if (post_type_exists($extra)) {
 					$types[] = $extra;
@@ -259,7 +269,7 @@ class Disable_Comments
 			add_filter('comments_open', array($this, 'filter_comment_status'), 20, 2);
 			add_filter('pings_open', array($this, 'filter_comment_status'), 20, 2);
 			add_filter('get_comments_number', array($this, 'filter_comments_number'), 20, 2);
-		} elseif (is_admin() && !$this->options['remove_everywhere']) {
+		} elseif (is_admin() && !$this->options['remove_everywhere'] && !$this->is_xmlrpc_rest()) {
 			/**
 			 * It is possible that $disabled_post_types is empty if other
 			 * plugins have disabled comments. Hence we also check for
@@ -272,11 +282,11 @@ class Disable_Comments
 		// Filters for the admin only.
 		if (is_admin()) {
 			add_action( 'all_admin_notices', array( $this, 'admin_notice' ) );
-			if ($this->networkactive) {
+			if ($this->networkactive && is_network_admin()) {
 				add_action('network_admin_menu', array($this, 'settings_menu'));
 				add_action('network_admin_menu', array($this, 'tools_menu'));
 				add_filter('network_admin_plugin_action_links', array($this, 'plugin_actions_links'), 10, 2);
-			} else {
+			} elseif(!$this->networkactive || $this->options['sitewide_settings']) {
 				add_action('admin_menu', array($this, 'settings_menu'));
 				add_action('admin_menu', array($this, 'tools_menu'));
 				add_filter('plugin_action_links', array($this, 'plugin_actions_links'), 10, 2);
@@ -305,15 +315,15 @@ class Disable_Comments
 		}
 	}
 
-	public function get_option( $key, $default = false ){
-		return $this->networkactive ? get_site_option( $key, $default ) : get_option( $key, $default );
-	}
-	public function update_option( $option, $value ){
-		return $this->networkactive ? update_site_option( $option, $value ) : update_option( $option, $value );
-	}
-	public function delete_option( $option ){
-		return $this->networkactive ? delete_site_option( $option ) : delete_option( $option );
-	}
+	// public function get_option( $key, $default = false ){
+	// 	return $this->networkactive ? get_site_option( $key, $default ) : get_option( $key, $default );
+	// }
+	// public function update_option( $option, $value ){
+	// 	return $this->networkactive ? update_site_option( $option, $value ) : update_option( $option, $value );
+	// }
+	// public function delete_option( $option ){
+	// 	return $this->networkactive ? delete_site_option( $option ) : delete_option( $option );
+	// }
 
 	/**
 	 * Replace the theme's comment template with a blank one.
@@ -339,6 +349,17 @@ class Disable_Comments
 		return dirname(__FILE__) . '/views/comments.php';
 	}
 
+	public function is_xmlrpc_rest(){
+		// remove create comment via xmlrpc
+		if (isset($this->options['remove_xmlrpc_comments']) && intval($this->options['remove_xmlrpc_comments']) === 1) {
+			return true;
+		}
+		// rest API Comment Block
+		if (isset($this->options['remove_rest_API_comments']) && intval($this->options['remove_rest_API_comments']) === 1) {
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * Remove the X-Pingback HTTP header
@@ -471,6 +492,7 @@ class Disable_Comments
 				$names[$type] = get_post_type_object($type)->labels->name;
 			}
 
+			// translators: %s: disabled post types.
 			echo '<div class="notice notice-warning"><p>' . sprintf(__('Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types.', 'disable-comments'), implode(__(', ', 'disable-comments'), $names)) . '</p></div>';
 		}
 	}
@@ -480,7 +502,7 @@ class Disable_Comments
 	 */
 	private function settings_page_url()
 	{
-		$base = $this->networkactive ? network_admin_url('settings.php') : admin_url('options-general.php');
+		$base = $this->networkactive && is_network_admin() ? network_admin_url('settings.php') : admin_url('options-general.php');
 		return add_query_arg('page', DC_PLUGIN_SLUG, $base);
 	}
 
@@ -489,7 +511,7 @@ class Disable_Comments
 	 */
 	private function tools_page_url()
 	{
-		$base = $this->networkactive ? network_admin_url('settings.php') : admin_url('tools.php');
+		$base = $this->networkactive && is_network_admin() ? network_admin_url('settings.php') : admin_url('tools.php');
 		return add_query_arg('page', 'disable_comments_tools', $base);
 	}
 
@@ -499,9 +521,10 @@ class Disable_Comments
 		if (strpos(get_current_screen()->id, 'settings_page_disable_comments_settings') === 0) {
 			return;
 		}
-		$hascaps = $this->networkactive ? is_network_admin() && current_user_can('manage_network_plugins') : current_user_can('manage_options');
+		$hascaps = $this->networkactive && is_network_admin() ? current_user_can('manage_network_plugins') : current_user_can('manage_options');
 		if ($hascaps) {
 			$this->setup_notice_flag = true;
+			// translators: %s: URL to Disabled Comment settings page.
 			echo '<div class="notice dc-text__block disable__comment__alert mb30"><img height="30" src="'. DC_ASSETS_URI .'img/icon-logo.png" alt=""><p>' . sprintf(__('The <strong>Disable Comments</strong> plugin is active, but isn\'t configured to do anything yet. Visit the <a href="%s">configuration page</a> to choose which post types to disable comments on.', 'disable-comments'), esc_attr($this->settings_page_url())) . '</p></div>';
 		}
 	}
@@ -602,9 +625,9 @@ class Disable_Comments
 	public function settings_menu()
 	{
 		$title = _x('Disable Comments', 'settings menu title', 'disable-comments');
-		if ($this->networkactive) {
+		if ($this->networkactive && is_network_admin()) {
 			add_submenu_page('settings.php', $title, $title, 'manage_network_plugins', DC_PLUGIN_SLUG, array($this, 'settings_page'));
-		} else {
+		} elseif(!$this->networkactive || $this->options['sitewide_settings']) {
 			add_submenu_page('options-general.php', $title, $title, 'manage_options', DC_PLUGIN_SLUG, array($this, 'settings_page'));
 		}
 	}
@@ -613,9 +636,9 @@ class Disable_Comments
 	{
 		$title = __('Delete Comments', 'disable-comments');
 		$hook = '';
-		if ($this->networkactive) {
+		if ($this->networkactive && is_network_admin()) {
 			$hook = add_submenu_page('settings.php', $title, $title, 'manage_network_plugins', 'disable_comments_tools', array($this, 'tools_page'));
-		} else {
+		} elseif(!$this->networkactive || $this->options['sitewide_settings']) {
 			$hook = add_submenu_page('tools.php', $title, $title, 'manage_options', 'disable_comments_tools', array($this, 'tools_page'));
 		}
 		add_action('load-' . $hook, array($this, 'redirectToMainSettingsPage'));
@@ -630,10 +653,38 @@ class Disable_Comments
 	public function get_all_comments_number()
 	{
 		global $wpdb;
-		return $wpdb->get_var("SELECT count(comment_id) from $wpdb->comments");
+		if ( is_network_admin() && function_exists( 'get_sites' ) && class_exists( 'WP_Site_Query' ) ) {
+			$count = 0;
+			$sites = get_sites();
+			foreach ( $sites as $site ) {
+				switch_to_blog( $site->blog_id );
+				$count += $wpdb->get_var("SELECT count(comment_id) from $wpdb->comments");
+				restore_current_blog();
+			}
+			return $count;
+		}
+		else{
+			return $wpdb->get_var("SELECT count(comment_id) from $wpdb->comments");
+		}
 	}
 
-	public function get_all_comment_types()
+	public function get_all_comment_types(){
+		if($this->networkactive && is_network_admin()){
+			$comment_types = [];
+			$sites = get_sites();
+			foreach ( $sites as $site ) {
+				switch_to_blog( $site->blog_id );
+				$comment_types = array_merge($this->_get_all_comment_types(), $comment_types);
+				restore_current_blog();
+			}
+			return $comment_types;
+		}
+		else{
+			return $this->_get_all_comment_types();
+		}
+
+	}
+	public function _get_all_comment_types()
 	{
 		global $wpdb;
 		$commenttypes = array();
@@ -651,10 +702,10 @@ class Disable_Comments
 		return $commenttypes;
 	}
 
-	public function get_all_post_types()
+	public function get_all_post_types($network = false)
 	{
 		$typeargs = array('public' => true);
-		if ($this->networkactive) {
+		if ($network || $this->networkactive && is_network_admin()) {
 			$typeargs['_builtin'] = true;   // stick to known types for network.
 		}
 		$types = get_post_types($typeargs, 'objects');
@@ -704,6 +755,7 @@ class Disable_Comments
 			} else {
 				$formArray = (isset($_POST['data']) ? $this->form_data_modify($_POST['data']) : []);
 			}
+			$this->options = [];
 			if (isset($formArray['mode'])) {
 				$this->options['remove_everywhere'] = (sanitize_text_field($formArray['mode']) == 'remove_everywhere');
 			}
@@ -719,15 +771,24 @@ class Disable_Comments
 			$this->options['disabled_post_types'] = $disabled_post_types;
 
 			// Extra custom post types.
-			if ($this->networkactive && !empty($formArray['extra_post_types'])) {
+			if ($this->networkactive && isset($formArray['extra_post_types'])) {
 				$extra_post_types                  = array_filter(array_map('sanitize_key', explode(',', $formArray['extra_post_types'])));
 				$this->options['extra_post_types'] = array_diff($extra_post_types, array_keys($post_types)); // Make sure we don't double up builtins.
+			}
+
+			if(isset($formArray['sitewide_settings'])){
+				update_site_option('disable_comments_sitewide_settings', $formArray['sitewide_settings']);
+			}
+
+			if(isset($formArray['is_network_admin'])){
+				$this->options['is_network_admin'] = $formArray['is_network_admin'] == '1';
 			}
 			// xml rpc
 			$this->options['remove_xmlrpc_comments'] = (isset($formArray['remove_xmlrpc_comments']) ? intval($formArray['remove_xmlrpc_comments']) : ($this->is_CLI && isset($this->options['remove_xmlrpc_comments']) ? $this->options['remove_xmlrpc_comments'] : 0));
 			// rest api comments
 			$this->options['remove_rest_API_comments'] = (isset($formArray['remove_rest_API_comments']) ? intval($formArray['remove_rest_API_comments']) : ($this->is_CLI && isset($this->options['remove_rest_API_comments']) ? $this->options['remove_rest_API_comments'] : 0));
 
+			$this->options['db_version'] = self::DB_VERSION;
 			// save settings
 			$this->update_options();
 		}
@@ -739,91 +800,26 @@ class Disable_Comments
 
 	public function delete_comments_settings($_args = array())
 	{
+		global $deletedPostTypeNames;
 		$log = '';
-		$deletedPostTypeNames = [];
 		$nonce = (isset($_POST['nonce']) ? $_POST['nonce'] : '');
+		$formArray = $this->form_data_modify($_POST['data']);
+
 		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
-
-			if (!empty($_args)) {
-				$formArray = wp_parse_args($_args);
-			} else {
-				$formArray = $this->form_data_modify($_POST['data']);
-			}
-
-			$types = $this->get_all_post_types();
-			$commenttypes = $this->get_all_comment_types();
-			global $wpdb;
-			// comments delete
-			if (isset($formArray['delete_mode'])) {
-				if ($formArray['delete_mode'] == 'delete_everywhere') {
-					if ($wpdb->query("TRUNCATE $wpdb->commentmeta") != false) {
-						if ($wpdb->query("TRUNCATE $wpdb->comments") != false) {
-							$wpdb->query("UPDATE $wpdb->posts SET comment_count = 0");
-							$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
-							$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
-							$log = __('All comments has been deleted', 'disable-comments');
-						} else {
-							wp_send_json_error(array('message' => __('Internal error occured. Please try again later.', 'disable-comments')));
-							wp_die();
-						}
-					} else {
-						wp_send_json_error(array('message' => __('Internal error occured. Please try again later.', 'disable-comments')));
-						wp_die();
-					}
-				} elseif ($formArray['delete_mode'] == 'selected_delete_types') {
-					$delete_post_types = empty($formArray['delete_types']) ? array() : (array) $formArray['delete_types'];
-					$delete_post_types = array_intersect($delete_post_types, array_keys($types));
-
-					// Extra custom post types.
-					if ($this->networkactive && !empty($formArray['delete_extra_post_types'])) {
-						$delete_extra_post_types = array_filter(array_map('sanitize_key', explode(',', $formArray['delete_extra_post_types'])));
-						$delete_extra_post_types = array_diff($delete_extra_post_types, array_keys($types));    // Make sure we don't double up builtins.
-						$delete_post_types       = array_merge($delete_post_types, $delete_extra_post_types);
-					}
-
-					if (!empty($delete_post_types)) {
-						// Loop through post_types and remove comments/meta and set posts comment_count to 0.
-						foreach ($delete_post_types as $delete_post_type) {
-							$wpdb->query("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$delete_post_type'");
-							$wpdb->query("DELETE comments FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$delete_post_type'");
-							$wpdb->query("UPDATE $wpdb->posts SET comment_count = 0 WHERE post_author != 0 AND post_type = '$delete_post_type'");
-
-							$post_type_object = get_post_type_object($delete_post_type);
-							$post_type_label  = $post_type_object ? $post_type_object->labels->name : $delete_post_type;
-							$deletedPostTypeNames[] = $post_type_label;
-						}
-
-						$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
-						$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
-						$log = __('All comments has been deleted', 'disable-comments');
-					}
-				} elseif ($formArray['delete_mode'] == 'selected_delete_comment_types') {
-					$delete_comment_types = empty($formArray['delete_comment_types']) ? array() : (array) $formArray['delete_comment_types'];
-					$delete_comment_types = array_intersect($delete_comment_types, array_keys($commenttypes));
-
-					if (!empty($delete_comment_types)) {
-						// Loop through comment_types and remove comments/meta and set posts comment_count to 0.
-						foreach ($delete_comment_types as $delete_comment_type) {
-							$wpdb->query("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID WHERE comments.comment_type = '$delete_comment_type'");
-							$wpdb->query("DELETE comments FROM $wpdb->comments comments  WHERE comments.comment_type = '$delete_comment_type'");
-							$deletedPostTypeNames[] = $commenttypes[$delete_comment_type];
-						}
-
-						// Update comment_count on post_types
-						foreach ($types as $key => $value) {
-							$comment_count = $wpdb->get_var("SELECT COUNT(comments.comment_ID) FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$key'");
-							$wpdb->query("UPDATE $wpdb->posts SET comment_count = $comment_count WHERE post_author != 0 AND post_type = '$key'");
-						}
-
-						$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
-						$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
-
-						$log = __('All comments has been deleted', 'disable-comments');
-					}
+			if ( !empty($formArray['is_network_admin']) && function_exists( 'get_sites' ) && class_exists( 'WP_Site_Query' ) ) {
+				$sites = get_sites();
+				foreach ( $sites as $site ) {
+					switch_to_blog( $site->blog_id );
+					$log = $this->delete_comments($_args);
+					restore_current_blog();
 				}
+			}
+			else{
+				$log = $this->delete_comments($_args);
 			}
 		}
 		// message
+		$deletedPostTypeNames = array_unique((array) $deletedPostTypeNames);
 		$message = (count($deletedPostTypeNames) == 0 ? $log . '.' : $log . ' for ' . implode(", ", $deletedPostTypeNames) . '.');
 		if (!$this->is_CLI) {
 			wp_send_json_success(array('message' => $message));
@@ -831,6 +827,90 @@ class Disable_Comments
 		} else {
 			return $log;
 		}
+	}
+
+	private function delete_comments($_args){
+		global $wpdb;
+		global $deletedPostTypeNames;
+		if (!empty($_args)) {
+			$formArray = wp_parse_args($_args);
+		} else {
+			$formArray = $this->form_data_modify($_POST['data']);
+		}
+
+		$types = $this->get_all_post_types(!empty($formArray['is_network_admin']));
+		$commenttypes = $this->get_all_comment_types();
+		$log = "";
+		// comments delete
+		if (isset($formArray['delete_mode'])) {
+			if ($formArray['delete_mode'] == 'delete_everywhere') {
+				if ($wpdb->query("TRUNCATE $wpdb->commentmeta") != false) {
+					if ($wpdb->query("TRUNCATE $wpdb->comments") != false) {
+						$wpdb->query("UPDATE $wpdb->posts SET comment_count = 0");
+						$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
+						$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
+						$log = __('All comments has been deleted', 'disable-comments');
+					} else {
+						wp_send_json_error(array('message' => __('Internal error occured. Please try again later.', 'disable-comments')));
+						wp_die();
+					}
+				} else {
+					wp_send_json_error(array('message' => __('Internal error occured. Please try again later.', 'disable-comments')));
+					wp_die();
+				}
+			} elseif ($formArray['delete_mode'] == 'selected_delete_types') {
+				$delete_post_types = empty($formArray['delete_types']) ? array() : (array) $formArray['delete_types'];
+				$delete_post_types = array_intersect($delete_post_types, array_keys($types));
+
+				// Extra custom post types.
+				if ($this->networkactive && !empty($formArray['delete_extra_post_types'])) {
+					$delete_extra_post_types = array_filter(array_map('sanitize_key', explode(',', $formArray['delete_extra_post_types'])));
+					$delete_extra_post_types = array_diff($delete_extra_post_types, array_keys($types));    // Make sure we don't double up builtins.
+					$delete_post_types       = array_merge($delete_post_types, $delete_extra_post_types);
+				}
+
+				if (!empty($delete_post_types)) {
+					// Loop through post_types and remove comments/meta and set posts comment_count to 0.
+					foreach ($delete_post_types as $delete_post_type) {
+						$wpdb->query("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$delete_post_type'");
+						$wpdb->query("DELETE comments FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$delete_post_type'");
+						$wpdb->query("UPDATE $wpdb->posts SET comment_count = 0 WHERE post_author != 0 AND post_type = '$delete_post_type'");
+
+						$post_type_object = get_post_type_object($delete_post_type);
+						$post_type_label  = $post_type_object ? $post_type_object->labels->name : $delete_post_type;
+						$deletedPostTypeNames[] = $post_type_label;
+					}
+
+					$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
+					$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
+					$log = __('All comments has been deleted', 'disable-comments');
+				}
+			} elseif ($formArray['delete_mode'] == 'selected_delete_comment_types') {
+				$delete_comment_types = empty($formArray['delete_comment_types']) ? array() : (array) $formArray['delete_comment_types'];
+				$delete_comment_types = array_intersect($delete_comment_types, array_keys($commenttypes));
+
+				if (!empty($delete_comment_types)) {
+					// Loop through comment_types and remove comments/meta and set posts comment_count to 0.
+					foreach ($delete_comment_types as $delete_comment_type) {
+						$wpdb->query("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID WHERE comments.comment_type = '$delete_comment_type'");
+						$wpdb->query("DELETE comments FROM $wpdb->comments comments  WHERE comments.comment_type = '$delete_comment_type'");
+						$deletedPostTypeNames[] = $commenttypes[$delete_comment_type];
+					}
+
+					// Update comment_count on post_types
+					foreach ($types as $key => $value) {
+						$comment_count = $wpdb->get_var("SELECT COUNT(comments.comment_ID) FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$key'");
+						$wpdb->query("UPDATE $wpdb->posts SET comment_count = $comment_count WHERE post_author != 0 AND post_type = '$key'");
+					}
+
+					$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
+					$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
+
+					$log = __('All comments has been deleted', 'disable-comments');
+				}
+			}
+		}
+		return $log;
 	}
 
 	private function discussion_settings_allowed()

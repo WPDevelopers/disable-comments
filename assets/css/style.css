@@ -2276,31 +2276,31 @@ button.button__instagram.hover__highlight:hover .icon {
   opacity: 0;
   transition: all 0.3s ease;
 }
-.disable__comment__option .disable_option .disable__switchs .dissable__switch__item {
+.disable__comment__option .disable_option .dissable__switch__item {
   margin-bottom: 10px;
 }
-.disable__comment__option .disable_option .disable__switchs .dissable__switch__item input {
+.disable__comment__option .disable_option .dissable__switch__item input {
   display: none;
 }
-.disable__comment__option .disable_option .disable__switchs .dissable__switch__item input:checked ~ label {
+.disable__comment__option .disable_option .dissable__switch__item input:checked ~ label {
   color: #22282d;
 }
-.disable__comment__option .disable_option .disable__switchs .dissable__switch__item input:checked ~ label .switch {
+.disable__comment__option .disable_option .dissable__switch__item input:checked ~ label .switch {
   background: #05cb6b;
 }
-.disable__comment__option .disable_option .disable__switchs .dissable__switch__item input:checked ~ label .switch:before {
+.disable__comment__option .disable_option .dissable__switch__item input:checked ~ label .switch:before {
   left: 23px;
 }
-.disable__comment__option .disable_option .disable__switchs .dissable__switch__item input:checked ~ label .switch .switch__text {
+.disable__comment__option .disable_option .dissable__switch__item input:checked ~ label .switch .switch__text {
   left: 5px;
 }
-.disable__comment__option .disable_option .disable__switchs .dissable__switch__item input:checked ~ label .switch .switch__text.on {
+.disable__comment__option .disable_option .dissable__switch__item input:checked ~ label .switch .switch__text.on {
   display: block;
 }
-.disable__comment__option .disable_option .disable__switchs .dissable__switch__item input:checked ~ label .switch .switch__text.off {
+.disable__comment__option .disable_option .dissable__switch__item input:checked ~ label .switch .switch__text.off {
   display: none;
 }
-.disable__comment__option .disable_option .disable__switchs .dissable__switch__item label {
+.disable__comment__option .disable_option .dissable__switch__item label {
   font-size: 16px;
   font-weight: 500;
   color: #687b95;
@@ -2309,11 +2309,11 @@ button.button__instagram.hover__highlight:hover .icon {
   align-items: center;
 }
 @media (max-width: 479.98px) {
-  .disable__comment__option .disable_option .disable__switchs .dissable__switch__item label {
+  .disable__comment__option .disable_option .dissable__switch__item label {
     font-size: 14px;
   }
 }
-.disable__comment__option .disable_option .disable__switchs .dissable__switch__item label .switch {
+.disable__comment__option .disable_option .dissable__switch__item label .switch {
   flex: 0 0 35px;
   height: 16px;
   width: 35px;
@@ -2331,11 +2331,11 @@ button.button__instagram.hover__highlight:hover .icon {
   transition: all 0.3s ease;
 }
 @media (max-width: 479.98px) {
-  .disable__comment__option .disable_option .disable__switchs .dissable__switch__item label .switch {
+  .disable__comment__option .disable_option .dissable__switch__item label .switch {
     font-size: 10px;
   }
 }
-.disable__comment__option .disable_option .disable__switchs .dissable__switch__item label .switch:before {
+.disable__comment__option .disable_option .dissable__switch__item label .switch:before {
   position: absolute;
   top: 4px;
   left: 4px;
@@ -2346,13 +2346,13 @@ button.button__instagram.hover__highlight:hover .icon {
   content: "";
   transition: all 0.3s ease;
 }
-.disable__comment__option .disable_option .disable__switchs .dissable__switch__item label .switch .switch__text {
+.disable__comment__option .disable_option .dissable__switch__item label .switch .switch__text {
   position: absolute;
   top: 2px;
   left: 16px;
   transition: all 0.3s ease;
 }
-.disable__comment__option .disable_option .disable__switchs .dissable__switch__item label .switch .switch__text.on {
+.disable__comment__option .disable_option .dissable__switch__item label .switch .switch__text.on {
   display: none;
 }
 .disable__comment__option .disable_option .delete__feedback {
@@ -2981,3 +2981,4 @@ button.button__instagram.hover__highlight:hover .icon {
     width: unset;
   }
 }
+/*# sourceMappingURL=style.css.map */
