@@ -269,7 +269,7 @@ class Disable_Comments
 			add_filter('comments_open', array($this, 'filter_comment_status'), 20, 2);
 			add_filter('pings_open', array($this, 'filter_comment_status'), 20, 2);
 			add_filter('get_comments_number', array($this, 'filter_comments_number'), 20, 2);
-		} elseif (is_admin() && !$this->options['remove_everywhere'] && !$this->is_xmlrpc_rest()) {
+		} elseif (is_admin() && empty($this->options['settings_saved'])) {
 			/**
 			 * It is possible that $disabled_post_types is empty if other
 			 * plugins have disabled comments. Hence we also check for
