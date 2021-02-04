@@ -21,7 +21,7 @@
         </div>
         <?php elseif($this->options['sitewide_settings'] && !empty($this->options['is_network_options'])):?>
             <div class="disable_option dc-text__block mb30 mt30">
-                <div class="dissable__switch__item">
+                <div>
                     <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Notice: This site will be controlled by the network admin until you click the "Save Changes" button.', 'disable-comments'); ?></p>
                 </div>
             </div>
@@ -49,8 +49,8 @@
                     $this->options['extra_post_types'] = empty($this->options['extra_post_types']) ? [] : $this->options['extra_post_types'];
                     $extradisabletypes = implode(', ', (array) $this->options['extra_post_types']);
                 ?>
-                    <p class="indent" id="extratypes"><?php _e('Only the built-in post types appear above. If you want to disable comments on other custom post types on the entire network, you can supply a comma-separated list of post types below (use the slug that identifies the post type).', 'disable-comments'); ?>
-                        <br /><label><?php _e('Custom post types:', 'disable-comments'); ?> <input type="text" name="extra_post_types" size="30" value="<?php echo esc_attr($extradisabletypes); ?>" /></label></p>
+                    <p class="indent subtitle" id="extratypes"><?php _e('Only the built-in post types appear above. If you want to disable comments on other custom post types on the entire network, you can supply a comma-separated list of post types below (use the slug that identifies the post type).', 'disable-comments'); ?>
+                        <br /><label><strong><?php _e('Custom post types:', 'disable-comments'); ?></strong> <input type="text" name="extra_post_types" size="30" value="<?php echo esc_attr($extradisabletypes); ?>" /></label></p>
                 <?php endif; ?>
             </div>
             <p class="subtitle"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts. Comments will be visible on all other post types.', 'disable-comments'); ?></p>
