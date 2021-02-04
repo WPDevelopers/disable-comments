@@ -69,6 +69,7 @@ class Disable_Comments
 
 			if(is_multisite() && $not_configured && $this->sitewide_settings == '1'){
 				$this->options = get_site_option('disable_comments_options', array());
+				$this->options['is_network_options'] = true;
 			}
 		}
 

@@ -19,6 +19,12 @@
                 <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('If you enable site wise settings, You need to configure your Disable Comments settings individually on every website in the network.', 'disable-comments'); ?></p>
             </div>
         </div>
+        <?php elseif($this->options['sitewide_settings'] && !empty($this->options['is_network_options'])):?>
+            <div class="disable_option dc-text__block mb30 mt30">
+                <div class="dissable__switch__item">
+                    <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Notice: This site will be controlled by the network admin until you click the "Save Changes" button.', 'disable-comments'); ?></p>
+                </div>
+            </div>
         <?php endif;?>
 
         <div class="disable_option dc-text__block mb30 mt30">
