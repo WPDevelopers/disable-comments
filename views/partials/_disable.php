@@ -22,7 +22,7 @@
         <?php elseif($this->options['sitewide_settings'] && !empty($this->options['is_network_options'])):?>
             <div class="disable_option dc-text__block mb30 mt30">
                 <div>
-                    <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Notice: This site will be controlled by the network admin until you click the "Save Changes" button.', 'disable-comments'); ?></p>
+                    <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This site will be controlled by the network admin until you click the "Save Changes" button.', 'disable-comments'); ?></p>
                 </div>
             </div>
         <?php endif;?>
