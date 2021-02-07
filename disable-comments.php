@@ -270,7 +270,7 @@ class Disable_Comments
 			add_filter('comments_open', array($this, 'filter_comment_status'), 20, 2);
 			add_filter('pings_open', array($this, 'filter_comment_status'), 20, 2);
 			add_filter('get_comments_number', array($this, 'filter_comments_number'), 20, 2);
-		} elseif (is_admin() && empty($this->options['settings_saved'])) {
+		} elseif (is_admin() && !$this->is_configured()) {
 			/**
 			 * It is possible that $disabled_post_types is empty if other
 			 * plugins have disabled comments. Hence we also check for
@@ -797,6 +797,15 @@ class Disable_Comments
 			wp_send_json_success(array('message' => __('Saved', 'disable-comments')));
 			wp_die();
 		}
+	}
+
+	public function is_configured(){
+		$disabled_post_types = $this->get_disabled_post_types();
+
+		if(empty($disabled_post_types) && empty($this->options['remove_everywhere']) && empty($this->options['remove_rest_API_comments']) && empty($this->options['remove_xmlrpc_comments'])){
+			return false;
+		}
+		return true;
 	}
 
 	public function delete_comments_settings($_args = array())
