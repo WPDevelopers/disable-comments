@@ -137,7 +137,7 @@ Visit [WPDeveloper](https://wpdeveloper.net/) to learn more about how to do bett
 
 This is because your theme is not checking the comment status of posts in the correct way.
 
-You may like to point your theme's author to [this explanation](http://www.rayofsolaris.net/blog/2012/how-to-check-if-comments-are-allowed-in-wordpress/) of what they are doing wrong, and how to fix it.
+You may like to point your theme's author to [this explanation](https://wpdeveloper.net/wordpress-posts-have-comments-allowed/) of what they are doing wrong, and how to fix it.
 
 = How can I remove the text that says "comments are closed" at the bottom of articles where comments are disabled? =
 

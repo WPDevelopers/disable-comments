@@ -490,7 +490,9 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 				$failed_data['plugin_slug']  = $this->plugin_name;
 				$failed_data['url']          = $site_url;
 				$failed_data['site_id']      = $site_id;
-				$failed_data['original_url'] = $original_site_url;
+				if( $original_site_url != false ) {
+					$failed_data['original_url'] = $original_site_url;
+				}
 
 				$request = $this->remote_post( $failed_data );
 				if( ! is_wp_error( $request ) ) {
@@ -504,7 +506,9 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 				$diff_data['plugin_slug']  = $this->plugin_name;
 				$diff_data['url']          = $site_url;
 				$diff_data['site_id']      = $site_id;
-				$diff_data['original_url'] = $original_site_url;
+				if( $original_site_url != false ) {
+					$diff_data['original_url'] = $original_site_url;
+				}
 
 				$request = $this->remote_post( $diff_data );
 				if( is_wp_error( $request ) ) {
