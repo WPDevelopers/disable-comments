@@ -20,11 +20,11 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 		/**
 		 * WP Insights Version
 		 */
-		const WPINS_VERSION = '3.0.0';
+		const WPINS_VERSION = '3.0.1';
 		/**
 		 * API URL
 		 */
-		const API_URL = 'https://us-east1-wpinsight-saas.cloudfunctions.net/task-generator';
+		const API_URL = 'https://us-east1-wpinsight-saas.cloudfunctions.net/process-plugin-data';
 		/**
 		 * Installed Plugin File
 		 *
@@ -69,7 +69,7 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 			$this->disabled_wp_cron     = defined('DISABLE_WP_CRON') && DISABLE_WP_CRON == true;
 			$this->enable_self_cron     = $this->disabled_wp_cron == true ? true : false;
 
-			$this->event_hook = 'put_do_weekly_action';
+			$this->event_hook 			= 'put_do_weekly_action';
 
 			$this->require_optin        = isset( $args['opt_in'] ) ? $args['opt_in'] : true;
 			$this->include_goodbye_form = isset( $args['goodbye_form'] ) ? $args['goodbye_form'] : true;
