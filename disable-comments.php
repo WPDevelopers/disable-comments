@@ -65,10 +65,11 @@ class Disable_Comments
 			$this->options = get_site_option('disable_comments_options', array());
 		} else {
 			$this->options = get_option('disable_comments_options', array());
-			$not_configured = empty($this->options) || empty($this->get_disabled_post_types()) && !$this->options['remove_everywhere'];
+			$not_configured = empty($this->options) || empty($this->options['settings_saved']);
 
 			if(is_multisite() && $not_configured && $this->sitewide_settings == '1'){
 				$this->options = get_site_option('disable_comments_options', array());
+				$this->options['is_network_options'] = true;
 			}
 		}
 
@@ -269,7 +270,7 @@ class Disable_Comments
 			add_filter('comments_open', array($this, 'filter_comment_status'), 20, 2);
 			add_filter('pings_open', array($this, 'filter_comment_status'), 20, 2);
 			add_filter('get_comments_number', array($this, 'filter_comments_number'), 20, 2);
-		} elseif (is_admin() && !$this->options['remove_everywhere'] && !$this->is_xmlrpc_rest()) {
+		} elseif (is_admin() && empty($this->options['settings_saved'])) {
 			/**
 			 * It is possible that $disabled_post_types is empty if other
 			 * plugins have disabled comments. Hence we also check for
@@ -756,10 +757,13 @@ class Disable_Comments
 				$formArray = (isset($_POST['data']) ? $this->form_data_modify($_POST['data']) : []);
 			}
 			$this->options = [];
+
+			$this->options['is_network_admin'] = isset($formArray['is_network_admin']) && $formArray['is_network_admin'] == '1' ? true : false;
+
 			if (isset($formArray['mode'])) {
 				$this->options['remove_everywhere'] = (sanitize_text_field($formArray['mode']) == 'remove_everywhere');
 			}
-			$post_types = $this->get_all_post_types();
+			$post_types = $this->get_all_post_types($this->options['is_network_admin']);
 
 			if ($this->options['remove_everywhere']) {
 				$disabled_post_types = array_keys($post_types);
@@ -779,16 +783,13 @@ class Disable_Comments
 			if(isset($formArray['sitewide_settings'])){
 				update_site_option('disable_comments_sitewide_settings', $formArray['sitewide_settings']);
 			}
-
-			if(isset($formArray['is_network_admin'])){
-				$this->options['is_network_admin'] = $formArray['is_network_admin'] == '1';
-			}
 			// xml rpc
 			$this->options['remove_xmlrpc_comments'] = (isset($formArray['remove_xmlrpc_comments']) ? intval($formArray['remove_xmlrpc_comments']) : ($this->is_CLI && isset($this->options['remove_xmlrpc_comments']) ? $this->options['remove_xmlrpc_comments'] : 0));
 			// rest api comments
 			$this->options['remove_rest_API_comments'] = (isset($formArray['remove_rest_API_comments']) ? intval($formArray['remove_rest_API_comments']) : ($this->is_CLI && isset($this->options['remove_rest_API_comments']) ? $this->options['remove_rest_API_comments'] : 0));
 
 			$this->options['db_version'] = self::DB_VERSION;
+			$this->options['settings_saved'] = true;
 			// save settings
 			$this->update_options();
 		}
