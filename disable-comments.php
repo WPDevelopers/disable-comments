@@ -48,8 +48,6 @@ class Disable_Comments
 		add_action('wp_ajax_disable_comments_save_settings', array($this, 'disable_comments_settings'));
 		add_action('wp_ajax_disable_comments_delete_comments', array($this, 'delete_comments_settings'));
 
-		// add_action( 'wp_ajax_optin_wizard_action_disable_comments', array( $this, 'wizard_action' ) );
-
 		// Including cli.php
 		if (defined('WP_CLI') && WP_CLI) {
 			add_action('init', array($this, 'enable_cli'), 9999);
@@ -95,19 +93,6 @@ class Disable_Comments
 		require_once DC_PLUGIN_ROOT_PATH . "/includes/cli.php";
 		new Disable_Comment_Command($this);
 	}
-	/**
-	 * Optin Added
-	 *
-	 * @since 2.0.0.
-	 */
-	// public function wizard_action(){
-	// 	if( $this->tracker instanceof DisableComments_Plugin_Tracker ) {
-	// 		$allow_tracking = get_option( 'wpins_allow_tracking', [] );
-	// 		update_option('wpins_allow_tracking', array_merge( $allow_tracking, ['disable-comments' => 'disable-comments'] ));
-	// 		$this->tracker->force_tracking();
-	// 		$this->tracker->update_block_notice( 'disable-comments' );
-	// 	}
-	// }
 
 	public function admin_notice(){
 		if( $this->tracker instanceof DisableComments_Plugin_Tracker ) {
