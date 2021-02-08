@@ -2,9 +2,9 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Disable Comments 2.0.2\n"
+"Project-Id-Version: Disable Comments 2.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/disable-comments\n"
-"POT-Creation-Date: 2021-02-07 07:43:37+00:00\n"
+"POT-Creation-Date: 2021-02-08 05:33:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,11 +24,11 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Generator: grunt-wp-i18n 1.0.3\n"
 
-#: disable-comments.php:136
+#: disable-comments.php:121
 msgid "Want to help make Disable Comments even better?"
 msgstr ""
 
-#: disable-comments.php:137
+#: disable-comments.php:122
 msgid ""
 "We collect non-sensitive diagnostic data and plugin usage information. Your "
 "site URL, WordPress & PHP version, plugins & themes and email address to "
@@ -37,16 +37,16 @@ msgid ""
 "I promise."
 msgstr ""
 
-#: disable-comments.php:149
+#: disable-comments.php:134
 #. translators: %s: WordPress version no.
 msgid "Disable Comments requires WordPress version %s or greater."
 msgstr ""
 
-#: disable-comments.php:394 disable-comments.php:538 disable-comments.php:545
+#: disable-comments.php:379 disable-comments.php:523 disable-comments.php:530
 msgid "Comments are closed."
 msgstr ""
 
-#: disable-comments.php:497
+#: disable-comments.php:482
 #. translators: %s: disabled post types.
 msgid ""
 "Note: The <em>Disable Comments</em> plugin is currently active, and "
@@ -54,11 +54,11 @@ msgid ""
 "not be applicable for those post types."
 msgstr ""
 
-#: disable-comments.php:497
+#: disable-comments.php:482
 msgid ", "
 msgstr ""
 
-#: disable-comments.php:529
+#: disable-comments.php:514
 #. translators: %s: URL to Disabled Comment settings page.
 msgid ""
 "The <strong>Disable Comments</strong> plugin is active, but isn't "
@@ -66,99 +66,99 @@ msgid ""
 "page</a> to choose which post types to disable comments on."
 msgstr ""
 
-#: disable-comments.php:618 views/partials/_disable.php:3
+#: disable-comments.php:603 views/partials/_disable.php:3
 msgid "Settings"
 msgstr ""
 
-#: disable-comments.php:619
+#: disable-comments.php:604
 msgid "Tools"
 msgstr ""
 
-#: disable-comments.php:638 views/partials/_delete.php:54
+#: disable-comments.php:623 views/partials/_delete.php:54
 msgid "Delete Comments"
 msgstr ""
 
-#: disable-comments.php:697
+#: disable-comments.php:682
 msgid "Default (no type)"
 msgstr ""
 
-#: disable-comments.php:797
+#: disable-comments.php:782
 msgid "Saved"
 msgstr ""
 
-#: disable-comments.php:862 disable-comments.php:896 disable-comments.php:919
+#: disable-comments.php:847 disable-comments.php:881 disable-comments.php:904
 msgid "All comments has been deleted"
 msgstr ""
 
-#: disable-comments.php:864 disable-comments.php:868
+#: disable-comments.php:849 disable-comments.php:853
 msgid "Internal error occured. Please try again later."
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:376
+#: includes/class-plugin-usage-tracker.php:378
 msgid ""
 "We can't detect any plugin information. This is most probably because you "
 "have not included the code in the plugin main file."
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:646
+#: includes/class-plugin-usage-tracker.php:651
 msgid "What we collect."
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:647
+#: includes/class-plugin-usage-tracker.php:652
 msgid "Sure, I'd like to help"
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:648
+#: includes/class-plugin-usage-tracker.php:653
 msgid "No Thanks."
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:741
+#: includes/class-plugin-usage-tracker.php:746
 msgid "Sorry to see you go"
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:742
+#: includes/class-plugin-usage-tracker.php:747
 msgid ""
 "Before you deactivate the plugin, would you quickly give us your reason for "
 "doing so?"
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:745
+#: includes/class-plugin-usage-tracker.php:750
 msgid "I no longer need the plugin"
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:747
+#: includes/class-plugin-usage-tracker.php:752
 msgid "I found a better plugin"
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:748
+#: includes/class-plugin-usage-tracker.php:753
 msgid "Please share which plugin"
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:750
+#: includes/class-plugin-usage-tracker.php:755
 msgid "I couldn't get the plugin to work"
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:751
+#: includes/class-plugin-usage-tracker.php:756
 msgid "It's a temporary deactivation"
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:753
+#: includes/class-plugin-usage-tracker.php:758
 msgid "Other"
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:754
+#: includes/class-plugin-usage-tracker.php:759
 msgid "Please share the reason"
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:796
+#: includes/class-plugin-usage-tracker.php:801
 msgid "Submitting form"
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:854
+#: includes/class-plugin-usage-tracker.php:859
 msgid "Submit and Deactivate"
 msgstr ""
 
-#: includes/class-plugin-usage-tracker.php:854
+#: includes/class-plugin-usage-tracker.php:859
 msgid "Just Deactivate"
 msgstr ""
 
@@ -415,7 +415,7 @@ msgstr ""
 msgid "https://wpdeveloper.net"
 msgstr ""
 
-#: disable-comments.php:628
+#: disable-comments.php:613
 msgctxt "settings menu title"
 msgid "Disable Comments"
 msgstr ""

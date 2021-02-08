@@ -5,7 +5,7 @@ Tags: comments, delete comments, disable, disable comments, stop spam, remove co
 Requires at least: 5.0
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.0.2
+Stable tag: 2.1.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -168,6 +168,12 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
+
+= [2.1.0] - 2021-02-08 =
+* New Feature: Site wise settings in Multisite Network
+* Added: Some strings localization
+* Fixed: Delete Comments in Multisite
+* Few minor bug fix and improvement
 
 = [2.0.2] - 2020-12-01 =
 * Removed: Quick Setup Wizard
