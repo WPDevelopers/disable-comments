@@ -342,7 +342,9 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 				}
 				$current_user = wp_get_current_user();
 				$email = $current_user->user_email;
-				$body['email'] = $email;
+				if( is_email( $email ) ) {
+					$body['email'] = $email;
+				}
 			}
 			$body['marketing_method'] = $this->marketing;
 			$body['server'] = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : '';
@@ -440,14 +442,18 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 			/**
 			 * Get SITE ID
 			 */
-			$site_id_key = "wpins_{$this->plugin_name}_site_id";
-			$site_id = get_option( $site_id_key, false );
-			$failed_data = [];
-			$site_url = get_bloginfo( 'url' );
+			$site_id_key       = "wpins_{$this->plugin_name}_site_id";
+			$site_id           = get_option( $site_id_key, false );
+			$failed_data       = [];
+			$site_url          = get_bloginfo( 'url' );
+			$original_site_url = get_option( "wpins_{$this->plugin_name}_original_url", false );
+			if( $original_site_url === false && version_compare( $body['wpins_version'], '3.0.1', '==' ) ) {
+				$site_id = false;
+			}
 			/**
 			 * Send Initial Data to API
 			 */
-			if( $site_id == false && $this->item_id !== false ) {
+			if( $site_id == false && $this->item_id !== false && $original_site_url === false ) {
 				if( isset( $_SERVER['REMOTE_ADDR'] ) && ! empty( $_SERVER['REMOTE_ADDR'] && $_SERVER['REMOTE_ADDR'] != '127.0.0.1' ) ) {
 					$country_request = wp_remote_get( 'http://ip-api.com/json/'. $_SERVER['REMOTE_ADDR'] .'?fields=country');
 					if( ! is_wp_error( $country_request ) && $country_request['response']['code'] == 200 ) {
@@ -475,7 +481,6 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 
 			$site_id_data_key        = "wpins_{$this->plugin_name}_{$site_id}";
 			$site_id_data_failed_key = "wpins_{$this->plugin_name}_{$site_id}_send_failed";
-			$original_site_url       = get_option( "wpins_{$this->plugin_name}_original_url", false );
 
 			if( $site_id != false ) {
 				$old_sent_data = get_option( $site_id_data_key, [] );
