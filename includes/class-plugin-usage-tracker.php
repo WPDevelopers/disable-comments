@@ -661,7 +661,7 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 		 * @return void
 		 */
 		public function clicked(){
-			if( isset( $_GET['plugin'] ) && isset( $_GET['plugin_action'] ) ) {
+			if( isset( $_GET['plugin'] ) && trim($_GET['plugin']) === $this->plugin_name && isset( $_GET['plugin_action'] ) ) {
 				if( isset( $_GET['tab'] ) && $_GET['tab'] === 'plugin-information' ) {
                     return;
                 }
