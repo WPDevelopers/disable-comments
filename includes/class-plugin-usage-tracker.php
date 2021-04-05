@@ -20,11 +20,11 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 		/**
 		 * WP Insights Version
 		 */
-		const WPINS_VERSION = '3.0.1';
+		const WPINS_VERSION = '3.0.2';
 		/**
 		 * API URL
 		 */
-		const API_URL = 'https://us-east1-wpinsight-saas.cloudfunctions.net/process-plugin-data';
+		const API_URL = 'https://send.wpinsight.com/process-plugin-data';
 		/**
 		 * Installed Plugin File
 		 *
@@ -149,7 +149,7 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 		 */
 		public function init(){
 			$this->clicked();
-			add_action( $this->event_hook, array( $this, 'force_tracking' ) );
+			add_action( $this->event_hook, array( $this, 'do_tracking' ) );
 			// For Test
 			// add_action( 'admin_init', array( $this, 'force_tracking' ) );
 			add_action( 'disable_comments_notice', array( $this, 'notice' ) );
@@ -447,13 +447,14 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 			$failed_data       = [];
 			$site_url          = get_bloginfo( 'url' );
 			$original_site_url = get_option( "wpins_{$this->plugin_name}_original_url", false );
-			if( $original_site_url === false && version_compare( $body['wpins_version'], '3.0.1', '==' ) ) {
+
+			if( ( $original_site_url === false || $original_site_url != $site_url ) && version_compare( $body['wpins_version'], '3.0.1', '>=' ) ) {
 				$site_id = false;
 			}
 			/**
 			 * Send Initial Data to API
 			 */
-			if( $site_id == false && $this->item_id !== false && $original_site_url === false ) {
+			if( $site_id == false && $this->item_id !== false ) {
 				if( isset( $_SERVER['REMOTE_ADDR'] ) && ! empty( $_SERVER['REMOTE_ADDR'] && $_SERVER['REMOTE_ADDR'] != '127.0.0.1' ) ) {
 					$country_request = wp_remote_get( 'http://ip-api.com/json/'. $_SERVER['REMOTE_ADDR'] .'?fields=country');
 					if( ! is_wp_error( $country_request ) && $country_request['response']['code'] == 200 ) {
