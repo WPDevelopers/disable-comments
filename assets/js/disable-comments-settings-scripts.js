@@ -45,7 +45,7 @@ jQuery(document).ready(function () {
 		}
 	}
 
-	jQuery("#remove_everywhere, #selected_types").change(function () {
+	jQuery("#remove_everywhere, #selected_types").on('change', function () {
 		jQuery("#message").slideUp();
 		disable_comments_uihelper();
 	});
@@ -90,7 +90,7 @@ jQuery(document).ready(function () {
 
 	jQuery(
 		"#delete_everywhere, #selected_delete_types, #selected_delete_comment_types"
-	).change(function () {
+	).on('change', function () {
 		delete_comments_uihelper();
 	});
 	delete_comments_uihelper();
