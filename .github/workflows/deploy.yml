@@ -10,6 +10,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Running Grunt Task Manager for POT Generation
         run: |
+          npm install
           grunt i18n
       - name: WordPress Plugin Deploy
         id: deploy
