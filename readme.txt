@@ -1,7 +1,7 @@
 === Disable Comments - Remove Comments & Protect From Spam ===
 Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, tusharimran, alimuzzamanalim, solarissmoke, garrett-eclipse
 Donate link: https://wpdeveloper.net/
-Tags: comments, delete comments, disable, disable comments, stop spam, remove comments, anti spam, disable xml-rpc, hide comment, XML-RPC, REST-API, WP-CLI
+Tags: comments, delete comments, disable comments, spam comment, disable, stop spam, remove comments, anti spam, disable xml-rpc, hide comment, XML-RPC, REST-API, WP-CLI
 Requires at least: 5.0
 Tested up to: 5.7
 Requires PHP: 5.6
@@ -12,6 +12,8 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly. Provides tool to delete comments according to post type.
 
 == Description ==
+
+= Disable Comments - Remove Comments & Protect From Spam =
 
 Instantly allow or disallow comments from any post type in WordPress (Pages, Posts or Media) to stop the spammers and gain complete control over your full website. WP-CLI Suppprt & Control comments via XML-RPC and REST-API too!
 
@@ -38,7 +40,9 @@ Have multiple websites? Get rid of irrelevant comments on the entire network usi
 * All comment RSS/Atom feeds are disabled (and requests for these will be redirected to the parent post);
 * The X-Pingback HTTP header is removed from all pages;
 * Outgoing pingbacks are disabled.
+* Stop spam comments entirely from the site with one click.
 * **[New]** Delete comments by type.
+* **[New]** Disable comments via xml-rpc.
 
 Please delete any existing comments on your site **before applying this setting**, otherwise (depending on your theme) those comments may still be displayed to visitors. You can use the **Delete Comments tool** to delete any existing comments on your site.
 
@@ -101,7 +105,7 @@ Consider checking out our other WordPress solutions & boost your WordPress websi
 
 📄 [EmbedPress](https://wordpress.org/plugins/embedpress/): EmbedPress lets you embed videos, images, posts, audio, maps and upload PDF, DOC, PPT & all other types of content into your WordPress site with one-click and showcase it beautifully for the visitors.
 
-☁ [Templately](https://wordpress.org/plugins/templately/): Free templates library for Elementor & Gutenberg along with the cloud collaboration for WordPress.
+☁ [Templately](https://wordpress.org/plugins/templately/): 1000+ Free templates library for Elementor & Gutenberg along with the cloud collaboration for WordPress.
 
 📚 [BetterDocs](https://wordpress.org/plugins/betterdocs/): Best Documentation & Knowledge Base Plugin for WordPress reduce manual support tickets & improve user experience.
 
@@ -338,4 +342,4 @@ This will be maiintained from August 19, 2020 - @asif2bd
 
 == Upgrade Notice ==
 
-Minor Update: Few minor bug fix and improvement
+[Minor Update] Few minor bug fix and compatibility with WordPress 5.7
