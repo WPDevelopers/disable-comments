@@ -8,10 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Running NPM Install & Build
+      - name: Running Grunt Task Manager for POT Generation
         run: |
-          npm install
-          npm run build
+          grunt i18n
       - name: WordPress Plugin Deploy
         id: deploy
         uses: 10up/action-wordpress-plugin-deploy@stable
