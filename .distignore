@@ -4,6 +4,7 @@
 .git
 .github
 .gitignore
+.gitattributes
 .gitlab-ci.yml
 .travis.yml
 .DS_Store
