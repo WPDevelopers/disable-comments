@@ -196,7 +196,7 @@ class Disable_Comments
 	 */
 	private function is_post_type_disabled($type)
 	{
-		return in_array($type, $this->get_disabled_post_types());
+		return $type && in_array($type, $this->get_disabled_post_types());
 	}
 
 	private function init_filters()
@@ -409,7 +409,6 @@ class Disable_Comments
 	public function filter_gutenberg_blocks($hook)
 	{
 		global $post;
-
 		if ($this->options['remove_everywhere'] || (isset($post->post_type) && in_array($post->post_type, $this->get_disabled_post_types(), true))) {
 			return $this->disable_comments_script();
 		}
@@ -554,20 +553,20 @@ class Disable_Comments
 
 	public function filter_existing_comments($comments, $post_id)
 	{
-		$post = get_post($post_id);
-		return ($this->options['remove_everywhere'] || $this->is_post_type_disabled($post->post_type)  ? array() : $comments);
+		$post_type = get_post_type($post_id);
+		return ($this->options['remove_everywhere'] || $this->is_post_type_disabled($post_type)  ? array() : $comments);
 	}
 
 	public function filter_comment_status($open, $post_id)
 	{
-		$post = get_post($post_id);
-		return ($this->options['remove_everywhere'] || $this->is_post_type_disabled($post->post_type) ? false : $open);
+		$post_type = get_post_type($post_id);
+		return ($this->options['remove_everywhere'] || $this->is_post_type_disabled($post_type) ? false : $open);
 	}
 
 	public function filter_comments_number($count, $post_id)
 	{
-		$post = get_post($post_id);
-		return ($this->options['remove_everywhere'] || $this->is_post_type_disabled($post->post_type) ? 0 : $count);
+		$post_type = get_post_type($post_id);
+		return ($this->options['remove_everywhere'] || $this->is_post_type_disabled($post_type) ? 0 : $count);
 	}
 
 	public function disable_rc_widget()
