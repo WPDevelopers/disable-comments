@@ -5,7 +5,7 @@ Tags: comments, delete comments, disable comments, spam comment, disable, stop s
 Requires at least: 5.0
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -172,6 +172,9 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
+
+= [2.1.2] - 2021-06-20 =
+* Improvement: Fix for Attempt to read property "post_type" on null
 
 = [2.1.1] - 2021-04-06 =
 * Improvement: Compatible with WordPress 5.7
@@ -342,4 +345,4 @@ This will be maiintained from August 19, 2020 - @asif2bd
 
 == Upgrade Notice ==
 
-[Minor Update] Few minor bug fix and compatibility with WordPress 5.7
+[Minor Update] Improvement: Fix for Attempt to read property "post_type" on null
