@@ -14,9 +14,9 @@
                         <span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
                         <span class="switch__text off"><?php _e('Off', 'disable-comments'); ?></span>
                     </span>
-                    Enable site wise settings.
+                    Enable Site Wise settings.
                 </label>
-                <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('If you enable site wise settings, You need to configure your Disable Comments settings individually on every website in the network.', 'disable-comments'); ?></p>
+                <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('If you enable Site Wise settings, you need to configure your “Disable Comments” settings individually on every website in the network.', 'disable-comments'); ?></p>
             </div>
         </div>
         <?php elseif($this->options['sitewide_settings'] && !empty($this->options['is_network_options'])):?>
@@ -85,7 +85,9 @@
         </div>
     </div>
     <!-- save -->
-    <button class="button button__success"><?php _e('Save Changes', 'disable-comments'); ?></button>
+    <button class="button button__success">
+        <span><?php _e('Save Changes', 'disable-comments'); ?></span>
+    </button>
     <?php if(is_network_admin()):?>
         <input type="hidden" name="is_network_admin" value="1">
     <?php endif;?>

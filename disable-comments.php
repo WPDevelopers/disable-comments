@@ -843,7 +843,7 @@ class Disable_Comments
 						$wpdb->query("UPDATE $wpdb->posts SET comment_count = 0");
 						$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
 						$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
-						$log = __('All comments has been deleted', 'disable-comments');
+						$log = __('All comments have been deleted', 'disable-comments');
 					} else {
 						wp_send_json_error(array('message' => __('Internal error occured. Please try again later.', 'disable-comments')));
 						wp_die();
@@ -877,7 +877,7 @@ class Disable_Comments
 
 					$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
 					$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
-					$log = __('All comments has been deleted', 'disable-comments');
+					$log = __('All comments have been deleted', 'disable-comments');
 				}
 			} elseif ($formArray['delete_mode'] == 'selected_delete_comment_types') {
 				$delete_comment_types = empty($formArray['delete_comment_types']) ? array() : (array) $formArray['delete_comment_types'];
@@ -900,7 +900,7 @@ class Disable_Comments
 					$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
 					$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
 
-					$log = __('All comments has been deleted', 'disable-comments');
+					$log = __('All comments have been deleted', 'disable-comments');
 				}
 			}
 		}
