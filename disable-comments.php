@@ -61,6 +61,11 @@ class Disable_Comments
 		// Load options.
 		if ($this->networkactive && (is_network_admin() || $this->sitewide_settings !== '1')) {
 			$this->options = get_site_option('disable_comments_options', array());
+
+			$blog_id = get_current_blog_id();
+			if(empty($this->options['disabled_sites']) || !in_array($blog_id, $this->options['disabled_sites'])){
+				$this->options = [];
+			}
 		} else {
 			$this->options = get_option('disable_comments_options', array());
 			$not_configured = empty($this->options) || empty($this->options['settings_saved']);
@@ -743,6 +748,10 @@ class Disable_Comments
 			$this->options = [];
 
 			$this->options['is_network_admin'] = isset($formArray['is_network_admin']) && $formArray['is_network_admin'] == '1' ? true : false;
+
+			if(!empty($formArray['disabled_sites'])){
+				$this->options['disabled_sites'] = $formArray['disabled_sites'];
+			}
 
 			if (isset($formArray['mode'])) {
 				$this->options['remove_everywhere'] = (sanitize_text_field($formArray['mode']) == 'remove_everywhere');
