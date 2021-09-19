@@ -61,10 +61,28 @@ class Disable_Comments
 		// Load options.
 		if ($this->networkactive && (is_network_admin() || $this->sitewide_settings !== '1')) {
 			$this->options = get_site_option('disable_comments_options', array());
-
+			if(!isset($this->options['disabled_sites'])){
+				$sites = get_sites();
+				$this->options['disabled_sites'] = array_map(function($site){
+					return $site->blog_id;
+				}, $sites);
+			}
 			$blog_id = get_current_blog_id();
-			if(empty($this->options['disabled_sites']) || !in_array($blog_id, $this->options['disabled_sites'])){
-				$this->options = [];
+			if(
+				!is_network_admin() && (
+					empty($this->options['disabled_sites']) ||
+					!in_array($blog_id, $this->options['disabled_sites'])
+				)
+			){
+				$this->options = [
+					'remove_everywhere'        => false,
+					'disabled_post_types'      => array(),
+					'extra_post_types'         => array(),
+					'remove_xmlrpc_comments'   => 0,
+					'remove_rest_API_comments' => 0,
+					'settings_saved'           => true,
+					'db_version'               => $this->options['db_version']
+				];
 			}
 		} else {
 			$this->options = get_option('disable_comments_options', array());
@@ -75,6 +93,7 @@ class Disable_Comments
 				$this->options['is_network_options'] = true;
 			}
 		}
+
 
 		// If it looks like first run, check compat.
 		if (empty($this->options)) {
@@ -812,9 +831,11 @@ class Disable_Comments
 			if ( !empty($formArray['is_network_admin']) && function_exists( 'get_sites' ) && class_exists( 'WP_Site_Query' ) ) {
 				$sites = get_sites();
 				foreach ( $sites as $site ) {
-					switch_to_blog( $site->blog_id );
-					$log = $this->delete_comments($_args);
-					restore_current_blog();
+					if( !empty($formArray['disabled_sites']) && in_array($site->blog_id, $formArray['disabled_sites'])){
+						switch_to_blog( $site->blog_id );
+						$log = $this->delete_comments($_args);
+						restore_current_blog();
+					}
 				}
 			}
 			else{

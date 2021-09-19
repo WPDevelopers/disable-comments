@@ -129,6 +129,7 @@ jQuery(document).ready(function ($) {
 				}
 			},
 			error: function () {
+				saveBtn.html("Save Settings");
 				Swal.fire({
 					type: "error",
 					title: "Oops...",

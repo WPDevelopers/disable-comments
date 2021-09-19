@@ -21,7 +21,7 @@
         </div>
         <div class="disable_option dc-text__block mb30 mt30">
             <h3>Disable comments in the following sites:</h3>
-            <div class="remove__checklist">
+            <div class="disabled__sites">
             <?php
             $disabled_site_options = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
             $sub_sites = get_sites();
