@@ -29,6 +29,28 @@ jQuery(document).ready(function ($) {
 	}
 	disbale_comments_tabs();
 	// UI Helper
+	function enable_site_wise_uihelper() {
+		var indiv_bits = jQuery(
+			".disabled__sites .remove__checklist__item"
+		);
+		if (jQuery("#sitewide_settings").is(":checked")) {
+			indiv_bits
+				.css("opacity", ".3")
+				.find(":input")
+				.attr("disabled", true);
+		} else {
+			indiv_bits
+				.css("opacity", "1")
+				.find(":input")
+				.attr("disabled", false);
+		}
+	}
+
+	jQuery("#sitewide_settings").on('change', function () {
+		enable_site_wise_uihelper();
+	});
+	enable_site_wise_uihelper();
+
 	function disable_comments_uihelper() {
 		var indiv_bits = jQuery(
 			".remove__checklist .remove__checklist__item, #extratypes"
