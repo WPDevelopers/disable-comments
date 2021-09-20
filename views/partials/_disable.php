@@ -36,7 +36,7 @@
             }
             ?>
             </div>
-            <p class="disable__option__description"><span class="danger"><?php _e('Warnings:', 'disable-comments'); ?></span> <?php _e('Enable Site Wise Settings if you need to disable XMl-RPC etc go to each site and configure.', 'disable-comments'); ?></p>
+            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Enable Site Wise settings if you want to configure “Disable Comments” settings individually on every website.', 'disable-comments'); ?></p>
         </div>
         <?php elseif($this->options['sitewide_settings'] && !empty($this->options['is_network_options'])):?>
             <div class="disable_option dc-text__block mb30 mt30">
