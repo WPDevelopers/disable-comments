@@ -46,11 +46,20 @@
 	.button__success {
 		color: $white;
 		background: $success;
-		opacity: 0.6;
+		// opacity: 0.6;
 		&:hover,
 		&:focus {
 			background: rgba($success, 0.9);
 			color: $white;
+		}
+		&.button__fade {
+			opacity: .6;
+			display: flex;
+			align-items: center;
+			.eael-spinner {
+				// margin: 0 !important;
+				// margin
+			}
 		}
 		&.form-dirty{
 			opacity: 1;
@@ -82,7 +91,7 @@
 	width: 18px;
 	display: inline-block;
 	float: left;
-	margin: 3px 5px 0 0;
+	margin: 0 5px 0 0;
 
 	-webkit-transition-property: -webkit-transform;
 	-webkit-transition-duration: 1.2s;

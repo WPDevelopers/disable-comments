@@ -2,30 +2,31 @@
     <?php
     if ($this->get_all_comments_number() > 0) :
     ?>
-        <?php if(is_network_admin()):?>
-            <div class="disable_option dc-text__block mb30 mt30">
-            <h3>Delete comments in the following sites:</h3>
-            <div class="disabled__sites">
-            <?php
-            $disabled_site_options = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
-            $sub_sites = get_sites();
-            foreach ( $sub_sites as $sub_site ) {
-                $sub_site_id = $sub_site->blog_id;
-                $blog = get_blog_details($sub_site_id);
-                echo
-                "<div class='delete__checklist__item'>
-                    <input type='checkbox' id='delete__checklist__item-$sub_site_id' name='disabled_sites[]' value='$sub_site_id' checked='checked'>
-                    <label for='delete__checklist__item-$sub_site_id'>{$blog->blogname}</label>
-                </div>";
-            }
-            ?>
-            </div>
-            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Enable Site Wise settings if you want to configure “Disable Comments” settings individually on every website.', 'disable-comments'); ?></p>
-        </div>
-
-        <?php endif;?>
+        
 
         <div class="disable__comment__option mb50">
+            <?php if(is_network_admin()):?>
+                <div class="disable_option dc-text__block mb30 mt30">
+                <h3>Delete comments in the following sites:</h3>
+                <div class="disabled__sites delete__checklist">
+                <?php
+                $disabled_site_options = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
+                $sub_sites = get_sites();
+                foreach ( $sub_sites as $sub_site ) {
+                    $sub_site_id = $sub_site->blog_id;
+                    $blog = get_blog_details($sub_site_id);
+                    echo
+                    "<div class='delete__checklist__item'>
+                        <input type='checkbox' id='delete__checklist__item-$sub_site_id' name='disabled_sites[]' value='$sub_site_id' checked='checked'>
+                        <label for='delete__checklist__item-$sub_site_id'>{$blog->blogname}</label>
+                    </div>";
+                }
+                ?>
+                </div>
+                <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Enable Site Wise settings if you want to configure “Disable Comments” settings individually on every website.', 'disable-comments'); ?></p>
+            </div>
+
+            <?php endif;?>
             <p class="subtitle"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('These settings will permanently delete comments for your entire website, or for specific posts and comment types.', 'disable-comments'); ?></p>
             <div class="disable_option dc-text__block mb30 mt30">
                 <input type="radio" id="delete_everywhere" name="delete_mode" value="<?php echo esc_attr('delete_everywhere'); ?>" <?php checked($this->options['remove_everywhere']); ?> />
@@ -48,9 +49,9 @@
                     <?php if ($this->networkactive && is_network_admin()) :
                         $extradeletetypes = implode(', ', (array) $this->options['extra_post_types']);
                     ?>
-                        <p class="indent" id="extradeletetypes">
+                        <p class="indent subtitle" id="extradeletetypes">
                             <?php _e('Only the built-in post types appear above. If you want to disable comments on other custom post types on the entire network, you can supply a comma-separated list of post types below (use the slug that identifies the post type).', 'disable-comments'); ?>
-                            <br /><label><?php _e('Custom post types:', 'disable-comments'); ?> <input type="text" name="delete_extra_post_types" size="30" value="<?php echo esc_attr($extradeletetypes); ?>" /></label></p>
+                            <br /> <br /><label><?php _e('Custom post types:', 'disable-comments'); ?> <input type="text" name="delete_extra_post_types" size="30" value="<?php echo esc_attr($extradeletetypes); ?>" /></label></p>
                     <?php endif; ?>
                 </div>
                 <p class="disable__option__description"><span class="danger"><?php _e('Warnings:', 'disable-comments') ?></span> <?php _e('This will remove existing comment entries for the selected post type(s) in the database and cannot be reverted without a database backups.', 'disable-comments'); ?></p>
