@@ -2,7 +2,7 @@
     <?php
     if ($this->get_all_comments_number() > 0) :
     ?>
-        
+
 
         <div class="disable__comment__option mb50">
             <?php if(is_network_admin()):?>
@@ -23,7 +23,7 @@
                 }
                 ?>
                 </div>
-                <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Enable Site Wise settings if you want to configure “Disable Comments” settings individually on every website.', 'disable-comments'); ?></p>
+                <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Select your sub-sites where you want to delete comments.', 'disable-comments'); ?></p>
             </div>
 
             <?php endif;?>
