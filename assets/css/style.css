@@ -8,7 +8,6 @@
   --base-spacer-y: 16px;
   --b-radius-6: 25px;
 }
-
 @media (max-width: 1599.98px) {
   :root {
     --base-gutter: 20px;
@@ -17,7 +16,6 @@
     --xl-gutter: 70px;
   }
 }
-
 @media (max-width: 1399.98px) {
   :root {
     --base-gutter: 20px;
@@ -26,7 +24,6 @@
     --xl-gutter: 50px;
   }
 }
-
 @media (max-width: 1199.98px) {
   :root {
     --base-spacer-x: 10px;
@@ -36,7 +33,6 @@
     --xl-gutter: 40px;
   }
 }
-
 @media (max-width: 991.98px) {
   :root {
     --base-spacer-x: 5px;
@@ -58,69 +54,48 @@
   color: #000000;
   outline: none;
   border: none;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   overflow: hidden;
   -webkit-display: flex;
   -moz-display: flex;
   -ms-display: flex;
   -o-display: flex;
-  display: -webkit-box;
   display: flex;
   -moz-flex-direction: column;
-  -ms-flex-direction: column;
   -o-flex-direction: column;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-          flex-direction: column;
+  flex-direction: column;
 }
-
 .disablecommentswrap * {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
-
-.disablecommentswrap ::-moz-selection {
-  color: #ffffff;
-  background: rgba(98, 60, 234, 0.8);
-}
-
 .disablecommentswrap ::selection {
   color: #ffffff;
   background: rgba(98, 60, 234, 0.8);
 }
-
 .disablecommentswrap ul,
 .disablecommentswrap li {
   list-style: none;
 }
-
 .disablecommentswrap a {
   color: initial;
-  -webkit-transition: all 0.3s linear;
   transition: all 0.3s linear;
   text-decoration: none;
   display: inline-block;
 }
-
 .disablecommentswrap label {
   margin-bottom: 0;
 }
-
 .disablecommentswrap .button {
   vertical-align: middle;
   font-family: "DM Sans", sans-serif;
   font-weight: 500;
 }
-
 .disablecommentswrap .button:hover, .disablecommentswrap .button:focus {
   outline: none;
 }
-
 .disablecommentswrap .button:not(:disabled) {
   cursor: pointer;
 }
-
 .disablecommentswrap h1,
 .disablecommentswrap h2,
 .disablecommentswrap h3,
@@ -131,7 +106,6 @@
   margin: 0;
   padding: 0;
 }
-
 .disablecommentswrap h1,
 .disablecommentswrap h2,
 .disablecommentswrap h3,
@@ -145,7 +119,6 @@
   margin-bottom: 0;
   color: inherit;
 }
-
 .disablecommentswrap h1 a,
 .disablecommentswrap h2 a,
 .disablecommentswrap h3 a,
@@ -154,7 +127,6 @@
 .disablecommentswrap h6 a {
   color: inherit;
 }
-
 .disablecommentswrap h1 a:hover,
 .disablecommentswrap h2 a:hover,
 .disablecommentswrap h3 a:hover,
@@ -163,12 +135,10 @@
 .disablecommentswrap h6 a:hover {
   color: inherit;
 }
-
 .disablecommentswrap ul,
 .disablecommentswrap ol {
   margin-bottom: 0;
 }
-
 .disablecommentswrap img,
 .disablecommentswrap video {
   max-width: 100%;
@@ -284,8 +254,7 @@
 
 a.color__primary:hover, a.color__primary:focus {
   color: #4218db;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .color__secondary {
@@ -294,8 +263,7 @@ a.color__primary:hover, a.color__primary:focus {
 
 a.color__secondary:hover, a.color__secondary:focus {
   color: #f9581f;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .color__success {
@@ -304,8 +272,7 @@ a.color__secondary:hover, a.color__secondary:focus {
 
 a.color__success:hover, a.color__success:focus {
   color: #049951;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .color__danger {
@@ -314,8 +281,7 @@ a.color__success:hover, a.color__success:focus {
 
 a.color__danger:hover, a.color__danger:focus {
   color: #ae0514;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .color__info {
@@ -324,8 +290,7 @@ a.color__danger:hover, a.color__danger:focus {
 
 a.color__info:hover, a.color__info:focus {
   color: #008ec9;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .color__dark {
@@ -334,8 +299,7 @@ a.color__info:hover, a.color__info:focus {
 
 a.color__dark:hover, a.color__dark:focus {
   color: #0c0e10;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .color__white {
@@ -344,8 +308,7 @@ a.color__dark:hover, a.color__dark:focus {
 
 a.color__white:hover, a.color__white:focus {
   color: #e6e6e6;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .color__black {
@@ -358,8 +321,7 @@ a.color__white:hover, a.color__white:focus {
 
 a.color__grey:hover, a.color__grey:focus {
   color: #ccd5f1;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .color__grey2 {
@@ -368,8 +330,7 @@ a.color__grey:hover, a.color__grey:focus {
 
 a.color__grey2:hover, a.color__grey2:focus {
   color: #657389;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .color__twitter {
@@ -378,8 +339,7 @@ a.color__grey2:hover, a.color__grey2:focus {
 
 a.color__twitter:hover, a.color__twitter:focus {
   color: #0c85d0;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .color__linkedin {
@@ -388,8 +348,7 @@ a.color__twitter:hover, a.color__twitter:focus {
 
 a.color__linkedin:hover, a.color__linkedin:focus {
   color: #005582;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .color__instagram {
@@ -398,8 +357,7 @@ a.color__linkedin:hover, a.color__linkedin:focus {
 
 a.color__instagram:hover, a.color__instagram:focus {
   color: #c21c54;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .background__primary {
@@ -455,157 +413,131 @@ a.color__instagram:hover, a.color__instagram:focus {
 }
 
 .gradient__primary {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(98, 60, 234, 0.3)), to(rgba(98, 60, 234, 0.05)));
   background-image: linear-gradient(180deg, rgba(98, 60, 234, 0.3), rgba(98, 60, 234, 0.05));
   color: #623cea;
 }
 
 .gradient__secondary {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(250, 125, 81, 0.3)), to(rgba(250, 125, 81, 0.05)));
   background-image: linear-gradient(180deg, rgba(250, 125, 81, 0.3), rgba(250, 125, 81, 0.05));
   color: #fa7d51;
 }
 
 .gradient__success {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(5, 203, 107, 0.3)), to(rgba(5, 203, 107, 0.05)));
   background-image: linear-gradient(180deg, rgba(5, 203, 107, 0.3), rgba(5, 203, 107, 0.05));
   color: #05cb6b;
 }
 
 .gradient__danger {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(224, 6, 26, 0.3)), to(rgba(224, 6, 26, 0.05)));
   background-image: linear-gradient(180deg, rgba(224, 6, 26, 0.3), rgba(224, 6, 26, 0.05));
   color: #e0061a;
 }
 
 .gradient__info {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 178, 252, 0.3)), to(rgba(0, 178, 252, 0.05)));
   background-image: linear-gradient(180deg, rgba(0, 178, 252, 0.3), rgba(0, 178, 252, 0.05));
   color: #00b2fc;
 }
 
 .gradient__dark {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(34, 40, 45, 0.3)), to(rgba(34, 40, 45, 0.05)));
   background-image: linear-gradient(180deg, rgba(34, 40, 45, 0.3), rgba(34, 40, 45, 0.05));
   color: #22282d;
 }
 
 .gradient__white {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.3)), to(rgba(255, 255, 255, 0.05)));
   background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
   color: #ffffff;
 }
 
 .gradient__black {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.3)), to(rgba(0, 0, 0, 0.05)));
   background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.05));
   color: #000000;
 }
 
 .gradient__grey {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(244, 246, 252, 0.3)), to(rgba(244, 246, 252, 0.05)));
   background-image: linear-gradient(180deg, rgba(244, 246, 252, 0.3), rgba(244, 246, 252, 0.05));
   color: #f4f6fc;
 }
 
 .gradient__grey2 {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(128, 141, 161, 0.3)), to(rgba(128, 141, 161, 0.05)));
   background-image: linear-gradient(180deg, rgba(128, 141, 161, 0.3), rgba(128, 141, 161, 0.05));
   color: #808da1;
 }
 
 .gradient__twitter {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(29, 161, 242, 0.3)), to(rgba(29, 161, 242, 0.05)));
   background-image: linear-gradient(180deg, rgba(29, 161, 242, 0.3), rgba(29, 161, 242, 0.05));
   color: #1da1f2;
 }
 
 .gradient__linkedin {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 119, 181, 0.3)), to(rgba(0, 119, 181, 0.05)));
   background-image: linear-gradient(180deg, rgba(0, 119, 181, 0.3), rgba(0, 119, 181, 0.05));
   color: #0077b5;
 }
 
 .gradient__instagram {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(225, 48, 108, 0.3)), to(rgba(225, 48, 108, 0.05)));
   background-image: linear-gradient(180deg, rgba(225, 48, 108, 0.3), rgba(225, 48, 108, 0.05));
   color: #e1306c;
 }
 
 .cloud__info__card__icon__primary {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(98, 60, 234, 0.3)), to(rgba(98, 60, 234, 0.05)));
   background-image: linear-gradient(180deg, rgba(98, 60, 234, 0.3), rgba(98, 60, 234, 0.05));
   color: #623cea;
 }
 
 .cloud__info__card__icon__secondary {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(250, 125, 81, 0.3)), to(rgba(250, 125, 81, 0.05)));
   background-image: linear-gradient(180deg, rgba(250, 125, 81, 0.3), rgba(250, 125, 81, 0.05));
   color: #fa7d51;
 }
 
 .cloud__info__card__icon__success {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(5, 203, 107, 0.3)), to(rgba(5, 203, 107, 0.05)));
   background-image: linear-gradient(180deg, rgba(5, 203, 107, 0.3), rgba(5, 203, 107, 0.05));
   color: #05cb6b;
 }
 
 .cloud__info__card__icon__danger {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(224, 6, 26, 0.3)), to(rgba(224, 6, 26, 0.05)));
   background-image: linear-gradient(180deg, rgba(224, 6, 26, 0.3), rgba(224, 6, 26, 0.05));
   color: #e0061a;
 }
 
 .cloud__info__card__icon__info {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 178, 252, 0.3)), to(rgba(0, 178, 252, 0.05)));
   background-image: linear-gradient(180deg, rgba(0, 178, 252, 0.3), rgba(0, 178, 252, 0.05));
   color: #00b2fc;
 }
 
 .cloud__info__card__icon__dark {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(34, 40, 45, 0.3)), to(rgba(34, 40, 45, 0.05)));
   background-image: linear-gradient(180deg, rgba(34, 40, 45, 0.3), rgba(34, 40, 45, 0.05));
   color: #22282d;
 }
 
 .cloud__info__card__icon__white {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.3)), to(rgba(255, 255, 255, 0.05)));
   background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
   color: #ffffff;
 }
 
 .cloud__info__card__icon__black {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.3)), to(rgba(0, 0, 0, 0.05)));
   background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.05));
   color: #000000;
 }
 
 .cloud__info__card__icon__grey {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(244, 246, 252, 0.3)), to(rgba(244, 246, 252, 0.05)));
   background-image: linear-gradient(180deg, rgba(244, 246, 252, 0.3), rgba(244, 246, 252, 0.05));
   color: #f4f6fc;
 }
 
 .cloud__info__card__icon__grey2 {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(128, 141, 161, 0.3)), to(rgba(128, 141, 161, 0.05)));
   background-image: linear-gradient(180deg, rgba(128, 141, 161, 0.3), rgba(128, 141, 161, 0.05));
   color: #808da1;
 }
 
 .cloud__info__card__icon__twitter {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(29, 161, 242, 0.3)), to(rgba(29, 161, 242, 0.05)));
   background-image: linear-gradient(180deg, rgba(29, 161, 242, 0.3), rgba(29, 161, 242, 0.05));
   color: #1da1f2;
 }
 
 .cloud__info__card__icon__linkedin {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 119, 181, 0.3)), to(rgba(0, 119, 181, 0.05)));
   background-image: linear-gradient(180deg, rgba(0, 119, 181, 0.3), rgba(0, 119, 181, 0.05));
   color: #0077b5;
 }
 
 .cloud__info__card__icon__instagram {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(225, 48, 108, 0.3)), to(rgba(225, 48, 108, 0.05)));
   background-image: linear-gradient(180deg, rgba(225, 48, 108, 0.3), rgba(225, 48, 108, 0.05));
   color: #e1306c;
 }
@@ -614,11 +546,9 @@ a.color__instagram:hover, a.color__instagram:focus {
   color: white;
   background: #623cea;
 }
-
 .counter__card__primary .counter__card--icon:before {
   background: #623cea;
 }
-
 .counter__card__primary .counter__card--content .count__number {
   color: #623cea;
 }
@@ -627,11 +557,9 @@ a.color__instagram:hover, a.color__instagram:focus {
   color: white;
   background: #fa7d51;
 }
-
 .counter__card__secondary .counter__card--icon:before {
   background: #fa7d51;
 }
-
 .counter__card__secondary .counter__card--content .count__number {
   color: #fa7d51;
 }
@@ -640,11 +568,9 @@ a.color__instagram:hover, a.color__instagram:focus {
   color: white;
   background: #05cb6b;
 }
-
 .counter__card__success .counter__card--icon:before {
   background: #05cb6b;
 }
-
 .counter__card__success .counter__card--content .count__number {
   color: #05cb6b;
 }
@@ -653,11 +579,9 @@ a.color__instagram:hover, a.color__instagram:focus {
   color: white;
   background: #e0061a;
 }
-
 .counter__card__danger .counter__card--icon:before {
   background: #e0061a;
 }
-
 .counter__card__danger .counter__card--content .count__number {
   color: #e0061a;
 }
@@ -666,11 +590,9 @@ a.color__instagram:hover, a.color__instagram:focus {
   color: white;
   background: #00b2fc;
 }
-
 .counter__card__info .counter__card--icon:before {
   background: #00b2fc;
 }
-
 .counter__card__info .counter__card--content .count__number {
   color: #00b2fc;
 }
@@ -679,11 +601,9 @@ a.color__instagram:hover, a.color__instagram:focus {
   color: white;
   background: #22282d;
 }
-
 .counter__card__dark .counter__card--icon:before {
   background: #22282d;
 }
-
 .counter__card__dark .counter__card--content .count__number {
   color: #22282d;
 }
@@ -692,11 +612,9 @@ a.color__instagram:hover, a.color__instagram:focus {
   color: #22282d;
   background: #ffffff;
 }
-
 .counter__card__white .counter__card--icon:before {
   background: #ffffff;
 }
-
 .counter__card__white .counter__card--content .count__number {
   color: #ffffff;
 }
@@ -705,11 +623,9 @@ a.color__instagram:hover, a.color__instagram:focus {
   color: white;
   background: #000000;
 }
-
 .counter__card__black .counter__card--icon:before {
   background: #000000;
 }
-
 .counter__card__black .counter__card--content .count__number {
   color: #000000;
 }
@@ -718,11 +634,9 @@ a.color__instagram:hover, a.color__instagram:focus {
   color: #22282d;
   background: #f4f6fc;
 }
-
 .counter__card__grey .counter__card--icon:before {
   background: #f4f6fc;
 }
-
 .counter__card__grey .counter__card--content .count__number {
   color: #f4f6fc;
 }
@@ -731,11 +645,9 @@ a.color__instagram:hover, a.color__instagram:focus {
   color: white;
   background: #808da1;
 }
-
 .counter__card__grey2 .counter__card--icon:before {
   background: #808da1;
 }
-
 .counter__card__grey2 .counter__card--content .count__number {
   color: #808da1;
 }
@@ -744,11 +656,9 @@ a.color__instagram:hover, a.color__instagram:focus {
   color: white;
   background: #1da1f2;
 }
-
 .counter__card__twitter .counter__card--icon:before {
   background: #1da1f2;
 }
-
 .counter__card__twitter .counter__card--content .count__number {
   color: #1da1f2;
 }
@@ -757,11 +667,9 @@ a.color__instagram:hover, a.color__instagram:focus {
   color: white;
   background: #0077b5;
 }
-
 .counter__card__linkedin .counter__card--icon:before {
   background: #0077b5;
 }
-
 .counter__card__linkedin .counter__card--content .count__number {
   color: #0077b5;
 }
@@ -770,11 +678,9 @@ a.color__instagram:hover, a.color__instagram:focus {
   color: white;
   background: #e1306c;
 }
-
 .counter__card__instagram .counter__card--icon:before {
   background: #e1306c;
 }
-
 .counter__card__instagram .counter__card--content .count__number {
   color: #e1306c;
 }
@@ -1242,19 +1148,16 @@ a.color__instagram:hover, a.color__instagram:focus {
 .disablecommentswrap {
   padding: 30px;
 }
-
 @media (max-width: 575.98px) {
   .disablecommentswrap {
     padding: 30px;
   }
 }
-
 .disablecommentswrap .delete-comments-not-found {
   width: 60%;
   margin: 0 auto;
   text-align: center;
 }
-
 .disablecommentswrap .delete-comments-not-found .error-message {
   margin-top: 30px;
   color: #444;
@@ -1271,13 +1174,11 @@ a.color__instagram:hover, a.color__instagram:focus {
   padding: 20px;
   border-radius: 10px;
 }
-
 .dc-text__block__big__pad {
   padding: 40px 50px;
   background: #ffffff;
   border-radius: 10px;
 }
-
 @media (max-width: 767.98px) {
   .dc-text__block__big__pad {
     padding: 40px 25px;
@@ -1291,21 +1192,15 @@ a.color__instagram:hover, a.color__instagram:focus {
 }
 
 .dc-row {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   margin-right: -15px;
   margin-left: -15px;
 }
 
 .dc-col {
-  -ms-flex-preferred-size: 0;
-      flex-basis: 0;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  flex-basis: 0;
+  flex-grow: 1;
   max-width: 100%;
 }
 
@@ -1323,52 +1218,38 @@ a.color__instagram:hover, a.color__instagram:focus {
 
 @media (min-width: 576px) {
   .dc-col-xs-6 {
-    -webkit-box-flex: 0;
-        -ms-flex: 0 0 50%;
-            flex: 0 0 50%;
+    flex: 0 0 50%;
     max-width: 50%;
   }
 }
-
 @media (min-width: 768px) {
   .dc-col-sm-6 {
-    -webkit-box-flex: 0;
-        -ms-flex: 0 0 50%;
-            flex: 0 0 50%;
+    flex: 0 0 50%;
     max-width: 50%;
   }
 }
-
 @media (min-width: 992px) {
   .dc-col-md-6 {
-    -webkit-box-flex: 0;
-        -ms-flex: 0 0 50%;
-            flex: 0 0 50%;
+    flex: 0 0 50%;
     max-width: 50%;
   }
 }
-
 @media (min-width: 1200px) {
   .dc-col-lg-3 {
-    -webkit-box-flex: 0;
-        -ms-flex: 0 0 25%;
-            flex: 0 0 25%;
+    flex: 0 0 25%;
     max-width: 25%;
   }
+
   .dc-col-lg-4 {
-    -webkit-box-flex: 0;
-        -ms-flex: 0 0 33.33%;
-            flex: 0 0 33.33%;
+    flex: 0 0 33.33%;
     max-width: 33.33%;
   }
+
   .dc-col-lg-9 {
-    -webkit-box-flex: 0;
-        -ms-flex: 0 0 75%;
-            flex: 0 0 75%;
+    flex: 0 0 75%;
     max-width: 75%;
   }
 }
-
 .form__control {
   border: 1px solid rgba(0, 0, 0, 0.15) !important;
 }
@@ -1377,30 +1258,21 @@ a.color__instagram:hover, a.color__instagram:focus {
   background: #623cea;
   color: white;
   border-color: #623cea;
-  -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
-  -webkit-transition-property: background, color, box-shadow, border;
-  -webkit-transition-property: background, color, border, -webkit-box-shadow;
-  transition-property: background, color, border, -webkit-box-shadow;
   transition-property: background, color, box-shadow, border;
-  transition-property: background, color, box-shadow, border, -webkit-box-shadow;
 }
-
 .button__primary:not(.hover__highlight):disabled {
   cursor: not-allowed;
   background: #fa7d51;
 }
-
 .button__primary:not(.hover__highlight) .icon {
   color: #623cea;
   background: white;
 }
-
 .button__primary.hover__highlight {
   color: #623cea;
   border-color: rgba(98, 60, 234, 0.2);
 }
-
 .button__primary.hover__highlight .icon {
   background: #623cea;
   color: #ffffff;
@@ -1414,16 +1286,13 @@ button.button__primary:hover {
   border-color: #4f25e8;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
 }
-
 a.button__primary.active:disabled, a.button__primary:hover:disabled,
 button.button__primary.active:disabled,
 button.button__primary:hover:disabled {
   cursor: not-allowed;
   background: #fa7d51;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 a.button__primary.hover__highlight:hover .icon,
 button.button__primary.hover__highlight:hover .icon {
   background: white;
@@ -1434,30 +1303,21 @@ button.button__primary.hover__highlight:hover .icon {
   background: #fa7d51;
   color: white;
   border-color: #fa7d51;
-  -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
-  -webkit-transition-property: background, color, box-shadow, border;
-  -webkit-transition-property: background, color, border, -webkit-box-shadow;
-  transition-property: background, color, border, -webkit-box-shadow;
   transition-property: background, color, box-shadow, border;
-  transition-property: background, color, box-shadow, border, -webkit-box-shadow;
 }
-
 .button__secondary:not(.hover__highlight):disabled {
   cursor: not-allowed;
   background: #fa7d51;
 }
-
 .button__secondary:not(.hover__highlight) .icon {
   color: #fa7d51;
   background: white;
 }
-
 .button__secondary.hover__highlight {
   color: #623cea;
   border-color: rgba(98, 60, 234, 0.2);
 }
-
 .button__secondary.hover__highlight .icon {
   background: #623cea;
   color: #ffffff;
@@ -1471,16 +1331,13 @@ button.button__secondary:hover {
   border-color: #f96a38;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
 }
-
 a.button__secondary.active:disabled, a.button__secondary:hover:disabled,
 button.button__secondary.active:disabled,
 button.button__secondary:hover:disabled {
   cursor: not-allowed;
   background: #fa7d51;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 a.button__secondary.hover__highlight:hover .icon,
 button.button__secondary.hover__highlight:hover .icon {
   background: white;
@@ -1491,30 +1348,21 @@ button.button__secondary.hover__highlight:hover .icon {
   background: #05cb6b;
   color: white;
   border-color: #05cb6b;
-  -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
-  -webkit-transition-property: background, color, box-shadow, border;
-  -webkit-transition-property: background, color, border, -webkit-box-shadow;
-  transition-property: background, color, border, -webkit-box-shadow;
   transition-property: background, color, box-shadow, border;
-  transition-property: background, color, box-shadow, border, -webkit-box-shadow;
 }
-
 .button__success:not(.hover__highlight):disabled {
   cursor: not-allowed;
   background: #fa7d51;
 }
-
 .button__success:not(.hover__highlight) .icon {
   color: #05cb6b;
   background: white;
 }
-
 .button__success.hover__highlight {
   color: #623cea;
   border-color: rgba(98, 60, 234, 0.2);
 }
-
 .button__success.hover__highlight .icon {
   background: #623cea;
   color: #ffffff;
@@ -1528,16 +1376,13 @@ button.button__success:hover {
   border-color: #04b25e;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
 }
-
 a.button__success.active:disabled, a.button__success:hover:disabled,
 button.button__success.active:disabled,
 button.button__success:hover:disabled {
   cursor: not-allowed;
   background: #fa7d51;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 a.button__success.hover__highlight:hover .icon,
 button.button__success.hover__highlight:hover .icon {
   background: white;
@@ -1548,30 +1393,21 @@ button.button__success.hover__highlight:hover .icon {
   background: #e0061a;
   color: white;
   border-color: #e0061a;
-  -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
-  -webkit-transition-property: background, color, box-shadow, border;
-  -webkit-transition-property: background, color, border, -webkit-box-shadow;
-  transition-property: background, color, border, -webkit-box-shadow;
   transition-property: background, color, box-shadow, border;
-  transition-property: background, color, box-shadow, border, -webkit-box-shadow;
 }
-
 .button__danger:not(.hover__highlight):disabled {
   cursor: not-allowed;
   background: #fa7d51;
 }
-
 .button__danger:not(.hover__highlight) .icon {
   color: #e0061a;
   background: white;
 }
-
 .button__danger.hover__highlight {
   color: #623cea;
   border-color: rgba(98, 60, 234, 0.2);
 }
-
 .button__danger.hover__highlight .icon {
   background: #623cea;
   color: #ffffff;
@@ -1585,16 +1421,13 @@ button.button__danger:hover {
   border-color: #c70517;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
 }
-
 a.button__danger.active:disabled, a.button__danger:hover:disabled,
 button.button__danger.active:disabled,
 button.button__danger:hover:disabled {
   cursor: not-allowed;
   background: #fa7d51;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 a.button__danger.hover__highlight:hover .icon,
 button.button__danger.hover__highlight:hover .icon {
   background: white;
@@ -1605,30 +1438,21 @@ button.button__danger.hover__highlight:hover .icon {
   background: #00b2fc;
   color: white;
   border-color: #00b2fc;
-  -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
-  -webkit-transition-property: background, color, box-shadow, border;
-  -webkit-transition-property: background, color, border, -webkit-box-shadow;
-  transition-property: background, color, border, -webkit-box-shadow;
   transition-property: background, color, box-shadow, border;
-  transition-property: background, color, box-shadow, border, -webkit-box-shadow;
 }
-
 .button__info:not(.hover__highlight):disabled {
   cursor: not-allowed;
   background: #fa7d51;
 }
-
 .button__info:not(.hover__highlight) .icon {
   color: #00b2fc;
   background: white;
 }
-
 .button__info.hover__highlight {
   color: #623cea;
   border-color: rgba(98, 60, 234, 0.2);
 }
-
 .button__info.hover__highlight .icon {
   background: #623cea;
   color: #ffffff;
@@ -1642,16 +1466,13 @@ button.button__info:hover {
   border-color: #00a0e3;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
 }
-
 a.button__info.active:disabled, a.button__info:hover:disabled,
 button.button__info.active:disabled,
 button.button__info:hover:disabled {
   cursor: not-allowed;
   background: #fa7d51;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 a.button__info.hover__highlight:hover .icon,
 button.button__info.hover__highlight:hover .icon {
   background: white;
@@ -1662,30 +1483,21 @@ button.button__info.hover__highlight:hover .icon {
   background: #22282d;
   color: white;
   border-color: #22282d;
-  -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
-  -webkit-transition-property: background, color, box-shadow, border;
-  -webkit-transition-property: background, color, border, -webkit-box-shadow;
-  transition-property: background, color, border, -webkit-box-shadow;
   transition-property: background, color, box-shadow, border;
-  transition-property: background, color, box-shadow, border, -webkit-box-shadow;
 }
-
 .button__dark:not(.hover__highlight):disabled {
   cursor: not-allowed;
   background: #fa7d51;
 }
-
 .button__dark:not(.hover__highlight) .icon {
   color: #22282d;
   background: white;
 }
-
 .button__dark.hover__highlight {
   color: #623cea;
   border-color: rgba(98, 60, 234, 0.2);
 }
-
 .button__dark.hover__highlight .icon {
   background: #623cea;
   color: #ffffff;
@@ -1699,16 +1511,13 @@ button.button__dark:hover {
   border-color: #171b1e;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
 }
-
 a.button__dark.active:disabled, a.button__dark:hover:disabled,
 button.button__dark.active:disabled,
 button.button__dark:hover:disabled {
   cursor: not-allowed;
   background: #fa7d51;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 a.button__dark.hover__highlight:hover .icon,
 button.button__dark.hover__highlight:hover .icon {
   background: white;
@@ -1719,30 +1528,21 @@ button.button__dark.hover__highlight:hover .icon {
   background: #ffffff;
   color: #623cea;
   border-color: #ffffff;
-  -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
-  -webkit-transition-property: background, color, box-shadow, border;
-  -webkit-transition-property: background, color, border, -webkit-box-shadow;
-  transition-property: background, color, border, -webkit-box-shadow;
   transition-property: background, color, box-shadow, border;
-  transition-property: background, color, box-shadow, border, -webkit-box-shadow;
 }
-
 .button__white:not(.hover__highlight):disabled {
   cursor: not-allowed;
   background: #fa7d51;
 }
-
 .button__white:not(.hover__highlight) .icon {
   color: #ffffff;
   background: #623cea;
 }
-
 .button__white.hover__highlight {
   color: #623cea;
   border-color: rgba(98, 60, 234, 0.2);
 }
-
 .button__white.hover__highlight .icon {
   background: #623cea;
   color: #ffffff;
@@ -1756,16 +1556,13 @@ button.button__white:hover {
   border-color: #f2f2f2;
   text-shadow: 0 1px 1px rgba(98, 60, 234, 0.3);
 }
-
 a.button__white.active:disabled, a.button__white:hover:disabled,
 button.button__white.active:disabled,
 button.button__white:hover:disabled {
   cursor: not-allowed;
   background: #fa7d51;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 a.button__white.hover__highlight:hover .icon,
 button.button__white.hover__highlight:hover .icon {
   background: #623cea;
@@ -1776,30 +1573,21 @@ button.button__white.hover__highlight:hover .icon {
   background: #000000;
   color: white;
   border-color: #000000;
-  -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
-  -webkit-transition-property: background, color, box-shadow, border;
-  -webkit-transition-property: background, color, border, -webkit-box-shadow;
-  transition-property: background, color, border, -webkit-box-shadow;
   transition-property: background, color, box-shadow, border;
-  transition-property: background, color, box-shadow, border, -webkit-box-shadow;
 }
-
 .button__black:not(.hover__highlight):disabled {
   cursor: not-allowed;
   background: #fa7d51;
 }
-
 .button__black:not(.hover__highlight) .icon {
   color: #000000;
   background: white;
 }
-
 .button__black.hover__highlight {
   color: #623cea;
   border-color: rgba(98, 60, 234, 0.2);
 }
-
 .button__black.hover__highlight .icon {
   background: #623cea;
   color: #ffffff;
@@ -1810,10 +1598,8 @@ button.button__black.active:disabled,
 button.button__black:hover:disabled {
   cursor: not-allowed;
   background: #fa7d51;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 a.button__black.hover__highlight:hover .icon,
 button.button__black.hover__highlight:hover .icon {
   background: white;
@@ -1824,30 +1610,21 @@ button.button__black.hover__highlight:hover .icon {
   background: #f4f6fc;
   color: #623cea;
   border-color: #f4f6fc;
-  -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
-  -webkit-transition-property: background, color, box-shadow, border;
-  -webkit-transition-property: background, color, border, -webkit-box-shadow;
-  transition-property: background, color, border, -webkit-box-shadow;
   transition-property: background, color, box-shadow, border;
-  transition-property: background, color, box-shadow, border, -webkit-box-shadow;
 }
-
 .button__grey:not(.hover__highlight):disabled {
   cursor: not-allowed;
   background: #fa7d51;
 }
-
 .button__grey:not(.hover__highlight) .icon {
   color: #f4f6fc;
   background: #623cea;
 }
-
 .button__grey.hover__highlight {
   color: #623cea;
   border-color: rgba(98, 60, 234, 0.2);
 }
-
 .button__grey.hover__highlight .icon {
   background: #623cea;
   color: #ffffff;
@@ -1861,16 +1638,13 @@ button.button__grey:hover {
   border-color: #e0e6f7;
   text-shadow: 0 1px 1px rgba(98, 60, 234, 0.3);
 }
-
 a.button__grey.active:disabled, a.button__grey:hover:disabled,
 button.button__grey.active:disabled,
 button.button__grey:hover:disabled {
   cursor: not-allowed;
   background: #fa7d51;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 a.button__grey.hover__highlight:hover .icon,
 button.button__grey.hover__highlight:hover .icon {
   background: #623cea;
@@ -1881,30 +1655,21 @@ button.button__grey.hover__highlight:hover .icon {
   background: #808da1;
   color: white;
   border-color: #808da1;
-  -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
-  -webkit-transition-property: background, color, box-shadow, border;
-  -webkit-transition-property: background, color, border, -webkit-box-shadow;
-  transition-property: background, color, border, -webkit-box-shadow;
   transition-property: background, color, box-shadow, border;
-  transition-property: background, color, box-shadow, border, -webkit-box-shadow;
 }
-
 .button__grey2:not(.hover__highlight):disabled {
   cursor: not-allowed;
   background: #fa7d51;
 }
-
 .button__grey2:not(.hover__highlight) .icon {
   color: #808da1;
   background: white;
 }
-
 .button__grey2.hover__highlight {
   color: #623cea;
   border-color: rgba(98, 60, 234, 0.2);
 }
-
 .button__grey2.hover__highlight .icon {
   background: #623cea;
   color: #ffffff;
@@ -1918,16 +1683,13 @@ button.button__grey2:hover {
   border-color: #718096;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
 }
-
 a.button__grey2.active:disabled, a.button__grey2:hover:disabled,
 button.button__grey2.active:disabled,
 button.button__grey2:hover:disabled {
   cursor: not-allowed;
   background: #fa7d51;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 a.button__grey2.hover__highlight:hover .icon,
 button.button__grey2.hover__highlight:hover .icon {
   background: white;
@@ -1938,30 +1700,21 @@ button.button__grey2.hover__highlight:hover .icon {
   background: #1da1f2;
   color: white;
   border-color: #1da1f2;
-  -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
-  -webkit-transition-property: background, color, box-shadow, border;
-  -webkit-transition-property: background, color, border, -webkit-box-shadow;
-  transition-property: background, color, border, -webkit-box-shadow;
   transition-property: background, color, box-shadow, border;
-  transition-property: background, color, box-shadow, border, -webkit-box-shadow;
 }
-
 .button__twitter:not(.hover__highlight):disabled {
   cursor: not-allowed;
   background: #fa7d51;
 }
-
 .button__twitter:not(.hover__highlight) .icon {
   color: #1da1f2;
   background: white;
 }
-
 .button__twitter.hover__highlight {
   color: #623cea;
   border-color: rgba(98, 60, 234, 0.2);
 }
-
 .button__twitter.hover__highlight .icon {
   background: #623cea;
   color: #ffffff;
@@ -1975,16 +1728,13 @@ button.button__twitter:hover {
   border-color: #0d95e8;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
 }
-
 a.button__twitter.active:disabled, a.button__twitter:hover:disabled,
 button.button__twitter.active:disabled,
 button.button__twitter:hover:disabled {
   cursor: not-allowed;
   background: #fa7d51;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 a.button__twitter.hover__highlight:hover .icon,
 button.button__twitter.hover__highlight:hover .icon {
   background: white;
@@ -1995,30 +1745,21 @@ button.button__twitter.hover__highlight:hover .icon {
   background: #0077b5;
   color: white;
   border-color: #0077b5;
-  -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
-  -webkit-transition-property: background, color, box-shadow, border;
-  -webkit-transition-property: background, color, border, -webkit-box-shadow;
-  transition-property: background, color, border, -webkit-box-shadow;
   transition-property: background, color, box-shadow, border;
-  transition-property: background, color, box-shadow, border, -webkit-box-shadow;
 }
-
 .button__linkedin:not(.hover__highlight):disabled {
   cursor: not-allowed;
   background: #fa7d51;
 }
-
 .button__linkedin:not(.hover__highlight) .icon {
   color: #0077b5;
   background: white;
 }
-
 .button__linkedin.hover__highlight {
   color: #623cea;
   border-color: rgba(98, 60, 234, 0.2);
 }
-
 .button__linkedin.hover__highlight .icon {
   background: #623cea;
   color: #ffffff;
@@ -2032,16 +1773,13 @@ button.button__linkedin:hover {
   border-color: #00669c;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
 }
-
 a.button__linkedin.active:disabled, a.button__linkedin:hover:disabled,
 button.button__linkedin.active:disabled,
 button.button__linkedin:hover:disabled {
   cursor: not-allowed;
   background: #fa7d51;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 a.button__linkedin.hover__highlight:hover .icon,
 button.button__linkedin.hover__highlight:hover .icon {
   background: white;
@@ -2052,30 +1790,21 @@ button.button__linkedin.hover__highlight:hover .icon {
   background: #e1306c;
   color: white;
   border-color: #e1306c;
-  -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
-  -webkit-transition-property: background, color, box-shadow, border;
-  -webkit-transition-property: background, color, border, -webkit-box-shadow;
-  transition-property: background, color, border, -webkit-box-shadow;
   transition-property: background, color, box-shadow, border;
-  transition-property: background, color, box-shadow, border, -webkit-box-shadow;
 }
-
 .button__instagram:not(.hover__highlight):disabled {
   cursor: not-allowed;
   background: #fa7d51;
 }
-
 .button__instagram:not(.hover__highlight) .icon {
   color: #e1306c;
   background: white;
 }
-
 .button__instagram.hover__highlight {
   color: #623cea;
   border-color: rgba(98, 60, 234, 0.2);
 }
-
 .button__instagram.hover__highlight .icon {
   background: #623cea;
   color: #ffffff;
@@ -2089,16 +1818,13 @@ button.button__instagram:hover {
   border-color: #d81f5e;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
 }
-
 a.button__instagram.active:disabled, a.button__instagram:hover:disabled,
 button.button__instagram.active:disabled,
 button.button__instagram:hover:disabled {
   cursor: not-allowed;
   background: #fa7d51;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 a.button__instagram.hover__highlight:hover .icon,
 button.button__instagram.hover__highlight:hover .icon {
   background: white;
@@ -2115,20 +1841,22 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 0;
   font-weight: 700;
   padding: 0 20px;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   font-family: "DM Sans", sans-serif;
   background: #f4f6fc;
 }
-
 .disablecommentswrap .button:hover, .disablecommentswrap .button:focus {
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   border: 0;
   color: #ffffff;
   background: #05cb6b;
 }
-
+.disablecommentswrap .button.button__fade {
+  display: flex;
+  align-items: center;
+  min-width: 190px;
+  justify-content: center;
+}
 @media (max-width: 991.98px) {
   .disablecommentswrap .button {
     height: 50px;
@@ -2136,50 +1864,30 @@ button.button__instagram.hover__highlight:hover .icon {
     font-size: 13px;
   }
 }
-
 .disablecommentswrap .button__delete {
   color: #ffffff;
   background: #e0061a;
 }
-
 .disablecommentswrap .button__delete:hover, .disablecommentswrap .button__delete:focus {
   background: red;
   color: #ffffff;
 }
-
 .disablecommentswrap .button__success {
   color: #ffffff;
   background: #05cb6b;
+  opacity: 0.6;
 }
-
 .disablecommentswrap .button__success:hover, .disablecommentswrap .button__success:focus {
   background: rgba(5, 203, 107, 0.9);
   color: #ffffff;
 }
-
-.disablecommentswrap .button__success.button__fade {
-  opacity: .6;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  min-width: 190px;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
 .disablecommentswrap .button__success.form-dirty {
   opacity: 1;
 }
-
 .disablecommentswrap .button--sm {
   height: 40px;
   line-height: 40px;
 }
-
 .disablecommentswrap .button__group .button:not(:last-child) {
   margin-right: 15px;
 }
@@ -2192,7 +1900,6 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 0;
   font-weight: 700;
   padding: 0 20px;
-  -webkit-box-shadow: none;
   box-shadow: none;
   outline: none;
   background: #f4f6fc !important;
@@ -2206,16 +1913,13 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 0;
   font-weight: 700;
   padding: 0 20px;
-  -webkit-box-shadow: none;
   box-shadow: none;
   outline: none;
   background: #e0061a !important;
 }
-
 .confirmButton:focus {
   outline: none !important;
-  -webkit-box-shadow: none !important;
-          box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 #eael-spinner {
@@ -2233,47 +1937,26 @@ button.button__instagram.hover__highlight:hover .icon {
   -moz-animation-duration: 1.2s;
   -moz-animation-iteration-count: infinite;
   -moz-animation-timing-function: linear;
-  transition-property: -webkit-transform;
   transition-property: transform;
-  transition-property: transform, -webkit-transform;
   animation-name: rotate;
-  -webkit-animation-duration: 1.2s;
-          animation-duration: 1.2s;
+  animation-duration: 1.2s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
-
-@-webkit-keyframes rotate {
-  from {
-    -webkit-transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-  }
-}
-
 @keyframes rotate {
   from {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
-
 .disable__comment__alert {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   padding: 10px 20px;
   border: 0;
 }
-
 @media (max-width: 767.98px) {
   .disable__comment__alert {
     display: block;
@@ -2282,97 +1965,73 @@ button.button__instagram.hover__highlight:hover .icon {
     margin-top: 20px;
   }
 }
-
 .disable__comment__alert .alert__content {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   padding-right: 20px;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
+  flex-wrap: wrap;
+  flex: 1;
 }
-
 @media (max-width: 767.98px) {
   .disable__comment__alert .alert__content {
     padding-right: 0;
   }
 }
-
 @media (max-width: 575.98px) {
   .disable__comment__alert .alert__content {
     display: block;
   }
 }
-
 .disable__comment__alert .alert__content img {
   margin-right: 15px;
   height: 30px;
 }
-
 @media (max-width: 575.98px) {
   .disable__comment__alert .alert__content img {
     margin-bottom: 10px;
   }
 }
-
 .disable__comment__alert .alert__content p {
   font-size: 18px;
   font-weight: 500;
   color: #22282d;
   font-family: "DM Sans", sans-serif;
 }
-
 .disable__comment__alert .alert__content a.wpinsights-disable-comments-collect {
   color: #05cb6b;
 }
-
 .disable__comment__alert .alert__content a.wpinsights-disable-comments-collect:hover,
 .disable__comment__alert .alert__content a.wpinsights-disable-comments-collect:visited,
 .disable__comment__alert .alert__content a.wpinsights-disable-comments-collect:focus {
   outline: none;
   border: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 .disable__comment__alert .alert__content .wpinsights-data {
   margin-top: 10px;
 }
-
 .disable__comment__alert .alert__content .wpinsights-data p {
   font-size: 13px;
 }
-
 .disable__comment__alert .button__group {
   text-align: right;
 }
-
 @media (max-width: 767.98px) {
   .disable__comment__alert .button__group {
     text-align: left;
   }
 }
-
 .disable__comment__alert .button__group .button {
   margin-right: 0;
   margin-top: 5px;
   margin-bottom: 5px;
 }
-
 .disable__comment__alert .button__group .button:not(:last-child) {
   margin-right: 0;
 }
-
 .disable__comment__alert .button__group .button:not(:first-child) {
   margin-left: 15px;
 }
-
 @media (max-width: 767.98px) {
   .disable__comment__alert .button__group .button {
     margin-right: 10px;
@@ -2389,7 +2048,6 @@ button.button__instagram.hover__highlight:hover .icon {
   text-align: center;
   margin-bottom: 50px;
 }
-
 .section__header h2 {
   font-size: 24px;
   font-weight: 700;
@@ -2402,7 +2060,6 @@ button.button__instagram.hover__highlight:hover .icon {
   border-radius: 5px;
   position: relative;
 }
-
 .disable__comment__nav__wrap .plugin__version {
   position: absolute;
   font-size: 16px;
@@ -2411,33 +2068,24 @@ button.button__instagram.hover__highlight:hover .icon {
   font-family: "DM Sans", sans-serif;
   top: 50%;
   right: 30px;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
-
 @media (max-width: 767.98px) {
   .disable__comment__nav__wrap .plugin__version {
     position: static;
     top: 0;
-    -webkit-transform: translateY(0);
-            transform: translateY(0);
+    transform: translateY(0);
     padding: 10px 10px 10px 20px;
   }
 }
-
 .disable__comment__nav__wrap .disable__comment__nav {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   margin-top: 0;
 }
-
 .disable__comment__nav__wrap .disable__comment__nav .disable__comment__nav__item {
   margin-bottom: 0;
 }
-
 .disable__comment__nav__wrap .disable__comment__nav .disable__comment__nav__item .disable__comment__nav__link {
   font-size: 16px;
   font-weight: 700;
@@ -2446,15 +2094,12 @@ button.button__instagram.hover__highlight:hover .icon {
   font-family: "DM Sans", sans-serif;
   padding: 17px 20px;
   outline: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 .disable__comment__nav__wrap .disable__comment__nav .disable__comment__nav__item .disable__comment__nav__link.active {
   color: #22282d;
   position: relative;
 }
-
 .disable__comment__nav__wrap .disable__comment__nav .disable__comment__nav__item .disable__comment__nav__link.active:before {
   position: absolute;
   left: 0;
@@ -2464,13 +2109,11 @@ button.button__instagram.hover__highlight:hover .icon {
   background: #e0061a;
   content: "";
 }
-
 @media (max-width: 991.98px) {
   .disable__comment__nav__wrap .disable__comment__nav .disable__comment__nav__item .disable__comment__nav__link {
     font-size: 18px;
   }
 }
-
 @media (max-width: 575.98px) {
   .disable__comment__nav__wrap .disable__comment__nav .disable__comment__nav__item .disable__comment__nav__link {
     font-size: 16px;
@@ -2484,7 +2127,6 @@ button.button__instagram.hover__highlight:hover .icon {
 .disable__comment__tab__item {
   display: none;
 }
-
 .disable__comment__tab__item.show {
   display: block;
 }
@@ -2495,7 +2137,6 @@ button.button__instagram.hover__highlight:hover .icon {
   color: #22282d;
   margin-bottom: 5px;
 }
-
 .disable__comment__option .subtitle {
   color: #687b95;
   font-size: 14px;
@@ -2504,16 +2145,13 @@ button.button__instagram.hover__highlight:hover .icon {
   padding-left: 0;
   line-height: 1.5;
 }
-
 .disable__comment__option .subtitle .danger {
   color: #e0061a;
   font-weight: 500;
 }
-
 .disable__comment__option .disable_option {
   border-radius: 5px;
 }
-
 .disable__comment__option .disable_option h3 {
   font-size: 18px;
   font-weight: 500;
@@ -2524,20 +2162,16 @@ button.button__instagram.hover__highlight:hover .icon {
   display: block;
   margin-bottom: 15px;
 }
-
-.disable__comment__option .disable_option input[type="radio"] {
+.disable__comment__option .disable_option input[type=radio] {
   display: none;
 }
-
-.disable__comment__option .disable_option input[type="radio"]:checked ~ label:before {
+.disable__comment__option .disable_option input[type=radio]:checked ~ label:before {
   border-color: #05cb6b;
 }
-
-.disable__comment__option .disable_option input[type="radio"]:checked ~ label:after {
+.disable__comment__option .disable_option input[type=radio]:checked ~ label:after {
   opacity: 1;
 }
-
-.disable__comment__option .disable_option input[type="radio"] ~ label {
+.disable__comment__option .disable_option input[type=radio] ~ label {
   font-size: 18px;
   font-weight: 500;
   color: #22282d;
@@ -2548,8 +2182,7 @@ button.button__instagram.hover__highlight:hover .icon {
   display: block;
   margin-bottom: 15px;
 }
-
-.disable__comment__option .disable_option input[type="radio"] ~ label:before {
+.disable__comment__option .disable_option input[type=radio] ~ label:before {
   position: absolute;
   top: 4px;
   left: 0;
@@ -2559,8 +2192,7 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 1px solid #687b95;
   content: "";
 }
-
-.disable__comment__option .disable_option input[type="radio"] ~ label:after {
+.disable__comment__option .disable_option input[type=radio] ~ label:after {
   position: absolute;
   top: 7px;
   left: 3px;
@@ -2571,45 +2203,32 @@ button.button__instagram.hover__highlight:hover .icon {
   background: #05cb6b;
   content: "";
   opacity: 0;
-  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
-.disable__comment__option .disable_option input[type="radio"] ~ label span {
+.disable__comment__option .disable_option input[type=radio] ~ label span {
   font-size: 16px;
   font-weight: 400;
   color: #687b95;
 }
-
 .disable__comment__option .disable_option .disable__checklist {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
 }
-
 .disable__comment__option .disable_option .disable__checklist .disable__checklist__item {
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 140px;
-          flex: 0 0 140px;
+  flex: 0 0 140px;
   margin-right: 10px;
   margin-bottom: 10px;
 }
-
 .disable__comment__option .disable_option .disable__checklist .disable__checklist__item input {
   display: none;
 }
-
 .disable__comment__option .disable_option .disable__checklist .disable__checklist__item input:checked ~ label:before {
   border-color: #00b2fc;
   background: #00b2fc;
 }
-
 .disable__comment__option .disable_option .disable__checklist .disable__checklist__item input:checked ~ label:after {
   opacity: 1;
 }
-
 .disable__comment__option .disable_option .disable__checklist .disable__checklist__item label {
   font-size: 16px;
   font-weight: 500;
@@ -2620,7 +2239,6 @@ button.button__instagram.hover__highlight:hover .icon {
   padding-left: 25px;
   display: block;
 }
-
 .disable__comment__option .disable_option .disable__checklist .disable__checklist__item label:before {
   position: absolute;
   top: 4px;
@@ -2630,7 +2248,6 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 1px solid #687b95;
   content: "";
 }
-
 .disable__comment__option .disable_option .disable__checklist .disable__checklist__item label:after {
   position: absolute;
   top: -2px;
@@ -2640,46 +2257,31 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 0;
   content: url(../img/check.png);
   opacity: 0;
-  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 .disable__comment__option .disable_option .delete__checklist {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   margin-bottom: 10px;
 }
-
 .disable__comment__option .disable_option .delete__checklist.disabled__sites .delete__checklist__item {
-  -webkit-box-flex: 0;
-      -ms-flex: 0 1 200px;
-          flex: 0 1 200px;
+  flex: 0 1 200px;
 }
-
 .disable__comment__option .disable_option .delete__checklist .delete__checklist__item {
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 130px;
-          flex: 0 0 130px;
+  flex: 0 0 130px;
   margin-right: 10px;
   margin-bottom: 10px;
 }
-
 .disable__comment__option .disable_option .delete__checklist .delete__checklist__item input {
   display: none;
 }
-
 .disable__comment__option .disable_option .delete__checklist .delete__checklist__item input:checked ~ label:before {
   border-color: #00b2fc;
   background: #00b2fc;
 }
-
 .disable__comment__option .disable_option .delete__checklist .delete__checklist__item input:checked ~ label:after {
   opacity: 1;
 }
-
 .disable__comment__option .disable_option .delete__checklist .delete__checklist__item label {
   font-size: 18px;
   font-weight: 500;
@@ -2690,7 +2292,6 @@ button.button__instagram.hover__highlight:hover .icon {
   padding-left: 25px;
   display: block;
 }
-
 .disable__comment__option .disable_option .delete__checklist .delete__checklist__item label:before {
   position: absolute;
   top: 4px;
@@ -2700,7 +2301,6 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 1px solid #687b95;
   content: "";
 }
-
 .disable__comment__option .disable_option .delete__checklist .delete__checklist__item label:after {
   position: absolute;
   top: -2px;
@@ -2710,46 +2310,31 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 0;
   content: url(../img/check.png);
   opacity: 0;
-  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 .disable__comment__option .disable_option .remove__checklist {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   margin-bottom: 10px;
 }
-
 .disable__comment__option .disable_option .remove__checklist.disabled__sites .remove__checklist__item {
-  -webkit-box-flex: 0;
-      -ms-flex: 0 1 200px;
-          flex: 0 1 200px;
+  flex: 0 1 200px;
 }
-
 .disable__comment__option .disable_option .remove__checklist .remove__checklist__item {
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 130px;
-          flex: 0 0 130px;
+  flex: 0 0 130px;
   margin-right: 10px;
   margin-bottom: 10px;
 }
-
 .disable__comment__option .disable_option .remove__checklist .remove__checklist__item input {
   display: none;
 }
-
 .disable__comment__option .disable_option .remove__checklist .remove__checklist__item input:checked ~ label:before {
   border-color: #00b2fc;
   background: #00b2fc;
 }
-
 .disable__comment__option .disable_option .remove__checklist .remove__checklist__item input:checked ~ label:after {
   opacity: 1;
 }
-
 .disable__comment__option .disable_option .remove__checklist .remove__checklist__item label {
   font-size: 18px;
   font-weight: 500;
@@ -2760,7 +2345,6 @@ button.button__instagram.hover__highlight:hover .icon {
   padding-left: 25px;
   display: block;
 }
-
 .disable__comment__option .disable_option .remove__checklist .remove__checklist__item label:before {
   position: absolute;
   top: 4px;
@@ -2770,7 +2354,6 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 1px solid #687b95;
   content: "";
 }
-
 .disable__comment__option .disable_option .remove__checklist .remove__checklist__item label:after {
   position: absolute;
   top: -2px;
@@ -2780,65 +2363,47 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 0;
   content: url(../img/check.png);
   opacity: 0;
-  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 .disable__comment__option .disable_option .dissable__switch__item {
   margin-bottom: 10px;
 }
-
 .disable__comment__option .disable_option .dissable__switch__item input {
   display: none;
 }
-
 .disable__comment__option .disable_option .dissable__switch__item input:checked ~ label {
   color: #22282d;
 }
-
 .disable__comment__option .disable_option .dissable__switch__item input:checked ~ label .switch {
   background: #05cb6b;
 }
-
 .disable__comment__option .disable_option .dissable__switch__item input:checked ~ label .switch:before {
   left: 23px;
 }
-
 .disable__comment__option .disable_option .dissable__switch__item input:checked ~ label .switch .switch__text {
   left: 5px;
 }
-
 .disable__comment__option .disable_option .dissable__switch__item input:checked ~ label .switch .switch__text.on {
   display: block;
 }
-
 .disable__comment__option .disable_option .dissable__switch__item input:checked ~ label .switch .switch__text.off {
   display: none;
 }
-
 .disable__comment__option .disable_option .dissable__switch__item label {
   font-size: 16px;
   font-weight: 500;
   color: #687b95;
   font-family: "DM Sans", sans-serif;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
-
 @media (max-width: 479.98px) {
   .disable__comment__option .disable_option .dissable__switch__item label {
     font-size: 14px;
   }
 }
-
 .disable__comment__option .disable_option .dissable__switch__item label .switch {
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 35px;
-          flex: 0 0 35px;
+  flex: 0 0 35px;
   height: 16px;
   width: 35px;
   margin-right: 20px;
@@ -2852,16 +2417,13 @@ button.button__instagram.hover__highlight:hover .icon {
   font-family: "DM Sans", sans-serif;
   padding: 2px 5px;
   position: relative;
-  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 @media (max-width: 479.98px) {
   .disable__comment__option .disable_option .dissable__switch__item label .switch {
     font-size: 10px;
   }
 }
-
 .disable__comment__option .disable_option .dissable__switch__item label .switch:before {
   position: absolute;
   top: 4px;
@@ -2871,36 +2433,28 @@ button.button__instagram.hover__highlight:hover .icon {
   height: 8px;
   width: 8px;
   content: "";
-  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 .disable__comment__option .disable_option .dissable__switch__item label .switch .switch__text {
   position: absolute;
   top: 2px;
   left: 16px;
-  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 .disable__comment__option .disable_option .dissable__switch__item label .switch .switch__text.on {
   display: none;
 }
-
 .disable__comment__option .disable_option .delete__feedback {
   margin-bottom: 10px;
 }
-
 .disable__comment__option .disable_option .delete__feedback label {
   font-size: 14px;
 }
-
 .disable__comment__option .disable_option .delete__feedback .delete__feedback__item {
   position: relative;
   display: inline-block;
   padding-right: 8px;
 }
-
 .disable__comment__option .disable_option .delete__feedback .delete__feedback__item:not(:last-child):before {
   position: absolute;
   top: 7px;
@@ -2910,20 +2464,16 @@ button.button__instagram.hover__highlight:hover .icon {
   background: #687b95;
   content: "";
 }
-
 .disable__comment__option .disable_option .delete__feedback .delete__feedback__item:last-child {
   padding-left: 8px;
 }
-
 .disable__comment__option .disable_option .delete__feedback .delete__feedback__item a {
   font-size: 18px;
   font-weight: 500;
   color: #687b95;
   outline: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 .disable__comment__option .disable_option .disable__option__description {
   font-size: 15px;
   font-weight: 400;
@@ -2931,12 +2481,10 @@ button.button__instagram.hover__highlight:hover .icon {
   color: #687b95;
   font-family: "DM Sans", sans-serif;
 }
-
 .disable__comment__option .disable_option .disable__option__description .danger {
   color: #e0061a;
   font-weight: 500;
 }
-
 .disable__comment__option .total-comments {
   font-size: 16px;
   line-height: 26px;
@@ -2946,8 +2494,6 @@ button.button__instagram.hover__highlight:hover .icon {
 
 .dc-item__card_wrap {
   height: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
 
@@ -2956,21 +2502,16 @@ button.button__instagram.hover__highlight:hover .icon {
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 30px;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  flex-grow: 1;
 }
-
 .dc-item__card .thumb img {
   vertical-align: middle;
   border-style: none;
 }
-
 .dc-item__card .card__content {
   padding: 25px 10px;
   text-align: center;
 }
-
 .dc-item__card .card__content h3 {
   font-size: 20px;
   font-weight: 500;
@@ -2978,7 +2519,6 @@ button.button__instagram.hover__highlight:hover .icon {
   color: #22282d;
   margin-bottom: 10px;
 }
-
 .dc-item__card .card__content p {
   font-size: 14px;
   font-weight: 400;
@@ -2992,7 +2532,6 @@ button.button__instagram.hover__highlight:hover .icon {
   max-width: 450px;
   padding-bottom: 25px;
 }
-
 .dc-tutorials h3 {
   font-size: 20px;
   font-weight: 500;
@@ -3000,27 +2539,19 @@ button.button__instagram.hover__highlight:hover .icon {
   font-family: "DM Sans", sans-serif;
   margin-bottom: 20px;
 }
-
 @media (max-width: 479.98px) {
   .dc-tutorials h3 {
     font-size: 20px;
   }
 }
-
 .dc-tutorials .tutorial__list .tutorial__item {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
-
 .dc-tutorials .tutorial__list .tutorial__item:not(:last-child) {
   margin-bottom: 20px;
 }
-
 .dc-tutorials .tutorial__list .tutorial__item .icon {
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 50px;
-          flex: 0 0 50px;
+  flex: 0 0 50px;
   max-width: 50px;
   height: 50px;
   border-radius: 5px;
@@ -3028,39 +2559,30 @@ button.button__instagram.hover__highlight:hover .icon {
   padding: 14px;
   margin-right: 15px;
 }
-
 .dc-tutorials .tutorial__list .tutorial__item .icon svg path {
   fill: #808da1;
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
-
 .dc-tutorials .tutorial__list .tutorial__item h4 {
   font-size: 15px;
   line-height: 1.6;
   font-weight: 500;
   color: #687b95;
   font-family: "DM Sans", sans-serif;
-  -webkit-transition: all .3s ease;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
-
 @media (max-width: 1599.98px) {
   .dc-tutorials .tutorial__list .tutorial__item h4 {
     font-size: 14px;
   }
 }
-
 .dc-tutorials .tutorial__list .tutorial__item h4 a {
   outline: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 .dc-tutorials .tutorial__list .tutorial__item:hover .icon svg path {
   fill: #05cb6b;
 }
-
 .dc-tutorials .tutorial__list .tutorial__item:hover h4 {
   color: #22282d;
 }
@@ -3071,39 +2593,27 @@ button.button__instagram.hover__highlight:hover .icon {
   background: #ffffff;
   max-width: 450px;
 }
-
 .blog__post .thumb {
   position: relative;
 }
-
 .blog__post .thumb img {
   width: 100%;
 }
-
 .blog__post .thumb .play__btn {
   position: absolute;
   top: 50%;
   left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   height: 50px;
   width: 50px;
   border-radius: 50%;
   background: #05cb6b;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   outline: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 .blog__post .thumb .play__btn span {
   width: 0;
   height: 0;
@@ -3111,11 +2621,9 @@ button.button__instagram.hover__highlight:hover .icon {
   border-bottom: 8px solid transparent;
   border-left: 10px solid #ffffff;
 }
-
 .blog__post .blog__post__content {
   padding: 5px 10px;
 }
-
 .blog__post .blog__post__content h4 {
   font-size: 16px;
   font-weight: 500;
@@ -3132,25 +2640,17 @@ button.button__instagram.hover__highlight:hover .icon {
 .footer__content {
   text-align: center;
 }
-
 .footer__content .footer__nav ul {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-wrap: wrap;
+  justify-content: center;
 }
-
 .footer__content .footer__nav ul li {
   margin-bottom: 15px;
   padding: 0 10px;
   position: relative;
   line-height: 1;
 }
-
 .footer__content .footer__nav ul li:not(:last-child):before {
   position: absolute;
   top: 2px;
@@ -3160,17 +2660,14 @@ button.button__instagram.hover__highlight:hover .icon {
   background: #687b95;
   content: "";
 }
-
 .footer__content .footer__nav ul li a {
   font-size: 16px;
   font-weight: 400;
   color: #687b95;
   line-height: inherit;
   outline: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 @media (max-width: 767.98px) {
   .footer__content .footer__nav ul li a {
     font-size: 14px;
@@ -3197,56 +2694,42 @@ button.button__instagram.hover__highlight:hover .icon {
 }
 
 .dc-quick__setup__nav {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   padding: 0;
   margin: 0;
 }
-
 @media (max-width: 767.98px) {
   .dc-quick__setup__nav {
-    -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
+    flex-wrap: wrap;
   }
 }
-
 .dc-quick__setup__nav .quick__setup__item {
   padding: 0 25px;
   position: relative;
 }
-
 .dc-quick__setup__nav .quick__setup__item:not(:last-child):before {
   position: absolute;
   top: 50%;
   left: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   height: 3px;
   width: 100%;
   content: "";
   background: #d8dde7;
 }
-
 @media (max-width: 767.98px) {
   .dc-quick__setup__nav .quick__setup__item:not(:last-child):before {
     height: 0;
     width: 0;
   }
 }
-
 @media (max-width: 1199.98px) {
   .dc-quick__setup__nav .quick__setup__item {
     padding: 0 15px;
   }
 }
-
 .dc-quick__setup__nav .quick__setup__item .quick__setup__link {
   text-transform: uppercase;
   font-size: 14px;
@@ -3260,27 +2743,22 @@ button.button__instagram.hover__highlight:hover .icon {
   position: relative;
   z-index: 1;
   outline: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 @media (max-width: 1199.98px) {
   .dc-quick__setup__nav .quick__setup__item .quick__setup__link {
     width: auto;
     padding: 13px 20px;
   }
 }
-
 @media (max-width: 767.98px) {
   .dc-quick__setup__nav .quick__setup__item .quick__setup__link {
     font-size: 12px;
   }
 }
-
 .dc-quick__setup__nav .quick__setup__item.active:not(:last-child):before {
   background: #e10619;
 }
-
 .dc-quick__setup__nav .quick__setup__item.active .quick__setup__link {
   background: #e10619;
   color: #ffffff;
@@ -3289,11 +2767,9 @@ button.button__instagram.hover__highlight:hover .icon {
 .dc-quick__step__item {
   display: none;
 }
-
 .dc-quick__step__item.active {
   display: block;
 }
-
 .dc-quick__step__item .button {
   display: none;
 }
@@ -3306,19 +2782,16 @@ button.button__instagram.hover__highlight:hover .icon {
   text-align: center;
   margin-bottom: 16px;
 }
-
 @media (max-width: 767.98px) {
   .dc-quick__step__item .quick__setup__item__header h2 {
     font-size: 28px;
   }
 }
-
 @media (max-width: 575.98px) {
   .dc-quick__step__item .quick__setup__item__header h2 {
     font-size: 24px;
   }
 }
-
 .dc-quick__step__item .quick__setup__item__header p {
   text-align: center;
   font-size: 16px;
@@ -3326,49 +2799,36 @@ button.button__instagram.hover__highlight:hover .icon {
   max-width: 780px;
   margin: 0 auto;
 }
-
 @media (max-width: 767.98px) {
   .dc-quick__step__item .quick__setup__item__header p {
     font-size: 14px;
   }
 }
-
 .dc-quick__step__item .dc-video__area {
   text-align: center;
   margin: 0 auto;
   position: relative;
 }
-
 @media (max-width: 1199.98px) {
   .dc-quick__step__item .dc-video__area {
     min-height: 300px;
   }
 }
-
 .dc-quick__step__item .dc-video__area .play__btn {
   position: absolute;
   top: 50%;
   left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   height: 70px;
   width: 70px;
   border-radius: 50%;
   background: #05cb6b;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   outline: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 .dc-quick__step__item .dc-video__area .play__btn span {
   width: 0;
   height: 0;
@@ -3376,14 +2836,12 @@ button.button__instagram.hover__highlight:hover .icon {
   border-bottom: 8px solid transparent;
   border-left: 10px solid #ffffff;
 }
-
 @media (max-width: 767.98px) {
   .dc-quick__step__item .dc-video__area .play__btn {
     height: 50px;
     width: 50px;
   }
 }
-
 .dc-quick__step__item .dc-form__group {
   padding-left: 27px;
   text-align: center;
@@ -3391,26 +2849,21 @@ button.button__instagram.hover__highlight:hover .icon {
   margin: 15px auto 0;
   max-width: 800px;
 }
-
 @media (max-width: 575.98px) {
   .dc-quick__step__item .dc-form__group {
     text-align: left;
   }
 }
-
 .dc-quick__step__item .dc-form__group input {
   display: none;
 }
-
 .dc-quick__step__item .dc-form__group input:checked ~ label:before {
   border-color: #00b2fc;
   background: #00b2fc;
 }
-
 .dc-quick__step__item .dc-form__group input:checked ~ label:after {
   opacity: 1;
 }
-
 .dc-quick__step__item .dc-form__group label {
   font-size: 18px;
   font-weight: 500;
@@ -3418,13 +2871,11 @@ button.button__instagram.hover__highlight:hover .icon {
   font-family: "DM Sans", sans-serif;
   position: relative;
 }
-
 @media (max-width: 767.98px) {
   .dc-quick__step__item .dc-form__group label {
     font-size: 16px;
   }
 }
-
 .dc-quick__step__item .dc-form__group label:before {
   position: absolute;
   top: 5px;
@@ -3434,13 +2885,11 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 1px solid #687b95;
   content: "";
 }
-
 @media (max-width: 767.98px) {
   .dc-quick__step__item .dc-form__group label:before {
     top: 4px;
   }
 }
-
 .dc-quick__step__item .dc-form__group label:after {
   position: absolute;
   top: -5px;
@@ -3450,31 +2899,24 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 0;
   content: url(../img/check.png);
   opacity: 0;
-  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 .dc-quick__step__item .disable_option {
   border-radius: 5px;
 }
-
 .dc-quick__step__item .disable_option.dc-text__block {
   background: #f4f6fc;
 }
-
-.dc-quick__step__item .disable_option input[type="radio"] {
+.dc-quick__step__item .disable_option input[type=radio] {
   display: none;
 }
-
-.dc-quick__step__item .disable_option input[type="radio"]:checked ~ label:before {
+.dc-quick__step__item .disable_option input[type=radio]:checked ~ label:before {
   border-color: #05cb6b;
 }
-
-.dc-quick__step__item .disable_option input[type="radio"]:checked ~ label:after {
+.dc-quick__step__item .disable_option input[type=radio]:checked ~ label:after {
   opacity: 1;
 }
-
-.dc-quick__step__item .disable_option input[type="radio"] ~ label {
+.dc-quick__step__item .disable_option input[type=radio] ~ label {
   font-size: 18px;
   font-weight: 500;
   color: #22282d;
@@ -3485,8 +2927,7 @@ button.button__instagram.hover__highlight:hover .icon {
   display: block;
   margin-bottom: 15px;
 }
-
-.dc-quick__step__item .disable_option input[type="radio"] ~ label:before {
+.dc-quick__step__item .disable_option input[type=radio] ~ label:before {
   position: absolute;
   top: 4px;
   left: 0;
@@ -3496,8 +2937,7 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 1px solid #687b95;
   content: "";
 }
-
-.dc-quick__step__item .disable_option input[type="radio"] ~ label:after {
+.dc-quick__step__item .disable_option input[type=radio] ~ label:after {
   position: absolute;
   top: 7px;
   left: 3px;
@@ -3508,45 +2948,32 @@ button.button__instagram.hover__highlight:hover .icon {
   background: #05cb6b;
   content: "";
   opacity: 0;
-  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
-.dc-quick__step__item .disable_option input[type="radio"] ~ label span {
+.dc-quick__step__item .disable_option input[type=radio] ~ label span {
   font-size: 16px;
   font-weight: 400;
   color: #687b95;
 }
-
 .dc-quick__step__item .disable_option .disable__checklist {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   margin-bottom: 10px;
 }
-
 .dc-quick__step__item .disable_option .disable__checklist .disable__checklist__item {
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 140px;
-          flex: 0 0 140px;
+  flex: 0 0 140px;
   margin-right: 10px;
 }
-
 .dc-quick__step__item .disable_option .disable__checklist .disable__checklist__item input {
   display: none;
 }
-
 .dc-quick__step__item .disable_option .disable__checklist .disable__checklist__item input:checked ~ label:before {
   border-color: #00b2fc;
   background: #00b2fc;
 }
-
 .dc-quick__step__item .disable_option .disable__checklist .disable__checklist__item input:checked ~ label:after {
   opacity: 1;
 }
-
 .dc-quick__step__item .disable_option .disable__checklist .disable__checklist__item label {
   font-size: 16px;
   font-weight: 500;
@@ -3557,7 +2984,6 @@ button.button__instagram.hover__highlight:hover .icon {
   padding-left: 25px;
   display: block;
 }
-
 .dc-quick__step__item .disable_option .disable__checklist .disable__checklist__item label:before {
   position: absolute;
   top: 4px;
@@ -3567,7 +2993,6 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 1px solid #687b95;
   content: "";
 }
-
 .dc-quick__step__item .disable_option .disable__checklist .disable__checklist__item label:after {
   position: absolute;
   top: -2px;
@@ -3577,35 +3002,28 @@ button.button__instagram.hover__highlight:hover .icon {
   border: 0;
   content: url(../img/check.png);
   opacity: 0;
-  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
-
 .dc-quick__step__item .disable_option .disable__option__description {
   font-size: 15px;
   font-weight: 400;
   color: #687b95;
   font-family: "DM Sans", sans-serif;
 }
-
 .dc-quick__step__item .disable_option .disable__option__description .danger {
   color: #e0061a;
   font-weight: 500;
 }
-
 .dc-quick__step__item .finalize-thumb {
   text-align: center;
   padding: 0 0 30px;
 }
-
 .dc-quick__step__item .finalize-thumb img {
   max-height: 220px;
 }
-
 .dc-quick__step__item .doc__button__wrap {
   text-align: center;
 }
-
 .dc-quick__step__item .doc__button__wrap .doc__button {
   font-size: 16px;
   font-weight: 500;
@@ -3616,49 +3034,34 @@ button.button__instagram.hover__highlight:hover .icon {
   border-radius: 5px;
   padding: 10px 35px;
   outline: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 .dc-quick__step__item .doc__button__wrap .doc__button:hover {
   background: #e10619;
   color: #ffffff;
 }
-
 .dc-quick__step__item #whatWeCollect {
   color: #05cb6b;
   outline: 0;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
-
 .dc-quick__step__item #whatWeCollectMessage {
   display: none;
 }
 
 .dc-quick__setup__wrap .button__group {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
 }
-
 .dc-quick__setup__wrap .button__group .button {
   width: 160px;
   text-align: center;
 }
-
 .dc-quick__setup__wrap .button__group .button.button--sm {
   width: 110px;
 }
-
 @media (max-width: 767.98px) {
   .dc-quick__setup__wrap .button__group .button {
     width: unset;

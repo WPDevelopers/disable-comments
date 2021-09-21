@@ -27,6 +27,17 @@
 			color: $white;
 			background: $success;
 		}
+		&.button__fade {
+			// opacity: .6;
+			display: flex;
+			align-items: center;
+			min-width: 190px;
+			justify-content: center;
+			.eael-spinner {
+				// margin: 0 !important;
+				// margin
+			}
+		}
 		@include respond-below(md) {
 			height: 50px;
 			line-height: 46px;
@@ -46,22 +57,11 @@
 	.button__success {
 		color: $white;
 		background: $success;
-		// opacity: 0.6;
+		opacity: 0.6;
 		&:hover,
 		&:focus {
 			background: rgba($success, 0.9);
 			color: $white;
-		}
-		&.button__fade {
-			opacity: .6;
-			display: flex;
-			align-items: center;
-			min-width: 190px;
-			justify-content: center;
-			.eael-spinner {
-				// margin: 0 !important;
-				// margin
-			}
 		}
 		&.form-dirty{
 			opacity: 1;

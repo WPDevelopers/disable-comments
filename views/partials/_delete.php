@@ -75,7 +75,7 @@
             <input type="hidden" name="is_network_admin" value="1">
         <?php endif;?>
         <!-- save -->
-        <button class="button button__delete"><?php _e('Delete Comments', 'disable-comments'); ?></button>
+        <button class="button button__delete button__fade"><?php _e('Delete Comments', 'disable-comments'); ?></button>
     <?php
     else :
     ?>
