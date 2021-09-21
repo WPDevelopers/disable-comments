@@ -36,7 +36,7 @@
             <div class="disable_option dc-text__block mb30">
                 <input type="radio" id="selected_delete_types" name="delete_mode" value="<?php echo esc_attr('selected_delete_types'); ?>" <?php checked(!$this->options['remove_everywhere']); ?> />
                 <label for="selected_delete_types"><?php _e('On Certain Post Types:', 'disable-comments'); ?></label>
-                <div class="delete__checklist">
+                <div id="delete__post__types" class="delete__checklist">
                     <?php
                     $types = $this->get_all_post_types();
                     foreach ($types as $key => $value) {

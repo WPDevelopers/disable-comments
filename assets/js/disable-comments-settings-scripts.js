@@ -53,7 +53,7 @@ jQuery(document).ready(function ($) {
 
 	function disable_comments_uihelper() {
 		var indiv_bits = jQuery(
-			".remove__checklist .remove__checklist__item, #extratypes"
+			"#disable__post__types .remove__checklist__item, #extratypes"
 		);
 		if (jQuery("#remove_everywhere").is(":checked")) {
 			indiv_bits
@@ -76,7 +76,7 @@ jQuery(document).ready(function ($) {
 
 	function delete_comments_uihelper() {
 		var toggle_pt_bits = jQuery(
-			".delete__checklist .delete__checklist__item, #extradeletetypes"
+			"#delete__post__types .delete__checklist__item, #extradeletetypes"
 		);
 		var toggle_ct_bits = jQuery("#listofdeletecommenttypes");
 		if (jQuery("#delete_everywhere").is(":checked")) {
