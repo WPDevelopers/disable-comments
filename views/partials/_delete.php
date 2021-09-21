@@ -51,7 +51,7 @@
                     ?>
                         <p class="indent subtitle" id="extradeletetypes">
                             <?php _e('Only the built-in post types appear above. If you want to disable comments on other custom post types on the entire network, you can supply a comma-separated list of post types below (use the slug that identifies the post type).', 'disable-comments'); ?>
-                            <br /> <br /><label><?php _e('Custom post types:', 'disable-comments'); ?> <input type="text" name="delete_extra_post_types" size="30" value="<?php echo esc_attr($extradeletetypes); ?>" /></label></p>
+                            <br /> <br /><label><?php _e('Custom post types:', 'disable-comments'); ?> <input type="text" class="form__control" name="delete_extra_post_types" size="30" value="<?php echo esc_attr($extradeletetypes); ?>" /></label></p>
                     <?php endif; ?>
                 </div>
                 <p class="disable__option__description"><span class="danger"><?php _e('Warnings:', 'disable-comments') ?></span> <?php _e('This will remove existing comment entries for the selected post type(s) in the database and cannot be reverted without a database backups.', 'disable-comments'); ?></p>

@@ -69,7 +69,7 @@
                     $extradisabletypes = implode(', ', (array) $this->options['extra_post_types']);
                 ?>
                     <p class="indent subtitle" id="extratypes"><?php _e('Only the built-in post types appear above. If you want to disable comments on other custom post types on the entire network, you can supply a comma-separated list of post types below (use the slug that identifies the post type).', 'disable-comments'); ?>
-                        <br /><br /><label><strong><?php _e('Custom post types:', 'disable-comments'); ?></strong> <input type="text" name="extra_post_types" size="30" value="<?php echo esc_attr($extradisabletypes); ?>" /></label></p>
+                        <br /><br /><label class="hello"><strong><?php _e('Custom post types:', 'disable-comments'); ?></strong> <input type="text" class="form__control" name="extra_post_types" size="30" value="<?php echo esc_attr($extradisabletypes); ?>" /></label></p>
                 <?php endif; ?>
             </div>
             <p class="subtitle"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts. Comments will be visible on all other post types.', 'disable-comments'); ?></p>

@@ -171,6 +171,10 @@ jQuery(document).ready(function ($) {
             showCancelButton: true,
             confirmButtonText: 'Yes, Delete It',
             cancelButtonText: 'No, Cancel',
+			customClass: {
+				confirmButton: 'confirmButton',
+				cancelButton: 'cancelButton'
+			  },
             reverseButtons: true,
 		}).then(function(result){
             if (result.isConfirmed) {

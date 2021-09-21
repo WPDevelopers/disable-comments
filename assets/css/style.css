@@ -1369,6 +1369,10 @@ a.color__instagram:hover, a.color__instagram:focus {
   }
 }
 
+.form__control {
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+}
+
 .button__primary:not(.hover__highlight) {
   background: #623cea;
   color: white;
@@ -2161,6 +2165,10 @@ button.button__instagram.hover__highlight:hover .icon {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  min-width: 190px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .disablecommentswrap .button__success.form-dirty {
@@ -2174,6 +2182,40 @@ button.button__instagram.hover__highlight:hover .icon {
 
 .disablecommentswrap .button__group .button:not(:last-child) {
   margin-right: 15px;
+}
+
+.cancelButton {
+  padding: 0;
+  border-radius: 5px;
+  color: #808da1 !important;
+  font-size: 15px;
+  border: 0;
+  font-weight: 700;
+  padding: 0 20px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  outline: none;
+  background: #f4f6fc !important;
+}
+
+.confirmButton {
+  padding: 0;
+  border-radius: 5px;
+  color: #fff !important;
+  font-size: 15px;
+  border: 0;
+  font-weight: 700;
+  padding: 0 20px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  outline: none;
+  background: #e0061a !important;
+}
+
+.confirmButton:focus {
+  outline: none !important;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
 }
 
 #eael-spinner {
