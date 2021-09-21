@@ -54,7 +54,7 @@
         <div class="disable_option dc-text__block">
             <input type="radio" id="selected_types" name="mode" value="<?php echo esc_attr('selected_types'); ?>" <?php checked(!$this->options['remove_everywhere']); ?> />
             <label for="selected_types"><?php _e('On Specific Post Types:', 'disable-comments'); ?></label>
-            <div class="remove__checklist">
+            <div id="disable__post__types" class="remove__checklist">
                 <?php
                 $types = $this->get_all_post_types();
                 foreach ($types as $key => $value) {
