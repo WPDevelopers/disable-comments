@@ -367,4 +367,4 @@ This will be maiintained from August 19, 2020 - @asif2bd
 
 == Upgrade Notice ==
 
-[Minor Update] Improvement: Fix for Attempt to read property "post_type" on null
+[Major Update] Bug fixes & MU supported
