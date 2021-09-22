@@ -3,9 +3,9 @@ Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, tusharimran, alimu
 Donate link: https://wpdeveloper.net/
 Tags: comments, delete comments, disable comments, spam comment, disable, stop spam, remove comments, anti spam, disable xml-rpc, hide comment, XML-RPC, REST-API, WP-CLI
 Requires at least: 5.0
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.1.2
+Stable tag: 2.2.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -15,11 +15,11 @@ Allows administrators to globally disable comments on their site. Comments can b
 
 = Disable Comments - Remove Comments & Protect From Spam =
 
-Instantly allow or disallow comments from any post type in WordPress (Pages, Posts or Media) to stop the spammers and gain complete control over your full website. WP-CLI Suppprt & Control comments via XML-RPC and REST-API too!
+Instantly allow or disallow comments from any post type in WordPress (Pages, Posts, or Media) to stop the spammers and gain complete control over your full website. WP-CLI Support & Control comments via XML-RPC and REST-API too!
 
 [More About Plugin](https://wpdeveloper.net/plugins/disable-comments/) ◼️ [Documentation](https://wpdeveloper.net/docs-category/disable-comments/) ◼️ [Support Forum](https://wordpress.org/support/plugin/disable-comments/)
 
-https://www.youtube.com/watch?v=J9AteKzQpPs
+https://www.youtube.com/watch?v=EpuYs9Nf_nY
 
 ## Take Global Control Over Your WordPress Site
 Override all comments-related settings throughout your website & manage your comments just the way you want.
@@ -30,19 +30,22 @@ Choose which posts, pages or media should allow comments from site visitors & co
 ## Disallow Comments On Multi-Site Network
 Have multiple websites? Get rid of irrelevant comments on the entire network using Disable Comments Plugin
 
+https://www.youtube.com/watch?v=J9AteKzQpPs
 
 ## KEY FEATURES OF DISABLE COMMENTS
 
-* All “Comments” links are hidden from the Admin Menu and Admin Bar;
-* All comment-related sections (“Recent Comments”, “Discussion” etc.) are hidden from the WordPress Dashboard;
-* All comment-related widgets are disabled (so your theme cannot use them);
-* The “Discussion” settings page is hidden;
-* All comment RSS/Atom feeds are disabled (and requests for these will be redirected to the parent post);
-* The X-Pingback HTTP header is removed from all pages;
+* All “Comments” links are hidden from the Admin Menu and Admin Bar.
+* All comment-related sections (“Recent Comments”, “Discussion” etc.) are hidden from the WordPress Dashboard.
+* All comment-related widgets are disabled (so your theme cannot use them).
+* The “Discussion” settings page is hidden.
+* All comment RSS/Atom feeds are disabled (and requests for these will be redirected to the parent post).
+* The X-Pingback HTTP header is removed from all pages.
 * Outgoing pingbacks are disabled.
 * Stop spam comments entirely from the site with one click.
 * **[New]** Delete comments by type.
-* **[New]** Disable comments via xml-rpc.
+* **[New]** Disable comments via [XML-RPC](https://wpdeveloper.net/docs/how-to-disable-comments-made-via-xml-rpc/) & [REST-API](https://wpdeveloper.net/docs/how-to-disable-comments-made-via-rest-api/)
+
+https://www.youtube.com/watch?v=FBq3-W-p-DM
 
 Please delete any existing comments on your site **before applying this setting**, otherwise (depending on your theme) those comments may still be displayed to visitors. You can use the **Delete Comments tool** to delete any existing comments on your site.
 
@@ -52,7 +55,9 @@ Please delete any existing comments on your site **before applying this setting*
 Easily configure your comment-related settings with an amazing and attractive app-like user interface.
 
 **WP-CLI COMMANDS TO DISABLE COMMENTS**
-Use WP-CLI control for comment-related settings to disable comments on posts, pages, attachments or everywhere on your website.
+Use [WP-CLI](https://wpdeveloper.net/docs/how-to-use-disable-comments-plugin-with-wp-cli-command-line/) control for comment-related settings to disable comments on posts, pages, attachments or everywhere on your website.
+
+https://www.youtube.com/watch?v=mzi5uhKB9Zk
 
 **GET STARTED WITH QUICK SETUP WIZARD**
 Use the quick setup wizard after activating the plugin to instantly configure comment-related settings for your WordPress website.
@@ -60,8 +65,12 @@ Use the quick setup wizard after activating the plugin to instantly configure co
 **DISABLE COMMENTS ON DOCS**
 Instantly disable comments on your documentation pages or WordPress knowledge base with a single click.
 
+https://www.youtube.com/watch?v=t7BQ-7A4y4s
+
 **DELETE CERTAIN COMMENT TYPE(S)**
 Permanently delete certain comment types from your WordPress website including WooCommerce product reviews as well as generic comments.
+
+https://www.youtube.com/watch?v=Izm_ihC-z10
 
 **DISABLE COMMENTS VIA XML-RPC And REST API**
 Block any comments made on your WordPress website via XML-RPC specification and REST API.
@@ -76,7 +85,7 @@ A [must-use version](https://github.com/WPDevelopers/disable-comments-mu) of the
 
 ### Advanced Configuration
 
-Some of the plugin’s behaviour can be modified by site administrators and plugin/theme developers through code:
+Some of the plugin’s behavior can be modified by site administrators and plugin/theme developers through code:
 
 * Define `DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE` and set it to `false` to prevent the plugin from replacing the theme's comment template with an empty one.
 
@@ -90,9 +99,15 @@ These definitions can be made either in your main `wp-config.php` or in your the
 
 ### 💙 LOVED DISABLE COMMENTS?
 
--   Join our [Facebook Group](https://www.facebook.com/groups/wpdeveloper.net/)
+- For documentation and tutorials go to our [Documentation](https://wpdeveloper.net/docs-category/disable-comments/)
 
--   If you love Disable Comments, [rate us on WordPress](https://wordpress.org/support/plugin/disable-comments/reviews/?filter=5)
+- For video tutorials go to our [YouTube Playlist](https://www.youtube.com/watch?v=J9AteKzQpPs&list=PLWHp1xKHCfxD2_xOIR5dMAGf3wd4hv-8K)
+
+- Join our [Facebook Group](https://www.facebook.com/groups/wpdeveloper.net/)
+
+- If you love Disable Comments, [rate us on WordPress](https://wordpress.org/support/plugin/disable-comments/reviews/?filter=5)
+
+- For more information about features, FAQs, and documentation, check out our website at [Disable Comments](https://wpdeveloper.net/plugins/disable-comments/)
 
 
 ### 🔥 GET FREEBIES FOR YOUR WORDPRESS SITE
@@ -103,17 +118,19 @@ Consider checking out our other WordPress solutions & boost your WordPress websi
 
 🔔 [NotificationX](https://notificationx.com/) – Best Social Proof & FOMO Marketing Solution to increase conversion rates.
 
-📄 [EmbedPress](https://wordpress.org/plugins/embedpress/): EmbedPress lets you embed videos, images, posts, audio, maps and upload PDF, DOC, PPT & all other types of content into your WordPress site with one-click and showcase it beautifully for the visitors.
+🔗 [BetterLinks](https://wordpress.org/plugins/betterlinks/): Latest best WordPress link management plugin for link shortening, tracking & analyzing.
+
+📄 [EmbedPress](https://wordpress.org/plugins/embedpress/): EmbedPress lets you embed anything including videos, images, posts, audio, maps and upload PDF, DOC, PPT etc.
 
 ☁ [Templately](https://wordpress.org/plugins/templately/): 1000+ Free templates library for Elementor & Gutenberg along with the cloud collaboration for WordPress.
 
 📚 [BetterDocs](https://wordpress.org/plugins/betterdocs/): Best Documentation & Knowledge Base Plugin for WordPress reduce manual support tickets & improve user experience.
 
-⏰ [WP Scheduled Posts](https://wordpress.org/plugins/wp-scheduled-posts/): Advanced editorial calendar & complete solution for WordPress Post Scheduling, social sharing, missed scheduled alerts and more.
+⏰ [SchedulePress](https://wordpress.org/plugins/wp-scheduled-posts/): Advanced editorial calendar with WordPress Post Scheduling, Social Sharing, Missed scheduled alerts, and more.
 
-⭐ [ReviewX](https://wordpress.org/plugins/reviewx/): WooCommerce Product review plugin that allows users to submit product reviews with multiple criteria, photos, video and more.
+⭐ [ReviewX](https://wordpress.org/plugins/reviewx/): WooCommerce Product review plugin that allows users to submit product reviews with multiple criteria, photos, video, and more.
 
-⚡ [Flexia](http://wordpress.org/plugins/flexia): Most lightweight, customizable & multi purpose theme for WordPress.
+⚡ [Flexia](https://wordpress.org/themes/flexia/): Most lightweight, customizable & multi purpose theme for WordPress.
 
 
 Visit [WPDeveloper](https://wpdeveloper.net/) to learn more about how to do better in WordPress with [Help Tutorial, Tips & Tricks](https://wpdeveloper.net/blog).
@@ -172,6 +189,11 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
+
+= [2.2.0] - 2021-09-22 =
+* New Feature: Configure Disable Comments on Subsites from Main Network in Multisite Network.
+* Improvement: UX Improvement.
+* Few minor bug fix and improvement.
 
 = [2.1.2] - 2021-06-20 =
 * Improvement: Fix for Attempt to read property "post_type" on null
