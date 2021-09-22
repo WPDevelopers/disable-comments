@@ -181,7 +181,7 @@ jQuery(document).ready(function ($) {
             if (result.isConfirmed) {
 				Swal.fire({
 					icon: "info",
-					title: "Request Sending...",
+					title: "Deleting comments...",
 					text: "Please wait.",
 					showConfirmButton: false,
 				});
