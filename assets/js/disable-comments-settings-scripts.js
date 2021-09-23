@@ -179,12 +179,12 @@ jQuery(document).ready(function ($) {
             reverseButtons: true,
 		}).then(function(result){
             if (result.isConfirmed) {
-				Swal.fire({
-					icon: "info",
-					title: "Deleting comments...",
-					text: "Please wait.",
-					showConfirmButton: false,
-				});
+				// Swal.fire({
+				// 	icon: "info",
+				// 	title: "Deleting comments...",
+				// 	text: "Please wait.",
+				// 	showConfirmButton: false,
+				// });
 				var data = {
 					action: disableCommentsObj.delete_action,
 					nonce: disableCommentsObj._nonce,
