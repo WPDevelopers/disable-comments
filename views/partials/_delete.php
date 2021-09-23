@@ -11,7 +11,9 @@
                 <div class="disabled__sites delete__checklist">
                 <?php
                 $disabled_site_options = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
-                $sub_sites = get_sites();
+                $sub_sites = get_sites([
+					'number' => 0,
+				]);
                 foreach ( $sub_sites as $sub_site ) {
                     $sub_site_id = $sub_site->blog_id;
                     $blog = get_blog_details($sub_site_id);
