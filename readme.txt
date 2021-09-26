@@ -370,4 +370,4 @@ This will be maiintained from August 19, 2020 - @asif2bd
 
 == Upgrade Notice ==
 
-[Major Update] Bug fixes & MU supported
+[Minor Update] 100+ subsites limit issue in multisite network
