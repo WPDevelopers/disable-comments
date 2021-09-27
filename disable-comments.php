@@ -175,7 +175,7 @@ class Disable_Comments
 					unset($this->options[$v]);
 				}
 			}
-			if ($old_ver < 7) {
+			if ($old_ver < 7 && function_exists( 'get_sites' )) {
 				$this->options['disabled_sites'] = [];
 				$dc_options     = get_site_option('disable_comments_options', array());
 				$disabled_sites = isset($dc_options['disabled_sites']) ? $dc_options['disabled_sites'] : [];
@@ -708,7 +708,7 @@ class Disable_Comments
 	}
 
 	public function get_all_comment_types(){
-		if($this->networkactive && is_network_admin()){
+		if($this->networkactive && is_network_admin() && function_exists( 'get_sites' )){
 			$comment_types = [];
 			$sites = get_sites([
 				'number' => 0,
