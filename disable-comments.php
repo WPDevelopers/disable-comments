@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
 
 class Disable_Comments
 {
-	const DB_VERSION         = 6;
+	const DB_VERSION         = 7;
 	private static $instance = null;
 	private $options;
 	public  $networkactive;
@@ -61,14 +61,8 @@ class Disable_Comments
 		// Load options.
 		if ($this->networkactive && (is_network_admin() || $this->sitewide_settings !== '1')) {
 			$this->options = get_site_option('disable_comments_options', array());
-			if(!isset($this->options['disabled_sites'])){
-				$sites = get_sites([
-					'number' => 0,
-				]);
-				$this->options['disabled_sites'] = array_map(function($site){
-					return $site->blog_id;
-				}, $sites);
-			}
+            $this->options['disabled_sites'] = $this->get_disabled_sites();
+
 			$blog_id = get_current_blog_id();
 			if(
 				!is_network_admin() && (
@@ -166,6 +160,9 @@ class Disable_Comments
 	{
 		$old_ver = isset($this->options['db_version']) ? $this->options['db_version'] : 0;
 		if ($old_ver < self::DB_VERSION) {
+			if($this->networkactive){
+				$this->options['is_network_admin'] = true;
+			}
 			if ($old_ver < 2) {
 				// upgrade options from version 0.2.1 or earlier to 0.3.
 				$this->options['disabled_post_types'] = get_option('disable_comments_post_types', array());
@@ -177,6 +174,17 @@ class Disable_Comments
 				foreach (array('remove_admin_menu_comments', 'remove_admin_bar_comments', 'remove_recent_comments', 'remove_discussion', 'remove_rc_widget') as $v) {
 					unset($this->options[$v]);
 				}
+			}
+			if ($old_ver < 7) {
+				$this->options['disabled_sites'] = [];
+				$dc_options     = get_site_option('disable_comments_options', array());
+				$disabled_sites = isset($dc_options['disabled_sites']) ? $dc_options['disabled_sites'] : [];
+
+				foreach(get_sites(['number' => 0]) as $blog){
+					$blog_id = $blog->blog_id;
+					$this->options['disabled_sites']["site_$blog_id"] = in_array($blog_id, $disabled_sites);
+				}
+				$this->options['disabled_sites'] = $this->get_disabled_sites();
 			}
 
 			foreach (array('remove_everywhere', 'extra_post_types') as $v) {
@@ -198,6 +206,24 @@ class Disable_Comments
 		} else{
 			update_option('disable_comments_options', $this->options);
 		}
+	}
+
+	public function get_disabled_sites(){
+		$this->options['disabled_sites'] = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
+		$disabled_sites = ['all' => true];
+		foreach(get_sites(['number' => 0]) as $blog){
+			$disabled_sites["site_{$blog->blog_id}"] = true;
+		}
+		$this->options['disabled_sites'] = wp_parse_args($this->options['disabled_sites'], $disabled_sites);
+		$disabled_sites = $this->options['disabled_sites'];
+		unset($disabled_sites['all']);
+		if(in_array(false, $disabled_sites)){
+			$this->options['disabled_sites']['all'] = false;
+		}
+		else{
+			$this->options['disabled_sites']['all'] = true;
+		}
+		return $this->options['disabled_sites'];
 	}
 
 	/**
@@ -775,7 +801,13 @@ class Disable_Comments
 			$this->options['is_network_admin'] = isset($formArray['is_network_admin']) && $formArray['is_network_admin'] == '1' ? true : false;
 
 			if(!empty($formArray['disabled_sites'])){
-				$this->options['disabled_sites'] = $formArray['disabled_sites'];
+				$this->options['disabled_sites'] = [
+					'all' => in_array('all', $formArray['disabled_sites']),
+				];
+				foreach (get_sites(['number' => false]) as $key => $site) {
+					$blog_id = "site_{$site->blog_id}";
+					$this->options['disabled_sites'][$blog_id] = in_array($blog_id, $formArray['disabled_sites']);
+				}
 			}
 
 			if (isset($formArray['mode'])) {

@@ -19,7 +19,7 @@
                 <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('If you enable Site Wise settings, you need to configure your “Disable Comments” settings individually on every website in the network.', 'disable-comments'); ?></p>
             </div>
         </div>
-        <div class="disable_option dc-text__block mb30 mt30">
+        <div class="disable_option sites_option dc-text__block mb30 mt30">
             <h3>Disable comments in the following sites:</h3>
             <div class="disabled__sites remove__checklist">
             <?php
@@ -27,12 +27,19 @@
             $sub_sites = get_sites([
                 'number' => 0,
             ]);
+            echo "
+            <div class='remove__checklist__item'>
+                <input type='checkbox' class='check-all' id='disabled__sites__check__all' data-list='remove__checklist__item' name='disabled_sites[]' value='all' " .
+                checked(!empty($disabled_site_options['all']), true, false) . ">
+                <label for='disabled__sites__check__all'>All</label>
+            </div>";
+
             foreach ( $sub_sites as $sub_site ) {
                 $sub_site_id = $sub_site->blog_id;
                 $blog = get_blog_details($sub_site_id);
                 echo
                 "<div class='remove__checklist__item'>
-                    <input type='checkbox' id='remove__checklist__item-$sub_site_id' name='disabled_sites[]' value='$sub_site_id'" . checked(in_array($sub_site_id, $disabled_site_options), true, false) . ">
+                    <input type='checkbox' id='remove__checklist__item-$sub_site_id' class='site_option' name='disabled_sites[]' value='site_$sub_site_id'" . checked(!empty($disabled_site_options["site_$sub_site_id"]), true, false) . ">
                     <label for='remove__checklist__item-$sub_site_id'>{$blog->blogname}</label>
                 </div>";
             }

@@ -6,11 +6,15 @@
 
         <div class="disable__comment__option mb50">
             <?php if(is_network_admin()):?>
-                <div class="disable_option dc-text__block mb30 mt30">
+                <div class="disable_option sites_option dc-text__block mb30 mt30">
                 <h3>Delete comments in the following sites:</h3>
                 <div class="disabled__sites delete__checklist">
                 <?php
-                $disabled_site_options = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
+                echo "
+                <div class='delete__checklist__item'>
+                    <input type='checkbox' class='check-all' id='delete__checklist__check__all' data-list='delete__checklist__item' checked >
+                    <label for='delete__checklist__check__all'>All</label>
+                </div>";
                 $sub_sites = get_sites([
 					'number' => 0,
 				]);
@@ -19,7 +23,7 @@
                     $blog = get_blog_details($sub_site_id);
                     echo
                     "<div class='delete__checklist__item'>
-                        <input type='checkbox' id='delete__checklist__item-$sub_site_id' name='disabled_sites[]' value='$sub_site_id' checked='checked'>
+                        <input type='checkbox' id='delete__checklist__item-$sub_site_id' class='site_option' name='disabled_sites[]' value='$sub_site_id' checked='checked'>
                         <label for='delete__checklist__item-$sub_site_id'>{$blog->blogname}</label>
                     </div>";
                 }
