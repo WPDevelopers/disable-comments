@@ -10,11 +10,12 @@
                 <h3>Delete comments in the following sites:</h3>
                 <div class="disabled__sites delete__checklist">
                 <?php
+                $disabled_site_count = $this->get_disabled_count();
                 echo "
                 <div class='delete__checklist__item'>
                     <input type='checkbox' class='check-all' id='delete__checklist__check__all' data-list='delete__checklist__item' checked >
-                    <label for='delete__checklist__check__all'>All</label>
-                </div>";
+                    <label for='delete__checklist__check__all'><b>Select All</b> <small>($disabled_site_count selected)</small></label>
+                </div><br />";
                 $sub_sites = get_sites([
 					'number' => 0,
 				]);

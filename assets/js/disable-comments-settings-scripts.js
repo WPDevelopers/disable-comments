@@ -237,5 +237,6 @@ jQuery(document).ready(function ($) {
 		});
 
 		sites_option.find('.check-all').prop('checked', totalChecked == site_option.length);
+		sites_option.find('.check-all+label small').text(`${totalChecked} selected`)
 	});
 });

@@ -2267,6 +2267,12 @@ button.button__instagram.hover__highlight:hover .icon {
 .disable__comment__option .disable_option .delete__checklist.disabled__sites .delete__checklist__item {
   flex: 0 1 200px;
 }
+.disable__comment__option .disable_option .delete__checklist.disabled__sites .delete__checklist__item:nth-child(1) {
+  flex-basis: 100%;
+}
+.disable__comment__option .disable_option .delete__checklist.disabled__sites .delete__checklist__item:nth-child(1) label {
+  display: inline-block;
+}
 .disable__comment__option .disable_option .delete__checklist .delete__checklist__item {
   flex: 0 0 130px;
   margin-right: 10px;
@@ -2319,6 +2325,12 @@ button.button__instagram.hover__highlight:hover .icon {
 }
 .disable__comment__option .disable_option .remove__checklist.disabled__sites .remove__checklist__item {
   flex: 0 1 200px;
+}
+.disable__comment__option .disable_option .remove__checklist.disabled__sites .remove__checklist__item:nth-child(1) {
+  flex-basis: 100%;
+}
+.disable__comment__option .disable_option .remove__checklist.disabled__sites .remove__checklist__item:nth-child(1) label {
+  display: inline-block;
 }
 .disable__comment__option .disable_option .remove__checklist .remove__checklist__item {
   flex: 0 0 130px;

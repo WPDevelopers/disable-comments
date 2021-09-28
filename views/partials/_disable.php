@@ -24,6 +24,7 @@
             <div class="disabled__sites remove__checklist">
             <?php
             $disabled_site_options = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
+            $disabled_site_count = $this->get_disabled_count();
             $sub_sites = get_sites([
                 'number' => 0,
             ]);
@@ -31,7 +32,7 @@
             <div class='remove__checklist__item'>
                 <input type='checkbox' class='check-all' id='disabled__sites__check__all' data-list='remove__checklist__item' name='disabled_sites[]' value='all' " .
                 checked(!empty($disabled_site_options['all']), true, false) . ">
-                <label for='disabled__sites__check__all'>All</label>
+                <label for='disabled__sites__check__all'><b>Select All</b> <small>($disabled_site_count selected)</small></label>
             </div>";
 
             foreach ( $sub_sites as $sub_site ) {

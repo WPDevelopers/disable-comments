@@ -218,6 +218,12 @@
 			&.disabled__sites {
 				.delete__checklist__item {
 					flex: 0 1 200px;
+					&:nth-child(1){
+						flex-basis: 100%;
+						label{
+							display: inline-block;
+						}
+					}
 				}
 			}
 			.delete__checklist__item {
@@ -275,6 +281,12 @@
 			&.disabled__sites {
 				.remove__checklist__item {
 					flex: 0 1 200px;
+					&:nth-child(1){
+						flex-basis: 100%;
+						label{
+							display: inline-block;
+						}
+					}
 				}
 			}
 			.remove__checklist__item {
