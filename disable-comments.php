@@ -807,7 +807,7 @@ class Disable_Comments
 
 			$this->options['is_network_admin'] = isset($formArray['is_network_admin']) && $formArray['is_network_admin'] == '1' ? true : false;
 
-			if(!empty($this->options['is_network_admin']) && function_exists('get_sites')){
+			if(!empty($this->options['is_network_admin']) && function_exists('get_sites') && empty($formArray['sitewide_settings'])){
 				$formArray['disabled_sites'] = isset($formArray['disabled_sites']) ? $formArray['disabled_sites'] : [];
 				$this->options['disabled_sites'] = [
 					'all' => in_array('all', $formArray['disabled_sites']),
