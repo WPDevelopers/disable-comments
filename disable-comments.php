@@ -67,7 +67,8 @@ class Disable_Comments
 			if(
 				!is_network_admin() && (
 					empty($this->options['disabled_sites']) ||
-					!in_array($blog_id, $this->options['disabled_sites'])
+					// if site disabled
+					empty($this->options['disabled_sites']["site_$blog_id"])
 				)
 			){
 				$this->options = [
@@ -801,6 +802,7 @@ class Disable_Comments
 			$this->options['is_network_admin'] = isset($formArray['is_network_admin']) && $formArray['is_network_admin'] == '1' ? true : false;
 
 			if(!empty($this->options['is_network_admin']) && function_exists('get_sites')){
+				$formArray['disabled_sites'] = isset($formArray['disabled_sites']) ? $formArray['disabled_sites'] : [];
 				$this->options['disabled_sites'] = [
 					'all' => in_array('all', $formArray['disabled_sites']),
 				];
@@ -871,6 +873,7 @@ class Disable_Comments
 					'number' => 0,
 				]);
 				foreach ( $sites as $site ) {
+					// $formArray['disabled_sites'] ids don't include "site_" prefix.
 					if( !empty($formArray['disabled_sites']) && in_array($site->blog_id, $formArray['disabled_sites'])){
 						switch_to_blog( $site->blog_id );
 						$log = $this->delete_comments($_args);
