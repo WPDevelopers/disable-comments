@@ -245,7 +245,6 @@ jQuery(document).ready(function ($) {
 
 	jQuery("#deleteCommentSettings .sites_option, #disableCommentSaveSettings .sites_option").on('change', function(){
 		var sites_option = jQuery(this).closest('.sites_option')
-		console.log(this, sites_option);
 		countSelected(sites_option);
 	});
 	countSelected(jQuery("#deleteCommentSettings .sites_option"));
