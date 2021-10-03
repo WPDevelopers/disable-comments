@@ -803,6 +803,7 @@ class Disable_Comments
 			} else {
 				$formArray = (isset($_POST['data']) ? $this->form_data_modify($_POST['data']) : []);
 			}
+			$old_options = $this->options;
 			$this->options = [];
 
 			$this->options['is_network_admin'] = isset($formArray['is_network_admin']) && $formArray['is_network_admin'] == '1' ? true : false;
@@ -816,6 +817,9 @@ class Disable_Comments
 					$blog_id = "site_{$site->blog_id}";
 					$this->options['disabled_sites'][$blog_id] = in_array($blog_id, $formArray['disabled_sites']);
 				}
+			}
+			elseif(!empty($this->options['is_network_admin']) && !empty($formArray['sitewide_settings'])){
+				$this->options['disabled_sites'] = $old_options['disabled_sites'];
 			}
 
 			if (isset($formArray['mode'])) {
