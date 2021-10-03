@@ -227,11 +227,11 @@ class Disable_Comments
 		return $this->options['disabled_sites'];
 	}
 
-	public function get_disabled_count(){
-		$disabled_sites = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
-		unset($disabled_sites['all']);
-		return array_sum($disabled_sites);
-	}
+	// public function get_disabled_count(){
+	// 	$disabled_sites = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
+	// 	unset($disabled_sites['all']);
+	// 	return array_sum($disabled_sites);
+	// }
 
 	/**
 	 * Get an array of disabled post type.

@@ -226,8 +226,8 @@ jQuery(document).ready(function ($) {
 		var site_option  = sites_option.find('.site_option')
 		site_option.prop('checked', checked);
 	});
-	jQuery("#deleteCommentSettings .sites_option, #disableCommentSaveSettings .sites_option").on('change', function(){
-		var sites_option = jQuery(this).closest('.sites_option')
+
+	var countSelected = function(sites_option){
 		var site_option  = sites_option.find('.site_option')
 		var totalChecked = 0;
 		site_option.each(function(){
@@ -241,5 +241,13 @@ jQuery(document).ready(function ($) {
 		}
 		sites_option.find('.check-all').prop('checked', totalChecked == site_option.length);
 		sites_option.find('.check-all+label small').text(`(${totalChecked} selected)`)
+	}
+
+	jQuery("#deleteCommentSettings .sites_option, #disableCommentSaveSettings .sites_option").on('change', function(){
+		var sites_option = jQuery(this).closest('.sites_option')
+		console.log(this, sites_option);
+		countSelected(sites_option);
 	});
+	countSelected(jQuery("#deleteCommentSettings .sites_option"));
+	countSelected(jQuery("#disableCommentSaveSettings .sites_option"));
 });
