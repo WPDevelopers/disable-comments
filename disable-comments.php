@@ -59,13 +59,13 @@ class Disable_Comments
 
 		$this->sitewide_settings = get_site_option('disable_comments_sitewide_settings', false);
 		// Load options.
-		if ($this->networkactive && (is_network_admin() || $this->sitewide_settings !== '1')) {
+		if ($this->networkactive && ($this->is_network_admin() || $this->sitewide_settings !== '1')) {
 			$this->options = get_site_option('disable_comments_options', array());
             $this->options['disabled_sites'] = $this->get_disabled_sites();
 
 			$blog_id = get_current_blog_id();
 			if(
-				!is_network_admin() && (
+				!$this->is_network_admin() && (
 					empty($this->options['disabled_sites']) ||
 					// if site disabled
 					empty($this->options['disabled_sites']["site_$blog_id"])
@@ -75,6 +75,7 @@ class Disable_Comments
 					'remove_everywhere'        => false,
 					'disabled_post_types'      => array(),
 					'extra_post_types'         => array(),
+					'disabled_sites'           => array(),
 					'remove_xmlrpc_comments'   => 0,
 					'remove_rest_API_comments' => 0,
 					'settings_saved'           => true,
@@ -105,6 +106,13 @@ class Disable_Comments
 		$this->init_filters();
 
 		add_action( 'wp_loaded', [ $this, 'start_plugin_usage_tracking'] );
+	}
+
+	public function is_network_admin(){
+		if (is_network_admin() || defined('DOING_AJAX') && DOING_AJAX && is_multisite() && preg_match('#^'.network_admin_url().'#i',$_SERVER['HTTP_REFERER'])) {
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * Enable CLI
