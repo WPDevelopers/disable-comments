@@ -190,7 +190,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
 
-= [2.2.2] - 2021-10-04 =
+= [2.2.2] - 2021-10-05 =
 * Added: "Select All" checkbox for subsites selection in a multisite network.
 * Few minor bug fix and improvement.
 
