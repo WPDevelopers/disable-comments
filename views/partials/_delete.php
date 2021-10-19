@@ -6,29 +6,13 @@
 
         <div class="disable__comment__option mb50">
             <?php if(is_network_admin()):?>
-                <div class="disable_option sites_option dc-text__block mb30 mt30">
+            <div class="disable_option sites_option dc-text__block mb30 mt30">
                 <h3>Delete comments in the following sites:</h3>
-                <div class="disabled__sites delete__checklist">
                 <?php
-                echo "
-                <div class='delete__checklist__item'>
-                    <input type='checkbox' class='check-all' id='delete__checklist__check__all' data-list='delete__checklist__item' checked >
-                    <label for='delete__checklist__check__all'><b>Select All</b> <small>(0 selected)</small></label>
-                </div><br />";
-                $sub_sites = get_sites([
-					'number' => 0,
-				]);
-                foreach ( $sub_sites as $sub_site ) {
-                    $sub_site_id = $sub_site->blog_id;
-                    $blog = get_blog_details($sub_site_id);
-                    echo
-                    "<div class='delete__checklist__item'>
-                        <input type='checkbox' id='delete__checklist__item-$sub_site_id' class='site_option' name='disabled_sites[]' value='$sub_site_id' checked='checked'>
-                        <label for='delete__checklist__item-$sub_site_id'>{$blog->blogname}</label>
-                    </div>";
-                }
+                    $type = 'delete';
+                    $disabled_site_options = $this->get_disabled_sites(true);
+                    include DC_PLUGIN_VIEWS_PATH . 'partials/_sites.php';
                 ?>
-                </div>
                 <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Select your sub-sites where you want to delete comments.', 'disable-comments'); ?></p>
             </div>
 

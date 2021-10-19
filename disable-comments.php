@@ -217,12 +217,16 @@ class Disable_Comments
 		}
 	}
 
-	public function get_disabled_sites(){
-		$this->options['disabled_sites'] = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
+	public function get_disabled_sites($default = false){
 		$disabled_sites = ['all' => true];
 		foreach(get_sites(['number' => 0]) as $blog){
 			$disabled_sites["site_{$blog->blog_id}"] = true;
 		}
+		if($default){
+			return $disabled_sites;
+		}
+
+		$this->options['disabled_sites'] = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
 		$this->options['disabled_sites'] = wp_parse_args($this->options['disabled_sites'], $disabled_sites);
 		$disabled_sites = $this->options['disabled_sites'];
 		unset($disabled_sites['all']);
@@ -789,17 +793,8 @@ class Disable_Comments
 
 	public function form_data_modify($form_data)
 	{
-		$formArray = [];
-		if (is_array($form_data) && count($form_data) > 0) {
-			foreach ($form_data as $form_item) {
-				if (preg_match('/[[]]/', $form_item['name'])) {
-					$formArray[str_replace("[]", "", $form_item['name'])][] = $form_item['value'];
-				} else {
-					$formArray[$form_item['name']] = $form_item['value'];
-				}
-			}
-		}
-		return $formArray;
+		print_r(wp_parse_args($form_data));die;
+		return wp_parse_args($form_data);
 	}
 
 	public function disable_comments_settings($_args = array())

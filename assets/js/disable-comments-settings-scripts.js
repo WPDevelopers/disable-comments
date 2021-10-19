@@ -127,7 +127,7 @@ jQuery(document).ready(function ($) {
 		var data = {
 			action: disableCommentsObj.save_action,
 			nonce: disableCommentsObj._nonce,
-			data: jQuery(this).serializeArray(),
+			data: jQuery(this).serialize(),
 		};
 
 		jQuery.ajax({
