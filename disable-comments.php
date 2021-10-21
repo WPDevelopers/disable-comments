@@ -138,6 +138,10 @@ class Disable_Comments
 
 	public function start_plugin_usage_tracking()
 	{
+		if($this->networkactive && !$this->options['sitewide_settings']){
+			$this->tracker = null;
+			return;
+		}
 		if (!class_exists('DisableComments_Plugin_Tracker')) {
 			include_once(DC_PLUGIN_ROOT_PATH . '/includes/class-plugin-usage-tracker.php');
 		}
@@ -574,6 +578,9 @@ class Disable_Comments
 			return;
 		}
 		$hascaps = $this->networkactive && is_network_admin() ? current_user_can('manage_network_plugins') : current_user_can('manage_options');
+		if($this->networkactive && !$this->options['sitewide_settings']){
+			$hascaps = false;
+		}
 		if ($hascaps) {
 			$this->setup_notice_flag = true;
 			// translators: %s: URL to Disabled Comment settings page.
