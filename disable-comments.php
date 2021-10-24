@@ -191,11 +191,15 @@ class Disable_Comments
 			if ($old_ver < 7 && function_exists( 'get_sites' )) {
 				$this->options['disabled_sites'] = [];
 				$dc_options     = get_site_option('disable_comments_options', array());
-				$disabled_sites = isset($dc_options['disabled_sites']) ? $dc_options['disabled_sites'] : [];
 
 				foreach(get_sites(['number' => 0]) as $blog){
 					$blog_id = $blog->blog_id;
-					$this->options['disabled_sites']["site_$blog_id"] = in_array($blog_id, $disabled_sites);
+					if(isset($dc_options['disabled_sites'])){
+						$this->options['disabled_sites']["site_$blog_id"] = in_array($blog_id, $dc_options['disabled_sites']);
+					}
+					else{
+						$this->options['disabled_sites']["site_$blog_id"] = true;
+					}
 				}
 				$this->options['disabled_sites'] = $this->get_disabled_sites();
 			}
@@ -578,7 +582,7 @@ class Disable_Comments
 			return;
 		}
 		$hascaps = $this->networkactive && is_network_admin() ? current_user_can('manage_network_plugins') : current_user_can('manage_options');
-		if($this->networkactive && !$this->options['sitewide_settings']){
+		if($this->networkactive && !is_network_admin() && !$this->options['sitewide_settings']){
 			$hascaps = false;
 		}
 		if ($hascaps) {
