@@ -26,7 +26,7 @@
                 $disabled_site_options = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
                 include DC_PLUGIN_VIEWS_PATH . 'partials/_sites.php';
             ?>
-            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Enable Site Wise settings if you want to configure “Disable Comments” settings individually on every website.', 'disable-comments'); ?></p>
+            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('All the underneath settings will be applied for these selected sub sites.', 'disable-comments'); ?></p>
         </div>
         <?php elseif($this->options['sitewide_settings'] && !empty($this->options['is_network_options'])):?>
             <div class="disable_option dc-text__block mb30 mt30">

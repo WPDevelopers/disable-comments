@@ -4,7 +4,7 @@
  * Plugin Name: Disable Comments
  * Plugin URI: https://wordpress.org/plugins/disable-comments/
  * Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. You could bulk delete comments using Tools.
- * Version: 2.2.2
+ * Version: 2.2.3
  * Author: WPDeveloper
  * Author URI: https://wpdeveloper.net
  * License: GPL-3.0+
@@ -37,7 +37,7 @@ class Disable_Comments
 
 	function __construct()
 	{
-		define('DC_VERSION', '2.2.2');
+		define('DC_VERSION', '2.2.3');
 		define('DC_PLUGIN_SLUG', 'disable_comments_settings');
 		define('DC_PLUGIN_ROOT_PATH', dirname(__FILE__));
 		define('DC_PLUGIN_VIEWS_PATH', DC_PLUGIN_ROOT_PATH . '/views/');
@@ -138,6 +138,10 @@ class Disable_Comments
 
 	public function start_plugin_usage_tracking()
 	{
+		if($this->networkactive && !$this->options['sitewide_settings']){
+			$this->tracker = null;
+			return;
+		}
 		if (!class_exists('DisableComments_Plugin_Tracker')) {
 			include_once(DC_PLUGIN_ROOT_PATH . '/includes/class-plugin-usage-tracker.php');
 		}
@@ -187,11 +191,15 @@ class Disable_Comments
 			if ($old_ver < 7 && function_exists( 'get_sites' )) {
 				$this->options['disabled_sites'] = [];
 				$dc_options     = get_site_option('disable_comments_options', array());
-				$disabled_sites = isset($dc_options['disabled_sites']) ? $dc_options['disabled_sites'] : [];
 
 				foreach(get_sites(['number' => 0]) as $blog){
 					$blog_id = $blog->blog_id;
-					$this->options['disabled_sites']["site_$blog_id"] = in_array($blog_id, $disabled_sites);
+					if(isset($dc_options['disabled_sites'])){
+						$this->options['disabled_sites']["site_$blog_id"] = in_array($blog_id, $dc_options['disabled_sites']);
+					}
+					else{
+						$this->options['disabled_sites']["site_$blog_id"] = true;
+					}
 				}
 				$this->options['disabled_sites'] = $this->get_disabled_sites();
 			}
@@ -578,6 +586,9 @@ class Disable_Comments
 			return;
 		}
 		$hascaps = $this->networkactive && is_network_admin() ? current_user_can('manage_network_plugins') : current_user_can('manage_options');
+		if($this->networkactive && !is_network_admin() && !$this->options['sitewide_settings']){
+			$hascaps = false;
+		}
 		if ($hascaps) {
 			$this->setup_notice_flag = true;
 			// translators: %s: URL to Disabled Comment settings page.
