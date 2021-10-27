@@ -1,6 +1,40 @@
 jQuery(document).ready(function ($) {
 	var saveBtn   = jQuery("#disableCommentSaveSettings button.button.button__success");
 	var deleteBtn = jQuery("#deleteCommentSettings button.button.button__delete");
+
+
+	jQuery(".sites_list_wrapper").each(function(){
+		var sites_list_wrapper = jQuery(this);
+		var sites_list = sites_list_wrapper.find('.sites_list');
+		var sub_sites = sites_list.data('sub_sites');
+		sub_sites.forEach(site => {
+			var id = "sites__option__" + site.type + "__" + site.site_id;
+			var name = "disabled_sites[site_" + site.site_id + "]";
+			sites_list.append("\
+				<div class='subsite__checklist__item'>\
+					<input type='hidden' name='" + name + "' value='0' />\
+					<input type='checkbox' id='" + id + "' class='site_option' name='" + name + "' value='1' " + site.is_checked + " />\
+					<label for='" + id + "'>"
+						+ site.blogname +
+					"</label>\
+				</div>\
+			")
+		});
+
+		sites_list_wrapper.find('.has-pagination').pagination({
+			dataSource: sub_sites,
+			pageSize: 5,
+			showPageNumbers: false,
+			callback: function(currentPage, pagination) {
+				sites_list.find('.subsite__checklist__item').hide();
+				currentPage.forEach(site => {
+					var id = "sites__option__" + site.type + "__" + site.site_id;
+					jQuery('#' + id).parents('.subsite__checklist__item').show();
+				});
+			}
+		});
+	});
+
 	/**
 	 * Settings Scripts
 	 */
@@ -31,15 +65,18 @@ jQuery(document).ready(function ($) {
 	disbale_comments_tabs();
 	// UI Helper
 	function enable_site_wise_uihelper() {
+		var pagination = jQuery("#disableCommentSaveSettings .sites_list_wrapper .has-pagination");
 		var indiv_bits = jQuery(
-			".disabled__sites .remove__checklist__item"
+			".disabled__sites .remove__checklist__item, #disableCommentSaveSettings .subsite__checklist__item"
 		);
 		if (jQuery("#sitewide_settings").is(":checked")) {
+			pagination.length && pagination.addClass('disabled').pagination('disable', true);
 			indiv_bits
 				.css("opacity", ".3")
 				.find(":input")
 				.attr("disabled", true);
 		} else {
+			pagination.length && pagination.removeClass('disabled').pagination('enable', true);
 			indiv_bits
 				.css("opacity", "1")
 				.find(":input")
@@ -220,33 +257,39 @@ jQuery(document).ready(function ($) {
 		// jQuery(this).off(e);
 		saveBtn.addClass('form-dirty');
 	});
-	jQuery("#deleteCommentSettings .check-all, #disableCommentSaveSettings .check-all").on('change', function(){
-		var checked      = jQuery(this).is(':checked');
-		var sites_option = jQuery(this).closest('.sites_option')
-		var site_option  = sites_option.find('.site_option')
-		site_option.prop('checked', checked);
-	});
 
-	var countSelected = function(sites_option){
-		var site_option  = sites_option.find('.site_option')
-		var totalChecked = 0;
-		site_option.each(function(){
-			if(jQuery(this).is(':checked')){
-				totalChecked++;
-			}
+	if(jQuery('.sites_list_wrapper').length){
+
+		jQuery("#deleteCommentSettings .check-all, #disableCommentSaveSettings .check-all").on('change', function(){
+			var checked      = jQuery(this).is(':checked');
+			var sites_option = jQuery(this).closest('.sites_list_wrapper')
+			var site_option  = sites_option.find('.site_option')
+			site_option.prop('checked', checked);
 		});
 
-		if(totalChecked){
-			sites_option.find('.check-all').addClass('semi-checked');
+		var countSelected = function(sites_option){
+			var site_option  = sites_option.find('.site_option')
+			var totalChecked = 0;
+			site_option.each(function(){
+				if(jQuery(this).is(':checked')){
+					totalChecked++;
+				}
+			});
+
+			if(totalChecked){
+				sites_option.find('.check-all').addClass('semi-checked');
+			}
+			sites_option.find('.check-all').prop('checked', totalChecked == site_option.length);
+			sites_option.find('.check-all+label small').text(`(${totalChecked} selected)`)
 		}
-		sites_option.find('.check-all').prop('checked', totalChecked == site_option.length);
-		sites_option.find('.check-all+label small').text(`(${totalChecked} selected)`)
+
+		jQuery("#deleteCommentSettings .sites_list_wrapper, #disableCommentSaveSettings .sites_list_wrapper").on('change', function(){
+			var sites_option = jQuery(this)
+			countSelected(sites_option);
+		});
+
+		countSelected(jQuery("#deleteCommentSettings .sites_list_wrapper"));
+		countSelected(jQuery("#disableCommentSaveSettings .sites_list_wrapper"));
 	}
 
-	jQuery("#deleteCommentSettings .sites_option, #disableCommentSaveSettings .sites_option").on('change', function(){
-		var sites_option = jQuery(this).closest('.sites_option')
-		countSelected(sites_option);
-	});
-	countSelected(jQuery("#deleteCommentSettings .sites_option"));
-	countSelected(jQuery("#disableCommentSaveSettings .sites_option"));
 });

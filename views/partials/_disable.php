@@ -19,7 +19,7 @@
                 <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('If you enable Site Wise settings, you need to configure your “Disable Comments” settings individually on every website in the network.', 'disable-comments'); ?></p>
             </div>
         </div>
-        <div class="disable_option sites_option dc-text__block mb30 mt30">
+        <div class="disable_option sites_list_wrapper dc-text__block mb30 mt30">
             <h3>Disable comments in the following sites:</h3>
             <?php
                 $type = 'disabled';

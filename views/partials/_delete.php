@@ -6,7 +6,7 @@
 
         <div class="disable__comment__option mb50">
             <?php if(is_network_admin()):?>
-            <div class="disable_option sites_option dc-text__block mb30 mt30">
+            <div class="disable_option sites_list_wrapper dc-text__block mb30 mt30">
                 <h3>Delete comments in the following sites:</h3>
                 <?php
                     $type = 'delete';

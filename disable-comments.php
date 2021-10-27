@@ -512,9 +512,11 @@ class Disable_Comments
 		) {
 			// css
 			wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/sweetalert2.min.css', [], false);
+			wp_enqueue_style('pagination',  DC_ASSETS_URI . 'css/pagination.css', [], false);
 			wp_enqueue_style('disable-comments-style',  DC_ASSETS_URI . 'css/style.css', [], false);
 			// js
 			wp_enqueue_script('sweetalert2', DC_ASSETS_URI . 'js/sweetalert2.all.min.js', array('jquery'), false, true);
+			wp_enqueue_script('pagination', DC_ASSETS_URI . 'js/pagination.min.js', array('jquery'), false, true);
 			wp_enqueue_script('disable-comments-scripts', DC_ASSETS_URI . 'js/disable-comments-settings-scripts.js', array('jquery'), false, true);
 			wp_localize_script(
 				'disable-comments-scripts',
@@ -804,7 +806,6 @@ class Disable_Comments
 
 	public function form_data_modify($form_data)
 	{
-		print_r(wp_parse_args($form_data));die;
 		return wp_parse_args($form_data);
 	}
 
@@ -829,7 +830,7 @@ class Disable_Comments
 				];
 				foreach (get_sites(['number' => false]) as $key => $site) {
 					$blog_id = "site_{$site->blog_id}";
-					$this->options['disabled_sites'][$blog_id] = in_array($blog_id, $formArray['disabled_sites']);
+					$this->options['disabled_sites'][$blog_id] = !empty($formArray['disabled_sites'][$blog_id]);
 				}
 			}
 			elseif(!empty($this->options['is_network_admin']) && !empty($formArray['sitewide_settings'])){
