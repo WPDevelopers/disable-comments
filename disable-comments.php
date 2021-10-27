@@ -310,6 +310,13 @@ class Disable_Comments
 		add_action('enqueue_block_editor_assets', array($this, 'filter_gutenberg_blocks'));
 		// settings page assets
 		add_action('admin_enqueue_scripts', array($this, 'settings_page_assets'));
+
+		if(!$this->networkactive || $this->options['sitewide_settings']) {
+			add_filter('comment_status_links', function($status_links){
+				$status_links['disable_comments'] = "<a href='" . $this->settings_page_url() . "'>Disable Comment</a>";
+				return $status_links;
+			});
+		}
 	}
 
 
