@@ -3,9 +3,8 @@ $_sub_sites = [];
 $sub_sites = get_sites([
     'number' => 0,
 ]);
-foreach ($sub_sites as $sub_site) {
-    $sub_site_id = $sub_site->blog_id;
-    $blog        = get_blog_details($sub_site_id);
+foreach ($sub_sites as $blog) {
+    $sub_site_id = $blog->blog_id;
     $is_checked  = checked(!empty($disabled_site_options["site_$sub_site_id"]), true, false);
     $_sub_sites[] = [
         'site_id'    => $sub_site_id,
