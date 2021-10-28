@@ -77,6 +77,21 @@
 	}
 }
 
+.sites_list_wrapper {
+	.sites_list {
+		display: flex;
+		width: 100%;
+		flex-wrap: wrap;
+		.subsite__checklist__item {
+			flex: 0 0 285px;
+			label {
+				word-break: break-all;
+			}
+
+		}
+	}
+}
+
 .disable__comment__option {
 	.title {
 		font-size: 22px;
@@ -461,5 +476,106 @@
 		line-height: 26px;
 		margin-top: 20px;
 		color: #687b95;
+	}
+}
+
+
+.subsite__checklist__item {
+	flex: 0 0 130px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	input {
+		display: none;
+	}
+	input:checked ~ label {
+		&:before {
+			border-color: $info;
+			background: $info;
+		}
+		&:after {
+			opacity: 1;
+		}
+	}
+	label {
+		font-size: 18px;
+		font-weight: 500;
+		color: $grey3;
+		font-family: $bodyFont;
+		position: relative;
+		line-height: 1.3;
+		padding-left: 25px;
+		display: inline-block;
+		&:before {
+			position: absolute;
+			top: 4px;
+			left: 0;
+			height: 12px;
+			width: 12px;
+			border: 1px solid $grey3;
+			content: "";
+		}
+		&:after {
+			position: absolute;
+			top: -2px;
+			left: 2px;
+			height: 13px;
+			width: 13px;
+			border: 0;
+			content: url(../img/check.png);
+			opacity: 0;
+			transition: all 0.3s ease;
+		}
+	}
+}
+
+.paginationjs-pages ul {
+	margin-top: 15px;
+	display: flex;
+	align-items: center;
+	li {
+		a {
+			font-size: 20px;
+			border: 1px solid rgba($black, .1);
+			padding: 3px 20px;
+			cursor: pointer;
+			color: $grey3;
+			&:hover {
+				color: $success;
+			}
+		}
+		&.paginationjs-next {
+			a {
+				border-top-right-radius: 8px;
+				border-bottom-right-radius: 8px;
+			}
+		}
+		&.paginationjs-prev {
+			a {
+				border-top-left-radius: 8px;
+				border-bottom-left-radius: 8px;
+			}
+		}
+		&.disabled {
+			a {
+				cursor: not-allowed;
+				background-color: rgba($black, .1);
+				&:hover {
+					color: $grey3;
+				}
+			}
+		}
+	}
+}
+
+.has-pagination.disabled {
+	.paginationjs-pages {
+		li {
+			a {
+				opacity: .3;
+				&:hover {
+					color: $grey3;
+				}
+			}
+		}
 	}
 }

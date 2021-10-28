@@ -99,4 +99,28 @@
 
 .form__control {
 	border: 1px solid rgba($black, .15) !important;
+	&.w-100 {
+		width: 100%;
+	}
+}
+
+.d__flex {
+	display: flex;
+}
+.space__between {
+	justify-content: space-between;
+	align-items: center;
+	> * {
+		// flex: 1 1 auto;
+	}
+}
+
+.icon__input {
+	position: relative;
+	.icon {
+		position: absolute;
+		top: 7px;
+		right: 12px;
+		pointer-events: none;
+	}
 }

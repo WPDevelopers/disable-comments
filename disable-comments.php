@@ -519,7 +519,7 @@ class Disable_Comments
 		) {
 			// css
 			wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/sweetalert2.min.css', [], false);
-			wp_enqueue_style('pagination',  DC_ASSETS_URI . 'css/pagination.css', [], false);
+			// wp_enqueue_style('pagination',  DC_ASSETS_URI . 'css/pagination.css', [], false);
 			wp_enqueue_style('disable-comments-style',  DC_ASSETS_URI . 'css/style.css', [], false);
 			// js
 			wp_enqueue_script('sweetalert2', DC_ASSETS_URI . 'js/sweetalert2.all.min.js', array('jquery'), false, true);

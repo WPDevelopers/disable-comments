@@ -23,7 +23,7 @@ jQuery(document).ready(function ($) {
 
 		sites_list_wrapper.find('.has-pagination').pagination({
 			dataSource: sub_sites,
-			pageSize: 5,
+			pageSize: 50,
 			showPageNumbers: false,
 			callback: function(currentPage, pagination) {
 				sites_list.find('.subsite__checklist__item').hide();
