@@ -6,11 +6,10 @@
 
         <div class="disable__comment__option mb50">
             <?php if(is_network_admin()):?>
-            <div class="disable_option sites_list_wrapper dc-text__block mb30 mt30">
+            <div class="disable_option sites_list_wrapper dc-text__block mb30 mt30" data-type="delete">
                 <h3>Delete comments in the following sites:</h3>
                 <?php
                     $type = 'delete';
-                    $disabled_site_options = $this->get_disabled_sites(true);
                     include DC_PLUGIN_VIEWS_PATH . 'partials/_sites.php';
                 ?>
                 <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Select your sub-sites where you want to delete comments.', 'disable-comments'); ?></p>

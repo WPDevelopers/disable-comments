@@ -15,7 +15,7 @@
             </div>
             <div class="dc-row">
                 <div class="dc-col-lg-9">
-                    <div class="disable__comment__tab">
+                    <div class="disable__comment__tab" data-total-sites="<?php echo $sub_sites_count;?>">
                         <div id="disableComments" class="disable__comment__tab__item show">
                             <?php include DC_PLUGIN_VIEWS_PATH . 'partials/_disable.php'; ?>
                         </div>

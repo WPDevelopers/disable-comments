@@ -3,14 +3,17 @@ jQuery(document).ready(function ($) {
 	var deleteBtn = jQuery("#deleteCommentSettings button.button.button__delete");
 
 
-	jQuery(".sites_list_wrapper").each(function(){
-		var sites_list_wrapper = jQuery(this);
-		var sites_list = sites_list_wrapper.find('.sites_list');
-		var sub_sites = sites_list.data('sub_sites');
-		sub_sites.forEach(site => {
-			var id = "sites__option__" + site.type + "__" + site.site_id;
-			var name = "disabled_sites[site_" + site.site_id + "]";
-			sites_list.append("\
+	if(jQuery('.sites_list_wrapper').length){
+		var addSite   = function($sites_list, site, type){
+			var id        = "sites__option__" + type + "__" + site.site_id;
+			var name      = "disabled_sites[site_" + site.site_id + "]";
+			var hasOption = $sites_list.has('#' + id);
+			if(hasOption.length){
+				$sites_list.find('#' + id).parent().removeClass('hidden');
+				return;
+			}
+
+			$sites_list.append( "\
 				<div class='subsite__checklist__item'>\
 					<input type='hidden' name='" + name + "' value='0' />\
 					<input type='checkbox' id='" + id + "' class='site_option' name='" + name + "' value='1' " + site.is_checked + " />\
@@ -18,22 +21,90 @@ jQuery(document).ready(function ($) {
 						+ site.blogname +
 					"</label>\
 				</div>\
-			")
+			");
+		}
+		var addSites  = function($sites_list, sub_sites, type){
+			// $sites_list.html('');
+			console.log($sites_list.children());
+			$sites_list.children().addClass('hidden');
+			sub_sites.forEach(function(site) {
+				addSite($sites_list, site, type);
+			});
+		}
+
+		jQuery(".sites_list_wrapper").each(function(){
+			var $sites_list_wrapper = jQuery(this);
+			var type        = $sites_list_wrapper.data('type');
+			var $sites_list = $sites_list_wrapper.find('.sites_list');
+			var totalSites   = jQuery('.disable__comment__tab').data('total-sites');
+			var isPageLoaded = {};
+
+			$sites_list_wrapper.find('.has-pagination').pagination({
+				dataSource     : ajaxurl,
+				locator        : 'data',
+				totalNumber    : totalSites,
+				pageSize       : 5,
+				showPageNumbers: false,
+				ajax		   : {
+					cache: true,
+					data : {
+						action: 'get_sub_sites',
+						type  : type,
+					},
+					beforeSend: function(x, y, z){
+						var match = y.url.match(/pageNumber=(\d+)/);
+						if(match && typeof match[1] != 'undefined'){
+							var pageNumber = parseInt(match[1]);
+							if(isPageLoaded[pageNumber] !== undefined){
+								y.success({
+									data: isPageLoaded[pageNumber]
+								})
+								return false;
+							}
+						}
+					}
+				},
+				callback       : function(data, pagination) {
+					var pageNumber = pagination.pageNumber;
+					addSites($sites_list, data, type);
+					isPageLoaded[pageNumber] = data;
+					countSelected($sites_list_wrapper);
+				}
+			});
 		});
 
-		sites_list_wrapper.find('.has-pagination').pagination({
-			dataSource: sub_sites,
-			pageSize: 50,
-			showPageNumbers: false,
-			callback: function(currentPage, pagination) {
-				sites_list.find('.subsite__checklist__item').hide();
-				currentPage.forEach(site => {
-					var id = "sites__option__" + site.type + "__" + site.site_id;
-					jQuery('#' + id).parents('.subsite__checklist__item').show();
-				});
-			}
+		jQuery(".sites_list_wrapper .check-all").on('change', function(){
+			var checked            = jQuery(this).is(':checked');
+			var sites_list_wrapper = jQuery(this).closest('.sites_list_wrapper')
+			var site_option        = sites_list_wrapper.find('.sites_list .subsite__checklist__item:not(.hidden)')
+			site_option.find('.site_option').prop('checked', checked);
+			console.log(site_option);
 		});
-	});
+
+		var countSelected = function(sites_list_wrapper){
+			var site_option  = sites_list_wrapper.find('.sites_list .subsite__checklist__item:not(.hidden)')
+			var totalChecked = 0;
+			site_option.find('.site_option').each(function(){
+				if(jQuery(this).is(':checked')){
+					totalChecked++;
+				}
+			});
+
+			if(totalChecked){
+				sites_list_wrapper.find('.check-all').addClass('semi-checked');
+			}
+			sites_list_wrapper.find('.check-all').prop('checked', totalChecked == site_option.length);
+			sites_list_wrapper.find('.check-all+label small').text(`(${totalChecked} selected)`)
+		}
+
+		jQuery(".sites_list_wrapper").on('change', function(){
+			var sites_list_wrapper = jQuery(this)
+			countSelected(sites_list_wrapper);
+		});
+
+		countSelected(jQuery("#deleteCommentSettings .sites_list_wrapper"));
+		countSelected(jQuery("#disableCommentSaveSettings .sites_list_wrapper"));
+	}
 
 	/**
 	 * Settings Scripts
@@ -257,39 +328,5 @@ jQuery(document).ready(function ($) {
 		// jQuery(this).off(e);
 		saveBtn.addClass('form-dirty');
 	});
-
-	if(jQuery('.sites_list_wrapper').length){
-
-		jQuery("#deleteCommentSettings .check-all, #disableCommentSaveSettings .check-all").on('change', function(){
-			var checked      = jQuery(this).is(':checked');
-			var sites_option = jQuery(this).closest('.sites_list_wrapper')
-			var site_option  = sites_option.find('.site_option')
-			site_option.prop('checked', checked);
-		});
-
-		var countSelected = function(sites_option){
-			var site_option  = sites_option.find('.site_option')
-			var totalChecked = 0;
-			site_option.each(function(){
-				if(jQuery(this).is(':checked')){
-					totalChecked++;
-				}
-			});
-
-			if(totalChecked){
-				sites_option.find('.check-all').addClass('semi-checked');
-			}
-			sites_option.find('.check-all').prop('checked', totalChecked == site_option.length);
-			sites_option.find('.check-all+label small').text(`(${totalChecked} selected)`)
-		}
-
-		jQuery("#deleteCommentSettings .sites_list_wrapper, #disableCommentSaveSettings .sites_list_wrapper").on('change', function(){
-			var sites_option = jQuery(this)
-			countSelected(sites_option);
-		});
-
-		countSelected(jQuery("#deleteCommentSettings .sites_list_wrapper"));
-		countSelected(jQuery("#disableCommentSaveSettings .sites_list_wrapper"));
-	}
 
 });

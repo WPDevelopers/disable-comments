@@ -19,11 +19,10 @@
                 <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('If you enable Site Wise settings, you need to configure your “Disable Comments” settings individually on every website in the network.', 'disable-comments'); ?></p>
             </div>
         </div>
-        <div class="disable_option sites_list_wrapper dc-text__block mb30 mt30">
+        <div class="disable_option sites_list_wrapper dc-text__block mb30 mt30" data-type="disabled">
             <h3>Disable comments in the following sites:</h3>
             <?php
                 $type = 'disabled';
-                $disabled_site_options = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
                 include DC_PLUGIN_VIEWS_PATH . 'partials/_sites.php';
             ?>
             <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('All the underneath settings will be applied for these selected sub sites.', 'disable-comments'); ?></p>

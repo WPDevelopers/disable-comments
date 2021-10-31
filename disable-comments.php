@@ -47,6 +47,7 @@ class Disable_Comments
 		// save settings
 		add_action('wp_ajax_disable_comments_save_settings', array($this, 'disable_comments_settings'));
 		add_action('wp_ajax_disable_comments_delete_comments', array($this, 'delete_comments_settings'));
+		add_action('wp_ajax_get_sub_sites', array($this, 'get_sub_sites'));
 
 		// Including cli.php
 		if (defined('WP_CLI') && WP_CLI) {
@@ -192,8 +193,7 @@ class Disable_Comments
 				$this->options['disabled_sites'] = [];
 				$dc_options     = get_site_option('disable_comments_options', array());
 
-				foreach(get_sites(['number' => 0]) as $blog){
-					$blog_id = $blog->blog_id;
+				foreach(get_sites(['number' => 0, 'fields' => 'ids']) as $blog_id){
 					if(isset($dc_options['disabled_sites'])){
 						$this->options['disabled_sites']["site_$blog_id"] = in_array($blog_id, $dc_options['disabled_sites']);
 					}
@@ -227,8 +227,8 @@ class Disable_Comments
 
 	public function get_disabled_sites($default = false){
 		$disabled_sites = ['all' => true];
-		foreach(get_sites(['number' => 0]) as $blog){
-			$disabled_sites["site_{$blog->blog_id}"] = true;
+		foreach(get_sites(['number' => 0, 'fields' => 'ids']) as $blog_id){
+			$disabled_sites["site_{$blog_id}"] = true;
 		}
 		if($default){
 			return $disabled_sites;
@@ -313,7 +313,7 @@ class Disable_Comments
 
 		if(!$this->networkactive || $this->options['sitewide_settings']) {
 			add_filter('comment_status_links', function($status_links){
-				$status_links['disable_comments'] = "<a href='" . $this->settings_page_url() . "'>Disable Comment</a>";
+				$status_links['disable_comments'] = sprintf("<a href='" . $this->settings_page_url() . "'>%s</a>", __("Disable Comments", 'disable-comments'));
 				return $status_links;
 			});
 		}
@@ -733,9 +733,10 @@ class Disable_Comments
 			$count = 0;
 			$sites = get_sites([
 				'number' => 0,
+				'fields' => 'ids',
 			]);
-			foreach ( $sites as $site ) {
-				switch_to_blog( $site->blog_id );
+			foreach ( $sites as $blog_id ) {
+				switch_to_blog( $blog_id );
 				$count += $wpdb->get_var("SELECT count(comment_id) from $wpdb->comments");
 				restore_current_blog();
 			}
@@ -751,9 +752,10 @@ class Disable_Comments
 			$comment_types = [];
 			$sites = get_sites([
 				'number' => 0,
+				'fields' => 'ids',
 			]);
-			foreach ( $sites as $site ) {
-				switch_to_blog( $site->blog_id );
+			foreach ( $sites as $blog_id ) {
+				switch_to_blog( $blog_id );
 				$comment_types = array_merge($this->_get_all_comment_types(), $comment_types);
 				restore_current_blog();
 			}
@@ -807,7 +809,39 @@ class Disable_Comments
 		if( isset( $_GET['cancel'] ) && trim( $_GET['cancel'] ) === 'setup' ){
 			$this->update_option('dc_setup_screen_seen', true);
 		}
+		$sub_sites_count = get_sites(['count' => true]);
 		include_once DC_PLUGIN_VIEWS_PATH . 'settings.php';
+	}
+
+	public function get_sub_sites(){
+		$_sub_sites = [];
+		$type       = isset($_GET['type']) ? $_GET['type'] : 'disabled';
+		$pageSize   = isset($_GET['pageSize']) ? $_GET['pageSize'] : 50;
+		$pageNumber = isset($_GET['pageNumber']) ? $_GET['pageNumber'] : 1;
+		$offset     = ($pageNumber - 1) * $pageSize;
+		$sub_sites  = get_sites([
+			'number' => $pageSize,
+			'offset' => $offset,
+			'fields' => 'ids',
+		]);
+
+		if($type == 'disabled'){
+			$disabled_site_options = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
+		}
+		else{ // if($type == 'delete')
+			$disabled_site_options = $this->get_disabled_sites(true);
+		}
+
+		foreach ($sub_sites as $sub_site_id) {
+			$blog        = get_blog_details($sub_site_id);
+			$is_checked  = checked(!empty($disabled_site_options["site_$sub_site_id"]), true, false);
+			$_sub_sites[] = [
+				'site_id'    => $sub_site_id,
+				'is_checked' => $is_checked,
+				'blogname'   => $blog->blogname,
+			];
+		}
+		wp_send_json(['data' => $_sub_sites]);
 	}
 
 
@@ -831,14 +865,10 @@ class Disable_Comments
 			$this->options['is_network_admin'] = isset($formArray['is_network_admin']) && $formArray['is_network_admin'] == '1' ? true : false;
 
 			if(!empty($this->options['is_network_admin']) && function_exists('get_sites') && empty($formArray['sitewide_settings'])){
-				$formArray['disabled_sites'] = isset($formArray['disabled_sites']) ? $formArray['disabled_sites'] : [];
-				$this->options['disabled_sites'] = [
-					'all' => in_array('all', $formArray['disabled_sites']),
-				];
-				foreach (get_sites(['number' => false]) as $key => $site) {
-					$blog_id = "site_{$site->blog_id}";
-					$this->options['disabled_sites'][$blog_id] = !empty($formArray['disabled_sites'][$blog_id]);
-				}
+				$formArray    ['disabled_sites'] = isset($formArray['disabled_sites']) 		   ? $formArray['disabled_sites'] : [];
+				$this->options['disabled_sites'] = isset($old_options['disabled_sites']) 	   ? $old_options['disabled_sites'] : [];
+				$this->options['disabled_sites'] = array_merge($this->options['disabled_sites'], $formArray['disabled_sites']);
+
 			}
 			elseif(!empty($this->options['is_network_admin']) && !empty($formArray['sitewide_settings'])){
 				$this->options['disabled_sites'] = $old_options['disabled_sites'];
@@ -903,11 +933,12 @@ class Disable_Comments
 			if ( !empty($formArray['is_network_admin']) && function_exists( 'get_sites' ) && class_exists( 'WP_Site_Query' ) ) {
 				$sites = get_sites([
 					'number' => 0,
+					'fields' => 'ids',
 				]);
-				foreach ( $sites as $site ) {
+				foreach ( $sites as $blog_id ) {
 					// $formArray['disabled_sites'] ids don't include "site_" prefix.
-					if( !empty($formArray['disabled_sites']) && in_array($site->blog_id, $formArray['disabled_sites'])){
-						switch_to_blog( $site->blog_id );
+					if( !empty($formArray['disabled_sites']) && in_array($blog_id, $formArray['disabled_sites'])){
+						switch_to_blog( $blog_id );
 						$log = $this->delete_comments($_args);
 						restore_current_blog();
 					}

@@ -1,20 +1,3 @@
-<?php
-$_sub_sites = [];
-$sub_sites = get_sites([
-    'number' => 0,
-]);
-foreach ($sub_sites as $blog) {
-    $sub_site_id = $blog->blog_id;
-    $is_checked  = checked(!empty($disabled_site_options["site_$sub_site_id"]), true, false);
-    $_sub_sites[] = [
-        'site_id'    => $sub_site_id,
-        'type'       => $type,
-        'is_checked' => $is_checked,
-        'blogname'   => $blog->blogname,
-    ];
-}
-
-?>
 <div class="has-pagination">
 <div class="d__flex mb15 space__between">
     <div class='subsite__checklist__item' style="flex: 1 1 200px;">
@@ -37,7 +20,7 @@ foreach ($sub_sites as $blog) {
         <input type="text" class="form__control w-100" placeholder="Search...">
     </div>
 </div>
-<div class="sites_list" data-sub_sites="<?php echo htmlspecialchars(json_encode($_sub_sites));?>">
+<div class="sites_list">
 
 </div>
 </div>
