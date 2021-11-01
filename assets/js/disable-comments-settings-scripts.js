@@ -25,7 +25,6 @@ jQuery(document).ready(function ($) {
 		}
 		var addSites  = function($sites_list, sub_sites, type){
 			// $sites_list.html('');
-			console.log($sites_list.children());
 			$sites_list.children().addClass('hidden');
 			sub_sites.forEach(function(site) {
 				addSite($sites_list, site, type);
@@ -34,35 +33,41 @@ jQuery(document).ready(function ($) {
 
 		jQuery(".sites_list_wrapper").each(function(){
 			var $sites_list_wrapper = jQuery(this);
-			var type        = $sites_list_wrapper.data('type');
-			var $sites_list = $sites_list_wrapper.find('.sites_list');
-			var totalSites   = jQuery('.disable__comment__tab').data('total-sites');
-			var isPageLoaded = {};
-
-			$sites_list_wrapper.find('.has-pagination').pagination({
-				dataSource     : ajaxurl,
-				locator        : 'data',
-				totalNumber    : totalSites,
-				pageSize       : 5,
-				showPageNumbers: false,
-				ajax		   : {
-					cache: true,
-					data : {
-						action: 'get_sub_sites',
-						type  : type,
-					},
-					beforeSend: function(x, y, z){
-						var match = y.url.match(/pageNumber=(\d+)/);
-						if(match && typeof match[1] != 'undefined'){
-							var pageNumber = parseInt(match[1]);
-							if(isPageLoaded[pageNumber] !== undefined){
-								y.success({
-									data: isPageLoaded[pageNumber]
-								})
-								return false;
-							}
+			var $subSiteSearch      = $sites_list_wrapper.find('.sub-site-search');
+			var type                = $sites_list_wrapper.data('type');
+			var $sites_list         = $sites_list_wrapper.find('.sites_list');
+			var $pageSize           = $sites_list_wrapper.find('.page-size');
+			var totalSites          = jQuery('.disable__comment__tab').data('total-sites');
+			var isPageLoaded        = {};
+			var args 				= {
+				dataSource             : ajaxurl,
+				locator                : 'data',
+				totalNumber            : totalSites,
+				pageSize               : $pageSize.val() || 50,
+				showPageNumbers        : false,
+				hideWhenLessThanOnePage: true,
+				ajax                   : function(){
+					return {
+						cache: true,
+						data : {
+							action: 'get_sub_sites',
+							type  : type,
+							search: $subSiteSearch.val(),
+						},
+						beforeSend: function(x, y, z){
+							console.log(arguments);
+							var match = y.url.match(/pageNumber=(\d+)/);
+							// if(match && typeof match[1] != 'undefined'){
+							// 	var pageNumber = parseInt(match[1]);
+							// 	if(isPageLoaded[pageNumber] !== undefined){
+							// 		y.success({
+							// 			data: isPageLoaded[pageNumber]
+							// 		})
+							// 		return false;
+							// 	}
+							// }
 						}
-					}
+					};
 				},
 				callback       : function(data, pagination) {
 					var pageNumber = pagination.pageNumber;
@@ -70,6 +75,30 @@ jQuery(document).ready(function ($) {
 					isPageLoaded[pageNumber] = data;
 					countSelected($sites_list_wrapper);
 				}
+			};
+
+			$sites_list_wrapper.find('.has-pagination').pagination(args);
+
+			var timeoutID = null;
+			$subSiteSearch.on('keyup keypress', function(event){
+				if(event.type != 'keypress'){
+					if(timeoutID){
+						clearTimeout(timeoutID);
+					}
+					timeoutID = setTimeout(() => {
+						$sites_list_wrapper.find('.has-pagination').pagination('go', 1);
+					}, 1000);
+				}
+				var keyCode = event.keyCode || event.which;
+				if (keyCode === 13) {
+					event.preventDefault();
+				  return false;
+				}
+			});
+
+			$pageSize.on('change', function(){
+				args.pageSize = jQuery(this).val();
+				$sites_list_wrapper.find('.has-pagination').pagination(args);
 			});
 		});
 
@@ -138,7 +167,7 @@ jQuery(document).ready(function ($) {
 	function enable_site_wise_uihelper() {
 		var pagination = jQuery("#disableCommentSaveSettings .sites_list_wrapper .has-pagination");
 		var indiv_bits = jQuery(
-			".disabled__sites .remove__checklist__item, #disableCommentSaveSettings .subsite__checklist__item"
+			".disabled__sites .remove__checklist__item, #disableCommentSaveSettings .subsite__checklist__item, #disableCommentSaveSettings .sub__site_control"
 		);
 		if (jQuery("#sitewide_settings").is(":checked")) {
 			pagination.length && pagination.addClass('disabled').pagination('disable', true);

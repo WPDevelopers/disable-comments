@@ -48,6 +48,7 @@ class Disable_Comments
 		add_action('wp_ajax_disable_comments_save_settings', array($this, 'disable_comments_settings'));
 		add_action('wp_ajax_disable_comments_delete_comments', array($this, 'delete_comments_settings'));
 		add_action('wp_ajax_get_sub_sites', array($this, 'get_sub_sites'));
+		add_action('wp_ajax_sub_site_search', array($this, 'sub_site_search'));
 
 		// Including cli.php
 		if (defined('WP_CLI') && WP_CLI) {
@@ -816,9 +817,42 @@ class Disable_Comments
 	public function get_sub_sites(){
 		$_sub_sites = [];
 		$type       = isset($_GET['type']) ? $_GET['type'] : 'disabled';
+		$search     = isset($_GET['search']) ? $_GET['search'] : '';
 		$pageSize   = isset($_GET['pageSize']) ? $_GET['pageSize'] : 50;
 		$pageNumber = isset($_GET['pageNumber']) ? $_GET['pageNumber'] : 1;
 		$offset     = ($pageNumber - 1) * $pageSize;
+		$sub_sites  = get_sites([
+			'number' => $pageSize,
+			'offset' => $offset,
+			'search' => $search,
+			'fields' => 'ids',
+		]);
+
+		if($type == 'disabled'){
+			$disabled_site_options = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
+		}
+		else{ // if($type == 'delete')
+			$disabled_site_options = $this->get_disabled_sites(true);
+		}
+
+		foreach ($sub_sites as $sub_site_id) {
+			$blog        = get_blog_details($sub_site_id);
+			$is_checked  = checked(!empty($disabled_site_options["site_$sub_site_id"]), true, false);
+			$_sub_sites[] = [
+				'site_id'    => $sub_site_id,
+				'is_checked' => $is_checked,
+				'blogname'   => $blog->blogname,
+			];
+		}
+		wp_send_json(['data' => $_sub_sites]);
+	}
+
+	public function sub_site_search(){
+		if(isset($_GET['search'])){
+			$search = $_GET['search'];
+
+		}
+		$_sub_sites = [];
 		$sub_sites  = get_sites([
 			'number' => $pageSize,
 			'offset' => $offset,

@@ -1,5 +1,3 @@
-
-
 <div class="">
 <div class="d__flex mb15 space__between">
     <div class='subsite__checklist__item' style="flex: 1 1 200px;">
@@ -16,11 +14,11 @@
         </label>
     </div>
     <div class="mb10" style="text-align: right; flex: 0 0 200px;">
-        <div class="icon__input">
+        <div class="icon__input sub__site_control">
             <span class="icon">
                 <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/search.svg'); ?>" alt="">
             </span>
-            <input type="text" class="form__control w-100" placeholder="Search...">
+            <input type="text" class="form__control w-100 sub-site-search" placeholder="Search...">
         </div>
     </div>
 </div>
@@ -28,15 +26,16 @@
 
 </div>
 <div class="d__flex space__between">
-    <div class="d__flex item__number__controller">
+    <div class="d__flex item__number__controller sub__site_control">
         <p>Show Items:</p>
         <div class="dc-select">
             <span class="icon"></span>
-            <select class="form__control">
-                <option value="">10</option>
-                <option value="">20</option>
-                <option value="">30</option>
-                <option value="">200</option>
+            <select class="form__control page-size">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50" selected>50</option>
+                <option value="200">200</option>
             </select>
         </div>
     </div>
