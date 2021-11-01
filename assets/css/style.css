@@ -230,6 +230,14 @@
   padding-bottom: 300px;
 }
 
+.mt10 {
+  margin-top: 10px;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+
 .mt15 {
   margin-top: 15px;
 }
@@ -3075,7 +3083,7 @@ button.button__instagram.hover__highlight:hover .icon {
 }
 
 .paginationjs-pages ul {
-  margin-top: 15px;
+  margin-top: 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -3087,7 +3095,7 @@ button.button__instagram.hover__highlight:hover .icon {
 .paginationjs-pages ul li a {
   font-size: 20px;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 3px 20px;
+  padding: 0 20px;
   cursor: pointer;
   color: #687b95;
 }
@@ -3108,7 +3116,7 @@ button.button__instagram.hover__highlight:hover .icon {
 
 .paginationjs-pages ul li.disabled a {
   cursor: not-allowed;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .paginationjs-pages ul li.disabled a:hover {
@@ -3121,6 +3129,30 @@ button.button__instagram.hover__highlight:hover .icon {
 
 .has-pagination.disabled .paginationjs-pages li a:hover {
   color: #687b95;
+}
+
+.item__number__controller {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.item__number__controller p {
+  margin-right: 10px;
+}
+
+.dc-select {
+  position: relative;
+}
+
+.dc-select .icon {
+  position: absolute;
+}
+
+.dc-select select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .dc-item__card_wrap {

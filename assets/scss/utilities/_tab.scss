@@ -529,14 +529,14 @@
 }
 
 .paginationjs-pages ul {
-	margin-top: 15px;
+	margin-top: 0;
 	display: flex;
 	align-items: center;
 	li {
 		a {
 			font-size: 20px;
 			border: 1px solid rgba($black, .1);
-			padding: 3px 20px;
+			padding: 0 20px;
 			cursor: pointer;
 			color: $grey3;
 			&:hover {
@@ -558,7 +558,7 @@
 		&.disabled {
 			a {
 				cursor: not-allowed;
-				background-color: rgba($black, .1);
+				background-color: rgba($black, .05);
 				&:hover {
 					color: $grey3;
 				}
@@ -577,5 +577,24 @@
 				}
 			}
 		}
+	}
+}
+
+.item__number__controller {
+	align-items: center;
+	p {
+		margin-right: 10px;
+	}
+}
+
+.dc-select {
+	position: relative;
+	.icon {
+		position: absolute;
+	}
+	select {
+		-webkit-appearance: none;
+		-moz-appearance:    none;
+		appearance:         none;
 	}
 }
