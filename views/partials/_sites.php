@@ -13,12 +13,12 @@
             <small>(0 selected)</small>
         </label>
     </div>
-    <div class="mb10" style="text-align: right; flex: 0 0 200px;">
+    <div class="mb10" style="text-align: right; flex: 0 0 230px;">
         <div class="icon__input sub__site_control">
             <span class="icon">
                 <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/search.svg'); ?>" alt="">
             </span>
-            <input type="text" class="form__control w-100 sub-site-search" placeholder="Search...">
+            <input type="text" class="form__control w-100 sub-site-search" placeholder="Search by domain name...">
         </div>
     </div>
 </div>
