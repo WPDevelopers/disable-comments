@@ -46,6 +46,9 @@ jQuery(document).ready(function ($) {
 				pageSize               : $pageSize.val() || 50,
 				showPageNumbers        : false,
 				hideWhenLessThanOnePage: true,
+				totalNumberLocator: function(response) {
+					return response.totalNumber;
+				},
 				ajax                   : function(){
 					return {
 						cache: true,
@@ -54,19 +57,6 @@ jQuery(document).ready(function ($) {
 							type  : type,
 							search: $subSiteSearch.val(),
 						},
-						beforeSend: function(x, y, z){
-							console.log(arguments);
-							var match = y.url.match(/pageNumber=(\d+)/);
-							// if(match && typeof match[1] != 'undefined'){
-							// 	var pageNumber = parseInt(match[1]);
-							// 	if(isPageLoaded[pageNumber] !== undefined){
-							// 		y.success({
-							// 			data: isPageLoaded[pageNumber]
-							// 		})
-							// 		return false;
-							// 	}
-							// }
-						}
 					};
 				},
 				callback       : function(data, pagination) {
