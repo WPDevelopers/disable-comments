@@ -18,7 +18,7 @@
             <span class="icon">
                 <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/search.svg'); ?>" alt="">
             </span>
-            <input type="text" class="form__control w-100 sub-site-search" placeholder="Search by domain name...">
+            <input type="text" class="form__control w-100 sub-site-search" placeholder="Search by domain name..." style="padding-right: 35px;">
         </div>
     </div>
 </div>
