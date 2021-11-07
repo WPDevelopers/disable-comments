@@ -26,11 +26,11 @@
     <div class="nothing-found"><p>No subsite found</p></div>
 </div>
 <div class="d__flex space__between">
-    <div class="d__flex item__number__controller sub__site_control">
+    <div class="d__flex item__number__controller sub__site_control page__size__wrapper">
         <p>Show Items:</p>
         <div class="dc-select">
             <span class="icon"></span>
-            <select class="form__control page-size">
+            <select class="form__control page__size">
                 <!-- <option value="2">2</option> -->
                 <!-- <option value="10">10</option> -->
                 <option value="20">20</option>

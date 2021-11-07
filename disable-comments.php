@@ -825,6 +825,12 @@ class Disable_Comments
 			'search' => $search,
 			'fields' => 'ids',
 		]);
+		$totalNumber  = get_sites([
+			// 'number' => $pageSize,
+			// 'offset' => $offset,
+			'search' => $search,
+			'count'  => true,
+		]);
 
 		if($type == 'disabled'){
 			$disabled_site_options = isset($this->options['disabled_sites']) ? $this->options['disabled_sites'] : [];
@@ -842,8 +848,6 @@ class Disable_Comments
 				'blogname'   => $blog->blogname,
 			];
 		}
-
-		$totalNumber = ($pageNumber + (count($_sub_sites) == $pageSize)) * $pageSize;
 		wp_send_json(['data' => $_sub_sites, 'totalNumber' => $totalNumber]);
 	}
 

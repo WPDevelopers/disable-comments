@@ -40,15 +40,22 @@ jQuery(document).ready(function ($) {
 			var $subSiteSearch      = $sites_list_wrapper.find('.sub-site-search');
 			var type                = $sites_list_wrapper.data('type');
 			var $sites_list         = $sites_list_wrapper.find('.sites_list');
-			var $pageSize           = $sites_list_wrapper.find('.page-size');
+			var $pageSize           = $sites_list_wrapper.find('.page__size');
+			var $pageSizeWrapper    = $sites_list_wrapper.find('.page__size__wrapper');
 			var isPageLoaded        = {};
-			var args 				= {
+			var args                = {
 				dataSource             : ajaxurl,
 				locator                : 'data',
 				pageSize               : $pageSize.val() || 50,
 				showPageNumbers        : false,
 				hideWhenLessThanOnePage: true,
 				totalNumberLocator: function(response) {
+					if(response.totalNumber <= 20){
+						$pageSizeWrapper.hide();
+					}
+					else{
+						$pageSizeWrapper.show();
+					}
 					return response.totalNumber;
 				},
 				ajax                   : function(){
