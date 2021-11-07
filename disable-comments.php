@@ -939,7 +939,7 @@ class Disable_Comments
 				]);
 				foreach ( $sites as $blog_id ) {
 					// $formArray['disabled_sites'] ids don't include "site_" prefix.
-					if( !empty($formArray['disabled_sites']) && in_array($blog_id, $formArray['disabled_sites'])){
+					if( !empty($formArray['disabled_sites']) && !empty($formArray['disabled_sites']["site_$blog_id"])){
 						switch_to_blog( $blog_id );
 						$log = $this->delete_comments($_args);
 						restore_current_blog();
