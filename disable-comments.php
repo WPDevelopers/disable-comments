@@ -809,7 +809,6 @@ class Disable_Comments
 		if( isset( $_GET['cancel'] ) && trim( $_GET['cancel'] ) === 'setup' ){
 			$this->update_option('dc_setup_screen_seen', true);
 		}
-		$sub_sites_count = get_sites(['count' => true]);
 		include_once DC_PLUGIN_VIEWS_PATH . 'settings.php';
 	}
 

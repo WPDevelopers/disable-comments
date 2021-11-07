@@ -29,6 +29,9 @@ jQuery(document).ready(function ($) {
 			sub_sites.forEach(function(site) {
 				addSite($sites_list, site, type);
 			});
+			if(sub_sites.length == 0){
+				$sites_list.find('.nothing-found').removeClass('hidden');
+			}
 		}
 
 		jQuery(".sites_list_wrapper").each(function(){
@@ -37,12 +40,10 @@ jQuery(document).ready(function ($) {
 			var type                = $sites_list_wrapper.data('type');
 			var $sites_list         = $sites_list_wrapper.find('.sites_list');
 			var $pageSize           = $sites_list_wrapper.find('.page-size');
-			var totalSites          = jQuery('.disable__comment__tab').data('total-sites');
 			var isPageLoaded        = {};
 			var args 				= {
 				dataSource             : ajaxurl,
 				locator                : 'data',
-				totalNumber            : totalSites,
 				pageSize               : $pageSize.val() || 50,
 				showPageNumbers        : false,
 				hideWhenLessThanOnePage: true,
