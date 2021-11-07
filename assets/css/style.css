@@ -3155,6 +3155,20 @@ button.button__instagram.hover__highlight:hover .icon {
   appearance: none;
 }
 
+.nothing-found {
+  text-align: center;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.nothing-found p {
+  font-size: 16px;
+  font-weight: 400;
+  color: #808da1;
+  margin-bottom: 15px;
+}
+
 .dc-item__card_wrap {
   height: 100%;
   display: -webkit-box;

@@ -23,7 +23,7 @@
     </div>
 </div>
 <div class="sites_list">
-    <div class="nothing-found">No subsite found</div>
+    <div class="nothing-found"><p>No subsite found</p></div>
 </div>
 <div class="d__flex space__between">
     <div class="d__flex item__number__controller sub__site_control">
