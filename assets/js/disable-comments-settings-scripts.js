@@ -32,6 +32,7 @@ jQuery(document).ready(function ($) {
 			if(sub_sites.length == 0){
 				$sites_list.find('.nothing-found').removeClass('hidden');
 			}
+			enable_site_wise_uihelper();
 		}
 
 		jQuery(".sites_list_wrapper").each(function(){
