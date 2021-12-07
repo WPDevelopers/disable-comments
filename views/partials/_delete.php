@@ -58,6 +58,11 @@
                 </ul>
                 <p class="disable__option__description"><span class="danger"><?php _e('Warnings:', 'disable-comments'); ?></span> <?php _e('Deleting comments by comment type will remove existing comment entries of the selected comment type(s) in the database and cannot be reverted without a database backup.', 'disable-comments'); ?></p>
             </div>
+            <div class="disable_option dc-text__block mb30 mt30">
+                <input type="radio" id="delete_spam" name="delete_mode" value="delete_spam" />
+                <label for="delete_spam"><?php _e('Spam:', 'disable-comments'); ?> <span><?php _e('Permanently delete all spam comments on your WordPress website', 'disable-comments'); ?></span></label>
+                <p class="disable__option__description"><span class="danger"><?php _e('Warnings:', 'disable-comments'); ?></span> <?php _e('This will permanently delete spam comments everywhere on your website.', 'disable-comments'); ?></p>
+            </div>
             <h4 class="total-comments"><?php _e('Total Comments:', 'disable-comments'); ?> <?php echo $this->get_all_comments_number(); ?></h4>
         </div>
         <?php if(is_network_admin()):?>

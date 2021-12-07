@@ -216,7 +216,7 @@ jQuery(document).ready(function ($) {
 			"#delete__post__types .delete__checklist__item, #extradeletetypes"
 		);
 		var toggle_ct_bits = jQuery("#listofdeletecommenttypes");
-		if (jQuery("#delete_everywhere").is(":checked")) {
+		if (jQuery("#delete_everywhere, #delete_spam").is(":checked")) {
 			toggle_pt_bits
 				.css("opacity", ".3")
 				.find(":input")
@@ -249,7 +249,7 @@ jQuery(document).ready(function ($) {
 	}
 
 	jQuery(
-		"#delete_everywhere, #selected_delete_types, #selected_delete_comment_types"
+		"#delete_everywhere, #delete_spam, #selected_delete_types, #selected_delete_comment_types"
 	).on('change', function () {
 		delete_comments_uihelper();
 	});
