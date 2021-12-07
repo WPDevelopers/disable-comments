@@ -621,6 +621,11 @@ class Disable_Comments
 			}
 
 			remove_submenu_page('options-general.php', 'options-discussion.php');
+			// disabling gravatar if enabled.
+			$show_avatar = get_option('show_avatars', false);
+			if($show_avatar){
+				update_option('show_avatars', false);
+			}
 		}
 	}
 
