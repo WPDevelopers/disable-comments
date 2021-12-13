@@ -1054,11 +1054,6 @@ class Disable_Comments
 				$wpdb->query("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID WHERE comments.comment_approved = 'spam'");
 				$wpdb->query("DELETE comments FROM $wpdb->comments comments  WHERE comments.comment_approved = 'spam'");
 
-				// Update comment_count on post_types
-				foreach ($types as $key => $value) {
-					$comment_count = $wpdb->get_var("SELECT COUNT(comments.comment_ID) FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '$key'");
-					$wpdb->query("UPDATE $wpdb->posts SET comment_count = $comment_count WHERE post_author != 0 AND post_type = '$key'");
-				}
 
 				$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
 				$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
@@ -1066,6 +1061,7 @@ class Disable_Comments
 				$log = __('All spam comments have been deleted', 'disable-comments');
 			}
 		}
+		delete_transient('wc_count_comments');
 		return $log;
 	}
 
