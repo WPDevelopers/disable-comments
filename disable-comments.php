@@ -219,7 +219,9 @@ class Disable_Comments
 	public function check_upgrades(){
 		$dc_version = get_option('disable_comment_version');
 		if (version_compare($dc_version, '2.3.1', '<')) {
-			update_option('show_avatars', true);
+			if (!empty($this->options['remove_everywhere'])){
+				update_option('show_avatars', true);
+			}
 		}
 		if(!$dc_version || $dc_version != DC_VERSION){
 			update_option('disable_comment_version', DC_VERSION);
