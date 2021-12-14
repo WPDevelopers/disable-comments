@@ -915,8 +915,8 @@ class Disable_Comments
 				update_site_option('disable_comments_sitewide_settings', $formArray['sitewide_settings']);
 			}
 
-			if(isset($formArray['disable_gravatar'])){
-				update_option('show_avatars', (bool) $formArray['disable_gravatar']);
+			if(isset($formArray['disable_avatar'])){
+				update_option('show_avatars', (bool) $formArray['disable_avatar']);
 			}
 			// xml rpc
 			$this->options['remove_xmlrpc_comments'] = (isset($formArray['remove_xmlrpc_comments']) ? intval($formArray['remove_xmlrpc_comments']) : ($this->is_CLI && isset($this->options['remove_xmlrpc_comments']) ? $this->options['remove_xmlrpc_comments'] : 0));

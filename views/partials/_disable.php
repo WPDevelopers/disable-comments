@@ -67,17 +67,17 @@
         <div class="disable_option dc-text__block mt30">
             <div class="disable__switchs">
                 <div class="dissable__switch__item">
-                    <input type="hidden" name="disable_gravatar" value="0">
-                    <input type="checkbox" id="switch-api" name="disable_gravatar" value="1" <?php checked(get_option('show_avatars', false)); ?>>
+                    <input type="hidden" name="disable_avatar" value="0">
+                    <input type="checkbox" id="switch-api" name="disable_avatar" value="1" <?php checked(get_option('show_avatars', false)); ?>>
                     <label for="switch-api">
                         <span class="switch">
                             <span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
                             <span class="switch__text off"><?php _e('Off', 'disable-comments'); ?></span>
-                        </span><?php _e('Disable Gravatar', 'disable-comments'); ?>
+                        </span><?php _e('Disable Avatar', 'disable-comments'); ?>
                     </label>
                 </div>
             </div>
-            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will remove Gravatar from your entire website.', 'disable-comments'); ?></p>
+            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will remove Avatar from your entire website.', 'disable-comments'); ?></p>
         </div>
         <?php endif;?>
     </div>
