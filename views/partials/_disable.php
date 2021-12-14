@@ -63,6 +63,23 @@
             </div>
             <p class="subtitle"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts. Comments will be visible on all other post types.', 'disable-comments'); ?></p>
         </div>
+        <?php if(!is_network_admin()):?>
+        <div class="disable_option dc-text__block mt30">
+            <div class="disable__switchs">
+                <div class="dissable__switch__item">
+                    <input type="hidden" name="disable_gravatar" value="0">
+                    <input type="checkbox" id="switch-api" name="disable_gravatar" value="1" <?php checked(get_option('show_avatars', false)); ?>>
+                    <label for="switch-api">
+                        <span class="switch">
+                            <span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
+                            <span class="switch__text off"><?php _e('Off', 'disable-comments'); ?></span>
+                        </span><?php _e('Disable Gravatar', 'disable-comments'); ?>
+                    </label>
+                </div>
+            </div>
+            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will remove Gravatar from your entire website.', 'disable-comments'); ?></p>
+        </div>
+        <?php endif;?>
     </div>
     <div class="disable__comment__option mb50">
         <h3 class="title"><?php _e('Disable Comments With API', 'disable-comments'); ?></h3>
