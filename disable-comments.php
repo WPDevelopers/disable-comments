@@ -916,7 +916,7 @@ class Disable_Comments
 			}
 
 			if(isset($formArray['disable_avatar'])){
-				update_option('show_avatars', (bool) $formArray['disable_avatar']);
+				update_option('show_avatars', (bool) !$formArray['disable_avatar']);
 			}
 			// xml rpc
 			$this->options['remove_xmlrpc_comments'] = (isset($formArray['remove_xmlrpc_comments']) ? intval($formArray['remove_xmlrpc_comments']) : ($this->is_CLI && isset($this->options['remove_xmlrpc_comments']) ? $this->options['remove_xmlrpc_comments'] : 0));

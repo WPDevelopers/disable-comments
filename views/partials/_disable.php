@@ -68,7 +68,7 @@
             <div class="disable__switchs">
                 <div class="dissable__switch__item">
                     <input type="hidden" name="disable_avatar" value="0">
-                    <input type="checkbox" id="switch-api" name="disable_avatar" value="1" <?php checked(get_option('show_avatars', false)); ?>>
+                    <input type="checkbox" id="switch-api" name="disable_avatar" value="1" <?php checked(!get_option('show_avatars', false)); ?>>
                     <label for="switch-api">
                         <span class="switch">
                             <span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
