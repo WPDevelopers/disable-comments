@@ -1,6 +1,6 @@
 === Disable Comments - Remove Comments & Stop Spam [Multi-Site Support] ===
 Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, tusharimran, alimuzzamanalim, solarissmoke, garrett-eclipse
-Donate link: https://wpdeveloper.net/
+Donate link: https://wpdeveloper.com/
 Tags: comments, delete comments, disable comments, spam comment, disable, stop spam, remove comments, anti spam, disable xml-rpc, hide comment, XML-RPC, REST-API, WP-CLI, multi-site support
 Requires at least: 5.0
 Tested up to: 5.8
@@ -17,7 +17,7 @@ Allows administrators to globally disable comments on their site. Comments can b
 
 Instantly allow or disallow comments from any post type in WordPress (Pages, Posts, or Media) to stop the spammers and gain complete control over your full website. WP-CLI Support & Control comments via XML-RPC and REST-API too!
 
-[More About Plugin](https://wpdeveloper.net/plugins/disable-comments/) ◼️ [Documentation](https://wpdeveloper.net/docs-category/disable-comments/) ◼️ [Support Forum](https://wordpress.org/support/plugin/disable-comments/)
+[More About Plugin](https://wpdeveloper.com/plugins/disable-comments/) ◼️ [Documentation](https://wpdeveloper.com/docs-category/disable-comments/) ◼️ [Support Forum](https://wordpress.org/support/plugin/disable-comments/)
 
 https://www.youtube.com/watch?v=EpuYs9Nf_nY
 
@@ -43,7 +43,7 @@ https://www.youtube.com/watch?v=J9AteKzQpPs
 * Outgoing pingbacks are disabled.
 * Stop spam comments entirely from the site with one click.
 * **[New]** Delete comments by type.
-* **[New]** Disable comments via [XML-RPC](https://wpdeveloper.net/docs/how-to-disable-comments-made-via-xml-rpc/) & [REST-API](https://wpdeveloper.net/docs/how-to-disable-comments-made-via-rest-api/)
+* **[New]** Disable comments via [XML-RPC](https://wpdeveloper.com/docs/how-to-disable-comments-made-via-xml-rpc/) & [REST-API](https://wpdeveloper.com/docs/how-to-disable-comments-made-via-rest-api/)
 * **[New]** Fully Multi-site Network supported.
 
 https://www.youtube.com/watch?v=FBq3-W-p-DM
@@ -56,7 +56,7 @@ Please delete any existing comments on your site **before applying this setting*
 Easily configure your comment-related settings with an amazing and attractive app-like user interface.
 
 **WP-CLI COMMANDS TO DISABLE COMMENTS**
-Use [WP-CLI](https://wpdeveloper.net/docs/how-to-use-disable-comments-plugin-with-wp-cli-command-line/) control for comment-related settings to disable comments on posts, pages, attachments or everywhere on your website.
+Use [WP-CLI](https://wpdeveloper.com/docs/how-to-use-disable-comments-plugin-with-wp-cli-command-line/) control for comment-related settings to disable comments on posts, pages, attachments or everywhere on your website.
 
 https://www.youtube.com/watch?v=mzi5uhKB9Zk
 
@@ -95,12 +95,12 @@ Some of the plugin’s behavior can be modified by site administrators and plugi
 These definitions can be made either in your main `wp-config.php` or in your theme's `functions.php` file.
 
 
-**THIS PLUGIN IS NOW MAINTAINED BY THE TEAM** [WPDeveloper](https://wpdeveloper.net/).
+**THIS PLUGIN IS NOW MAINTAINED BY THE TEAM** [WPDeveloper](https://wpdeveloper.com/).
 
 
 ### 💙 LOVED DISABLE COMMENTS?
 
-- For documentation and tutorials go to our [Documentation](https://wpdeveloper.net/docs-category/disable-comments/)
+- For documentation and tutorials go to our [Documentation](https://wpdeveloper.com/docs-category/disable-comments/)
 
 - For video tutorials go to our [YouTube Playlist](https://www.youtube.com/watch?v=J9AteKzQpPs&list=PLWHp1xKHCfxD2_xOIR5dMAGf3wd4hv-8K)
 
@@ -108,7 +108,7 @@ These definitions can be made either in your main `wp-config.php` or in your the
 
 - If you love Disable Comments, [rate us on WordPress](https://wordpress.org/support/plugin/disable-comments/reviews/?filter=5)
 
-- For more information about features, FAQs, and documentation, check out our website at [Disable Comments](https://wpdeveloper.net/plugins/disable-comments/)
+- For more information about features, FAQs, and documentation, check out our website at [Disable Comments](https://wpdeveloper.com/plugins/disable-comments/)
 
 
 ### 🔥 GET FREEBIES FOR YOUR WORDPRESS SITE
@@ -134,7 +134,7 @@ Consider checking out our other WordPress solutions & boost your WordPress websi
 ⚡ [Flexia](https://wordpress.org/themes/flexia/): Most lightweight, customizable & multi purpose theme for WordPress.
 
 
-Visit [WPDeveloper](https://wpdeveloper.net/) to learn more about how to do better in WordPress with [Help Tutorial, Tips & Tricks](https://wpdeveloper.net/blog).
+Visit [WPDeveloper](https://wpdeveloper.com/) to learn more about how to do better in WordPress with [Help Tutorial, Tips & Tricks](https://wpdeveloper.com/blog).
 
 
 
@@ -159,7 +159,7 @@ Visit [WPDeveloper](https://wpdeveloper.net/) to learn more about how to do bett
 
 This is because your theme is not checking the comment status of posts in the correct way.
 
-You may like to point your theme's author to [this explanation](https://wpdeveloper.net/wordpress-posts-have-comments-allowed/) of what they are doing wrong, and how to fix it.
+You may like to point your theme's author to [this explanation](https://wpdeveloper.com/wordpress-posts-have-comments-allowed/) of what they are doing wrong, and how to fix it.
 
 = How can I remove the text that says "comments are closed" at the bottom of articles where comments are disabled? =
 
