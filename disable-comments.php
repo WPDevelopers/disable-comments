@@ -6,7 +6,7 @@
  * Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. You could bulk delete comments using Tools.
  * Version: 2.3.1
  * Author: WPDeveloper
- * Author URI: https://wpdeveloper.net
+ * Author URI: https://wpdeveloper.com
  * License: GPL-3.0+
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: disable-comments

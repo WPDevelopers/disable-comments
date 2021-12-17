@@ -23,7 +23,7 @@
                         </g>
                     </svg>
                 </div>
-                <h4><a href="<?php echo esc_url('https://wpdeveloper.net/docs/disable-comments-plugin/'); ?>" target="_blank" rel="nofollow"><?php _e('What Does This Disable Comments Plugin Do', 'disable-comments'); ?></a></h4>
+                <h4><a href="<?php echo esc_url('https://wpdeveloper.com/docs/disable-comments-plugin/'); ?>" target="_blank" rel="nofollow"><?php _e('What Does This Disable Comments Plugin Do', 'disable-comments'); ?></a></h4>
             </div>
             <div class="tutorial__item">
                 <div class="icon">
@@ -46,7 +46,7 @@
                         </g>
                     </svg>
                 </div>
-                <h4><a href="<?php echo esc_url('https://wpdeveloper.net/docs/how-to-use-disable-comments-plugin-with-wp-cli-command-line/'); ?>" target="_blank" rel="nofollow"><?php _e('How To Use Disable Comments Plugin With WP-CLI', 'disable-comments'); ?></a></h4>
+                <h4><a href="<?php echo esc_url('https://wpdeveloper.com/docs/how-to-use-disable-comments-plugin-with-wp-cli-command-line/'); ?>" target="_blank" rel="nofollow"><?php _e('How To Use Disable Comments Plugin With WP-CLI', 'disable-comments'); ?></a></h4>
             </div>
             <div class="tutorial__item">
                 <div class="icon">
@@ -69,7 +69,7 @@
                         </g>
                     </svg>
                 </div>
-                <h4><a href="<?php echo esc_url('https://wpdeveloper.net/docs/disable-specific-types-of-posts/'); ?>" target="_blank" rel="nofollow"><?php _e('How to Disable Comments on Specific Types Of Posts', 'disable-comments'); ?></a></h4>
+                <h4><a href="<?php echo esc_url('https://wpdeveloper.com/docs/disable-specific-types-of-posts/'); ?>" target="_blank" rel="nofollow"><?php _e('How to Disable Comments on Specific Types Of Posts', 'disable-comments'); ?></a></h4>
             </div>
             <div class="tutorial__item">
                 <div class="icon">
@@ -92,7 +92,7 @@
                         </g>
                     </svg>
                 </div>
-                <h4><a href="<?php echo esc_url('https://wpdeveloper.net/docs/disable-comments-for-some-particular-post/'); ?>" target="_blank" rel="nofollow"><?php _e('Disable Comments For Some Particular Post', 'disable-comments'); ?></a></h4>
+                <h4><a href="<?php echo esc_url('https://wpdeveloper.com/docs/disable-comments-for-some-particular-post/'); ?>" target="_blank" rel="nofollow"><?php _e('Disable Comments For Some Particular Post', 'disable-comments'); ?></a></h4>
             </div>
             <div class="tutorial__item">
                 <div class="icon">
@@ -115,7 +115,7 @@
                         </g>
                     </svg>
                 </div>
-                <h4><a href="<?php echo esc_url('https://wpdeveloper.net/docs/disable-comment-for-wordpress-media-files/'); ?>" target="_blank" rel="nofollow"><?php _e('Disable Comment For WordPress Media Files', 'disable-comments'); ?></a></h4>
+                <h4><a href="<?php echo esc_url('https://wpdeveloper.com/docs/disable-comment-for-wordpress-media-files/'); ?>" target="_blank" rel="nofollow"><?php _e('Disable Comment For WordPress Media Files', 'disable-comments'); ?></a></h4>
             </div>
         </div>
     </div>
@@ -125,7 +125,7 @@
             <a href="<?php echo esc_url('https://youtu.be/J9AteKzQpPs'); ?>" class="play__btn" target="_blank" rel="nofollow"><span></span></a>
         </div>
         <div class="blog__post__content">
-            <h4><a href="<?php echo esc_url('https://wpdeveloper.net/docs/disable-comments-for-wordpress-pages/'); ?>" target="_blank" rel="nofollow"><?php _e('Disable Comments For WordPress Pages', 'disable-comments'); ?></a></h4>
+            <h4><a href="<?php echo esc_url('https://wpdeveloper.com/docs/disable-comments-for-wordpress-pages/'); ?>" target="_blank" rel="nofollow"><?php _e('Disable Comments For WordPress Pages', 'disable-comments'); ?></a></h4>
         </div>
     </article>
 </div>

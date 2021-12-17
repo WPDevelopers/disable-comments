@@ -412,7 +412,7 @@ msgid "WPDeveloper"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "https://wpdeveloper.net"
+msgid "https://wpdeveloper.com"
 msgstr ""
 
 #: disable-comments.php:613

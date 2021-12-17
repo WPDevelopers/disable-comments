@@ -12,4 +12,4 @@ License: [GPLv3+](https://www.gnu.org/licenses/gpl-3.0.html)
 
 A [must-use version](https://github.com/WPDevelopers/disable-comments-mu) of the plugin is also available.
 
-### This plugin is maintained by the [WPDeveloper](https://wpdeveloper.net/).
+### This plugin is maintained by the [WPDeveloper](https://wpdeveloper.com/).
