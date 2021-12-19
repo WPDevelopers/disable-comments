@@ -3169,6 +3169,25 @@ button.button__instagram.hover__highlight:hover .icon {
   margin-bottom: 15px;
 }
 
+.disable__switch {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.disable__switch .avatar__status {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 170px;
+          flex: 0 0 170px;
+}
+
+.disable__switch .avatar__status label {
+  color: #687b95 !important;
+  display: inline-block !important;
+}
+
 .dc-item__card_wrap {
   height: 100%;
   display: -webkit-box;

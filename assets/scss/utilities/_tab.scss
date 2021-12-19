@@ -609,3 +609,15 @@
 		margin-bottom: 15px;
 	}
 }
+
+.disable__switch {
+	display: flex;
+	flex-wrap: wrap;
+	.avatar__status {
+		flex: 0 0 170px;
+		label {
+			color: #687b95 !important;
+			display: inline-block !important;
+		}
+	}
+}
