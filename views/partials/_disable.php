@@ -77,7 +77,7 @@
                     </label>
                 </div>
             </div>
-            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will remove Avatar from your entire website.', 'disable-comments'); ?></p>
+            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will change Avatar state from your entire site.', 'disable-comments'); ?></p>
         </div>
         <?php else:?>
         <div class="disable_option dc-text__block mt30">
