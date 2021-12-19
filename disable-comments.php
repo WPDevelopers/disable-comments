@@ -823,21 +823,23 @@ class Disable_Comments
 		// 	$this->update_option('dc_setup_screen_seen', true);
 		// }
 		$avatar_status = '-1';
-		$show_avatars = [];
-		$sites = get_sites([
-			'number' => 0,
-			'fields' => 'ids',
-		]);
-		foreach ( $sites as $blog_id ) {
-			switch_to_blog( $blog_id );
-			$show_avatars[] = get_option('show_avatars', '0');
-			restore_current_blog();
-		}
-		if(count($show_avatars) == array_sum($show_avatars)){
-			$avatar_status = '0';
-		}
-		elseif(0 == array_sum($show_avatars)){
-			$avatar_status = '1';
+		if($this->is_network_admin()){
+			$show_avatars = [];
+			$sites = get_sites([
+				'number' => 0,
+				'fields' => 'ids',
+			]);
+			foreach ( $sites as $blog_id ) {
+				switch_to_blog( $blog_id );
+				$show_avatars[] = get_option('show_avatars', '0');
+				restore_current_blog();
+			}
+			if(count($show_avatars) == array_sum($show_avatars)){
+				$avatar_status = '0';
+			}
+			elseif(0 == array_sum($show_avatars)){
+				$avatar_status = '1';
+			}
 		}
 
 		include_once DC_PLUGIN_VIEWS_PATH . 'settings.php';
