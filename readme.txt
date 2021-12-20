@@ -5,7 +5,7 @@ Tags: comments, delete comments, disable comments, spam comment, disable, stop s
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 2.3.1
+Stable tag: 2.3.2
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -190,6 +190,10 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
+
+= [2.3.2] - 2021-12-20 =
+* Added: Configure Disable Avatar settings from the main network of Multisite Network.
+* Fixed: Disable Comments via REST API toggle mismatch issue.
 
 = [2.3.1] - 2021-12-14 =
 * Added: You can enable or disable Avatar from Disable Comments settings.
