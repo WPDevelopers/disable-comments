@@ -191,7 +191,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
 
-= [2.3.3] - 2022-01-24 =
+= [2.3.3] - 2022-01-25 =
 * Added: WordPress 5.9 compatibility added.
 
 = [2.3.2] - 2021-12-20 =
