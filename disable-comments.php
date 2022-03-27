@@ -111,7 +111,7 @@ class Disable_Comments
 	}
 
 	public function is_network_admin(){
-		if (is_network_admin() || defined('DOING_AJAX') && DOING_AJAX && is_multisite() && preg_match('#^'.network_admin_url().'#i',$_SERVER['HTTP_REFERER'])) {
+		if (is_network_admin() || isset($_SERVER['HTTP_REFERER']) && defined('DOING_AJAX') && DOING_AJAX && is_multisite() && preg_match('#^'.network_admin_url().'#i',$_SERVER['HTTP_REFERER'])) {
 			return true;
 		}
 		return false;
