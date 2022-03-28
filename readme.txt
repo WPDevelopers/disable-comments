@@ -5,7 +5,7 @@ Tags: comments, delete comments, disable comments, spam comment, disable, stop s
 Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.3.3
+Stable tag: 2.3.4
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,7 +123,7 @@ Consider checking out our other WordPress solutions & boost your WordPress websi
 
 📄 [EmbedPress](https://wordpress.org/plugins/embedpress/): EmbedPress lets you embed anything including videos, images, posts, audio, maps and upload PDF, DOC, PPT etc.
 
-☁ [Templately](https://wordpress.org/plugins/templately/): 1000+ Free templates library for Elementor & Gutenberg along with the cloud collaboration for WordPress.
+☁ [Templately](https://wordpress.org/plugins/templately/): 1200+ Free templates library for Elementor & Gutenberg along with the cloud collaboration for WordPress.
 
 📚 [BetterDocs](https://wordpress.org/plugins/betterdocs/): Best Documentation & Knowledge Base Plugin for WordPress reduce manual support tickets & improve user experience.
 
@@ -183,6 +183,7 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 
 1. Setting Screen for Disable Comments
 2. Delete Comments under Tools menu.
+3. Multisite Network support
 
 
 == Changelog ==
@@ -190,6 +191,9 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
+
+= [2.3.4] - 2022-03-28 =
+* Fixed: PHP Warning in Multisite Network.
 
 = [2.3.3] - 2022-01-25 =
 * Added: WordPress 5.9 compatibility added.
