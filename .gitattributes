@@ -8,6 +8,7 @@
 .gitlab-ci.yml      export-ignore
 .travis.yml         export-ignore
 .DS_Store           export-ignore
+.wordpress-org      export-ignore
 Thumbs.db           export-ignore
 behat.yml           export-ignore
 bin                 export-ignore
