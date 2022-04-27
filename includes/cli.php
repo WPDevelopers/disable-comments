@@ -46,6 +46,12 @@ class Disable_Comment_Command
                 'description' => 'Uncheck specified checkbox in `On Specific Post Types.', // uncheck specified checkbox in `On Specific Post Types:`
                 'optional'    => true,
             ),
+            array(
+                'type'        => 'flag',
+                'name'        => 'disable-avatar',
+                'description' => 'This will change Avatar state from your entire site.', // uncheck specified checkbox in `On Specific Post Types:`
+                'optional'    => true,
+            ),
         );
         if ($this->dc_instance->networkactive){
             $disable_synopsis[] = array(
@@ -80,6 +86,12 @@ wp disable-comments settings --xmlrpc=false --rest-api=false ",
                 'description' => 'Remove existing comment entries for the selected comment type(s) in the database and cannot be reverted without a database backups.',
                 'optional'    => true,
                 'options'     => $comment_types,
+            ),
+            array(
+                'type'        => 'flag',
+                'name'        => 'spam',
+                'description' => 'Permanently delete all spam comments on your WordPress website.',
+                'optional'    => true,
             ),
         );
         if (!$this->dc_instance->networkactive){
@@ -116,6 +128,7 @@ wp disable-comments delete --comment-types=comment "
         $extra_post_types = WP_CLI\Utils\get_flag_value($assoc_args, 'extra-post-types');
         $remove_xmlrpc_comments = WP_CLI\Utils\get_flag_value($assoc_args, 'xmlrpc');
         $remove_rest_API_comments = WP_CLI\Utils\get_flag_value($assoc_args, 'rest-api');
+        $disable_avatar = WP_CLI\Utils\get_flag_value($assoc_args, 'disable-avatar');
 
         if ($types === 'all') {
             $disable_comments_settings['mode'] = 'remove_everywhere';
@@ -150,11 +163,30 @@ wp disable-comments delete --comment-types=comment "
 
         if(isset($remove_xmlrpc_comments)){
             $disable_comments_settings['remove_xmlrpc_comments'] = $remove_xmlrpc_comments;
-            $msg .= __( 'Disable Comments via XML-RPC. ', 'disable-comments' );
+            if($remove_xmlrpc_comments && $remove_xmlrpc_comments !== 'false'){
+                $msg .= __( 'Disable Comments via XML-RPC. ', 'disable-comments' );
+            }
+            else{
+                $msg .= __( 'Enabled Comments via XML-RPC. ', 'disable-comments' );
+            }
         }
         if(isset($remove_rest_API_comments)){
             $disable_comments_settings['remove_rest_API_comments'] = $remove_rest_API_comments;
-            $msg .= __( 'Disable Comments via REST API. ', 'disable-comments' );
+            if($remove_rest_API_comments && $remove_rest_API_comments !== 'false'){
+                $msg .= __( 'Disable Comments via REST API. ', 'disable-comments' );
+            }
+            else{
+                $msg .= __( 'Enabled Comments via REST API. ', 'disable-comments' );
+            }
+        }
+        if($disable_avatar != null){
+            $disable_comments_settings['disable_avatar'] = $disable_avatar;
+            if($disable_avatar && $disable_avatar !== 'false'){
+                $msg .= __( 'Disabled Avatar on your entire site. ', 'disable-comments' );
+            }
+            else{
+                $msg .= __( 'Enabled Avatar on your entire site. ', 'disable-comments' );
+            }
         }
 
         $this->dc_instance->disable_comments_settings($disable_comments_settings);
@@ -174,6 +206,7 @@ wp disable-comments delete --comment-types=comment "
         $selected_delete_types = WP_CLI\Utils\get_flag_value($assoc_args, 'types');
         $delete_extra_post_types = WP_CLI\Utils\get_flag_value($assoc_args, 'extra-post-types');
         $delete_comment_types = WP_CLI\Utils\get_flag_value($assoc_args, 'comment-types');
+        $delete_spam_types = WP_CLI\Utils\get_flag_value($assoc_args, 'spam');
 
 
         if ( $delete_comment_types === 'all' || $selected_delete_types === 'all' ) {
@@ -184,6 +217,8 @@ wp disable-comments delete --comment-types=comment "
         } elseif(!empty($delete_comment_types)) {
             $delete_comments_settings['delete_mode'] = 'selected_delete_comment_types';
             $delete_comments_settings['delete_comment_types'] = array_map('trim', explode(',', $delete_comment_types));
+        } elseif(!empty($delete_spam_types)) {
+            $delete_comments_settings['delete_mode'] = 'delete_spam';
         } else{
             WP_CLI::error("Please provide valid parameters. \nSee 'wp help dc delete' for more information.");
         }
@@ -194,6 +229,6 @@ wp disable-comments delete --comment-types=comment "
         }
 
         $logged_msg = $this->dc_instance->delete_comments_settings($delete_comments_settings);
-        WP_CLI::success( implode( "\n", $logged_msg ) );
+        WP_CLI::success( is_array($logged_msg) ? implode( "\n", $logged_msg ) : $logged_msg );
     }
 }

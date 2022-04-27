@@ -4,7 +4,7 @@
  * Plugin Name: Disable Comments
  * Plugin URI: https://wordpress.org/plugins/disable-comments/
  * Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. You could bulk delete comments using Tools.
- * Version: 2.3.4
+ * Version: 2.3.5
  * Author: WPDeveloper
  * Author URI: https://wpdeveloper.com
  * License: GPL-3.0+
@@ -37,7 +37,7 @@ class Disable_Comments
 
 	function __construct()
 	{
-		define('DC_VERSION', '2.3.4');
+		define('DC_VERSION', '2.3.5');
 		define('DC_PLUGIN_SLUG', 'disable_comments_settings');
 		define('DC_PLUGIN_ROOT_PATH', dirname(__FILE__));
 		define('DC_PLUGIN_VIEWS_PATH', DC_PLUGIN_ROOT_PATH . '/views/');
@@ -294,7 +294,7 @@ class Disable_Comments
 	private function init_filters()
 	{
 		// These need to happen now.
-		if ($this->options['remove_everywhere']) {
+		if (!empty($this->options['remove_everywhere'])) {
 			add_action('widgets_init', array($this, 'disable_rc_widget'));
 			add_filter('wp_headers', array($this, 'filter_wp_headers'));
 			add_action('template_redirect', array($this, 'filter_query'), 9);   // before redirect_canonical.
@@ -382,7 +382,7 @@ class Disable_Comments
 			add_action('admin_notices', array($this, 'discussion_notice'));
 			add_filter('plugin_row_meta', array($this, 'set_plugin_meta'), 10, 2);
 
-			if ($this->options['remove_everywhere']) {
+			if (!empty($this->options['remove_everywhere'])) {
 				add_action('admin_menu', array($this, 'filter_admin_menu'), 9999);  // do this as late as possible.
 				add_action('admin_print_styles-index.php', array($this, 'admin_css'));
 				add_action('admin_print_styles-profile.php', array($this, 'admin_css'));
@@ -900,6 +900,9 @@ class Disable_Comments
 			}
 			$old_options = $this->options;
 			$this->options = [];
+			if($this->is_CLI){
+				$this->options = $old_options;
+			}
 
 			$this->options['is_network_admin'] = isset($formArray['is_network_admin']) && $formArray['is_network_admin'] == '1' ? true : false;
 
@@ -985,7 +988,11 @@ class Disable_Comments
 		global $deletedPostTypeNames;
 		$log = '';
 		$nonce = (isset($_POST['nonce']) ? $_POST['nonce'] : '');
-		$formArray = $this->form_data_modify($_POST['data']);
+		if (!empty($_args)) {
+			$formArray = wp_parse_args($_args);
+		} else {
+			$formArray = (isset($_POST['data']) ? $this->form_data_modify($_POST['data']) : []);
+		}
 
 		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
 			if ( !empty($formArray['is_network_admin']) && function_exists( 'get_sites' ) && class_exists( 'WP_Site_Query' ) ) {
@@ -1105,7 +1112,7 @@ class Disable_Comments
 				$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
 				$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
 
-				$log = __('All spam comments have been deleted', 'disable-comments');
+				$log = __('All spam comments have been deleted.', 'disable-comments');
 			}
 		}
 		delete_transient('wc_count_comments');
