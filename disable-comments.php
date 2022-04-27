@@ -1112,7 +1112,7 @@ class Disable_Comments
 				$wpdb->query("OPTIMIZE TABLE $wpdb->commentmeta");
 				$wpdb->query("OPTIMIZE TABLE $wpdb->comments");
 
-				$log = __('All spam comments have been deleted', 'disable-comments');
+				$log = __('All spam comments have been deleted.', 'disable-comments');
 			}
 		}
 		delete_transient('wc_count_comments');
