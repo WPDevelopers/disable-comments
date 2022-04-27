@@ -294,7 +294,7 @@ class Disable_Comments
 	private function init_filters()
 	{
 		// These need to happen now.
-		if ($this->options['remove_everywhere']) {
+		if (!empty($this->options['remove_everywhere'])) {
 			add_action('widgets_init', array($this, 'disable_rc_widget'));
 			add_filter('wp_headers', array($this, 'filter_wp_headers'));
 			add_action('template_redirect', array($this, 'filter_query'), 9);   // before redirect_canonical.
@@ -382,7 +382,7 @@ class Disable_Comments
 			add_action('admin_notices', array($this, 'discussion_notice'));
 			add_filter('plugin_row_meta', array($this, 'set_plugin_meta'), 10, 2);
 
-			if ($this->options['remove_everywhere']) {
+			if (!empty($this->options['remove_everywhere'])) {
 				add_action('admin_menu', array($this, 'filter_admin_menu'), 9999);  // do this as late as possible.
 				add_action('admin_print_styles-index.php', array($this, 'admin_css'));
 				add_action('admin_print_styles-profile.php', array($this, 'admin_css'));
@@ -900,6 +900,9 @@ class Disable_Comments
 			}
 			$old_options = $this->options;
 			$this->options = [];
+			if($this->is_CLI){
+				$this->options = $old_options;
+			}
 
 			$this->options['is_network_admin'] = isset($formArray['is_network_admin']) && $formArray['is_network_admin'] == '1' ? true : false;
 
@@ -985,7 +988,11 @@ class Disable_Comments
 		global $deletedPostTypeNames;
 		$log = '';
 		$nonce = (isset($_POST['nonce']) ? $_POST['nonce'] : '');
-		$formArray = $this->form_data_modify($_POST['data']);
+		if (!empty($_args)) {
+			$formArray = wp_parse_args($_args);
+		} else {
+			$formArray = (isset($_POST['data']) ? $this->form_data_modify($_POST['data']) : []);
+		}
 
 		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
 			if ( !empty($formArray['is_network_admin']) && function_exists( 'get_sites' ) && class_exists( 'WP_Site_Query' ) ) {
