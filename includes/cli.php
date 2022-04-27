@@ -171,7 +171,12 @@ wp disable-comments delete --comment-types=comment "
         }
         if($disable_avatar != null){
             $disable_comments_settings['disable_avatar'] = $disable_avatar;
-            $msg .= __( 'Disable Avatar on your entire site. ', 'disable-comments' );
+            if($disable_avatar){
+                $msg .= __( 'Disabled Avatar on your entire site.', 'disable-comments' );
+            }
+            else{
+                $msg .= __( 'Enabled Avatar on your entire site.', 'disable-comments' );
+            }
         }
 
         $this->dc_instance->disable_comments_settings($disable_comments_settings);
