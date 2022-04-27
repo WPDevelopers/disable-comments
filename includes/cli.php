@@ -163,7 +163,7 @@ wp disable-comments delete --comment-types=comment "
 
         if(isset($remove_xmlrpc_comments)){
             $disable_comments_settings['remove_xmlrpc_comments'] = $remove_xmlrpc_comments;
-            if($remove_xmlrpc_comments){
+            if($remove_xmlrpc_comments && $remove_xmlrpc_comments !== 'false'){
                 $msg .= __( 'Disable Comments via XML-RPC. ', 'disable-comments' );
             }
             else{
@@ -172,7 +172,7 @@ wp disable-comments delete --comment-types=comment "
         }
         if(isset($remove_rest_API_comments)){
             $disable_comments_settings['remove_rest_API_comments'] = $remove_rest_API_comments;
-            if($remove_rest_API_comments){
+            if($remove_rest_API_comments && $remove_rest_API_comments !== 'false'){
                 $msg .= __( 'Disable Comments via REST API. ', 'disable-comments' );
             }
             else{
@@ -181,7 +181,7 @@ wp disable-comments delete --comment-types=comment "
         }
         if($disable_avatar != null){
             $disable_comments_settings['disable_avatar'] = $disable_avatar;
-            if($disable_avatar){
+            if($disable_avatar && $disable_avatar != 'false'){
                 $msg .= __( 'Disabled Avatar on your entire site. ', 'disable-comments' );
             }
             else{
