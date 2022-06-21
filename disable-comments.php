@@ -534,10 +534,12 @@ class Disable_Comments
 			wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/sweetalert2.min.css', [], false);
 			// wp_enqueue_style('pagination',  DC_ASSETS_URI . 'css/pagination.css', [], false);
 			wp_enqueue_style('disable-comments-style',  DC_ASSETS_URI . 'css/style.css', [], false);
+			wp_enqueue_style('select2',  DC_ASSETS_URI . 'css/select2.min.css', [], false);
 			// js
 			wp_enqueue_script('sweetalert2', DC_ASSETS_URI . 'js/sweetalert2.all.min.js', array('jquery'), false, true);
 			wp_enqueue_script('pagination', DC_ASSETS_URI . 'js/pagination.min.js', array('jquery'), false, true);
-			wp_enqueue_script('disable-comments-scripts', DC_ASSETS_URI . 'js/disable-comments-settings-scripts.js', array('jquery'), false, true);
+			wp_enqueue_script('select2', DC_ASSETS_URI . 'js/select2.min.js', array('jquery'), false, true);
+			wp_enqueue_script('disable-comments-scripts', DC_ASSETS_URI . 'js/disable-comments-settings-scripts.js', array('jquery', 'select2', 'pagination', 'sweetalert2'), false, true);
 			wp_localize_script(
 				'disable-comments-scripts',
 				'disableCommentsObj',
