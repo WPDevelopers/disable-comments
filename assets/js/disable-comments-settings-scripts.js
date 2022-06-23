@@ -357,4 +357,10 @@ jQuery(document).ready(function ($) {
 		saveBtn.addClass('form-dirty');
 	});
 
+	jQuery(document).ready(function() {
+		jQuery('.dc-select2').select2({
+			multiple: true,
+		});
+	});
+
 });

@@ -105,6 +105,33 @@
             <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will change Avatar state from your entire network. If you want to change the Avatar setting specifically on your subsites by enabling site-wise settings, select "Don\'t change" from here.', 'disable-comments'); ?></p>
         </div>
 
+		<div class="disable_option dc-text__block mb30 mt30">
+			<div class="dissable__switch__item">
+				<input type="hidden" name="sitewide_settings"value="0">
+				<input type="checkbox" name="sitewide_settings" id="sitewide_settings" value="1" <?php checked($this->options['sitewide_settings']); ?> >
+
+				<label for="sitewide_settings">
+				<span class="switch">
+					<span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
+					<span class="switch__text off"><?php _e('Off', 'disable-comments'); ?></span>
+				</span>
+					Exclude Disable Comments settings based on User Roles
+				</label>
+			</div>
+			<div class="mb10">
+				<select class="dc-select2" name="state">
+					<option value="AL">Dhaka</option>
+					<option value="WY">Khulna</option>
+					<option value="WY">Sylhet</option>
+					<option value="WY">Barishal</option>
+					<option value="WY">Rajshahi</option>
+					<option value="WY">Rangpur</option>
+					<option value="WY">Jessore</option>
+				</select>
+			</div>
+			<p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('All the above settings will be excluded for the selected user roles', 'disable-comments'); ?></p>
+		</div>
+
         <?php endif;?>
     </div>
     <div class="disable__comment__option mb50">
