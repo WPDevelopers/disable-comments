@@ -105,7 +105,6 @@ class Disable_Comments
 		$this->check_db_upgrades();
 		$this->check_upgrades();
 
-		add_filter( 'rest_allow_anonymous_comments', '__return_true' );
 		add_action( 'plugins_loaded', [ $this, 'init_filters'] );
 		add_action( 'wp_loaded', [ $this, 'start_plugin_usage_tracking'] );
 	}
@@ -288,11 +287,16 @@ class Disable_Comments
 	 */
 	private function is_exclude_by_role()
 	{
-		if(!empty($this->options['enable_exclude_by_role']) && !empty($this->options['exclude_by_role']) && is_user_logged_in()){
-			$user  = wp_get_current_user();
-			$roles = ( array ) $user->roles;
-			$diff = array_intersect($this->options['exclude_by_role'], $roles);
-			if(count($diff)){
+		if(!empty($this->options['enable_exclude_by_role']) && !empty($this->options['exclude_by_role'])){
+			if(is_user_logged_in()){
+				$user  = wp_get_current_user();
+				$roles = ( array ) $user->roles;
+				$diff = array_intersect($this->options['exclude_by_role'], $roles);
+				if(count($diff)){
+					return true;
+				}
+			}
+			else if(in_array('logged-out-users', $this->options['exclude_by_role'])){
 				return true;
 			}
 		}
@@ -845,7 +849,13 @@ class Disable_Comments
 
 	public function get_roles($selected)
 	{
-		$roles = [];
+		$roles = [
+			[
+				"id"       => 'logged-out-users',
+				"text"     => __('Logged out users', 'disable-comments'),
+				"selected" => in_array('logged-out-users', (array) $selected),
+			]
+		];
 		$editable_roles = array_reverse( get_editable_roles() );
 		foreach ( $editable_roles as $role => $details ) {
 			$roles[] = [
