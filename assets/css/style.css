@@ -3943,6 +3943,11 @@ button.button__instagram.hover__highlight:hover .icon {
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
   gap: 0 5px;
+  margin-top: 0;
+  padding: 0 8px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .disable_option .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
@@ -3950,7 +3955,7 @@ button.button__instagram.hover__highlight:hover .icon {
   border-right: 0;
   line-height: 1;
   font-size: 16px;
-  margin-right: 0;
+  margin-right: 3px;
 }
 
 .disable_option .select2-container--default .select2-selection--multiple .select2-selection__choice__remove span {
@@ -3968,6 +3973,7 @@ button.button__instagram.hover__highlight:hover .icon {
   margin-left: 0;
   margin-right: 0;
   padding-left: 0;
+  padding-right: 3px;
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
 

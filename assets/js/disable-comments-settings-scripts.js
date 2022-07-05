@@ -360,6 +360,7 @@ jQuery(document).ready(function ($) {
 	jQuery(document).ready(function() {
 		jQuery('.dc-select2').select2({
 			multiple: true,
+			data: jQuery('.dc-select2').data('options'),
 		});
 		jQuery('#enable_exclude_by_role').on('change', function(){
 			if(jQuery(this).is(':checked')){

@@ -97,7 +97,7 @@
                 $selected_roles = isset($this->options['exclude_by_role']) ? $this->options['exclude_by_role'] : [];
                 $roles = $this->get_roles($selected_roles);
                 ?>
-                <select class="dc-select2" name="exclude_by_role[]" data-data='<?php echo json_encode($roles);?>'>
+                <select class="dc-select2" name="exclude_by_role[]" data-options='<?php echo json_encode($roles);?>'>
                 </select>
             </div>
             <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('All the above settings will be excluded for the selected user roles', 'disable-comments'); ?></p>
