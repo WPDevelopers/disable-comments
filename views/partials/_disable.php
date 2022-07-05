@@ -79,6 +79,29 @@
             </div>
             <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will change Avatar state from your entire site.', 'disable-comments'); ?></p>
         </div>
+
+        <div class="disable_option dc-text__block mb30 mt30">
+            <div class="dissable__switch__item">
+                <input type="hidden" name="enable_exclude_by_role"value="0">
+                <input type="checkbox" name="enable_exclude_by_role" id="enable_exclude_by_role" value="1" <?php checked(isset($this->options['enable_exclude_by_role']) ? $this->options['enable_exclude_by_role'] : false); ?> >
+                <label for="enable_exclude_by_role">
+                <span class="switch">
+                    <span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
+                    <span class="switch__text off"><?php _e('Off', 'disable-comments'); ?></span>
+                </span>
+                    Exclude Disable Comments settings based on User Roles
+                </label>
+            </div>
+            <div id="exclude_by_role_wrapper" class="mb10" <?php echo empty($this->options['enable_exclude_by_role']) ? 'style="display: none;"' : ''; ?>>
+                <?php
+                $selected_roles = isset($this->options['exclude_by_role']) ? $this->options['exclude_by_role'] : [];
+                $roles = $this->get_roles($selected_roles);
+                ?>
+                <select class="dc-select2" name="exclude_by_role[]" data-data='<?php echo json_encode($roles);?>'>
+                </select>
+            </div>
+            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('All the above settings will be excluded for the selected user roles', 'disable-comments'); ?></p>
+        </div>
         <?php else:?>
         <div class="disable_option dc-text__block mt30">
             <h3><?php _e("Avatar settings:", 'disable-comments');?></h3>
@@ -104,33 +127,6 @@
             </div>
             <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will change Avatar state from your entire network. If you want to change the Avatar setting specifically on your subsites by enabling site-wise settings, select "Don\'t change" from here.', 'disable-comments'); ?></p>
         </div>
-
-		<div class="disable_option dc-text__block mb30 mt30">
-			<div class="dissable__switch__item">
-				<input type="hidden" name="sitewide_settings"value="0">
-				<input type="checkbox" name="sitewide_settings" id="sitewide_settings" value="1" <?php checked($this->options['sitewide_settings']); ?> >
-
-				<label for="sitewide_settings">
-				<span class="switch">
-					<span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
-					<span class="switch__text off"><?php _e('Off', 'disable-comments'); ?></span>
-				</span>
-					Exclude Disable Comments settings based on User Roles
-				</label>
-			</div>
-			<div class="mb10">
-				<select class="dc-select2" name="state">
-					<option value="AL">Dhaka</option>
-					<option value="WY">Khulna</option>
-					<option value="WY">Sylhet</option>
-					<option value="WY">Barishal</option>
-					<option value="WY">Rajshahi</option>
-					<option value="WY">Rangpur</option>
-					<option value="WY">Jessore</option>
-				</select>
-			</div>
-			<p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('All the above settings will be excluded for the selected user roles', 'disable-comments'); ?></p>
-		</div>
 
         <?php endif;?>
     </div>

@@ -105,8 +105,8 @@ class Disable_Comments
 		$this->check_db_upgrades();
 		$this->check_upgrades();
 
-		$this->init_filters();
-
+		add_filter( 'rest_allow_anonymous_comments', '__return_true' );
+		add_action( 'plugins_loaded', [ $this, 'init_filters'] );
 		add_action( 'wp_loaded', [ $this, 'start_plugin_usage_tracking'] );
 	}
 
@@ -219,7 +219,7 @@ class Disable_Comments
 	public function check_upgrades(){
 		$dc_version = get_option('disable_comment_version');
 		if (version_compare($dc_version, '2.3.1', '<')) {
-			if (!empty($this->options['remove_everywhere'])){
+			if ($this->is_remove_everywhere()){
 				update_option('show_avatars', true);
 			}
 		}
@@ -286,15 +286,44 @@ class Disable_Comments
 	/**
 	 * Check whether comments have been disabled on a given post type.
 	 */
+	private function is_exclude_by_role()
+	{
+		if(!empty($this->options['enable_exclude_by_role']) && !empty($this->options['exclude_by_role']) && is_user_logged_in()){
+			$user  = wp_get_current_user();
+			$roles = ( array ) $user->roles;
+			$diff = array_intersect($this->options['exclude_by_role'], $roles);
+			if(count($diff)){
+				return true;
+			}
+		}
+		return false;
+	}
+	private function is_remove_everywhere()
+	{
+		if($this->is_exclude_by_role()){
+			return false;
+		}
+		if(isset($this->options['remove_everywhere'])){
+			return $this->options['remove_everywhere'];
+		}
+		return false;
+	}
+
+	/**
+	 * Check whether comments have been disabled on a given post type.
+	 */
 	private function is_post_type_disabled($type)
 	{
+		if($this->is_exclude_by_role()){
+			return false;
+		}
 		return $type && in_array($type, $this->get_disabled_post_types());
 	}
 
-	private function init_filters()
+	public function init_filters()
 	{
 		// These need to happen now.
-		if (!empty($this->options['remove_everywhere'])) {
+		if ($this->is_remove_everywhere()) {
 			add_action('widgets_init', array($this, 'disable_rc_widget'));
 			add_filter('wp_headers', array($this, 'filter_wp_headers'));
 			add_action('template_redirect', array($this, 'filter_query'), 9);   // before redirect_canonical.
@@ -313,11 +342,12 @@ class Disable_Comments
 		}
 		// rest API Comment Block
 		if (isset($this->options['remove_rest_API_comments']) && intval($this->options['remove_rest_API_comments']) === 1) {
-			add_filter('rest_pre_insert_comment', array($this, 'disable_rest_API_comments'));
+			add_filter('rest_pre_insert_comment', array($this, 'disable_rest_API_comments'), 10, 2);
 		}
 
 		// These can happen later.
-		add_action('plugins_loaded', array($this, 'register_text_domain'));
+		$this->register_text_domain();
+		// add_action('plugins_loaded', array($this, 'register_text_domain'));
 		add_action('wp_loaded', array($this, 'init_wploaded_filters'));
 		// Disable "Latest comments" block in Gutenberg.
 		add_action('enqueue_block_editor_assets', array($this, 'filter_gutenberg_blocks'));
@@ -331,7 +361,6 @@ class Disable_Comments
 			});
 		}
 	}
-
 
 	public function register_text_domain()
 	{
@@ -382,7 +411,7 @@ class Disable_Comments
 			add_action('admin_notices', array($this, 'discussion_notice'));
 			add_filter('plugin_row_meta', array($this, 'set_plugin_meta'), 10, 2);
 
-			if (!empty($this->options['remove_everywhere'])) {
+			if ($this->is_remove_everywhere()) {
 				add_action('admin_menu', array($this, 'filter_admin_menu'), 9999);  // do this as late as possible.
 				add_action('admin_print_styles-index.php', array($this, 'admin_css'));
 				add_action('admin_print_styles-profile.php', array($this, 'admin_css'));
@@ -394,7 +423,7 @@ class Disable_Comments
 		else {
 			add_action('template_redirect', array($this, 'check_comment_template'));
 
-			if ($this->options['remove_everywhere']) {
+			if ($this->is_remove_everywhere()) {
 				add_filter('feed_links_show_comments_feed', '__return_false');
 			}
 		}
@@ -417,7 +446,7 @@ class Disable_Comments
 	 */
 	public function check_comment_template()
 	{
-		if (is_singular() && ($this->options['remove_everywhere'] || $this->is_post_type_disabled(get_post_type()))) {
+		if (is_singular() && ($this->is_remove_everywhere() || $this->is_post_type_disabled(get_post_type()))) {
 			if (!defined('DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE') || DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE == true) {
 				// Kill the comments template.
 				add_filter('comments_template', array($this, 'dummy_comments_template'), 20);
@@ -508,7 +537,7 @@ class Disable_Comments
 	public function filter_gutenberg_blocks($hook)
 	{
 		global $post;
-		if ($this->options['remove_everywhere'] || (isset($post->post_type) && in_array($post->post_type, $this->get_disabled_post_types(), true))) {
+		if ($this->is_remove_everywhere() || (isset($post->post_type) && $this->is_post_type_disabled($post->post_type))) {
 			return $this->disable_comments_script();
 		}
 	}
@@ -660,19 +689,19 @@ class Disable_Comments
 	public function filter_existing_comments($comments, $post_id)
 	{
 		$post_type = get_post_type($post_id);
-		return ($this->options['remove_everywhere'] || $this->is_post_type_disabled($post_type)  ? array() : $comments);
+		return ($this->is_remove_everywhere() || $this->is_post_type_disabled($post_type)  ? array() : $comments);
 	}
 
 	public function filter_comment_status($open, $post_id)
 	{
 		$post_type = get_post_type($post_id);
-		return ($this->options['remove_everywhere'] || $this->is_post_type_disabled($post_type) ? false : $open);
+		return ($this->is_remove_everywhere() || $this->is_post_type_disabled($post_type) ? false : $open);
 	}
 
 	public function filter_comments_number($count, $post_id)
 	{
 		$post_type = get_post_type($post_id);
-		return ($this->options['remove_everywhere'] || $this->is_post_type_disabled($post_type) ? 0 : $count);
+		return ($this->is_remove_everywhere() || $this->is_post_type_disabled($post_type) ? 0 : $count);
 	}
 
 	public function disable_rc_widget()
@@ -812,6 +841,20 @@ class Disable_Comments
 			}
 		}
 		return $types;
+	}
+
+	public function get_roles($selected)
+	{
+		$roles = [];
+		$editable_roles = array_reverse( get_editable_roles() );
+		foreach ( $editable_roles as $role => $details ) {
+			$roles[] = [
+				"id"       => esc_attr($role),
+				"text"     => translate_user_role( $details['name'] ),
+				"selected" => in_array($role, (array) $selected),
+			];
+		}
+		return $roles;
 	}
 
 	public function tools_page()
@@ -960,6 +1003,14 @@ class Disable_Comments
 					update_option('show_avatars', (bool) !$formArray['disable_avatar']);
 				}
 			}
+
+			if (isset($formArray['enable_exclude_by_role'])) {
+				$this->options['enable_exclude_by_role'] = $formArray['enable_exclude_by_role'];
+			}
+			if (isset($formArray['exclude_by_role'])) {
+				$this->options['exclude_by_role'] = $formArray['exclude_by_role'];
+			}
+
 			// xml rpc
 			$this->options['remove_xmlrpc_comments'] = (isset($formArray['remove_xmlrpc_comments']) ? intval($formArray['remove_xmlrpc_comments']) : ($this->is_CLI && isset($this->options['remove_xmlrpc_comments']) ? $this->options['remove_xmlrpc_comments'] : 0));
 			// rest api comments

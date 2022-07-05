@@ -361,6 +361,14 @@ jQuery(document).ready(function ($) {
 		jQuery('.dc-select2').select2({
 			multiple: true,
 		});
+		jQuery('#enable_exclude_by_role').on('change', function(){
+			if(jQuery(this).is(':checked')){
+				jQuery('#exclude_by_role_wrapper').show();
+			}
+			else{
+				jQuery('#exclude_by_role_wrapper').hide();
+			}
+		})
 	});
 
 });
