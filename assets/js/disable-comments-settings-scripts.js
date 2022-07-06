@@ -352,7 +352,7 @@ jQuery(document).ready(function ($) {
 		});
 	});
 
-	jQuery("#disableCommentSaveSettings").on('change keydown', 'input', function (e) {
+	jQuery("#disableCommentSaveSettings").on('change keydown', 'input,select', function (e) {
 		// jQuery(this).off(e);
 		saveBtn.addClass('form-dirty');
 	});
