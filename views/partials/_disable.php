@@ -64,22 +64,6 @@
             <p class="subtitle"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts. Comments will be visible on all other post types.', 'disable-comments'); ?></p>
         </div>
         <?php if(!is_network_admin()):?>
-        <div class="disable_option dc-text__block mt30">
-            <div class="disable__switchs">
-                <div class="dissable__switch__item">
-                    <input type="hidden" name="disable_avatar" value="0">
-                    <input type="checkbox" id="disable_avatar" name="disable_avatar" value="1" <?php checked(!get_option('show_avatars', false)); ?>>
-                    <label for="disable_avatar">
-                        <span class="switch">
-                            <span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
-                            <span class="switch__text off"><?php _e('Off', 'disable-comments'); ?></span>
-                        </span><?php _e('Disable Avatar', 'disable-comments'); ?>
-                    </label>
-                </div>
-            </div>
-            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will change Avatar state from your entire site.', 'disable-comments'); ?></p>
-        </div>
-
         <div id="exclude_by_role_wrapper" class="disable_option dc-text__block mb30 mt30">
             <div class="dissable__switch__item">
                 <input type="hidden" name="enable_exclude_by_role"value="0">
@@ -103,6 +87,22 @@
             <p class="disable__option__description"><span class="excluded-roles"></span> <?php _e('will see the comments.', 'disable-comments'); ?></p>
             <p class="disable__option__description"><span class="included-roles"></span> <?php _e('users will not see the comments.', 'disable-comments'); ?></p>
             <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('All the above settings will be excluded for the selected user roles', 'disable-comments'); ?></p>
+        </div>
+
+        <div class="disable_option dc-text__block mt30">
+            <div class="disable__switchs">
+                <div class="dissable__switch__item">
+                    <input type="hidden" name="disable_avatar" value="0">
+                    <input type="checkbox" id="disable_avatar" name="disable_avatar" value="1" <?php checked(!get_option('show_avatars', false)); ?>>
+                    <label for="disable_avatar">
+                        <span class="switch">
+                            <span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
+                            <span class="switch__text off"><?php _e('Off', 'disable-comments'); ?></span>
+                        </span><?php _e('Disable Avatar', 'disable-comments'); ?>
+                    </label>
+                </div>
+            </div>
+            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will change Avatar state from your entire site.', 'disable-comments'); ?></p>
         </div>
         <?php else:?>
         <div class="disable_option dc-text__block mt30">
