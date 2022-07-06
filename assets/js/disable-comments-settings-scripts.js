@@ -358,18 +358,50 @@ jQuery(document).ready(function ($) {
 	});
 
 	jQuery(document).ready(function() {
-		jQuery('.dc-select2').select2({
+		var excludeByRoleWrapper       = jQuery('#exclude_by_role_wrapper');
+		var excludeByRoleSelectWrapper = excludeByRoleWrapper.find('#exclude_by_role_select_wrapper');
+		var excludeByRoleSelect        = excludeByRoleSelectWrapper.find('.dc-select2');
+		var options                    = excludeByRoleSelect.data('options');
+		var excludedRoles              = excludeByRoleWrapper.find('.excluded-roles');
+		var includedRoles              = excludeByRoleWrapper.find('.included-roles');
+		var selectOnChange             = function(){
+			var selectedOptions = excludeByRoleSelect.select2('data');
+			if(selectedOptions.length){
+				selectedOptions = selectedOptions.map(function(val, index){
+					return val.text;
+				});
+				if(options.length == selectedOptions.length){
+					includedRoles.parent().hide();
+					excludedRoles.text("Everyone");
+				}
+				else{
+					var text = selectedOptions.join("</b>, <b>");
+					excludedRoles.html("<b>" + text + "</b>");
+					includedRoles.parent().show();
+					if(!selectedOptions.includes('Logged out users')){
+						includedRoles.text("Logged out users and other");
+					}
+					else{
+						includedRoles.text("Other");
+					}
+				}
+				console.log(options);
+			}
+		};
+		excludeByRoleSelect.select2({
 			multiple: true,
-			data: jQuery('.dc-select2').data('options'),
+			data: options,
 		});
+		excludeByRoleSelect.on('change', selectOnChange);
+		selectOnChange();
 		jQuery('#enable_exclude_by_role').on('change', function(){
 			if(jQuery(this).is(':checked')){
-				jQuery('#exclude_by_role_wrapper').show();
+				excludeByRoleSelectWrapper.show();
 			}
 			else{
-				jQuery('#exclude_by_role_wrapper').hide();
+				excludeByRoleSelectWrapper.hide();
 			}
-		})
+		});
 	});
 
 });
