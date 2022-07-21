@@ -76,7 +76,7 @@
                     Exclude Disable Comments settings based on User Roles
                 </label>
             </div>
-            <div id="exclude_by_role_select_wrapper" class="mb10" <?php echo empty($this->options['enable_exclude_by_role']) ? 'style="display: none;"' : ''; ?>>
+            <div id="exclude_by_role_select_wrapper" class="mb10">
                 <?php
                 $selected_roles = isset($this->options['exclude_by_role']) ? $this->options['exclude_by_role'] : [];
                 $roles = $this->get_roles($selected_roles);
@@ -84,9 +84,9 @@
                 <select class="dc-select2" name="exclude_by_role[]" data-options='<?php echo json_encode($roles);?>'>
                 </select>
             </div>
-            <p class="disable__option__description"><span class="excluded-roles"></span> <?php _e('will see the comments.', 'disable-comments'); ?></p>
-            <p class="disable__option__description"><span class="included-roles"></span> <?php _e('users will not see the comments.', 'disable-comments'); ?></p>
-            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('All the above settings will be excluded for the selected user roles', 'disable-comments'); ?></p>
+            <p class="disable__option__description description__roles excluded-roles"></p>
+            <p class="disable__option__description description__roles included-roles"></p>
+            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will exclude all the above settings for the selected user roles.', 'disable-comments'); ?></p>
         </div>
 
         <div class="disable_option dc-text__block mt30">

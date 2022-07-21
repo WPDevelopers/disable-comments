@@ -374,7 +374,7 @@ class Disable_Comments
 	public function init_wploaded_filters()
 	{
 		$disabled_post_types = $this->get_disabled_post_types();
-		if (!empty($disabled_post_types)) {
+		if (!empty($disabled_post_types) && !$this->is_exclude_by_role()) {
 			foreach ($disabled_post_types as $type) {
 				// we need to know what native support was for later.
 				if (post_type_supports($type, 'comments')) {

@@ -362,46 +362,59 @@ jQuery(document).ready(function ($) {
 		var excludeByRoleSelectWrapper = excludeByRoleWrapper.find('#exclude_by_role_select_wrapper');
 		var excludeByRoleSelect        = excludeByRoleSelectWrapper.find('.dc-select2');
 		var options                    = excludeByRoleSelect.data('options');
+		var descriptionRoles           = excludeByRoleWrapper.find('.description__roles');
 		var excludedRoles              = excludeByRoleWrapper.find('.excluded-roles');
 		var includedRoles              = excludeByRoleWrapper.find('.included-roles');
 		var selectOnChange             = function(){
 			var selectedOptions = excludeByRoleSelect.select2('data');
 			if(selectedOptions.length){
+				includedRoles.parent().show();
 				selectedOptions = selectedOptions.map(function(val, index){
 					return val.text;
 				});
 				if(options.length == selectedOptions.length){
+					excludedRoles.text("Comments are visible to everyone.");
 					includedRoles.parent().hide();
-					excludedRoles.text("Everyone");
 				}
-				else{
-					var text = selectedOptions.join("</b>, <b>");
-					excludedRoles.html("<b>" + text + "</b>");
-					includedRoles.parent().show();
-					if(!selectedOptions.includes('Logged out users')){
-						includedRoles.text("Logged out users and other");
+				else if(selectedOptions.includes('Logged out users')){
+					if(selectedOptions.length == 1){
+						excludedRoles.text("Users who are logged out will see comments.");
+						includedRoles.text("No comments will be visible to other roles.");
 					}
 					else{
-						includedRoles.text("Other");
+						var _selectedOptions = selectedOptions.filter(function(val) {
+							return val !== 'Logged out users';
+						})
+						var text = "<b>" + _selectedOptions.join("</b>, <b>") + "</b>";
+						excludedRoles.html("Users who are <b>logged out</b>, " + text + " will see comments.");
+						includedRoles.text("No comments will be visible to other roles.");
 					}
 				}
-				console.log(options);
+				else{
+					var text = "<b>" + selectedOptions.join("</b>, <b>") + "</b>";
+					excludedRoles.html("Comments are visible to " + text + ".");
+					includedRoles.text("Other roles and logged out users won't see any comments.");
+				}
 			}
 		};
 		excludeByRoleSelect.select2({
 			multiple: true,
 			data: options,
+			placeholder: "Select User Roles",
 		});
 		excludeByRoleSelect.on('change', selectOnChange);
 		selectOnChange();
 		jQuery('#enable_exclude_by_role').on('change', function(){
 			if(jQuery(this).is(':checked')){
 				excludeByRoleSelectWrapper.show();
+				descriptionRoles.show();
 			}
 			else{
 				excludeByRoleSelectWrapper.hide();
+				descriptionRoles.hide();
 			}
 		});
+		jQuery('#enable_exclude_by_role').trigger('change');
 	});
 
 });
