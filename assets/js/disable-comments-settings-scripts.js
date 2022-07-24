@@ -368,13 +368,14 @@ jQuery(document).ready(function ($) {
 		var selectOnChange             = function(){
 			var selectedOptions = excludeByRoleSelect.select2('data');
 			if(selectedOptions.length){
-				includedRoles.parent().show();
+				includedRoles.show();
+				excludedRoles.show();
 				selectedOptions = selectedOptions.map(function(val, index){
 					return val.text;
 				});
 				if(options.length == selectedOptions.length){
 					excludedRoles.text("Comments are visible to everyone.");
-					includedRoles.parent().hide();
+					includedRoles.hide();
 				}
 				else if(selectedOptions.includes('Logged out users')){
 					if(selectedOptions.length == 1){
@@ -395,6 +396,10 @@ jQuery(document).ready(function ($) {
 					excludedRoles.html("Comments are visible to " + text + ".");
 					includedRoles.text("Other roles and logged out users won't see any comments.");
 				}
+			}
+			else{
+				includedRoles.hide();
+				excludedRoles.hide();
 			}
 		};
 		excludeByRoleSelect.select2({
