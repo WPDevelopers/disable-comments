@@ -84,9 +84,9 @@
                 <select class="dc-select2" name="exclude_by_role[]" data-options='<?php echo json_encode($roles);?>'>
                 </select>
             </div>
-            <p class="disable__option__description description__roles excluded-roles"></p>
-            <p class="disable__option__description description__roles included-roles"></p>
-            <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will exclude all the above settings for the selected user roles.', 'disable-comments'); ?></p>
+            <p class="disable__option__description description__roles excluded-roles">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius iste delectus aut.</p>
+            <p class="disable__option__description description__roles included-roles">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Alias autem omnis quae!</p>
+            <p class="disable__option__description mt10"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will exclude all the above settings for the selected user roles.', 'disable-comments'); ?></p>
         </div>
 
         <div class="disable_option dc-text__block mt30">

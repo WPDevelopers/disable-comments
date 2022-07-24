@@ -174,6 +174,22 @@
   max-width: 100%;
 }
 
+.disablecommentswrap .pt5 {
+  padding-top: 5px;
+}
+
+.disablecommentswrap .pt10 {
+  padding-top: 10px;
+}
+
+.disablecommentswrap .mt5 {
+  margin-top: 5px;
+}
+
+.disablecommentswrap .mt10 {
+  margin-top: 10px;
+}
+
 .pt50 {
   padding-top: 50px;
 }
@@ -3916,6 +3932,7 @@ button.button__instagram.hover__highlight:hover .icon {
   min-height: 30px;
   padding: 0;
   min-width: 290px;
+  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -3987,6 +4004,27 @@ button.button__instagram.hover__highlight:hover .icon {
   margin-left: 0px;
   height: 30px;
   padding-top: 7px;
-  width: 5px;
+  width: auto !important;
+  font-size: 12px;
+}
+
+.disable_option .select2-container--default .select2-search--inline .select2-search__field::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #687b95;
+}
+
+.disable_option .select2-container--default .select2-search--inline .select2-search__field::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #687b95;
+}
+
+.disable_option .select2-container--default .select2-search--inline .select2-search__field:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #687b95;
+}
+
+.disable_option .select2-container--default .select2-search--inline .select2-search__field:-moz-placeholder {
+  /* Firefox 18- */
+  color: #687b95;
 }
 /*# sourceMappingURL=style.css.map */
