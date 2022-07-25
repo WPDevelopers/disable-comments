@@ -387,7 +387,7 @@ jQuery(document).ready(function ($) {
 							return val !== 'Logged out users';
 						})
 						var text = "<b>" + _selectedOptions.join("</b>, <b>") + "</b>";
-						excludedRoles.html("Users who are <b>logged out</b>, " + text + " will see comments.");
+						excludedRoles.html("Comments are visible to " + text + " and <b>logged out users</b>.");
 						includedRoles.text("No comments will be visible to other roles.");
 					}
 				}
