@@ -367,6 +367,7 @@ jQuery(document).ready(function ($) {
 		var includedRoles              = excludeByRoleWrapper.find('.included-roles');
 		var selectOnChange             = function(){
 			var selectedOptions = excludeByRoleSelect.select2('data');
+			excludeByRoleSelectWrapper.show();
 			if(selectedOptions.length){
 				includedRoles.show();
 				excludedRoles.show();
@@ -387,7 +388,7 @@ jQuery(document).ready(function ($) {
 							return val !== 'Logged out users';
 						})
 						var text = "<b>" + _selectedOptions.join("</b>, <b>") + "</b>";
-						excludedRoles.html("Comments are visible to " + text + " and <b>logged out users</b>.");
+						excludedRoles.html("Comments are visible to " + text + " and <b>Logged out users</b>.");
 						includedRoles.text("No comments will be visible to other roles.");
 					}
 				}

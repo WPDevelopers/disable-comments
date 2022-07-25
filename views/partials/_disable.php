@@ -76,7 +76,7 @@
                     Exclude Disable Comments settings based on User Roles
                 </label>
             </div>
-            <div id="exclude_by_role_select_wrapper" class="mb10">
+            <div id="exclude_by_role_select_wrapper" class="mb10" style="display: none;">
                 <?php
                 $selected_roles = isset($this->options['exclude_by_role']) ? $this->options['exclude_by_role'] : [];
                 $roles = $this->get_roles($selected_roles);
