@@ -362,7 +362,7 @@ jQuery(document).ready(function ($) {
 		var excludeByRoleSelectWrapper = excludeByRoleWrapper.find('#exclude_by_role_select_wrapper');
 		var excludeByRoleSelect        = excludeByRoleSelectWrapper.find('.dc-select2');
 		var options                    = excludeByRoleSelect.data('options');
-		var descriptionRoles           = excludeByRoleWrapper.find('.description__roles');
+		var selectDescriptionWrapper   = excludeByRoleWrapper.find('#exclude_by_role_select_description_wrapper');
 		var excludedRoles              = excludeByRoleWrapper.find('.excluded-roles');
 		var includedRoles              = excludeByRoleWrapper.find('.included-roles');
 		var selectOnChange             = function(){
@@ -412,12 +412,10 @@ jQuery(document).ready(function ($) {
 		selectOnChange();
 		jQuery('#enable_exclude_by_role').on('change', function(){
 			if(jQuery(this).is(':checked')){
-				excludeByRoleSelectWrapper.show();
-				descriptionRoles.show();
+				selectDescriptionWrapper.show();
 			}
 			else{
-				excludeByRoleSelectWrapper.hide();
-				descriptionRoles.hide();
+				selectDescriptionWrapper.hide();
 			}
 		});
 		jQuery('#enable_exclude_by_role').trigger('change');

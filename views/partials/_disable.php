@@ -76,17 +76,19 @@
                     Exclude Disable Comments Settings Based On User Roles
                 </label>
             </div>
-            <div id="exclude_by_role_select_wrapper" class="mb10" style="display: none;">
-                <?php
-                $selected_roles = isset($this->options['exclude_by_role']) ? $this->options['exclude_by_role'] : [];
-                $roles = $this->get_roles($selected_roles);
-                ?>
-                <select class="dc-select2" name="exclude_by_role[]" data-options='<?php echo json_encode($roles);?>'>
-                </select>
+            <div id="exclude_by_role_select_description_wrapper">
+                <div id="exclude_by_role_select_wrapper" class="mb10" style="display: none;">
+                    <?php
+                    $selected_roles = isset($this->options['exclude_by_role']) ? $this->options['exclude_by_role'] : [];
+                    $roles = $this->get_roles($selected_roles);
+                    ?>
+                    <select class="dc-select2" name="exclude_by_role[]" data-options='<?php echo json_encode($roles);?>'>
+                    </select>
+                </div>
+                <p class="disable__option__description description__roles excluded-roles" style="display: none;"></p>
+                <p class="disable__option__description description__roles included-roles" style="display: none;"></p>
+                <p class="disable__option__description mt10"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will exclude all the above settings for the selected user roles.', 'disable-comments'); ?></p>
             </div>
-            <p class="disable__option__description description__roles excluded-roles" style="display: none;"></p>
-            <p class="disable__option__description description__roles included-roles" style="display: none;"></p>
-            <p class="disable__option__description mt10"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will exclude all the above settings for the selected user roles.', 'disable-comments'); ?></p>
         </div>
 
         <div class="disable_option dc-text__block mt30">
