@@ -87,8 +87,8 @@
                 </div>
                 <p class="disable__option__description description__roles excluded-roles" style="display: none;"></p>
                 <p class="disable__option__description description__roles included-roles" style="display: none;"></p>
-                <p class="disable__option__description mt10"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will exclude all the above settings for the selected user roles.', 'disable-comments'); ?></p>
             </div>
+            <p class="disable__option__description mt10"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('This will exclude all the above settings for the selected user roles.', 'disable-comments'); ?></p>
         </div>
 
         <div class="disable_option dc-text__block mt30">
