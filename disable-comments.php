@@ -290,7 +290,7 @@ class Disable_Comments
 		if(!empty($this->options['enable_exclude_by_role']) && !empty($this->options['exclude_by_role'])){
 			if(is_user_logged_in()){
 				$user  = wp_get_current_user();
-				$roles = ( array ) $user->get_role_caps();
+				$roles = ( array ) $user->roles;
 				$diff = array_intersect($this->options['exclude_by_role'], $roles);
 				if(count($diff) || (in_array("administrator", $this->options['exclude_by_role']) && is_super_admin())){
 					return true;
