@@ -4027,4 +4027,16 @@ button.button__instagram.hover__highlight:hover .icon {
   /* Firefox 18- */
   color: #687b95;
 }
+
+.disable_option .select2-container--default .select2-selection--multiple .select2-selection__choice {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.disable_option .select2-container .select2-search--inline .select2-search__field {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  min-height: 38px !important;
+  padding-top: 11px !important;
+}
 /*# sourceMappingURL=style.css.map */
