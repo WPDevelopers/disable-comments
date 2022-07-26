@@ -73,7 +73,7 @@
                     <span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
                     <span class="switch__text off"><?php _e('Off', 'disable-comments'); ?></span>
                 </span>
-                    Exclude Disable Comments settings based on User Roles
+                    Exclude Disable Comments Settings Based On User Roles
                 </label>
             </div>
             <div id="exclude_by_role_select_wrapper" class="mb10" style="display: none;">
