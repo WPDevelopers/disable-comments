@@ -5,7 +5,7 @@ Tags: comments, delete comments, disable comments, spam comment, disable, stop s
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 2.3.6
+Stable tag: 2.4.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,8 @@ https://www.youtube.com/watch?v=J9AteKzQpPs
 * **[New]** Delete comments by type.
 * **[New]** Disable comments via [XML-RPC](https://wpdeveloper.com/docs/how-to-disable-comments-made-via-xml-rpc/) & [REST-API](https://wpdeveloper.com/docs/how-to-disable-comments-made-via-rest-api/)
 * **[New]** Fully Multi-site Network supported.
+* **[New]** Manage multiple website networks specific subsites or entire networks comments in advance. 
+* **[New]** Exclude Disable Comments Settings based on user roles.
 
 https://www.youtube.com/watch?v=FBq3-W-p-DM
 
@@ -129,7 +131,7 @@ Consider checking out our other WordPress solutions & boost your WordPress websi
 
 ⏰ [SchedulePress](https://wordpress.org/plugins/wp-scheduled-posts/): Advanced editorial calendar with WordPress Post Scheduling, Social Sharing, Missed scheduled alerts, and more.
 
-⭐ [ReviewX](https://wordpress.org/plugins/reviewx/): WooCommerce Product review plugin that allows users to submit product reviews with multiple criteria, photos, video, and more.
+⭐ [ReviewX](https://wordpress.org/plugins/reviewx/): WooCommerce Product review plugin that allows users to submit product reviews with multiple criteria, photos, videos, and more.
 
 ⚡ [Flexia](https://wordpress.org/themes/flexia/): Most lightweight, customizable & multi purpose theme for WordPress.
 
@@ -191,6 +193,10 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
+
+= [2.4.0] - 2022-07-27 =
+* New Feature: Exclude Disable Comments settings based on user roles.
+* Few minor bug fix and improvement.
 
 = [2.3.6] - 2022-06-05 =
 * Fixed: JavaScript error in Gutenberg editor.
