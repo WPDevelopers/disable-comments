@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "main": "Gruntfile.js",
   "author": "Samir Shah",
+  "scripts": {
+    "pot": "wp i18n make-pot . languages/disable-comments.pot "
+  },
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0",

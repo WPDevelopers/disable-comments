@@ -14,13 +14,13 @@
                         <span class="switch__text on"><?php _e('On', 'disable-comments'); ?></span>
                         <span class="switch__text off"><?php _e('Off', 'disable-comments'); ?></span>
                     </span>
-                    Enable Site Wise settings.
+                    <?php _e('Enable Site Wise settings.', 'disable-comments');?>
                 </label>
                 <p class="disable__option__description"><span class="danger"><?php _e('Note:', 'disable-comments'); ?></span> <?php _e('If you enable Site Wise settings, you need to configure your “Disable Comments” settings individually on every website in the network.', 'disable-comments'); ?></p>
             </div>
         </div>
         <div class="disable_option sites_list_wrapper dc-text__block mb30 mt30" data-type="disabled">
-            <h3>Disable comments in the following sites:</h3>
+            <h3><?php _e('Disable comments in the following sites:', 'disable-comments');?></h3>
             <?php
                 $type = 'disabled';
                 include DC_PLUGIN_VIEWS_PATH . 'partials/_sites.php';

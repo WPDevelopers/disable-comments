@@ -1,7 +1,9 @@
 jQuery(document).ready(function ($) {
+	var __ = wp.i18n.__;
+	var _e = wp.i18n._e;
+	var sprintf = wp.i18n.sprintf;
 	var saveBtn   = jQuery("#disableCommentSaveSettings button.button.button__success");
 	var deleteBtn = jQuery("#deleteCommentSettings button.button.button__delete");
-
 
 	if(jQuery('.sites_list_wrapper').length){
 		var addSite   = function($sites_list, site, type){
@@ -271,13 +273,14 @@ jQuery(document).ready(function ($) {
 			type: "post",
 			data: data,
 			beforeSend: function () {
+				var btnText = __("Saving Settings..", "disable-comments");
 				saveBtn.html(
-					'<svg id="eael-spinner" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="4" r="4" fill="#fff"/><circle cx="12.19" cy="7.86" r="3.7" fill="#fffbf2"/><circle cx="5.02" cy="17.68" r="3.4" fill="#fef7e4"/><circle cx="5.02" cy="30.32" r="3.1" fill="#fef3d7"/><circle cx="12.19" cy="40.14" r="2.8" fill="#feefc9"/><circle cx="24" cy="44" r="2.5" fill="#feebbc"/><circle cx="35.81" cy="40.14" r="2.2" fill="#fde7af"/><circle cx="42.98" cy="30.32" r="1.9" fill="#fde3a1"/><circle cx="42.98" cy="17.68" r="1.6" fill="#fddf94"/><circle cx="35.81" cy="7.86" r="1.3" fill="#fcdb86"/></svg><span>Saving Settings..</span>'
+					'<svg id="eael-spinner" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="4" r="4" fill="#fff"/><circle cx="12.19" cy="7.86" r="3.7" fill="#fffbf2"/><circle cx="5.02" cy="17.68" r="3.4" fill="#fef7e4"/><circle cx="5.02" cy="30.32" r="3.1" fill="#fef3d7"/><circle cx="12.19" cy="40.14" r="2.8" fill="#feefc9"/><circle cx="24" cy="44" r="2.5" fill="#feebbc"/><circle cx="35.81" cy="40.14" r="2.2" fill="#fde7af"/><circle cx="42.98" cy="30.32" r="1.9" fill="#fde3a1"/><circle cx="42.98" cy="17.68" r="1.6" fill="#fddf94"/><circle cx="35.81" cy="7.86" r="1.3" fill="#fcdb86"/></svg><span>' + btnText + '</span>'
 				);
 			},
 			success: function (response) {
 				if (response.success) {
-					saveBtn.html("Save Settings");
+					saveBtn.html(__("Save Settings", "disable-comments"));
 					Swal.fire({
 						icon: "success",
 						title: response.data.message,
@@ -291,8 +294,8 @@ jQuery(document).ready(function ($) {
 				saveBtn.html("Save Settings");
 				Swal.fire({
 					type: "error",
-					title: "Oops...",
-					text: "Something went wrong!",
+					title: __("Oops...", "disable-comments"),
+					text: __("Something went wrong!", "disable-comments"),
 				});
 			},
 		});
@@ -302,12 +305,12 @@ jQuery(document).ready(function ($) {
 		var $form = jQuery(this);
 		Swal.fire({
 			icon: "error",
-			title: "Are you sure?",
-			text: "You won't be able to revert this!",
+			title: __("Are you sure?", "disable-comments"),
+			text: __("You won't be able to revert this!", "disable-comments"),
 			showConfirmButton: true,
             showCancelButton: true,
-            confirmButtonText: 'Yes, Delete It',
-            cancelButtonText: 'No, Cancel',
+            confirmButtonText: __('Yes, Delete It', "disable-comments"),
+            cancelButtonText: __('No, Cancel', "disable-comments"),
 			customClass: {
 				confirmButton: 'confirmButton',
 				cancelButton: 'cancelButton'
@@ -327,14 +330,14 @@ jQuery(document).ready(function ($) {
 					data: $form.serialize(),
 				};
 				deleteBtn.html(
-					'<svg id="eael-spinner" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="4" r="4" fill="#fff"/><circle cx="12.19" cy="7.86" r="3.7" fill="#fffbf2"/><circle cx="5.02" cy="17.68" r="3.4" fill="#fef7e4"/><circle cx="5.02" cy="30.32" r="3.1" fill="#fef3d7"/><circle cx="12.19" cy="40.14" r="2.8" fill="#feefc9"/><circle cx="24" cy="44" r="2.5" fill="#feebbc"/><circle cx="35.81" cy="40.14" r="2.2" fill="#fde7af"/><circle cx="42.98" cy="30.32" r="1.9" fill="#fde3a1"/><circle cx="42.98" cy="17.68" r="1.6" fill="#fddf94"/><circle cx="35.81" cy="7.86" r="1.3" fill="#fcdb86"/></svg><span>Deleting Comments..</span>'
+					'<svg id="eael-spinner" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48"><circle cx="24" cy="4" r="4" fill="#fff"/><circle cx="12.19" cy="7.86" r="3.7" fill="#fffbf2"/><circle cx="5.02" cy="17.68" r="3.4" fill="#fef7e4"/><circle cx="5.02" cy="30.32" r="3.1" fill="#fef3d7"/><circle cx="12.19" cy="40.14" r="2.8" fill="#feefc9"/><circle cx="24" cy="44" r="2.5" fill="#feebbc"/><circle cx="35.81" cy="40.14" r="2.2" fill="#fde7af"/><circle cx="42.98" cy="30.32" r="1.9" fill="#fde3a1"/><circle cx="42.98" cy="17.68" r="1.6" fill="#fddf94"/><circle cx="35.81" cy="7.86" r="1.3" fill="#fcdb86"/></svg><span>' + __("Deleting Comments..", "disable-comments") + '</span>'
 				);
 				jQuery.post(ajaxurl, data, function (response) {
-					deleteBtn.html("Delete Comments");
+					deleteBtn.html(__("Delete Comments", "disable-comments"));
 					if (response.success) {
 						Swal.fire({
 							icon: "success",
-							title: "Deleted",
+							title: __("Deleted", "disable-comments"),
 							html: response.data.message,
 							timer: 3000,
 							showConfirmButton: false,
@@ -342,7 +345,7 @@ jQuery(document).ready(function ($) {
 					} else {
 						Swal.fire({
 							icon: "error",
-							title: "Oops...",
+							title: __("Oops...", "disable-comments"),
 							html: response.data.message,
 							showConfirmButton: true,
 						});
@@ -357,7 +360,7 @@ jQuery(document).ready(function ($) {
 		saveBtn.addClass('form-dirty');
 	});
 
-	jQuery(document).ready(function() {
+	(function() {
 		var excludeByRoleWrapper       = jQuery('#exclude_by_role_wrapper');
 		if(!excludeByRoleWrapper.length) return;
 		var excludeByRoleSelectWrapper = excludeByRoleWrapper.find('#exclude_by_role_select_wrapper');
@@ -368,35 +371,41 @@ jQuery(document).ready(function ($) {
 		var includedRoles              = excludeByRoleWrapper.find('.included-roles');
 		var selectOnChange             = function(){
 			var selectedOptions = excludeByRoleSelect.select2('data');
+			console.log(selectedOptions);
 			excludeByRoleSelectWrapper.show();
 			if(selectedOptions.length){
 				includedRoles.show();
 				excludedRoles.show();
-				selectedOptions = selectedOptions.map(function(val, index){
-					return val.text;
+				var hasLoggedOutUsers = selectedOptions.find(function(val, index){
+					return val.id == 'logged-out-users';
 				});
 				if(options.length == selectedOptions.length){
-					excludedRoles.text("Comments are visible to everyone.");
+					excludedRoles.text(__("Comments are visible to everyone.", "disable-comments"));
 					includedRoles.hide();
 				}
-				else if(selectedOptions.includes('Logged out users')){
+				else if(hasLoggedOutUsers){
 					if(selectedOptions.length == 1){
-						excludedRoles.text("Users who are logged out will see comments.");
-						includedRoles.text("No comments will be visible to other roles.");
+						excludedRoles.text(__("Users who are logged out will see comments.", "disable-comments"));
+						includedRoles.text(__("No comments will be visible to other roles.", "disable-comments"));
 					}
 					else{
 						var _selectedOptions = selectedOptions.filter(function(val) {
-							return val !== 'Logged out users';
-						})
+							return val.id !== 'logged-out-users';
+						}).map(function(val, index){
+							return val.id;
+						});
 						var text = "<b>" + _selectedOptions.join("</b>, <b>") + "</b>";
-						excludedRoles.html("Comments are visible to " + text + " and <b>Logged out users</b>.");
-						includedRoles.text("No comments will be visible to other roles.");
+						excludedRoles.html(sprintf(__("Comments are visible to %s and <b>Logged out users</b>.", "disable-comments"), text));
+						includedRoles.text(__("No comments will be visible to other roles.", "disable-comments"));
 					}
 				}
 				else{
-					var text = "<b>" + selectedOptions.join("</b>, <b>") + "</b>";
-					excludedRoles.html("Comments are visible to " + text + ".");
-					includedRoles.text("Other roles and logged out users won't see any comments.");
+					var selectedOptionsLabels = selectedOptions.map(function(val, index){
+						return val.text;
+					});
+					var text = "<b>" + selectedOptionsLabels.join("</b>, <b>") + "</b>";
+					excludedRoles.html(sprintf(__("Comments are visible to %s.", "disable-comments"), text));
+					includedRoles.text(__("Other roles and logged out users won't see any comments.", "disable-comments"));
 				}
 			}
 			else{
@@ -407,7 +416,7 @@ jQuery(document).ready(function ($) {
 		excludeByRoleSelect.select2({
 			multiple: true,
 			data: options,
-			placeholder: "Select User Roles",
+			placeholder: __("Select User Roles", "disable-comments"),
 		});
 		excludeByRoleSelect.on('change', selectOnChange);
 		selectOnChange();
@@ -420,6 +429,6 @@ jQuery(document).ready(function ($) {
 			}
 		});
 		jQuery('#enable_exclude_by_role').trigger('change');
-	});
+	})();
 
 });
