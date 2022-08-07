@@ -359,6 +359,7 @@ jQuery(document).ready(function ($) {
 
 	jQuery(document).ready(function() {
 		var excludeByRoleWrapper       = jQuery('#exclude_by_role_wrapper');
+		if(!excludeByRoleWrapper.length) return;
 		var excludeByRoleSelectWrapper = excludeByRoleWrapper.find('#exclude_by_role_select_wrapper');
 		var excludeByRoleSelect        = excludeByRoleSelectWrapper.find('.dc-select2');
 		var options                    = excludeByRoleSelect.data('options');
