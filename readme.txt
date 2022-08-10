@@ -5,7 +5,7 @@ Tags: comments, delete comments, disable comments, spam comment, disable, stop s
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 2.4.0
+Stable tag: 2.4.1
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -193,6 +193,10 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
+
+= [2.4.1] - 2022-08-10 =
+* Improvement: Localized missing strings in plugin.
+* Improvement: Included the fonts in plugin distribution.
 
 = [2.4.0] - 2022-07-27 =
 * New Feature: Exclude Disable Comments settings based on user roles.
