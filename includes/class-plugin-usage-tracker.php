@@ -42,6 +42,14 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 		 * @var string
 		 */
 		public $recurrence = 'daily';
+		public $notice_options = [];
+		public $item_id = null;
+		public $disabled_wp_cron;
+		public $enable_self_cron;
+		public $require_optin;
+		public $include_goodbye_form;
+		public $marketing;
+		public $options;
 		private $event_hook = null;
 		/**
 		 * Instace of DisableComments_Plugin_Tracker

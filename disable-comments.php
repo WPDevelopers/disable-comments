@@ -25,6 +25,10 @@ class Disable_Comments
 	private static $instance = null;
 	private $options;
 	public  $networkactive;
+	public  $tracker;
+	public  $is_CLI;
+	public  $sitewide_settings;
+	public  $setup_notice_flag;
 	private $modified_types = array();
 
 	public static function get_instance()
