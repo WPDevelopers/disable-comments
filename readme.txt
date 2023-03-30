@@ -3,7 +3,7 @@ Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, alimuzzamanalim, s
 Donate link: https://wpdeveloper.com/
 Tags: comments, delete comments, disable comments, spam comment, disable, stop spam, remove comments, anti spam, disable xml-rpc, hide comment, XML-RPC, REST-API, WP-CLI, multi-site support
 Requires at least: 5.0
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 5.6
 Stable tag: 2.4.3
 License: GPL-3.0-or-later

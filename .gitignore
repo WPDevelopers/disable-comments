@@ -7,4 +7,5 @@ node_modules/
 *.zip
 vendor/
 .vscode/
+.idea
 package-lock.json
