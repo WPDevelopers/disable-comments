@@ -535,7 +535,15 @@ class Disable_Comments
 	 */
 	public function filter_rest_endpoints($endpoints)
 	{
-		unset($endpoints['comments']);
+		if(isset($endpoints['comments'])){
+			unset($endpoints['comments']);
+		}
+		if(isset($endpoints['/wp/v2/comments'])){
+			unset($endpoints['/wp/v2/comments']);
+		}
+		if(isset($endpoints['/wp/v2/comments/(?P<id>[\d]+)'])){
+			unset($endpoints['/wp/v2/comments/(?P<id>[\d]+)']);
+		}
 		return $endpoints;
 	}
 
