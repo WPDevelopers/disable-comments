@@ -5,6 +5,7 @@
  */
 class Disable_Comment_Command
 {
+	public $dc_instance;
 
     public function __construct($dc_instance)
     {
