@@ -350,6 +350,7 @@ class Disable_Comments
 		}
 		// rest API Comment Block
 		if (isset($this->options['remove_rest_API_comments']) && intval($this->options['remove_rest_API_comments']) === 1) {
+			add_filter('rest_endpoints', array($this, 'filter_rest_endpoints'));
 			add_filter('rest_pre_insert_comment', array($this, 'disable_rest_API_comments'), 10, 2);
 		}
 
