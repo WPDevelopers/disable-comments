@@ -134,8 +134,9 @@ class Disable_Comments
 				return;
 			}
 			$current_screen = get_current_screen()->id;
-			$hascaps = $this->networkactive && is_network_admin() ? current_user_can('manage_network_plugins') : current_user_can('manage_options');
-			if( ! in_array( $current_screen, ['settings_page_disable_comments_settings', 'settings_page_disable_comments_settings-network']) && $hascaps ) {
+			$has_caps = $this->networkactive && is_network_admin() ? current_user_can('manage_network_plugins') : current_user_can('manage_options');
+			// if( ! in_array( $current_screen, ['settings_page_disable_comments_settings', 'settings_page_disable_comments_settings-network']) && $has_caps ) {
+			if ($has_caps && in_array($current_screen, ['dashboard-network', 'dashboard'])) {
 				$this->tracker->notice();
 			}
 		}
@@ -653,7 +654,8 @@ class Disable_Comments
 
 	public function setup_notice()
 	{
-		if (strpos(get_current_screen()->id, 'settings_page_disable_comments_settings') === 0) {
+		$current_screen = get_current_screen()->id;
+		if (!in_array($current_screen, ['dashboard-network', 'dashboard'])) {
 			return;
 		}
 		$hascaps = $this->networkactive && is_network_admin() ? current_user_can('manage_network_plugins') : current_user_can('manage_options');

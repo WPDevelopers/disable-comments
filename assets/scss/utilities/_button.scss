@@ -89,6 +89,12 @@
 	}
 }
 
+.button.button__success.button__fade[disabled] {
+	color: #ffffff !important;
+    background: #05cb6b !important;
+    opacity: 0.6 !important;
+}
+
 .cancelButton {
     padding: 0;
     border-radius: 5px;

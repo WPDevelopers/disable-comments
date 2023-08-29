@@ -1,9 +1,11 @@
 jQuery(document).ready(function ($) {
-	var __ = wp.i18n.__;
-	var _e = wp.i18n._e;
-	var sprintf = wp.i18n.sprintf;
+	var __        = wp.i18n.__;
+	var _e        = wp.i18n._e;
+	var sprintf   = wp.i18n.sprintf;
+	var $form     = jQuery('#disableCommentSaveSettings');
 	var saveBtn   = jQuery("#disableCommentSaveSettings button.button.button__success");
 	var deleteBtn = jQuery("#deleteCommentSettings button.button.button__delete");
+	var savedData;
 
 	if(jQuery('.sites_list_wrapper').length){
 		var addSite   = function($sites_list, site, type){
@@ -287,7 +289,8 @@ jQuery(document).ready(function ($) {
 						timer: 3000,
 						showConfirmButton: false,
 					});
-					saveBtn.removeClass('form-dirty');
+					saveBtn.removeClass('form-dirty').prop('disabled', true);
+					savedData = $form.serialize();
 				}
 			},
 			error: function () {
@@ -355,10 +358,20 @@ jQuery(document).ready(function ($) {
 		});
 	});
 
-	jQuery("#disableCommentSaveSettings").on('change keydown', 'input,select', function (e) {
-		// jQuery(this).off(e);
-		saveBtn.addClass('form-dirty');
+	jQuery("#disableCommentSaveSettings").on('change keydown', ':input', function (e) {
+		if(!savedData){
+			savedData = $form.serialize();
+		}
+		if(savedData == $form.serialize()){
+			saveBtn.removeClass('form-dirty').prop('disabled', true);
+		}
+		else{
+			saveBtn.addClass('form-dirty').prop('disabled', false);
+		}
+
 	});
+
+	jQuery('#remove_everywhere').trigger('change');
 
 	(function() {
 		var excludeByRoleWrapper       = jQuery('#exclude_by_role_wrapper');
