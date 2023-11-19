@@ -214,14 +214,15 @@ class Disable_Comments
 					$this->options[$v] = false;
 				}
 			}
-			
+
+			$types = get_post_types(array('public' => true), 'names');
 			$this->options = wp_parse_args([
 				'remove_everywhere'        => true,
 				'remove_xmlrpc_comments'   => 1,
 				'remove_rest_API_comments' => 1,
 				'settings_saved'           => true,
+				'disabled_post_types'      => array_keys($types),
 			], $this->options);
-			
 			update_option('show_avatars', false);
 
 			$this->options['db_version'] = self::DB_VERSION;
