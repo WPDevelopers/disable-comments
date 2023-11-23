@@ -37,3 +37,4 @@ src
 assets/img/card
 *.map
 assets/scss
+.vscode
