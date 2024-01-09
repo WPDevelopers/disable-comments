@@ -389,10 +389,6 @@ class Disable_Comments
 					remove_post_type_support($type, 'trackbacks');
 				}
 			}
-			add_filter('comments_array', array($this, 'filter_existing_comments'), 20, 2);
-			add_filter('comments_open', array($this, 'filter_comment_status'), 20, 2);
-			add_filter('pings_open', array($this, 'filter_comment_status'), 20, 2);
-			add_filter('get_comments_number', array($this, 'filter_comments_number'), 20, 2);
 		} elseif (is_admin() && !$this->is_configured()) {
 			/**
 			 * It is possible that $disabled_post_types is empty if other
@@ -401,6 +397,13 @@ class Disable_Comments
 			 * shouldn't be using this plugin.
 			 */
 			add_action('all_admin_notices', array($this, 'setup_notice'));
+		}
+
+		if ($this->is_remove_everywhere() || (!empty($disabled_post_types) && !$this->is_exclude_by_role())) {
+			add_filter('comments_array', array($this, 'filter_existing_comments'), 20, 2);
+			add_filter('comments_open', array($this, 'filter_comment_status'), 20, 2);
+			add_filter('pings_open', array($this, 'filter_comment_status'), 20, 2);
+			add_filter('get_comments_number', array($this, 'filter_comments_number'), 20, 2);
 		}
 
 		// Filters for the admin only.
