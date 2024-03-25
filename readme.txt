@@ -1,21 +1,21 @@
 === Disable Comments - Remove Comments & Stop Spam [Multi-Site Support] ===
 Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, alimuzzamanalim, solarissmoke, garrett-eclipse
 Donate link: https://wpdeveloper.com/
-Tags: comments, delete comments, disable comments, spam comment, disable, stop spam, remove comments, anti spam, disable xml-rpc, hide comment, XML-RPC, REST-API, WP-CLI, multi-site support
+Tags: Disable Comments, Stop Spam, Delete Comments, Remove Comments, Spam Protection
 Requires at least: 5.0
-Tested up to: 6.3
+Tested up to: 6.5
 Requires PHP: 5.6
-Stable tag: 2.4.5
+Stable tag: 2.4.6
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly. Provides tool to delete comments according to post type.
+Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly.
 
 == Description ==
 
 = Disable Comments - Remove Comments & Stop Spam [Multi-Site Support] =
 
-Instantly allow or disallow comments from any post type in WordPress (Pages, Posts, or Media) to stop the spammers and gain complete control over your full website. WP-CLI Support & Control comments via XML-RPC and REST-API too!
+Enable/Disable comments on any WordPress content (Pages, Posts, or Media) to stop spammers. WP-CLI, XML-RPC & REST-API support to stop spam comments.
 
 [More About Plugin](https://wpdeveloper.com/plugins/disable-comments/) ◼️ [Documentation](https://wpdeveloper.com/docs-category/disable-comments/) ◼️ [Support Forum](https://wordpress.org/support/plugin/disable-comments/)
 
@@ -45,7 +45,7 @@ https://www.youtube.com/watch?v=J9AteKzQpPs
 * **[New]** Delete comments by type.
 * **[New]** Disable comments via [XML-RPC](https://wpdeveloper.com/docs/how-to-disable-comments-made-via-xml-rpc/) & [REST-API](https://wpdeveloper.com/docs/how-to-disable-comments-made-via-rest-api/)
 * **[New]** Fully Multi-site Network supported.
-* **[New]** Manage multiple website networks specific subsites or entire networks comments in advance.
+* **[New]** Manage multiple website network-specific subsites or entire network comments in advance.
 * **[New]** Exclude Disable Comments Settings based on user roles.
 
 https://www.youtube.com/watch?v=FBq3-W-p-DM
@@ -117,7 +117,7 @@ These definitions can be made either in your main `wp-config.php` or in your the
 
 Consider checking out our other WordPress solutions & boost your WordPress website:
 
-🔝 [Essential Addons For Elementor](https://wordpress.org/plugins/essential-addons-for-elementor-lite/): Most popular Elementor addons with 70+ widgets & ready blocks
+🔝 [Essential Addons For Elementor](https://wordpress.org/plugins/essential-addons-for-elementor-lite/): Most popular Elementor addons with 2 million+ happy users & 95+ widgets & ready blocks
 
 🔔 [NotificationX](https://notificationx.com/) – Best Social Proof & FOMO Marketing Solution to increase conversion rates.
 
@@ -125,13 +125,11 @@ Consider checking out our other WordPress solutions & boost your WordPress websi
 
 📄 [EmbedPress](https://wordpress.org/plugins/embedpress/): EmbedPress lets you embed anything including videos, images, posts, audio, maps and upload PDF, DOC, PPT etc.
 
-☁ [Templately](https://wordpress.org/plugins/templately/): 1200+ Free templates library for Elementor & Gutenberg along with the cloud collaboration for WordPress.
+☁ [Templately](https://wordpress.org/plugins/templately/): 5000+ Free templates library for Elementor & Gutenberg along with the cloud collaboration for WordPress.
 
 📚 [BetterDocs](https://wordpress.org/plugins/betterdocs/): Best Documentation & Knowledge Base Plugin for WordPress reduce manual support tickets & improve user experience.
 
 ⏰ [SchedulePress](https://wordpress.org/plugins/wp-scheduled-posts/): Advanced editorial calendar with WordPress Post Scheduling, Social Sharing, Missed scheduled alerts, and more.
-
-⭐ [ReviewX](https://wordpress.org/plugins/reviewx/): WooCommerce Product review plugin that allows users to submit product reviews with multiple criteria, photos, videos, and more.
 
 ⚡ [Flexia](https://wordpress.org/themes/flexia/): Most lightweight, customizable & multi purpose theme for WordPress.
 
@@ -192,7 +190,10 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
-This will be maiintained from August 19, 2020 - @asif2bd
+This will be maintained from August 19, 2020 - @asif2bd
+
+= [2.4.6] - 2024-03-25 =
+* Added: WordPress 6.5 Compatibility
 
 = [2.4.5] - 2023-08-30 =
 * Minor bug fixes and improvements.
