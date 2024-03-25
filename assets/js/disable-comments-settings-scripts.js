@@ -309,7 +309,7 @@ jQuery(document).ready(function ($) {
 		Swal.fire({
 			icon: "error",
 			title: __("Are you sure?", "disable-comments"),
-			text: __("You won't be able to revert this!", "disable-comments"),
+			text: __("You won't be able to reverse this without a database backup.", "disable-comments"),
 			showConfirmButton: true,
             showCancelButton: true,
             confirmButtonText: __('Yes, Delete It', "disable-comments"),
