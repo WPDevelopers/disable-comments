@@ -20,7 +20,7 @@
             <div class="disable_option dc-text__block mb30 mt30">
                 <input type="radio" id="delete_everywhere" name="delete_mode" value="<?php echo esc_attr('delete_everywhere'); ?>" <?php checked($this->options['remove_everywhere']); ?> />
                 <label for="delete_everywhere"><?php _e('Everywhere:', 'disable-comments'); ?> <span><?php _e('Permanently delete all comments on your WordPress website', 'disable-comments'); ?></span></label>
-                <p class="disable__option__description"><span class="danger"><?php _e('Warnings:', 'disable-comments'); ?></span> <?php _e('This will permanently delete comments everywhere on your website.', 'disable-comments'); ?></p>
+                <p class="disable__option__description"><span class="danger"><?php _e('Warnings:', 'disable-comments'); ?></span> <?php _e('This action will permanently delete all comments and comment types from your Posts, Pages, and Custom Post Types. If you have WooCommerce installed, your order notes will also be deleted.', 'disable-comments'); ?></p>
             </div>
             <div class="disable_option dc-text__block mb30">
                 <input type="radio" id="selected_delete_types" name="delete_mode" value="<?php echo esc_attr('selected_delete_types'); ?>" <?php checked(!$this->options['remove_everywhere']); ?> />
