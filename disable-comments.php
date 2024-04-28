@@ -905,7 +905,7 @@ class Disable_Comments
 			]);
 			foreach ( $sites as $blog_id ) {
 				switch_to_blog( $blog_id );
-				$show_avatars[] = get_option('show_avatars', '0');
+				$show_avatars[] = (int) get_option('show_avatars', '0');
 				restore_current_blog();
 			}
 			if(count($show_avatars) == array_sum($show_avatars)){
