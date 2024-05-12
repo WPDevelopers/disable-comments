@@ -6,9 +6,9 @@
   "homepage": "https://wordpress.org/plugins/disable-comments",
   "authors": [
     {
-      "name": "Samir Shah",
-      "email": "samir@rayofsolaris.net",
-      "homepage": "https://github.com/solarissmoke"
+      "name": "WPDeveloper",
+      "email": "support@wpdeveloper.com",
+      "homepage": "https://github.com/WPDevelopers"
     }
   ],
   "keywords": [
@@ -16,7 +16,7 @@
     "comments"
   ],
   "support": {
-    "issues": "https://github.com/solarissmoke/disable-comments/issues"
+    "issues": "https://github.com/WPDevelopers/disable-comments-mu/issues"
   },
   "require": {
     "php": ">=5.2.4",
