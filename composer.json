@@ -1,5 +1,5 @@
 {
-  "name": "solaris/disable-comments",
+  "name": "wpdevelopers/disable-comments",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "description": "Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. Multisite friendly.",
@@ -9,6 +9,11 @@
       "name": "WPDeveloper",
       "email": "support@wpdeveloper.com",
       "homepage": "https://github.com/WPDevelopers"
+    },
+    {
+      "name": "Samir Shah",
+      "email": "samir@rayofsolaris.net",
+      "homepage": "https://github.com/solarissmoke"
     }
   ],
   "keywords": [
@@ -16,7 +21,7 @@
     "comments"
   ],
   "support": {
-    "issues": "https://github.com/WPDevelopers/disable-comments-mu/issues"
+    "issues": "https://github.com/WPDevelopers/disable-comments/issues"
   },
   "require": {
     "php": ">=5.2.4",
