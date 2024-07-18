@@ -1,32 +1,66 @@
-name: Run Tests
+name: WordPress Plugin CI
 
 on:
   push:
     branches:
       - master
   pull_request:
-    branches:
-      - master
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        php-version: [7.1, 7.2, 7.3, 7.4]
+        php: [7.4, 7.3, 7.2, 7.1]
+        wp: [latest, '4.9', '4.8', '4.7']
+        include:
+          - php: 7.1
+            wp: latest
+            run_phpcs: true
+        exclude:
+          - php: 7.4
+            wp: '4.9'
+          - php: 7.4
+            wp: '4.8'
+          - php: 7.4
+            wp: '4.7'
+          - php: 7.3
+            wp: '4.9'
+          - php: 7.3
+            wp: '4.8'
+          - php: 7.3
+            wp: '4.7'
+          - php: 7.2
+            wp: '4.9'
+          - php: 7.2
+            wp: '4.8'
+          - php: 7.2
+            wp: '4.7'
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-    - name: Set up PHP
+    - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: ${{ matrix.php-version }}
+        php-version: ${{ matrix.php }}
+        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick
+        coverage: none
 
     - name: Install dependencies
-      run: composer install --prefer-source --no-interaction --dev
+      run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: Run tests
-      run: ./vendor/bin/phpunit
+    - name: Install WordPress test suite
+      run: bash bin/install-wp-tests.sh wordpress_test root '' localhost ${{ matrix.wp }}
+
+    - name: Run PHPUnit
+      run: |
+        phpunit
+        WP_MULTISITE=1 phpunit
+
+    - name: Run PHPCS
+      if: ${{ matrix.run_phpcs }}
+      run: |
+        composer global require wp-coding-standards/wpcs
+        phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
+        phpcs --standard=phpcs.ruleset.xml $(find . -name '*.php')
