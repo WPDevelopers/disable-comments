@@ -1,6 +1,6 @@
 # Disable Comments for WordPress
 
-[![Build Status](https://travis-ci.org/solarissmoke/disable-comments.svg?branch=master)](https://travis-ci.org/solarissmoke/disable-comments)
+[![Build Status](https://github.com/WPDevelopers/disable-comments/actions/workflows/tests.yml/badge.svg)](https://github.com/WPDevelopers/disable-comments/actions/workflows/tests.yml)
 
 This is the development respository for the [Disable Comments](https://wordpress.org/plugins/disable-comments/) WordPress plugin. Send pull requests here, download the latest stable version there!
 

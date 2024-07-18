@@ -1,0 +1,59 @@
+name: WordPress Plugin CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    strategy:
+      matrix:
+        php: [7.4, 7.3, 7.2, 7.1]
+        wp: [latest, '5.9', '5.8', '5.7']
+        include:
+          - php: 7.4
+            wp: latest
+            run_phpcs: true
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick
+        coverage: none
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: Install WordPress test suite
+      env:
+        WP_VERSION: ${{ matrix.wp }}
+      run: |
+        bash bin/install-wp-tests.sh wordpress_test root rootpassword 127.0.0.1:${{ job.services.mysql.ports['3306'] }} $WP_VERSION
+
+    - name: Run PHPUnit
+      run: |
+        phpunit
+        WP_MULTISITE=1 phpunit
+
+    - name: Run PHPCS
+      if: ${{ matrix.run_phpcs }}
+      run: |
+        composer global require wp-coding-standards/wpcs
+        phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
+        phpcs --standard=phpcs.ruleset.xml $(find . -name '*.php')
