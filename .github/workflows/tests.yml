@@ -9,33 +9,23 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     strategy:
       matrix:
         php: [7.4, 7.3, 7.2, 7.1]
-        wp: [latest, '4.9', '4.8', '4.7']
+        wp: [latest, '5.9', '5.8', '5.7']
         include:
-          - php: 7.1
+          - php: 7.4
             wp: latest
             run_phpcs: true
-        exclude:
-          - php: 7.4
-            wp: '4.9'
-          - php: 7.4
-            wp: '4.8'
-          - php: 7.4
-            wp: '4.7'
-          - php: 7.3
-            wp: '4.9'
-          - php: 7.3
-            wp: '4.8'
-          - php: 7.3
-            wp: '4.7'
-          - php: 7.2
-            wp: '4.9'
-          - php: 7.2
-            wp: '4.8'
-          - php: 7.2
-            wp: '4.7'
 
     steps:
     - uses: actions/checkout@v2
@@ -51,7 +41,10 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest
 
     - name: Install WordPress test suite
-      run: bash bin/install-wp-tests.sh wordpress_test root '' localhost ${{ matrix.wp }}
+      env:
+        WP_VERSION: ${{ matrix.wp }}
+      run: |
+        bash bin/install-wp-tests.sh wordpress_test root rootpassword 127.0.0.1:${{ job.services.mysql.ports['3306'] }} $WP_VERSION
 
     - name: Run PHPUnit
       run: |
