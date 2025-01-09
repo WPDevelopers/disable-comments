@@ -3,13 +3,13 @@
         <?php do_action('disable_comments_notice'); ?>
         <div class="disable__comment_block">
             <div class="disable__comment__nav__wrap">
-                <p class="plugin__version"><?php echo _e('Version', 'disable-comments') . ' ' . DC_VERSION; ?></p>
+                <p class="plugin__version"><?php echo esc_html__('Version', 'disable-comments') . ' ' . esc_html(DC_VERSION); ?></p>
                 <ul class="disable__comment__nav">
                     <li id="disableCommentsNav" class="disable__comment__nav__item">
-                        <a href="#disableComments" class="disable__comment__nav__link active"><?php _ex('Disable Comments', 'Tab Name','disable-comments'); ?></a>
+                        <a href="#disableComments" class="disable__comment__nav__link active"><?php echo esc_html(_x('Disable Comments', 'Tab Name','disable-comments')); ?></a>
                     </li>
                     <li id="deleteCommentsNav" class="disable__comment__nav__item">
-                        <a href="#deleteComments" class="disable__comment__nav__link"><?php _ex('Delete Comments', 'Tab Name', 'disable-comments'); ?></a>
+                        <a href="#deleteComments" class="disable__comment__nav__link"><?php echo esc_html(_x('Delete Comments', 'Tab Name', 'disable-comments')); ?></a>
                     </li>
                 </ul>
             </div>
