@@ -626,27 +626,35 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 			) );
 
 			// Decide on notice text
-			$notice_text = $this->notice_options['notice'] . ' <a href="#" class="wpinsights-'. $this->plugin_name .'-collect">'. $this->notice_options['consent_button_text'] .'</a>';
 			$extra_notice_text = $this->notice_options['extra_notice'];
 
-			$output = '';
-			$output .= '<div class="notice dc-text__block disable__comment__alert mb30">';
-				$output .= '<div class="alert__content">';
-                    $output .= '<img src="'. DC_ASSETS_URI .'img/icon-logo.png" alt="">';
-                    $output .= '<p>'. $notice_text .'</p>';
-                    $output .= '<div class="wpinsights-data" style="display: none;">';
-                        $output .= '<p>'. $extra_notice_text .'</p>';
-                    $output .= '</div>';
-                $output .= '</div>';
+			?>
 
-				$output .= '<div class="button__group">';
-					$output .= '<a href="'. esc_url( $url_yes ) .'" class="button button--sm button__success">'. $this->notice_options['yes'] .'</a>&nbsp;';
-					$output .= '<a href="'. esc_url( $url_no ) .'" class="button button--sm">'. $this->notice_options['no'] .'</a>';
-				$output .= '</div>';
-				$output .= "<script type='text/javascript'>jQuery('.wpinsights-". $this->plugin_name ."-collect').on('click', function(e) {e.preventDefault();jQuery('.wpinsights-data').slideToggle('fast');});</script>";
-			$output .= '</div>';
+			<div class="notice dc-text__block disable__comment__alert mb30">
+				<div class="alert__content">
+                    <img src="<?php echo esc_url(DC_ASSETS_URI) ?>img/icon-logo.png" alt="">
+                    <p>
+						<?php echo wp_kses_post($this->notice_options['notice']) ?>
+						<a href="#" class="wpinsights-<?php echo esc_attr($this->plugin_name) ?>-collect"><?php echo esc_html($this->notice_options['consent_button_text']) ?>
+						</a>
+					</p>
+                    <div class="wpinsights-data" style="display: none;">
+                        <p><?php echo wp_kses_post($extra_notice_text) ?></p>
+                    </div>
+                </div>
 
-			echo $output;
+				<div class="button__group">
+					<a href="<?php echo esc_url( $url_yes ) ?>" class="button button--sm button__success"><?php echo esc_html($this->notice_options['yes']) ?></a>&nbsp;
+					<a href="<?php echo esc_url( $url_no ) ?>" class="button button--sm"><?php echo esc_html($this->notice_options['no']) ?></a>
+				</div>
+				<script type='text/javascript'>
+				jQuery('.wpinsights-<?php echo esc_attr($this->plugin_name) ?>-collect').on('click', function(e) {
+					e.preventDefault();
+					jQuery('.wpinsights-data').slideToggle('fast');
+				});
+				</script>";
+			</div>
+			<?php
 		}
 		/**
 		 * Set all notice options to customized notice.
