@@ -636,7 +636,7 @@ class Disable_Comments {
 		if ($hascaps) {
 			$this->setup_notice_flag = true;
 			// translators: %s: URL to Disabled Comment settings page.
-			echo '<div class="notice dc-text__block disable__comment__alert mb30"><img height="30" src="' . esc_url(DC_ASSETS_URI . 'img/icon-logo.png') . '" alt=""><p>' . sprintf(esc_html__('The <strong>Disable Comments</strong> plugin is active, but isn\'t configured to do anything yet. Visit the <a href="%s">configuration page</a> to choose which post types to disable comments on.', 'disable-comments'), esc_attr($this->settings_page_url())) . '</p></div>';
+			echo wp_kses_post('<div class="notice dc-text__block disable__comment__alert mb30"><img height="30" src="' . esc_url(DC_ASSETS_URI . 'img/icon-logo.png') . '" alt=""><p>' . sprintf(__('The <strong>Disable Comments</strong> plugin is active, but isn\'t configured to do anything yet. Visit the <a href="%s">configuration page</a> to choose which post types to disable comments on.', 'disable-comments'), esc_attr($this->settings_page_url())) . '</p></div>');
 		}
 	}
 
@@ -869,7 +869,7 @@ class Disable_Comments {
 	}
 
 	public function get_sub_sites() {
-		$nonce = (isset($_POST['nonce']) ? wp_unslash($_POST['nonce']) : '');
+		$nonce = (isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '');
 		if (!wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
 			wp_send_json(['data' => [], 'totalNumber' => 0]);
 		}
@@ -924,8 +924,7 @@ class Disable_Comments {
 	}
 
 	public function disable_comments_settings($_args = array()) {
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$nonce = (isset($_POST['nonce']) ? wp_unslash($_POST['nonce']) : '');
+		$nonce = (isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '');
 		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
 
 			$formArray = $this->get_form_array_escaped($_args);
@@ -1023,8 +1022,7 @@ class Disable_Comments {
 	public function delete_comments_settings($_args = array()) {
 		global $deletedPostTypeNames;
 		$log = '';
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$nonce = (isset($_POST['nonce']) ? wp_unslash($_POST['nonce']) : '');
+		$nonce = (isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '');
 
 		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
 			$formArray = $this->get_form_array_escaped($_args);
