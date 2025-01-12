@@ -82,7 +82,7 @@
                     $selected_roles = isset($this->options['exclude_by_role']) ? $this->options['exclude_by_role'] : [];
                     $roles = $this->get_roles($selected_roles);
                     ?>
-                    <select class="dc-select2" name="exclude_by_role[]" data-options='<?php echo json_encode($roles);?>'>
+                    <select class="dc-select2" name="exclude_by_role[]" data-options='<?php echo wp_json_encode($roles);?>'>
                     </select>
                 </div>
                 <p class="disable__option__description description__roles excluded-roles" style="display: none;"></p>

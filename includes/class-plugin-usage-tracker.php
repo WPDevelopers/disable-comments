@@ -175,7 +175,7 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 		 */
 		private function redirect_to(){
 			if (! isset($_SERVER['REQUEST_URI']) || empty($_SERVER['REQUEST_URI'])) {
-				wp_die(__('Invalid request.', 'your-text-domain'));
+				wp_die(esc_html__('Invalid request.', 'your-text-domain'));
 			}
 
 			$request_uri = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
@@ -622,14 +622,20 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 				return;
 			}
 
+			$nonce = wp_create_nonce( 'wpins_notice' ); // Generate a nonce
+
 			$url_yes = add_query_arg( [
-				'plugin'          => $this->plugin_name,
-				'plugin_action'   => 'yes',
+				'plugin'        => $this->plugin_name,
+				'plugin_action' => 'yes',
+				'_nonce'        => $nonce,               // Add nonce to the URL
 			] );
+
 			$url_no = add_query_arg( array(
-				'plugin' 		=> $this->plugin_name,
-				'plugin_action'	=> 'no'
+				'plugin'        => $this->plugin_name,
+				'plugin_action' => 'no',
+				'_nonce'        => $nonce,               // Add nonce to the URL
 			) );
+
 
 			// Decide on notice text
 			$extra_notice_text = $this->notice_options['extra_notice'];
@@ -683,16 +689,20 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 		 * @return void
 		 */
 		public function clicked(){
+			if ( ! isset( $_REQUEST['_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash($_REQUEST['_nonce']) ), 'wpins_notice' ) ) {
+                return;
+			}
+
 			if( ! isset( $_GET['plugin'] ) || ! isset( $_GET['plugin_action'] ) ) {
 				return;
 			}
-			$plugin = sanitize_text_field(wp_unslash(trim($_GET['plugin'])));
+			$plugin = trim(sanitize_text_field(wp_unslash($_GET['plugin'])));
 			if( $plugin === $this->plugin_name ) {
 				if( isset( $_GET['tab'] ) && $_GET['tab'] === 'plugin-information' ) {
                     return;
                 }
 
-				$action = sanitize_text_field( $_GET['plugin_action'] );
+				$action = sanitize_text_field( wp_unslash($_GET['plugin_action']) );
 				if( $action == 'yes' ) {
 					$this->schedule_tracking();
 					$this->set_is_tracking_allowed( true, $plugin );
@@ -733,11 +743,11 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 		public function deactivate_reasons_form_submit() {
 			check_ajax_referer( 'wpins_deactivation_nonce', 'security' );
 			if( isset( $_POST['values'] ) ) {
-				$values = $_POST['values'];
+				$values = sanitize_text_field( wp_unslash($_POST['values']) );
 				update_option( 'wpins_deactivation_reason_' . $this->plugin_name, $values );
 			}
 			if( isset( $_POST['details'] ) ) {
-				$details = sanitize_text_field( $_POST['details'] );
+				$details = sanitize_text_field( wp_unslash($_POST['details']) );
 				update_option( 'wpins_deactivation_details_' . $this->plugin_name, $details );
 			}
 			echo 'success';

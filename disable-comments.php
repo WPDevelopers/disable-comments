@@ -542,7 +542,7 @@ class Disable_Comments {
 	 * Enqueues scripts
 	 */
 	public function disable_comments_script() {
-		wp_enqueue_script('disable-comments-gutenberg', plugin_dir_url(__FILE__) . 'assets/js/disable-comments.js', array(), false, true);
+		wp_enqueue_script('disable-comments-gutenberg', plugin_dir_url(__FILE__) . 'assets/js/disable-comments.js', array(), DC_VERSION, true);
 	}
 
 	/**
@@ -554,14 +554,14 @@ class Disable_Comments {
 			$hook_suffix === 'options-general_' . DC_PLUGIN_SLUG
 		) {
 			// css
-			wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/sweetalert2.min.css', [], false);
+			wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/sweetalert2.min.css', [], DC_VERSION);
 			// wp_enqueue_style('pagination',  DC_ASSETS_URI . 'css/pagination.css', [], false);
 			wp_enqueue_style('disable-comments-style',  DC_ASSETS_URI . 'css/style.css', [], DC_VERSION);
-			wp_enqueue_style('select2',  DC_ASSETS_URI . 'css/select2.min.css', [], false);
+			wp_enqueue_style('select2',  DC_ASSETS_URI . 'css/select2.min.css', [], DC_VERSION);
 			// js
-			wp_enqueue_script('sweetalert2', DC_ASSETS_URI . 'js/sweetalert2.all.min.js', array('jquery'), false, true);
-			wp_enqueue_script('pagination', DC_ASSETS_URI . 'js/pagination.min.js', array('jquery'), false, true);
-			wp_enqueue_script('select2', DC_ASSETS_URI . 'js/select2.min.js', array('jquery'), false, true);
+			wp_enqueue_script('sweetalert2', DC_ASSETS_URI . 'js/sweetalert2.all.min.js', array('jquery'), DC_VERSION, true);
+			wp_enqueue_script('pagination', DC_ASSETS_URI . 'js/pagination.min.js', array('jquery'), DC_VERSION, true);
+			wp_enqueue_script('select2', DC_ASSETS_URI . 'js/select2.min.js', array('jquery'), DC_VERSION, true);
 			wp_enqueue_script('disable-comments-scripts', DC_ASSETS_URI . 'js/disable-comments-settings-scripts.js', array('jquery', 'select2', 'pagination', 'sweetalert2', 'wp-i18n'), DC_VERSION, true);
 			wp_localize_script(
 				'disable-comments-scripts',
@@ -576,7 +576,7 @@ class Disable_Comments {
 			wp_set_script_translations('disable-comments-scripts', 'disable-comments');
 		} else {
 			// notice css
-			wp_enqueue_style('disable-comments-notice',  DC_ASSETS_URI . 'css/notice.css', [], false);
+			wp_enqueue_style('disable-comments-notice',  DC_ASSETS_URI . 'css/notice.css', [], DC_VERSION);
 		}
 	}
 
@@ -869,6 +869,11 @@ class Disable_Comments {
 	}
 
 	public function get_sub_sites() {
+		$nonce = (isset($_POST['nonce']) ? wp_unslash($_POST['nonce']) : '');
+		if (!wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
+			wp_send_json(['data' => [], 'totalNumber' => 0]);
+		}
+
 		$_sub_sites = [];
 		$type       = isset($_GET['type']) ? sanitize_text_field(wp_unslash($_GET['type'])) : 'disabled';
 		$search     = isset($_GET['search']) ? sanitize_text_field(wp_unslash($_GET['search'])) : '';
@@ -906,18 +911,25 @@ class Disable_Comments {
 		wp_send_json(['data' => $_sub_sites, 'totalNumber' => $totalNumber]);
 	}
 
-	public function form_data_modify($form_data) {
-		return wp_parse_args($form_data);
+	public function get_form_array_escaped($_args = array()) {
+		$formArray = [];
+		if (!empty($_args)) {
+			$formArray = wp_parse_args($_args);
+		}
+		else if(isset($_POST['data'])){
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$formArray = map_deep(wp_parse_args(wp_unslash($_POST['data'])), 'sanitize_text_field');
+		}
+		return $formArray;
 	}
 
 	public function disable_comments_settings($_args = array()) {
-		$nonce = (isset($_POST['nonce']) ? $_POST['nonce'] : '');
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$nonce = (isset($_POST['nonce']) ? wp_unslash($_POST['nonce']) : '');
 		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
-			if (!empty($_args)) {
-				$formArray = wp_parse_args($_args);
-			} else {
-				$formArray = (isset($_POST['data']) ? $this->form_data_modify($_POST['data']) : []);
-			}
+
+			$formArray = $this->get_form_array_escaped($_args);
+
 			$old_options = $this->options;
 			$this->options = [];
 			if ($this->is_CLI) {
@@ -1011,14 +1023,12 @@ class Disable_Comments {
 	public function delete_comments_settings($_args = array()) {
 		global $deletedPostTypeNames;
 		$log = '';
-		$nonce = (isset($_POST['nonce']) ? $_POST['nonce'] : '');
-		if (!empty($_args)) {
-			$formArray = wp_parse_args($_args);
-		} else {
-			$formArray = (isset($_POST['data']) ? $this->form_data_modify($_POST['data']) : []);
-		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$nonce = (isset($_POST['nonce']) ? wp_unslash($_POST['nonce']) : '');
 
 		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
+			$formArray = $this->get_form_array_escaped($_args);
+
 			if (!empty($formArray['is_network_admin']) && function_exists('get_sites') && class_exists('WP_Site_Query')) {
 				$sites = get_sites([
 					'number' => 0,
@@ -1050,11 +1060,8 @@ class Disable_Comments {
 	private function delete_comments($_args) {
 		global $wpdb;
 		global $deletedPostTypeNames;
-		if (!empty($_args)) {
-			$formArray = wp_parse_args($_args);
-		} else {
-			$formArray = $this->form_data_modify($_POST['data']);
-		}
+
+		$formArray = $this->get_form_array_escaped($_args);
 
 		$types = $this->get_all_post_types(!empty($formArray['is_network_admin']));
 		$commenttypes = $this->get_all_comment_types();

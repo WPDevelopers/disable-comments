@@ -69,6 +69,7 @@ jQuery(document).ready(function ($) {
 							action: 'get_sub_sites',
 							type  : type,
 							search: $subSiteSearch.val(),
+							nonce: disableCommentsObj._nonce,
 						},
 					};
 				},
