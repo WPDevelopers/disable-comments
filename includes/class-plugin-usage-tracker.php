@@ -174,8 +174,14 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 		 * @return void
 		 */
 		private function redirect_to(){
-			$request_uri  = wp_parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
-			$query_string = wp_parse_url( $_SERVER['REQUEST_URI'], PHP_URL_QUERY );
+			if (! isset($_SERVER['REQUEST_URI']) || empty($_SERVER['REQUEST_URI'])) {
+				wp_die(__('Invalid request.', 'your-text-domain'));
+			}
+
+			$request_uri = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+
+			$request_uri  = wp_parse_url( $request_uri, PHP_URL_PATH );
+			$query_string = wp_parse_url( $request_uri, PHP_URL_QUERY );
 			parse_str( $query_string, $current_url );
 
 			$unset_array = array( 'dismiss', 'plugin', '_wpnonce', 'later', 'plugin_action', 'marketing_optin' );
@@ -355,7 +361,7 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 				}
 			}
 			$body['marketing_method'] = $this->marketing;
-			$body['server'] = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : '';
+			$body['server'] = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field(wp_unslash($_SERVER['SERVER_SOFTWARE'])) : '';
 
 			/**
 			 * Collect all active and inactive plugins
@@ -464,7 +470,7 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 			 */
 			if( $site_id == false && $this->item_id !== false ) {
 				if( isset( $_SERVER['REMOTE_ADDR'] ) && ! empty( $_SERVER['REMOTE_ADDR'] && $_SERVER['REMOTE_ADDR'] != '127.0.0.1' ) ) {
-					$country_request = wp_remote_get( 'http://ip-api.com/json/'. $_SERVER['REMOTE_ADDR'] .'?fields=country');
+					$country_request = wp_remote_get( 'http://ip-api.com/json/'. sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) .'?fields=country');
 					if( ! is_wp_error( $country_request ) && $country_request['response']['code'] == 200 ) {
 						$ip_data = json_decode( $country_request["body"] );
 						$body['country'] = isset( $ip_data->country ) ? $ip_data->country : 'NOT SET';
@@ -677,11 +683,15 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 		 * @return void
 		 */
 		public function clicked(){
-			if( isset( $_GET['plugin'] ) && trim($_GET['plugin']) === $this->plugin_name && isset( $_GET['plugin_action'] ) ) {
+			if( ! isset( $_GET['plugin'] ) || ! isset( $_GET['plugin_action'] ) ) {
+				return;
+			}
+			$plugin = sanitize_text_field(wp_unslash(trim($_GET['plugin'])));
+			if( $plugin === $this->plugin_name ) {
 				if( isset( $_GET['tab'] ) && $_GET['tab'] === 'plugin-information' ) {
                     return;
                 }
-				$plugin = sanitize_text_field( $_GET['plugin'] );
+
 				$action = sanitize_text_field( $_GET['plugin_action'] );
 				if( $action == 'yes' ) {
 					$this->schedule_tracking();

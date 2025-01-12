@@ -111,7 +111,8 @@ class Disable_Comments {
 	}
 
 	public function is_network_admin() {
-		if (is_network_admin() || isset($_SERVER['HTTP_REFERER']) && defined('DOING_AJAX') && DOING_AJAX && is_multisite() && preg_match('#^' . network_admin_url() . '#i', $_SERVER['HTTP_REFERER'])) {
+		$sanitized_referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_text_field( wp_unslash($_SERVER['HTTP_REFERER']) ) : '';
+		if (is_network_admin() || !empty($sanitized_referer) && defined('DOING_AJAX') && DOING_AJAX && is_multisite() && preg_match('#^' . network_admin_url() . '#i', $sanitized_referer)) {
 			return true;
 		}
 		return false;
@@ -869,10 +870,10 @@ class Disable_Comments {
 
 	public function get_sub_sites() {
 		$_sub_sites = [];
-		$type       = isset($_GET['type']) ? $_GET['type'] : 'disabled';
-		$search     = isset($_GET['search']) ? $_GET['search'] : '';
-		$pageSize   = isset($_GET['pageSize']) ? $_GET['pageSize'] : 50;
-		$pageNumber = isset($_GET['pageNumber']) ? $_GET['pageNumber'] : 1;
+		$type       = isset($_GET['type']) ? sanitize_text_field(wp_unslash($_GET['type'])) : 'disabled';
+		$search     = isset($_GET['search']) ? sanitize_text_field(wp_unslash($_GET['search'])) : '';
+		$pageSize   = isset($_GET['pageSize']) ? sanitize_text_field(wp_unslash($_GET['pageSize'])) : 50;
+		$pageNumber = isset($_GET['pageNumber']) ? sanitize_text_field(wp_unslash($_GET['pageNumber'])) : 1;
 		$offset     = ($pageNumber - 1) * $pageSize;
 		$sub_sites  = get_sites([
 			'number' => $pageSize,
@@ -1091,11 +1092,11 @@ class Disable_Comments {
 					// Loop through post_types and remove comments/meta and set posts comment_count to 0.
 					foreach ($delete_post_types as $delete_post_type) {
 						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-						$wpdb->query($wpdb->prepare("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '%s'", $delete_post_type));
+						$wpdb->query($wpdb->prepare("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = %s", $delete_post_type));
 						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-						$wpdb->query($wpdb->prepare("DELETE comments FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '%s'", $delete_post_type));
+						$wpdb->query($wpdb->prepare("DELETE comments FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = %s", $delete_post_type));
 						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-						$wpdb->query($wpdb->prepare("UPDATE $wpdb->posts SET comment_count = 0 WHERE post_author != 0 AND post_type = '%s'", $delete_post_type));
+						$wpdb->query($wpdb->prepare("UPDATE $wpdb->posts SET comment_count = 0 WHERE post_author != 0 AND post_type = %s", $delete_post_type));
 
 						$post_type_object = get_post_type_object($delete_post_type);
 						$post_type_label  = $post_type_object ? $post_type_object->labels->name : $delete_post_type;
@@ -1114,18 +1115,18 @@ class Disable_Comments {
 					// Loop through comment_types and remove comments/meta and set posts comment_count to 0.
 					foreach ($delete_comment_types as $delete_comment_type) {
 						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-						$wpdb->query($wpdb->prepare("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID WHERE comments.comment_type = '%s'", $delete_comment_type));
+						$wpdb->query($wpdb->prepare("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID WHERE comments.comment_type = %s", $delete_comment_type));
 						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-						$wpdb->query($wpdb->prepare("DELETE comments FROM $wpdb->comments comments  WHERE comments.comment_type = '%s'", $delete_comment_type));
+						$wpdb->query($wpdb->prepare("DELETE comments FROM $wpdb->comments comments  WHERE comments.comment_type = %s", $delete_comment_type));
 						$deletedPostTypeNames[] = $commenttypes[$delete_comment_type];
 					}
 
 					// Update comment_count on post_types
 					foreach ($types as $key => $value) {
 						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-						$comment_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(comments.comment_ID) FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = '%s'", $key));
+						$comment_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(comments.comment_ID) FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = %s", $key));
 						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-						$wpdb->query($wpdb->prepare("UPDATE $wpdb->posts SET comment_count = %d WHERE post_author != 0 AND post_type = '%s'", $comment_count, $key));
+						$wpdb->query($wpdb->prepare("UPDATE $wpdb->posts SET comment_count = %d WHERE post_author != 0 AND post_type = %s", $comment_count, $key));
 					}
 
 					$this->optimize_table($wpdb->commentmeta);
