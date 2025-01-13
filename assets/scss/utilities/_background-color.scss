@@ -1,5 +1,5 @@
 // import files
-@import '../mixins/background&color';
+@import '../mixins/background-color';
 
 // each function for content color
 @each $parent, $color in $theme-colors {

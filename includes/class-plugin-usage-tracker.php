@@ -174,8 +174,8 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 		 * @return void
 		 */
 		private function redirect_to(){
-			if (! isset($_SERVER['REQUEST_URI']) || empty($_SERVER['REQUEST_URI'])) {
-				wp_die(esc_html__('Invalid request.', 'your-text-domain'));
+			if (empty($_SERVER['REQUEST_URI'])) {
+				return;
 			}
 
 			$request_uri = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
@@ -644,6 +644,7 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 
 			<div class="notice dc-text__block disable__comment__alert mb30">
 				<div class="alert__content">
+					<?php // phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
                     <img src="<?php echo esc_url(DC_ASSETS_URI) ?>img/icon-logo.png" alt="">
                     <p>
 						<?php echo wp_kses_post($this->notice_options['notice']) ?>
@@ -921,6 +922,7 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 			$styles_escaped .= '</style>';
 			$styles_escaped .= '';
 
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $styles_escaped;
 			?>
 			<script type="text/javascript">

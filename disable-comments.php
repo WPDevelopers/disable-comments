@@ -164,6 +164,12 @@ class Disable_Comments {
 		if (version_compare($GLOBALS['wp_version'], '4.7', '<')) {
 			require_once(ABSPATH . 'wp-admin/includes/plugin.php');
 			deactivate_plugins(__FILE__);
+
+			$nonce = (isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '');
+			if (!wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
+				return;
+			}
+
 			if (isset($_GET['action']) && ($_GET['action'] == 'activate' || $_GET['action'] == 'error_scrape')) {
 				// translators: %s: WordPress version no.
 				exit(sprintf(esc_html__('Disable Comments requires WordPress version %s or greater.', 'disable-comments'), '4.7'));
@@ -636,7 +642,9 @@ class Disable_Comments {
 		if ($hascaps) {
 			$this->setup_notice_flag = true;
 			// translators: %s: URL to Disabled Comment settings page.
-			echo wp_kses_post('<div class="notice dc-text__block disable__comment__alert mb30"><img height="30" src="' . esc_url(DC_ASSETS_URI . 'img/icon-logo.png') . '" alt=""><p>' . sprintf(__('The <strong>Disable Comments</strong> plugin is active, but isn\'t configured to do anything yet. Visit the <a href="%s">configuration page</a> to choose which post types to disable comments on.', 'disable-comments'), esc_attr($this->settings_page_url())) . '</p></div>');
+			$html = sprintf(__('The <strong>Disable Comments</strong> plugin is active, but isn\'t configured to do anything yet. Visit the <a href="%s">configuration page</a> to choose which post types to disable comments on.', 'disable-comments'), esc_attr($this->settings_page_url()));
+			// phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
+			echo wp_kses_post('<div class="notice dc-text__block disable__comment__alert mb30"><img height="30" src="' . esc_url(DC_ASSETS_URI . 'img/icon-logo.png') . '" alt=""><p>' . $html . '</p></div>');
 		}
 	}
 
@@ -916,8 +924,11 @@ class Disable_Comments {
 		if (!empty($_args)) {
 			$formArray = wp_parse_args($_args);
 		}
+		// nonce is verified in the calling function
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		else if(isset($_POST['data'])){
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			// need to use wp_parse_args before map_deep sanitize_text_field
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing
 			$formArray = map_deep(wp_parse_args(wp_unslash($_POST['data'])), 'sanitize_text_field');
 		}
 		return $formArray;

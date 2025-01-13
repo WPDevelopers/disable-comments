@@ -121,6 +121,7 @@
     </div>
     <article class="blog__post">
         <div class="thumb">
+            <?php // phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
             <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/blog/thumb-1.jpg'); ?>" alt="">
             <a href="<?php echo esc_url('https://youtu.be/J9AteKzQpPs'); ?>" class="play__btn" target="_blank" rel="nofollow"><span></span></a>
         </div>

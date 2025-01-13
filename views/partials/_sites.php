@@ -16,6 +16,7 @@
     <div class="mb10" style="text-align: right; flex: 0 0 230px;">
         <div class="icon__input sub__site_control">
             <span class="icon">
+                <?php // phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
                 <img src="<?php echo esc_url(DC_ASSETS_URI . 'img/search.svg'); ?>" alt="">
             </span>
             <input type="text" class="form__control w-100 sub-site-search" placeholder="<?php esc_html_e('Search by domain name...', 'disable-comments'); ?>" style="padding-right: 35px;">
