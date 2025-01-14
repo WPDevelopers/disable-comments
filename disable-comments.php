@@ -772,7 +772,6 @@ class Disable_Comments {
 			}
 			return $count;
 		} else {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching -- we need fresh data in every call.
 			return $this->__get_comment_count();
 		}
 	}
@@ -1187,7 +1186,7 @@ class Disable_Comments {
 		global $wpdb;
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-		return $wpdb->get_var($wpdb->prepare("SELECT COUNT(comment_id) FROM %s", $wpdb->comments));
+		return $wpdb->get_var("SELECT COUNT(comment_id) FROM $wpdb->comments");
 	}
 
 	/**
@@ -1199,7 +1198,7 @@ class Disable_Comments {
 		global $wpdb;
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-		$wpdb->query($wpdb->prepare("OPTIMIZE TABLE %s", $table_name));
+		$wpdb->query( "OPTIMIZE TABLE " . esc_sql( $table_name ) );
 	}
 
 	/**
@@ -1211,7 +1210,7 @@ class Disable_Comments {
 		global $wpdb;
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-		$wpdb->query($wpdb->prepare("TRUNCATE TABLE %s", $table_name));
+		$wpdb->query( "TRUNCATE TABLE " . esc_sql( $table_name ) );
 	}
 }
 
