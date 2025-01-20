@@ -165,11 +165,7 @@ class Disable_Comments {
 			require_once(ABSPATH . 'wp-admin/includes/plugin.php');
 			deactivate_plugins(__FILE__);
 
-			$nonce = (isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '');
-			if (!wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
-				return;
-			}
-
+			// @phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			if (isset($_GET['action']) && ($_GET['action'] == 'activate' || $_GET['action'] == 'error_scrape')) {
 				// translators: %s: WordPress version no.
 				exit(sprintf(esc_html__('Disable Comments requires WordPress version %s or greater.', 'disable-comments'), '4.7'));
@@ -876,7 +872,7 @@ class Disable_Comments {
 	}
 
 	public function get_sub_sites() {
-		$nonce = (isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '');
+		$nonce = (isset($_REQUEST['nonce']) ? sanitize_text_field(wp_unslash($_REQUEST['nonce'])) : '');
 		if (!wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
 			wp_send_json(['data' => [], 'totalNumber' => 0]);
 		}
