@@ -1194,7 +1194,7 @@ class Disable_Comments {
 		global $wpdb;
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-		$wpdb->query( "OPTIMIZE TABLE " . esc_sql( $table_name ) );
+		return $wpdb->query( "OPTIMIZE TABLE " . esc_sql( $table_name ) );
 	}
 
 	/**
@@ -1206,7 +1206,7 @@ class Disable_Comments {
 		global $wpdb;
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-		$wpdb->query( "TRUNCATE TABLE " . esc_sql( $table_name ) );
+		return $wpdb->query( "TRUNCATE TABLE " . esc_sql( $table_name ) );
 	}
 }
 
