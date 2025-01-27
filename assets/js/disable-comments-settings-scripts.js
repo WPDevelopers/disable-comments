@@ -111,7 +111,7 @@ jQuery(document).ready(function ($) {
 			var sites_list_wrapper = jQuery(this).closest('.sites_list_wrapper')
 			var site_option        = sites_list_wrapper.find('.sites_list .subsite__checklist__item:not(.hidden)')
 			site_option.find('.site_option').prop('checked', checked);
-			console.log(site_option);
+			// console.log(site_option);
 		});
 
 		var countSelected = function(sites_list_wrapper){
@@ -385,7 +385,7 @@ jQuery(document).ready(function ($) {
 		var includedRoles              = excludeByRoleWrapper.find('.included-roles');
 		var selectOnChange             = function(){
 			var selectedOptions = excludeByRoleSelect.select2('data');
-			console.log(selectedOptions);
+			// console.log(selectedOptions);
 			excludeByRoleSelectWrapper.show();
 			if(selectedOptions.length){
 				includedRoles.show();
