@@ -31,6 +31,7 @@
                 </div>
             </div>
             <div class="disable_option sites_list_wrapper dc-text__block mb30 mt30"
+                data-type="disabled"
                 role="region"
                 aria-labelledby="sites-list-heading">
 

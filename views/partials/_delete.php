@@ -11,6 +11,7 @@
 
             <?php if (is_network_admin()): ?>
                 <div class="disable_option sites_list_wrapper dc-text__block mb30 mt30"
+                    data-type="delete"
                     role="region"
                     aria-labelledby="delete-sites-heading">
                     <h3 id="delete-sites-heading">

@@ -127,7 +127,7 @@ jQuery(document).ready(function ($) {
 				sites_list_wrapper.find('.check-all').addClass('semi-checked');
 			}
 			sites_list_wrapper.find('.check-all').prop('checked', totalChecked == site_option.length);
-			sites_list_wrapper.find('.check-all+label small').text(`(${totalChecked} selected)`)
+			sites_list_wrapper.find('.check-all+label .selected-count').text(`(${totalChecked} selected)`)
 		}
 
 		jQuery(".sites_list_wrapper").on('change', function(){
@@ -231,7 +231,7 @@ jQuery(document).ready(function ($) {
 
 	function delete_comments_uihelper() {
 		var toggle_pt_bits = jQuery(
-			"#delete__post__types .delete__checklist__item, #extradeletetypes"
+			"#delete__post__types .delete__checklist__item, #delete__post__types .custom-types-input"
 		);
 		var toggle_ct_bits = jQuery("#listofdeletecommenttypes");
 		if (jQuery("#delete_everywhere, #delete_spam").is(":checked")) {
