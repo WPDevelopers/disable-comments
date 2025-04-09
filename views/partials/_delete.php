@@ -4,77 +4,217 @@
     if ($total_comments > 0) :
     ?>
 
+        <div class="disable__comment__option mb50" role="group" aria-labelledby="delete-comments-heading">
+            <h3 id="delete-comments-heading" class="title">
+                <?php esc_html_e('Delete Comments', 'disable-comments'); ?>
+            </h3>
 
-        <div class="disable__comment__option mb50">
-            <?php if(is_network_admin()):?>
-            <div class="disable_option sites_list_wrapper dc-text__block mb30 mt30" data-type="delete">
-                <h3><?php esc_html_e("Delete comments in the following sites:", "disable-comments"); ?></h3>
-                <?php
+            <?php if (is_network_admin()): ?>
+                <div class="disable_option sites_list_wrapper dc-text__block mb30 mt30"
+                    role="region"
+                    aria-labelledby="delete-sites-heading">
+                    <h3 id="delete-sites-heading">
+                        <?php esc_html_e("Delete comments in the following sites:", "disable-comments"); ?>
+                    </h3>
+                    <?php
                     $type = 'delete';
                     include DC_PLUGIN_VIEWS_PATH . 'partials/_sites.php';
-                ?>
-                <p class="disable__option__description"><span class="danger"><?php esc_html_e('Note:', 'disable-comments'); ?></span> <?php esc_html_e('Select your sub-sites where you want to delete comments.', 'disable-comments'); ?></p>
-            </div>
+                    ?>
+                    <p id="delete-sites-description" class="disable__option__description">
+                        <span class="danger" aria-hidden="true"><?php esc_html_e('Note:', 'disable-comments'); ?></span>
+                        <?php esc_html_e('Select your sub-sites where you want to delete comments.', 'disable-comments'); ?>
+                    </p>
+                </div>
+            <?php endif; ?>
 
-            <?php endif;?>
-            <p class="subtitle"><span class="danger"><?php esc_html_e('Note:', 'disable-comments'); ?></span> <?php esc_html_e('These settings will permanently delete comments for your entire website, or for specific posts and comment types.', 'disable-comments'); ?></p>
-            <div class="disable_option dc-text__block mb30 mt30">
-                <input type="radio" id="delete_everywhere" name="delete_mode" value="<?php echo esc_attr('delete_everywhere'); ?>" <?php checked($this->options['remove_everywhere']); ?> />
-                <label for="delete_everywhere"><?php esc_html_e('Everywhere:', 'disable-comments'); ?> <span><?php esc_html_e('Permanently delete all comments on your WordPress website', 'disable-comments'); ?></span></label>
-                <p class="disable__option__description"><span class="danger"><?php esc_html_e('Warnings:', 'disable-comments'); ?></span> <?php esc_html_e('This action will permanently delete all comments and comment types from your Posts, Pages, and Custom Post Types. If you have WooCommerce installed, your order notes will also be deleted.', 'disable-comments'); ?></p>
+            <p class="subtitle" id="delete-warning">
+                <span class="danger" aria-hidden="true"><?php esc_html_e('Note:', 'disable-comments'); ?></span>
+                <?php esc_html_e('These settings will permanently delete comments for your entire website, or for specific posts and comment types.', 'disable-comments'); ?>
+            </p>
+
+            <div class="disable_option dc-text__block mb30 mt30" role="radiogroup" aria-labelledby="delete-location-heading">
+                <h4 id="delete-location-heading" class="visually-hidden">
+                    <?php esc_html_e('Select where to delete comments', 'disable-comments'); ?>
+                </h4>
+
+                <div class="radio-option">
+                    <input type="radio"
+                        id="delete_everywhere"
+                        name="delete_mode"
+                        value="<?php echo esc_attr('delete_everywhere'); ?>"
+                        aria-describedby="delete-everywhere-warning"
+                        <?php checked($this->options['remove_everywhere']); ?> />
+                    <label for="delete_everywhere" tabindex="0">
+                        <strong><?php esc_html_e('Everywhere:', 'disable-comments'); ?></strong>
+                        <span><?php esc_html_e('Permanently delete all comments on your WordPress website', 'disable-comments'); ?></span>
+                    </label>
+                    <p id="delete-everywhere-warning" class="disable__option__description">
+                        <span class="danger" aria-hidden="true"><?php esc_html_e('Warning:', 'disable-comments'); ?></span>
+                        <?php esc_html_e('This action will permanently delete all comments and comment types from your Posts, Pages, and Custom Post Types. If you have WooCommerce installed, your order notes will also be deleted.', 'disable-comments'); ?>
+                    </p>
+                </div>
             </div>
-            <div class="disable_option dc-text__block mb30">
-                <input type="radio" id="selected_delete_types" name="delete_mode" value="<?php echo esc_attr('selected_delete_types'); ?>" <?php checked(!$this->options['remove_everywhere']); ?> />
-                <label for="selected_delete_types"><?php esc_html_e('On Certain Post Types:', 'disable-comments'); ?></label>
-                <div id="delete__post__types" class="delete__checklist">
+            <div class="disable_option dc-text__block mb30" role="radiogroup" aria-labelledby="delete-types-heading">
+                <h4 id="delete-types-heading" class="visually-hidden">
+                    <?php esc_html_e('Select Post Types for Comment Deletion', 'disable-comments'); ?>
+                </h4>
+
+                <div class="radio-option">
+                    <input type="radio"
+                        id="selected_delete_types"
+                        name="delete_mode"
+                        value="<?php echo esc_attr('selected_delete_types'); ?>"
+                        aria-expanded="<?php echo !$this->options['remove_everywhere'] ? 'true' : 'false'; ?>"
+                        aria-controls="delete__post__types"
+                        <?php checked(!$this->options['remove_everywhere']); ?> />
+                    <label for="selected_delete_types" tabindex="0">
+                        <?php esc_html_e('On Certain Post Types:', 'disable-comments'); ?>
+                    </label>
+                </div>
+
+                <div id="delete__post__types"
+                    class="delete__checklist"
+                    role="group"
+                    aria-label="<?php esc_attr_e('Available post types for deletion', 'disable-comments'); ?>"
+                    <?php echo $this->options['remove_everywhere'] ? 'hidden aria-hidden="true"' : ''; ?>>
                     <?php
                     $types = $this->get_all_post_types();
-                    foreach ($types as $key => $value) {
-                        echo '<div class="delete__checklist__item">
-                                            <input type="checkbox" id="delete__checklist__item-' . esc_attr($key) . '" name="delete_types[]" value="' . esc_attr($key) . '" ' . checked(in_array($key, $this->options['disabled_post_types']), true, false) . '>
-                                            <label for="delete__checklist__item-' . esc_attr($key) . '">' . esc_attr($value->labels->name) . '</label>
-                                        </div>';
-                    }
-                    ?>
+                    foreach ($types as $key => $value) : ?>
+                        <div class="delete__checklist__item">
+                            <input type="checkbox"
+                                id="delete__checklist__item-<?php echo esc_attr($key); ?>"
+                                name="delete_types[]"
+                                value="<?php echo esc_attr($key); ?>"
+                                aria-describedby="delete-type-warning"
+                                <?php checked(in_array($key, $this->options['disabled_post_types']), true, false); ?>>
+                            <label for="delete__checklist__item-<?php echo esc_attr($key); ?>" tabindex="0">
+                                <?php echo esc_html($value->labels->name); ?>
+                            </label>
+                        </div>
+                    <?php endforeach; ?>
+
                     <?php if ($this->networkactive && is_network_admin()) :
                         $extradeletetypes = implode(', ', (array) $this->options['extra_post_types']);
                     ?>
-                        <p class="indent subtitle" id="extradeletetypes">
-                            <?php esc_html_e('Only the built-in post types appear above. If you want to disable comments on other custom post types on the entire network, you can supply a comma-separated list of post types below (use the slug that identifies the post type).', 'disable-comments'); ?>
-                            <br /> <br /><label><?php esc_html_e('Custom post types:', 'disable-comments'); ?> <input type="text" class="form__control" name="delete_extra_post_types" size="30" value="<?php echo esc_attr($extradeletetypes); ?>" /></label></p>
+                        <div class="custom-types-input" role="group" aria-labelledby="extradeletetypes">
+                            <p id="extradeletetypes" class="indent subtitle">
+                                <?php esc_html_e('Only the built-in post types appear above. If you want to disable comments on other custom post types on the entire network, you can supply a comma-separated list of post types below (use the slug that identifies the post type).', 'disable-comments'); ?>
+                            </p>
+                            <div class="form-field">
+                                <label for="delete_extra_post_types">
+                                    <strong><?php esc_html_e('Custom post types:', 'disable-comments'); ?></strong>
+                                </label>
+                                <input type="text"
+                                    id="delete_extra_post_types"
+                                    class="form__control"
+                                    name="delete_extra_post_types"
+                                    size="30"
+                                    value="<?php echo esc_attr($extradeletetypes); ?>"
+                                    aria-describedby="extradeletetypes">
+                            </div>
+                        </div>
                     <?php endif; ?>
                 </div>
-                <p class="disable__option__description"><span class="danger"><?php esc_html_e('Warnings:', 'disable-comments') ?></span> <?php esc_html_e('This will remove existing comment entries for the selected post type(s) in the database and cannot be reverted without a database backups.', 'disable-comments'); ?></p>
+
+                <p id="delete-type-warning" class="disable__option__description">
+                    <span class="danger" aria-hidden="true"><?php esc_html_e('Warning:', 'disable-comments'); ?></span>
+                    <?php esc_html_e('This will remove existing comment entries for the selected post type(s) in the database and cannot be reverted without a database backup.', 'disable-comments'); ?>
+                </p>
             </div>
-            <div class="disable_option dc-text__block">
-                <input type="radio" id="selected_delete_comment_types" name="delete_mode" value="<?php echo esc_attr('selected_delete_comment_types'); ?>" />
-                <label for="selected_delete_comment_types"><?php esc_html_e('Delete Certain Comment Types:', 'disable-comments'); ?></label>
-                <ul class="delete__feedback" id="listofdeletecommenttypes">
-                    <?php
-                    $commenttypes = $this->get_all_comment_types();
-                    foreach ($commenttypes as $key => $value) {
-                        echo "<li><label for='comment-type-" . esc_attr($key) . "'><input type='checkbox' name='delete_comment_types[]' value='" . esc_attr($key) . "' id='comment-type-" . esc_attr($key) . "'> " . esc_html($value) . "</label></li>";
-                    }
-                    ?>
-                </ul>
-                <p class="disable__option__description"><span class="danger"><?php esc_html_e('Warnings:', 'disable-comments'); ?></span> <?php esc_html_e('Deleting comments by comment type will remove existing comment entries of the selected comment type(s) in the database and cannot be reverted without a database backup.', 'disable-comments'); ?></p>
+            <div class="disable_option dc-text__block mb30" role="radiogroup" aria-labelledby="comment-types-heading">
+                <h4 id="comment-types-heading" class="visually-hidden">
+                    <?php esc_html_e('Delete By Comment Types', 'disable-comments'); ?>
+                </h4>
+
+                <div class="radio-option">
+                    <input type="radio"
+                        id="selected_delete_comment_types"
+                        name="delete_mode"
+                        value="<?php echo esc_attr('selected_delete_comment_types'); ?>"
+                        aria-expanded="false"
+                        aria-controls="listofdeletecommenttypes" />
+                    <label for="selected_delete_comment_types" tabindex="0">
+                        <?php esc_html_e('Delete Certain Comment Types:', 'disable-comments'); ?>
+                    </label>
+
+                    <ul id="listofdeletecommenttypes"
+                        class="delete__feedback"
+                        role="group"
+                        aria-label="<?php esc_attr_e('Available comment types', 'disable-comments'); ?>">
+                        <?php
+                        $commenttypes = $this->get_all_comment_types();
+                        foreach ($commenttypes as $key => $value) : ?>
+                            <li>
+                                <input type="checkbox"
+                                    id="comment-type-<?php echo esc_attr($key); ?>"
+                                    name="delete_comment_types[]"
+                                    value="<?php echo esc_attr($key); ?>"
+                                    aria-describedby="comment-type-warning">
+                                <label for="comment-type-<?php echo esc_attr($key); ?>">
+                                    <?php echo esc_html($value); ?>
+                                </label>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+
+                    <p id="comment-type-warning" class="disable__option__description">
+                        <span class="danger" aria-hidden="true"><?php esc_html_e('Warning:', 'disable-comments'); ?></span>
+                        <?php esc_html_e('Deleting comments by comment type will remove existing comment entries of the selected comment type(s) in the database and cannot be reverted without a database backup.', 'disable-comments'); ?>
+                    </p>
+                </div>
             </div>
-            <div class="disable_option dc-text__block mb30 mt30">
-                <input type="radio" id="delete_spam" name="delete_mode" value="delete_spam" />
-                <label for="delete_spam"><?php esc_html_e('Spam:', 'disable-comments'); ?> <span><?php esc_html_e('Permanently delete all spam comments on your WordPress website', 'disable-comments'); ?></span></label>
-                <p class="disable__option__description"><span class="danger"><?php esc_html_e('Warnings:', 'disable-comments'); ?></span> <?php esc_html_e('This will permanently delete spam comments everywhere on your website.', 'disable-comments'); ?></p>
+
+            <div class="disable_option dc-text__block mb30 mt30" role="radiogroup" aria-labelledby="spam-deletion-heading">
+                <h4 id="spam-deletion-heading" class="visually-hidden">
+                    <?php esc_html_e('Delete Spam Comments', 'disable-comments'); ?>
+                </h4>
+
+                <div class="radio-option">
+                    <input type="radio"
+                        id="delete_spam"
+                        name="delete_mode"
+                        value="delete_spam"
+                        aria-describedby="spam-warning" />
+                    <label for="delete_spam" tabindex="0">
+                        <strong><?php esc_html_e('Spam:', 'disable-comments'); ?></strong>
+                        <span class="description">
+                            <?php esc_html_e('Permanently delete all spam comments on your WordPress website', 'disable-comments'); ?>
+                        </span>
+                    </label>
+
+                    <p id="spam-warning" class="disable__option__description">
+                        <span class="danger" aria-hidden="true"><?php esc_html_e('Warning:', 'disable-comments'); ?></span>
+                        <?php esc_html_e('This will permanently delete spam comments everywhere on your website.', 'disable-comments'); ?>
+                    </p>
+                </div>
             </div>
-            <h4 class="total-comments"><?php esc_html_e('Total Comments:', 'disable-comments'); ?> <?php echo esc_html($total_comments); ?></h4>
+
+            <div class="comments-count" role="status" aria-live="polite">
+                <h4 class="total-comments">
+                    <?php esc_html_e('Total Comments:', 'disable-comments'); ?>
+                    <span><?php echo esc_html($total_comments); ?></span>
+                </h4>
+            </div>
         </div>
-        <?php if(is_network_admin()):?>
-            <input type="hidden" name="is_network_admin" value="1">
-        <?php endif;?>
-        <!-- save -->
-        <button class="button button__delete button__fade"><?php esc_html_e('Delete Comments', 'disable-comments'); ?></button>
-    <?php
-    else :
-    ?>
-        <div class="delete-comments-not-found">
+        <?php if (is_network_admin()): ?>
+            <input type="hidden"
+                name="is_network_admin"
+                value="1">
+        <?php endif; ?>
+
+        <div class="form-actions">
+            <button type="submit"
+                class="button button__delete button__fade"
+                aria-label="<?php esc_attr_e('Permanently delete all selected comments', 'disable-comments'); ?>"
+                data-confirm="<?php esc_attr_e('Are you sure you want to delete the selected comments? This action cannot be undone.', 'disable-comments'); ?>">
+                <?php esc_html_e('Delete Comments', 'disable-comments'); ?>
+            </button>
+        </div>
+
+    <?php else: ?>
+        <div class="delete-comments-not-found"
+            role="alert"
+            aria-live="assertive">
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1200 800" style="enable-background:new 0 0 1200 800;" xml:space="preserve">
                 <style type="text/css">
                     .st0 {
@@ -207,10 +347,9 @@
                     </g>
                 </g>
             </svg>
-
-            <p class="error-message"><strong><?php esc_html_e('No comments are available for deletion.', 'disable-comments'); ?></strong></p>
+            <p class="error-message">
+                <strong><?php esc_html_e('No comments are available for deletion.', 'disable-comments'); ?></strong>
+            </p>
         </div>
-    <?php
-    endif;
-    ?>
+    <?php endif; ?>
 </form>

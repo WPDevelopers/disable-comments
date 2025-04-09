@@ -81,4 +81,194 @@
         min-height: 38px !important;
         padding-top: 11px !important;
     }
+
+    .visually-hidden {
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+
+    /* Focus styles */
+    input[type="radio"]:focus,
+    input[type="checkbox"]:focus {
+        outline: 2px solid #007cba;
+        outline-offset: 2px;
+    }
+
+    /* Switch focus styles */
+    .dissable__switch__item input:focus + label .switch {
+        outline: 2px solid #007cba;
+        outline-offset: 2px;
+    }
+
+    /* Form groups spacing */
+    [role="group"] {
+        margin-bottom: 2rem;
+    }
+
+    /* Description text */
+    .disable__option__description {
+        margin-top: 0.5rem;
+        color: #555;
+    }
+
+    /* Focus styles */
+    .form__control:focus {
+        outline: 2px solid #007cba;
+        outline-offset: 1px;
+    }
+
+    .check-all:focus + label {
+        outline: 2px solid #007cba;
+        outline-offset: 2px;
+    }
+
+    .radio-option {
+        margin-bottom: 1rem;
+    }
+
+    .radio-option input[type="radio"]:focus {
+        outline: 2px solid #007cba;
+        outline-offset: 2px;
+    }
+
+    .radio-option label {
+        display: inline-block;
+        margin-left: 0.5rem;
+    }
+
+    .radio-option .description {
+        display: block;
+        margin-top: 0.25rem;
+        color: #555;
+    }
+
+
+    .remove__checklist {
+        margin: 1rem 0;
+        padding-left: 1.5rem;
+    }
+
+    .remove__checklist__item {
+        margin-bottom: 0.5rem;
+    }
+
+    .remove__checklist__item input[type="checkbox"]:focus,
+    .radio-option input[type="radio"]:focus {
+        outline: 2px solid #007cba;
+        outline-offset: 2px;
+    }
+
+    .form-field {
+        margin-top: 1rem;
+    }
+
+    .form-field input[type="text"]:focus {
+        outline: 2px solid #007cba;
+        border-color: #007cba;
+    }
+
+    .custom-types-input {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 4px;
+    }
+
+    .roles-selection-wrapper {
+        margin-top: 1rem;
+        padding-left: 2rem;
+    }
+
+    .dc-select2:focus {
+        outline: 2px solid #007cba;
+        outline-offset: 2px;
+    }
+
+    .disable__switchs input[type="checkbox"]:focus + label .switch {
+        outline: 2px solid #007cba;
+        outline-offset: 2px;
+    }
+
+    .roles-status {
+        margin-top: 0.5rem;
+    }
+
+    [aria-live="polite"] {
+        min-height: 1rem;
+    }
+    .disable__switch[role="radiogroup"] {
+        margin: 1rem 0;
+    }
+
+    .avatar__status {
+        margin-bottom: 0.5rem;
+    }
+
+    .avatar__status input[type="radio"]:focus {
+        outline: 2px solid #007cba;
+        outline-offset: 2px;
+    }
+
+    .avatar__status input[type="radio"]:focus + label {
+        outline: 1px solid #007cba;
+        outline-offset: 1px;
+    }
+
+    .avatar__status label {
+        display: inline-block;
+        margin-left: 0.5rem;
+    }
+
+
+    .disable__switchs {
+        margin: 1rem 0;
+    }
+
+    .dissable__switch__item {
+        margin-bottom: 1rem;
+    }
+
+    .dissable__switch__item input[type="checkbox"]:focus + label .switch {
+        outline: 2px solid #007cba;
+        outline-offset: 2px;
+    }
+
+    .button__success:focus {
+        outline: 2px solid #007cba;
+        outline-offset: 2px;
+        box-shadow: 0 0 0 1px #007cba;
+    }
+
+    .api-descriptions {
+        margin-top: 1rem;
+    }
+
+    .button__delete {
+        background-color: #d63638;
+        border-color: #d63638;
+        color: #fff;
+    }
+
+    .button__delete:focus {
+        outline: 2px solid #d63638;
+        outline-offset: 2px;
+        box-shadow: 0 0 0 1px #fff, 0 0 0 3px #d63638;
+    }
+
+    .delete-comments-not-found {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        border-left: 4px solid #d63638;
+        background: #fff;
+    }
+
+
 }
+

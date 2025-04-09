@@ -21,7 +21,7 @@ jQuery(document).ready(function ($) {
 				<div class='subsite__checklist__item'>\
 					<input type='hidden' name='" + name + "' value='0' />\
 					<input type='checkbox' id='" + id + "' class='site_option' name='" + name + "' value='1' " + site.is_checked + " />\
-					<label for='" + id + "'>"
+					<label for='" + id + "' tabindex='0'>"
 						+ site.blogname +
 					"</label>\
 				</div>\
@@ -179,12 +179,21 @@ jQuery(document).ready(function ($) {
 				.css("opacity", ".3")
 				.find(":input")
 				.attr("disabled", true);
+			indiv_bits
+				.not('.sub__site_control')
+				.find("label")
+				.attr("tabindex", -1);
+
 		} else {
 			pagination.length && pagination.removeClass('disabled').pagination('enable', true);
 			indiv_bits
 				.css("opacity", "1")
 				.find(":input")
 				.attr("disabled", false);
+			indiv_bits
+				.not('.sub__site_control')
+				.find("label")
+				.attr("tabindex", '0');
 		}
 	}
 
@@ -195,18 +204,22 @@ jQuery(document).ready(function ($) {
 
 	function disable_comments_uihelper() {
 		var indiv_bits = jQuery(
-			"#disable__post__types .remove__checklist__item, #extratypes"
+			"#disable__post__types .remove__checklist__item, #disable__post__types .custom-types-input"
 		);
 		if (jQuery("#remove_everywhere").is(":checked")) {
 			indiv_bits
 				.css("opacity", ".3")
 				.find(":input")
 				.attr("disabled", true);
+			jQuery("#disable__post__types .remove__checklist__item label")
+				.attr("tabindex", -1);
 		} else {
 			indiv_bits
 				.css("opacity", "1")
 				.find(":input")
 				.attr("disabled", false);
+			jQuery("#disable__post__types .remove__checklist__item label")
+				.attr("tabindex", '0');
 		}
 	}
 
@@ -445,4 +458,29 @@ jQuery(document).ready(function ($) {
 		jQuery('#enable_exclude_by_role').trigger('change');
 	})();
 
+
+	jQuery(document).on('keydown', 'label[tabindex]', function(event) {
+		console.log(event);
+		if (event.code === 'Space' || event.code === 'Enter') {
+			event.preventDefault();
+
+			const inputId = jQuery(this).attr('for');
+			const inputElement = document.getElementById(inputId);
+
+			if (inputElement) {
+				inputElement.click();
+			}
+		}
+
+	});
+
+	jQuery(document).on('keydown', '.disable__comment__nav__item a', function(event) {
+		console.log(event);
+		if (event.code === 'Space' || event.code === 'Enter') {
+			event.preventDefault();
+			jQuery(this).click();
+		}
+	});
+
 });
+

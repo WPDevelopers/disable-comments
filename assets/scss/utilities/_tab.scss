@@ -47,6 +47,16 @@
 						content: "";
 					}
 				}
+				&:focus {
+					outline: 2px solid #007cba;
+					outline-offset: 2px;
+					box-shadow: 0 0 0 1px #007cba;
+				}
+
+				&:focus:not(:focus-visible) {
+					outline: none;
+					box-shadow: none;
+				}
 			}
 		}
 		@include respond-below(md) {
