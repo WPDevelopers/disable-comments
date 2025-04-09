@@ -665,7 +665,7 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 					e.preventDefault();
 					jQuery('.wpinsights-data').slideToggle('fast');
 				});
-				</script>";
+				</script>
 			</div>
 			<?php
 		}
