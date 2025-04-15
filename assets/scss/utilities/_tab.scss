@@ -47,11 +47,11 @@
 						content: "";
 					}
 				}
-				&:focus {
-					outline: 2px solid #007cba;
-					outline-offset: 2px;
-					box-shadow: 0 0 0 1px #007cba;
-				}
+				// &:focus {
+				// 	outline: 2px solid #007cba;
+				// 	outline-offset: 2px;
+				// 	box-shadow: 0 0 0 1px #007cba;
+				// }
 
 				&:focus:not(:focus-visible) {
 					outline: none;
@@ -146,18 +146,18 @@
 			}
 		}
 		input[type="radio"] ~ label {
-			font-size: 18px;
+			font-size: 16px;
 			font-weight: 500;
 			color: $dark;
 			font-family: $bodyFont;
 			position: relative;
 			line-height: 1.3;
-			padding-left: 25px;
+			padding-left: 20px;
 			display: block;
 			margin-bottom: 15px;
 			&:before {
 				position: absolute;
-				top: 4px;
+				top: 3px;
 				left: 0;
 				height: 12px;
 				width: 12px;
@@ -167,7 +167,7 @@
 			}
 			&:after {
 				position: absolute;
-				top: 7px;
+				top: 6px;
 				left: 3px;
 				height: 8px;
 				width: 8px;
@@ -184,13 +184,16 @@
 				color: $grey3;
 			}
 		}
-		.disable__checklist {
+		.disable__checklist,
+		.delete__feedback {
 			display: flex;
 			flex-wrap: wrap;
-			.disable__checklist__item {
-				flex: 0 0 140px;
-				margin-right: 10px;
-				margin-bottom: 10px;
+			gap: 16px;
+			.disable__checklist__item,
+			li {
+				// flex: 0 0 140px;
+				// margin-right: 10px;
+				// margin-bottom: 10px;
 
 				input {
 					display: none;
@@ -211,14 +214,14 @@
 					font-family: $bodyFont;
 					position: relative;
 					line-height: 1.3;
-					padding-left: 25px;
+					padding-left: 20px;
 					display: block;
 					&:before {
 						position: absolute;
-						top: 4px;
+						top: 2px;
 						left: 0;
-						height: 10px;
-						width: 10px;
+						height: 12px;
+						width: 12px;
 						border: 1px solid $grey3;
 						content: "";
 					}
@@ -239,6 +242,7 @@
 		.delete__checklist {
 			display: flex;
 			flex-wrap: wrap;
+			gap: 16px;
 			margin-bottom: 10px;
 			&.disabled__sites {
 				.delete__checklist__item {
@@ -252,9 +256,6 @@
 				}
 			}
 			.delete__checklist__item {
-				flex: 0 0 130px;
-				margin-right: 10px;
-				margin-bottom: 10px;
 				input {
 					display: none;
 				}
@@ -268,17 +269,17 @@
 					}
 				}
 				label {
-					font-size: 18px;
+					font-size: 16px;
 					font-weight: 500;
 					color: $grey3;
 					font-family: $bodyFont;
 					position: relative;
 					line-height: 1.3;
-					padding-left: 25px;
+					padding-left: 20px;
 					display: block;
 					&:before {
 						position: absolute;
-						top: 4px;
+						top: 2px;
 						left: 0;
 						height: 12px;
 						width: 12px;
@@ -302,6 +303,7 @@
 		.remove__checklist {
 			display: flex;
 			flex-wrap: wrap;
+			gap: 16px;
 			margin-bottom: 10px;
 			&.disabled__sites {
 				.remove__checklist__item {
@@ -315,9 +317,6 @@
 				}
 			}
 			.remove__checklist__item {
-				flex: 0 0 130px;
-				margin-right: 10px;
-				margin-bottom: 10px;
 				input {
 					display: none;
 				}
@@ -331,17 +330,17 @@
 					}
 				}
 				label {
-					font-size: 18px;
+					font-size: 16px;
 					font-weight: 500;
 					color: $grey3;
 					font-family: $bodyFont;
 					position: relative;
 					line-height: 1.3;
-					padding-left: 25px;
+					padding-left: 20px;
 					display: block;
 					&:before {
 						position: absolute;
-						top: 4px;
+						top: 2px;
 						left: 0;
 						height: 12px;
 						width: 12px;
