@@ -47,15 +47,9 @@
 						content: "";
 					}
 				}
-				// &:focus {
-				// 	outline: 2px solid #007cba;
-				// 	outline-offset: 2px;
-				// 	box-shadow: 0 0 0 1px #007cba;
-				// }
-
-				&:focus:not(:focus-visible) {
-					outline: none;
-					box-shadow: none;
+				&:focus {
+					transition: unset;
+					outline: 2px solid #007cba;
 				}
 			}
 		}
@@ -74,6 +68,9 @@
 			}
 		}
 	}
+}
+.dc-tutorials .tutorial__list .tutorial__item h4 a:focus {
+	outline: 2px solid #007cba;
 }
 
 .disable__comment__tab {

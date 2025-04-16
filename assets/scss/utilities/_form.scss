@@ -269,9 +269,9 @@
         background: #fff;
     }
 
-    label:focus-visible {
-        outline: 0;
-        box-shadow: none;
+    label:focus { 
+        transition: unset;
+        outline: 2px solid #007cba;
     }
 
 
