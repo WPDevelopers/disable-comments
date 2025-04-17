@@ -49,7 +49,6 @@
 				}
 				&:focus {
 					transition: unset;
-					outline: 2px solid #007cba;
 				}
 			}
 		}
@@ -68,9 +67,6 @@
 			}
 		}
 	}
-}
-.dc-tutorials .tutorial__list .tutorial__item h4 a:focus {
-	outline: 2px solid #007cba;
 }
 
 .disable__comment__tab {
@@ -569,6 +565,13 @@
 			}
 		}
 	}
+}
+.disable__comment__nav__wrap .disable__comment__nav .disable__comment__nav__item .disable__comment__nav__link:focus-visible {
+    box-shadow: 0 0 0 2px #2271b1;
+    outline: none;
+}
+.dc-tutorials .tutorial__list .tutorial__item h4 a:focus-visible {
+    box-shadow: 0 0 0 2px #2271b1;
 }
 
 .has-pagination.disabled {

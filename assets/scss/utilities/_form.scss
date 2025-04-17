@@ -215,7 +215,7 @@
     }
 
     .avatar__status input[type="radio"]:focus + label {
-        outline: 1px solid #007cba;
+        outline: 2px solid #007cba;
         outline-offset: 1px;
     }
 
@@ -268,12 +268,6 @@
         border-left: 4px solid #d63638;
         background: #fff;
     }
-
-    label:focus { 
-        transition: unset;
-        outline: 2px solid #007cba;
-    }
-
 
 }
 
