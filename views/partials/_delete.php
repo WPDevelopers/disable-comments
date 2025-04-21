@@ -90,6 +90,7 @@
                                 <?php checked(in_array($key, $this->options['disabled_post_types']), true, false); ?>>
                             <label for="delete__checklist__item-<?php echo esc_attr($key); ?>" tabindex="0">
                                 <?php echo esc_html($value->labels->name); ?>
+                                <span tabindex="0"></span>
                             </label>
                         </div>
                     <?php endforeach; ?>
@@ -134,8 +135,9 @@
                         value="<?php echo esc_attr('selected_delete_comment_types'); ?>"
                         aria-expanded="false"
                         aria-controls="listofdeletecommenttypes" />
-                    <label for="selected_delete_comment_types" tabindex="0">
+                    <label for="selected_delete_comment_types">
                         <?php esc_html_e('Delete Certain Comment Types:', 'disable-comments'); ?>
+                        <span tabindex="0"></span>
                     </label>
 
                     <ul id="listofdeletecommenttypes"

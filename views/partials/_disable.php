@@ -127,8 +127,9 @@
                             name="disabled_types[]"
                             value="<?php echo esc_attr($key); ?>"
                             <?php checked(in_array($key, $this->get_disabled_post_types()), true, false); ?>>
-                        <label for="remove__checklist__item-<?php echo esc_attr($key); ?>" tabindex="0">
+                        <label for="remove__checklist__item-<?php echo esc_attr($key); ?>">
                             <?php echo esc_html($value->labels->name); ?>
+                            <span  tabindex="0"></span>
                         </label>
                     </div>
                 <?php endforeach; ?>
