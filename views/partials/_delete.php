@@ -135,9 +135,8 @@
                         value="<?php echo esc_attr('selected_delete_comment_types'); ?>"
                         aria-expanded="false"
                         aria-controls="listofdeletecommenttypes" />
-                    <label for="selected_delete_comment_types">
+                    <label for="selected_delete_comment_types" tabindex="0">
                         <?php esc_html_e('Delete Certain Comment Types:', 'disable-comments'); ?>
-                        <span tabindex="0"></span>
                     </label>
 
                     <ul id="listofdeletecommenttypes"
@@ -155,6 +154,7 @@
                                     aria-describedby="comment-type-warning">
                                 <label for="comment-type-<?php echo esc_attr($key); ?>">
                                     <?php echo esc_html($value); ?>
+                                    <span tabindex="0"></span>
                                 </label>
                             </li>
                         <?php endforeach; ?>
@@ -180,10 +180,10 @@
                         aria-describedby="spam-warning" />
                     <label for="delete_spam" tabindex="0">
                         <strong><?php esc_html_e('Spam:', 'disable-comments'); ?></strong>
-                        <span class="description">
-                            <?php esc_html_e('Permanently delete all spam comments on your WordPress website', 'disable-comments'); ?>
-                        </span>
                     </label>
+                    <span class="description">
+                        <?php esc_html_e('Permanently delete all spam comments on your WordPress website', 'disable-comments'); ?>
+                    </span>
 
                     <p id="spam-warning" class="disable__option__description">
                         <span class="danger" aria-hidden="true"><?php esc_html_e('Warning:', 'disable-comments'); ?></span>

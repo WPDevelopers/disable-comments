@@ -267,6 +267,10 @@
 					line-height: 1.3;
 					padding-left: 20px;
 					display: block;
+					&:focus-visible {
+						box-shadow: none;
+						outline: none;
+					}
 					span {
 						position: absolute;
 						top: 2px;

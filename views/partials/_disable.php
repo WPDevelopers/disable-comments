@@ -82,10 +82,11 @@
 
                 <label for="remove_everywhere" tabindex="0">
                     <strong><?php esc_html_e('Everywhere:', 'disable-comments'); ?></strong>
-                    <span class="description">
-                        <?php esc_html_e('Disable comments globally on your entire website', 'disable-comments'); ?>
-                    </span>
                 </label>
+                
+                <span class="description">
+                    <?php esc_html_e('Disable comments globally on your entire website', 'disable-comments'); ?>
+                </span>
 
                 <p id="everywhere-description" class="disable__option__description">
                     <span class="danger" aria-hidden="true"><?php esc_html_e('Warning:', 'disable-comments'); ?></span>
