@@ -16,8 +16,8 @@
                         aria-describedby="sitewide-description"
                         <?php checked($this->options['sitewide_settings']); ?>>
 
-                    <label for="sitewide_settings" tabindex="0">
-                        <span class="switch" role="presentation">
+                    <label for="sitewide_settings">
+                        <span class="switch" role="presentation" tabindex="0">
                             <span class="switch__text on" aria-hidden="true"><?php esc_html_e('On', 'disable-comments'); ?></span>
                             <span class="switch__text off" aria-hidden="true"><?php esc_html_e('Off', 'disable-comments'); ?></span>
                         </span>
@@ -80,10 +80,11 @@
                     aria-describedby="everywhere-description"
                     <?php checked($this->options['remove_everywhere']); ?> />
 
-                <label for="remove_everywhere" tabindex="0">
+                <label for="remove_everywhere">
                     <strong><?php esc_html_e('Everywhere:', 'disable-comments'); ?></strong>
+                    <span tabindex="0"></span>
                 </label>
-                
+
                 <span class="description">
                     <?php esc_html_e('Disable comments globally on your entire website', 'disable-comments'); ?>
                 </span>
@@ -108,8 +109,9 @@
                     aria-controls="disable__post__types"
                     <?php checked(!$this->options['remove_everywhere']); ?> />
 
-                <label for="selected_types" tabindex="0">
+                <label for="selected_types">
                     <?php esc_html_e('On Specific Post Types:', 'disable-comments'); ?>
+                    <span tabindex="0"></span>
                 </label>
             </div>
 
@@ -185,8 +187,8 @@
                         aria-expanded="false"
                         <?php checked(isset($this->options['enable_exclude_by_role']) ? $this->options['enable_exclude_by_role'] : false); ?>>
 
-                    <label for="enable_exclude_by_role" tabindex="0">
-                        <span class="switch" role="presentation">
+                    <label for="enable_exclude_by_role">
+                        <span class="switch" role="presentation" tabindex="0">
                             <span class="switch__text on" aria-hidden="true"><?php esc_html_e('On', 'disable-comments'); ?></span>
                             <span class="switch__text off" aria-hidden="true"><?php esc_html_e('Off', 'disable-comments'); ?></span>
                         </span>
@@ -246,8 +248,8 @@
                             aria-describedby="avatar-description"
                             <?php checked(!get_option('show_avatars', false)); ?>>
 
-                        <label for="disable_avatar" tabindex="0">
-                            <span class="switch" role="presentation">
+                        <label for="disable_avatar">
+                            <span class="switch" role="presentation" tabindex="0">
                                 <span class="switch__text on" aria-hidden="true"><?php esc_html_e('On', 'disable-comments'); ?></span>
                                 <span class="switch__text off" aria-hidden="true"><?php esc_html_e('Off', 'disable-comments'); ?></span>
                             </span>
@@ -332,8 +334,8 @@
                         value="1"
                         aria-describedby="xmlrpc-description"
                         <?php checked((isset($this->options['remove_xmlrpc_comments']) ? $this->options['remove_xmlrpc_comments'] : 0)); ?>>
-                    <label for="switch-xml" tabindex="0">
-                        <span class="switch" role="presentation">
+                    <label for="switch-xml">
+                        <span class="switch" role="presentation" tabindex="0">
                             <span class="switch__text on" aria-hidden="true"><?php esc_html_e('On', 'disable-comments'); ?></span>
                             <span class="switch__text off" aria-hidden="true"><?php esc_html_e('Off', 'disable-comments'); ?></span>
                         </span>
@@ -348,8 +350,8 @@
                         value="1"
                         aria-describedby="rest-api-description"
                         <?php checked((isset($this->options['remove_rest_API_comments']) ? $this->options['remove_rest_API_comments'] : 0)); ?>>
-                    <label for="switch-api" tabindex="0">
-                        <span class="switch" role="presentation">
+                    <label for="switch-api">
+                        <span class="switch" role="presentation" tabindex="0">
                             <span class="switch__text on" aria-hidden="true"><?php esc_html_e('On', 'disable-comments'); ?></span>
                             <span class="switch__text off" aria-hidden="true"><?php esc_html_e('Off', 'disable-comments'); ?></span>
                         </span>

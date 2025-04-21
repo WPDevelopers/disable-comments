@@ -45,10 +45,11 @@
                         value="<?php echo esc_attr('delete_everywhere'); ?>"
                         aria-describedby="delete-everywhere-warning"
                         <?php checked($this->options['remove_everywhere']); ?> />
-                    <label for="delete_everywhere" tabindex="0">
+                    <label for="delete_everywhere">
                         <strong><?php esc_html_e('Everywhere:', 'disable-comments'); ?></strong>
-                        <span><?php esc_html_e('Permanently delete all comments on your WordPress website', 'disable-comments'); ?></span>
+                        <span tabindex="0"></span>
                     </label>
+                    <span class="description"><?php esc_html_e('Permanently delete all comments on your WordPress website', 'disable-comments'); ?></span>
                     <p id="delete-everywhere-warning" class="disable__option__description">
                         <span class="danger" aria-hidden="true"><?php esc_html_e('Warning:', 'disable-comments'); ?></span>
                         <?php esc_html_e('This action will permanently delete all comments and comment types from your Posts, Pages, and Custom Post Types. If you have WooCommerce installed, your order notes will also be deleted.', 'disable-comments'); ?>
@@ -68,8 +69,9 @@
                         aria-expanded="<?php echo !$this->options['remove_everywhere'] ? 'true' : 'false'; ?>"
                         aria-controls="delete__post__types"
                         <?php checked(!$this->options['remove_everywhere']); ?> />
-                    <label for="selected_delete_types" tabindex="0">
+                    <label for="selected_delete_types">
                         <?php esc_html_e('On Certain Post Types:', 'disable-comments'); ?>
+                        <span tabindex="0"></span>
                     </label>
                 </div>
 
@@ -135,8 +137,9 @@
                         value="<?php echo esc_attr('selected_delete_comment_types'); ?>"
                         aria-expanded="false"
                         aria-controls="listofdeletecommenttypes" />
-                    <label for="selected_delete_comment_types" tabindex="0">
+                    <label for="selected_delete_comment_types">
                         <?php esc_html_e('Delete Certain Comment Types:', 'disable-comments'); ?>
+                        <span tabindex="0"></span>
                     </label>
 
                     <ul id="listofdeletecommenttypes"
@@ -178,8 +181,9 @@
                         name="delete_mode"
                         value="delete_spam"
                         aria-describedby="spam-warning" />
-                    <label for="delete_spam" tabindex="0">
+                    <label for="delete_spam">
                         <strong><?php esc_html_e('Spam:', 'disable-comments'); ?></strong>
+                        <span tabindex="0"></span>
                     </label>
                     <span class="description">
                         <?php esc_html_e('Permanently delete all spam comments on your WordPress website', 'disable-comments'); ?>

@@ -131,10 +131,10 @@
 			display: none;
 		}
 		input[type="radio"]:checked ~ label {
-			&:before {
+			span {
 				border-color: $success;
 			}
-			&:after {
+			span:after {
 				opacity: 1;
 			}
 		}
@@ -148,20 +148,19 @@
 			padding-left: 20px;
 			display: block;
 			margin-bottom: 15px;
-			&:before {
+			span {
 				position: absolute;
-				top: 3px;
+				top: 2px;
 				left: 0;
-				height: 12px;
-				width: 12px;
+				height: 14px;
+				width: 14px;
 				border-radius: 50%;
 				border: 1px solid $grey3;
-				content: "";
 			}
-			&:after {
+			span:after {
 				position: absolute;
-				top: 6px;
-				left: 3px;
+				top: 2px;
+				left: 2px;
 				height: 8px;
 				width: 8px;
 				border-radius: 50%;
@@ -234,6 +233,7 @@
 			flex-wrap: wrap;
 			gap: 16px;
 			margin-bottom: 10px;
+			padding-left: 1.5em;
 			&.disabled__sites {
 				.delete__checklist__item {
 					flex: 0 1 200px;
@@ -427,6 +427,7 @@
 		}
 		.delete__feedback {
 			margin-bottom: 10px;
+			padding-left: 1.5em;
 			label {
 				font-size: 14px;
 			}
