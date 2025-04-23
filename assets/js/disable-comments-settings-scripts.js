@@ -18,10 +18,11 @@ jQuery(document).ready(function ($) {
 			}
 
 			$sites_list.append( "\
-				<div class='subsite__checklist__item'>\
+				<div class='subsite__checklist__item checkbox-style'>\
 					<input type='hidden' name='" + name + "' value='0' />\
 					<input type='checkbox' id='" + id + "' class='site_option' name='" + name + "' value='1' " + site.is_checked + " />\
-					<label for='" + id + "' tabindex='0'>"
+					<label for='" + id + "'>"
+						+ "<i class='icon' tabindex='0'></i>"
 						+ site.blogname +
 					"</label>\
 				</div>\
@@ -171,7 +172,7 @@ jQuery(document).ready(function ($) {
 	function enable_site_wise_uihelper() {
 		var pagination = jQuery("#disableCommentSaveSettings .sites_list_wrapper .has-pagination");
 		var indiv_bits = jQuery(
-			".disabled__sites .remove__checklist__item, #disableCommentSaveSettings .subsite__checklist__item, #disableCommentSaveSettings .sub__site_control"
+			"#disableCommentSaveSettings .subsite__checklist__item, #disableCommentSaveSettings .sub__site_control"
 		);
 		if (jQuery("#sitewide_settings").is(":checked")) {
 			pagination.length && pagination.addClass('disabled').pagination('disable', true);
@@ -181,7 +182,7 @@ jQuery(document).ready(function ($) {
 				.attr("disabled", true);
 			indiv_bits
 				.not('.sub__site_control')
-				.find("label")
+				.find("label .icon")
 				.attr("tabindex", -1);
 
 		} else {
@@ -192,7 +193,7 @@ jQuery(document).ready(function ($) {
 				.attr("disabled", false);
 			indiv_bits
 				.not('.sub__site_control')
-				.find("label")
+				.find("label .icon")
 				.attr("tabindex", '0');
 		}
 	}
@@ -211,14 +212,14 @@ jQuery(document).ready(function ($) {
 				.css("opacity", ".3")
 				.find(":input")
 				.attr("disabled", true);
-			jQuery("#disable__post__types .remove__checklist__item label")
+			jQuery("#disable__post__types .remove__checklist__item label .icon")
 				.attr("tabindex", -1);
 		} else {
 			indiv_bits
 				.css("opacity", "1")
 				.find(":input")
 				.attr("disabled", false);
-			jQuery("#disable__post__types .remove__checklist__item label")
+			jQuery("#disable__post__types .remove__checklist__item label .icon")
 				.attr("tabindex", '0');
 		}
 	}
@@ -243,6 +244,8 @@ jQuery(document).ready(function ($) {
 				.css("opacity", ".3")
 				.find(":input")
 				.attr("disabled", true);
+			jQuery("#delete__post__types .checkbox-style label .icon, #listofdeletecommenttypes label .icon")
+				.attr("tabindex", -1);
 		} else {
 			if (jQuery("#selected_delete_types").is(":checked")) {
 				toggle_pt_bits
@@ -253,6 +256,10 @@ jQuery(document).ready(function ($) {
 					.css("opacity", ".3")
 					.find(":input")
 					.attr("disabled", true);
+				jQuery("#delete__post__types .checkbox-style label .icon")
+					.attr("tabindex", '0');
+				jQuery("#listofdeletecommenttypes label .icon")
+					.attr("tabindex", '-1');
 			} else {
 				toggle_ct_bits
 					.css("opacity", "1")
@@ -262,6 +269,10 @@ jQuery(document).ready(function ($) {
 					.css("opacity", ".3")
 					.find(":input")
 					.attr("disabled", true);
+				jQuery("#delete__post__types .checkbox-style label .icon")
+					.attr("tabindex", -1);
+				jQuery("#listofdeletecommenttypes label .icon")
+					.attr("tabindex", '0');
 			}
 		}
 	}
@@ -459,12 +470,12 @@ jQuery(document).ready(function ($) {
 	})();
 
 
-	jQuery(document).on('keydown', 'label[tabindex]', function(event) {
-		console.log(event);
+	jQuery(document).on('keydown', 'label .icon[tabindex], label span[tabindex]', function(event) {
+		// console.log(event);
 		if (event.code === 'Space' || event.code === 'Enter') {
 			event.preventDefault();
 
-			const inputId = jQuery(this).attr('for');
+			const inputId = jQuery(this).parent().attr('for');
 			const inputElement = document.getElementById(inputId);
 
 			if (inputElement) {
@@ -475,7 +486,7 @@ jQuery(document).ready(function ($) {
 	});
 
 	jQuery(document).on('keydown', '.disable__comment__nav__item a', function(event) {
-		console.log(event);
+		// console.log(event);
 		if (event.code === 'Space' || event.code === 'Enter') {
 			event.preventDefault();
 			jQuery(this).click();

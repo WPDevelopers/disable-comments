@@ -1,6 +1,6 @@
 <div class="sites-selection" role="region" aria-labelledby="sites-selection-heading">
     <div class="d__flex mb15 space__between">
-        <div class="subsite__checklist__item" style="flex: 1 1 200px;">
+        <div class="subsite__checklist__item checkbox-style" style="flex: 1 1 200px;">
             <input type="checkbox"
                 class="check-all"
                 id="sites__option__<?php echo esc_attr($type); ?>__check__all"
@@ -8,7 +8,8 @@
                 value="1"
                 aria-label="<?php esc_attr_e('Select or deselect all sites', 'disable-comments'); ?>"
                 aria-controls="sites-list">
-            <label for="sites__option__<?php echo esc_attr($type); ?>__check__all" tabindex="0">
+            <label for="sites__option__<?php echo esc_attr($type); ?>__check__all">
+                <i class="icon" tabindex="0"></i>
                 <b><?php esc_html_e('Select All', 'disable-comments'); ?></b>
                 <span class="selected-count" aria-live="polite">
                     (<?php esc_html_e('0 selected', 'disable-comments'); ?>)

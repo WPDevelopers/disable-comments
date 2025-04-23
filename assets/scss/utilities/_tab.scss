@@ -114,6 +114,176 @@
 			font-weight: 500;
 		}
 	}
+	.radio-style {
+        input[type="radio"] {
+            display: none;
+            &:checked ~ label {
+                .icon {
+                    border-color: $success;
+                    &:after {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+        label {
+            font-size: 16px;
+            font-weight: 500;
+            color: $dark;
+            font-family: $bodyFont;
+            position: relative;
+            line-height: 1.3;
+            padding-left: 20px;
+            display: block;
+            margin-bottom: 15px;
+
+            .icon {
+                position: absolute;
+                top: 2px;
+                left: 0;
+                height: 14px;
+                width: 14px;
+                border-radius: 50%;
+                border: 1px solid $grey3;
+
+                &:after {
+                    position: absolute;
+                    top: 2px;
+                    left: 2px;
+                    height: 8px;
+                    width: 8px;
+                    border-radius: 50%;
+                    border: 0;
+                    background: $success;
+                    content: "";
+                    opacity: 0;
+                    transition: all 0.3s ease;
+                }
+            }
+        }
+    }
+
+    // Generic checkbox style
+    .checkbox-style {
+        input[type="checkbox"] {
+            display: none;
+            &:checked ~ label {
+                .icon {
+                    border-color: $info;
+                    background: $info;
+                    &:after {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+        label {
+            font-size: 16px;
+            font-weight: 500;
+            color: $grey3;
+            font-family: $bodyFont;
+            position: relative;
+            line-height: 1.3;
+            padding-left: 20px;
+            display: block;
+
+            &:focus-visible {
+                box-shadow: none;
+                outline: none;
+            }
+
+            .icon {
+                position: absolute;
+                top: 2px;
+                left: 0;
+                height: 14px;
+                width: 14px;
+                border: 1px solid $grey3;
+
+                &:after {
+                    position: absolute;
+                    top: -4px;
+                    left: 1px;
+                    content: url(../img/check.png);
+                    opacity: 0;
+                    transition: all 0.3s ease;
+                }
+            }
+        }
+    }
+	.dissable__switch__item {
+		margin-bottom: 10px;
+		input {
+			display: none;
+		}
+		input:checked ~ label {
+			color: $dark;
+			.switch {
+				background: $success;
+				&:before {
+					left: 28px;
+				}
+				.switch__text {
+					left: 5px;
+					&.on {
+						display: block;
+					}
+					&.off {
+						display: none;
+					}
+				}
+			}
+		}
+		label {
+			font-size: 16px;
+			font-weight: 500;
+			color: $grey3;
+			font-family: $bodyFont;
+			display: inline-flex;
+			align-items: center;
+			@include respond-below(xxs) {
+				font-size: 14px;
+			}
+			.switch {
+				height: 20px;
+				width: 40px;
+				margin-right: 16px;
+				border-radius: 10px;
+				background: #99a6b8;
+				display: inline-block;
+				font-size: 10px;
+				text-transform: uppercase;
+				font-weight: 500;
+				color: #ffffff;
+				font-family: "DM Sans", sans-serif;
+				position: relative;
+				transition: all 0.3s ease;
+				@include respond-below(xxs) {
+					font-size: 10px;
+				}
+				&:before {
+					position: absolute;
+					top: 6px;
+					left: 4px;
+					border-radius: 50%;
+					background: $white;
+					height: 8px;
+					width: 8px;
+					content: "";
+					transition: all 0.3s ease;
+				}
+				.switch__text {
+					position: absolute;
+					top: 2px;
+					left: 16px;
+					transition: all 0.3s ease;
+				}
+				.switch__text.on {
+					display: none;
+				}
+			}
+		}
+	}
 	.disable_option {
 		border-radius: 5px;
 		h3 {
@@ -127,106 +297,12 @@
 			display: block;
 			margin-bottom: 15px;
 		}
-		input[type="radio"] {
-			display: none;
-		}
-		input[type="radio"]:checked ~ label {
-			span {
-				border-color: $success;
-			}
-			span:after {
-				opacity: 1;
-			}
-		}
-		input[type="radio"] ~ label {
-			font-size: 16px;
-			font-weight: 500;
-			color: $dark;
-			font-family: $bodyFont;
-			position: relative;
-			line-height: 1.3;
-			padding-left: 20px;
-			display: block;
-			margin-bottom: 15px;
-			span {
-				position: absolute;
-				top: 2px;
-				left: 0;
-				height: 14px;
-				width: 14px;
-				border-radius: 50%;
-				border: 1px solid $grey3;
-			}
-			span:after {
-				position: absolute;
-				top: 2px;
-				left: 2px;
-				height: 8px;
-				width: 8px;
-				border-radius: 50%;
-				border: 0;
-				background: $success;
-				content: "";
-				opacity: 0;
-				transition: all 0.3s ease;
-			}
-			span {
-				font-size: 16px;
-				font-weight: 400;
-				color: $grey3;
-			}
-		}
+
 		.disable__checklist,
 		.delete__feedback {
 			display: flex;
 			flex-wrap: wrap;
 			gap: 16px;
-			.disable__checklist__item,
-			li {
-				input {
-					display: none;
-				}
-				input:checked ~ label {
-					span {
-						border-color: $info;
-						background: $info;
-					}
-					span:after {
-						opacity: 1;
-					}
-				}
-				label {
-					font-size: 16px;
-					font-weight: 500;
-					color: $grey3;
-					font-family: $bodyFont;
-					position: relative;
-					line-height: 1.3;
-					padding-left: 20px;
-					display: block;
-					&:focus-visible {
-						box-shadow: none;
-						outline: none;
-					}
-					span {
-						position: absolute;
-						top: 2px;
-						left: 0;
-						height: 14px;
-						width: 14px;
-						border: 1px solid $grey3;
-						content: "";
-					}
-					span:after {
-						position: absolute;
-						top: -4px;
-						left: 1px;
-						content: url(../img/check.png);
-						opacity: 0;
-						transition: all 0.3s ease;
-					}
-				}
-			}
 		}
 		.delete__checklist {
 			display: flex;
@@ -234,196 +310,12 @@
 			gap: 16px;
 			margin-bottom: 10px;
 			padding-left: 1.5em;
-			&.disabled__sites {
-				.delete__checklist__item {
-					flex: 0 1 200px;
-					&:nth-child(1){
-						flex-basis: 100%;
-						label{
-							display: inline-block;
-						}
-					}
-				}
-			}
-			.delete__checklist__item {
-				input {
-					display: none;
-				}
-				input:checked ~ label {
-					span {
-						border-color: $info;
-						background: $info;
-					}
-					span:after {
-						opacity: 1;
-					}
-				}
-				label {
-					font-size: 16px;
-					font-weight: 500;
-					color: $grey3;
-					font-family: $bodyFont;
-					position: relative;
-					line-height: 1.3;
-					padding-left: 20px;
-					display: block;
-					&:focus-visible {
-						box-shadow: none;
-						outline: none;
-					}
-					span {
-						position: absolute;
-						top: 2px;
-						left: 0;
-						height: 14px;
-						width: 14px;
-						border: 1px solid $grey3;
-					}
-					span:after {
-						position: absolute;
-						top: -4px;
-						left: 1px;
-						content: url(../img/check.png);
-						opacity: 0;
-						transition: all 0.3s ease;
-					}
-				}
-			}
 		}
 		.remove__checklist {
 			display: flex;
 			flex-wrap: wrap;
 			gap: 16px;
 			margin-bottom: 10px;
-			&.disabled__sites {
-				.remove__checklist__item {
-					flex: 0 1 200px;
-					&:nth-child(1){
-						flex-basis: 100%;
-						label{
-							display: inline-block;
-						}
-					}
-				}
-			}
-			.remove__checklist__item {
-				input {
-					display: none;
-				}
-				input:checked ~ label {
-					span {
-						border-color: $info;
-						background: $info;
-					}
-					span:after {
-						opacity: 1;
-					}
-				}
-				label {
-					font-size: 16px;
-					font-weight: 500;
-					color: $grey3;
-					font-family: $bodyFont;
-					position: relative;
-					line-height: 1.3;
-					padding-left: 20px;
-					display: block;
-					&:focus-visible {
-						box-shadow: none;
-						outline: none;
-					}
-					span {
-						position: absolute;
-						top: 2px;
-						left: 0;
-						height: 14px;
-						width: 14px;
-						border: 1px solid $grey3;
-					}
-					span:after {
-						position: absolute;
-						top: -4px;
-						left: 1px;
-						content: url(../img/check.png);
-						opacity: 0;
-						transition: all 0.3s ease;
-					}
-
-				}
-			}
-		}
-		.dissable__switch__item {
-			margin-bottom: 10px;
-			input {
-				display: none;
-			}
-			input:checked ~ label {
-				color: $dark;
-				.switch {
-					background: $success;
-					&:before {
-						left: 28px;
-					}
-					.switch__text {
-						left: 5px;
-						&.on {
-							display: block;
-						}
-						&.off {
-							display: none;
-						}
-					}
-				}
-			}
-			label {
-				font-size: 16px;
-				font-weight: 500;
-				color: $grey3;
-				font-family: $bodyFont;
-				display: inline-flex;
-				align-items: center;
-				@include respond-below(xxs) {
-					font-size: 14px;
-				}
-				.switch {
-					height: 20px;
-					width: 40px;
-					margin-right: 16px;
-					border-radius: 10px;
-					background: #99a6b8;
-					display: inline-block;
-					font-size: 10px;
-					text-transform: uppercase;
-					font-weight: 500;
-					color: #ffffff;
-					font-family: "DM Sans", sans-serif;
-					position: relative;
-					transition: all 0.3s ease;
-					@include respond-below(xxs) {
-						font-size: 10px;
-					}
-					&:before {
-						position: absolute;
-						top: 6px;
-						left: 4px;
-						border-radius: 50%;
-						background: $white;
-						height: 8px;
-						width: 8px;
-						content: "";
-						transition: all 0.3s ease;
-					}
-					.switch__text {
-						position: absolute;
-						top: 2px;
-						left: 16px;
-						transition: all 0.3s ease;
-					}
-					.switch__text.on {
-						display: none;
-					}
-				}
-			}
 		}
 		.delete__feedback {
 			margin-bottom: 10px;
@@ -483,48 +375,6 @@
 	flex: 0 0 130px;
 	margin-right: 10px;
 	margin-bottom: 10px;
-	input {
-		display: none;
-	}
-	input:checked ~ label {
-		&:before {
-			border-color: $info;
-			background: $info;
-		}
-		&:after {
-			opacity: 1;
-		}
-	}
-	label {
-		font-size: 18px;
-		font-weight: 500;
-		color: $grey3;
-		font-family: $bodyFont;
-		position: relative;
-		line-height: 1.3;
-		padding-left: 25px;
-		display: inline-block;
-		&:before {
-			position: absolute;
-			top: 4px;
-			left: 0;
-			height: 12px;
-			width: 12px;
-			border: 1px solid $grey3;
-			content: "";
-		}
-		&:after {
-			position: absolute;
-			top: -2px;
-			left: 2px;
-			height: 13px;
-			width: 13px;
-			border: 0;
-			content: url(../img/check.png);
-			opacity: 0;
-			transition: all 0.3s ease;
-		}
-	}
 }
 
 .paginationjs-pages ul {

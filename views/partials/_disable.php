@@ -72,7 +72,7 @@
                 <?php esc_html_e('Global Comment Settings', 'disable-comments'); ?>
             </h4>
 
-            <div class="radio-option">
+            <div class="radio-option radio-style">
                 <input type="radio"
                     id="remove_everywhere"
                     name="mode"
@@ -81,8 +81,8 @@
                     <?php checked($this->options['remove_everywhere']); ?> />
 
                 <label for="remove_everywhere">
+                    <i class="icon" tabindex="0"></i>
                     <strong><?php esc_html_e('Everywhere:', 'disable-comments'); ?></strong>
-                    <span tabindex="0"></span>
                 </label>
 
                 <span class="description">
@@ -100,7 +100,7 @@
                 <?php esc_html_e('Select Specific Post Types', 'disable-comments'); ?>
             </h4>
 
-            <div class="radio-option">
+            <div class="radio-option radio-style">
                 <input type="radio"
                     id="selected_types"
                     name="mode"
@@ -110,8 +110,8 @@
                     <?php checked(!$this->options['remove_everywhere']); ?> />
 
                 <label for="selected_types">
+                    <i class="icon" tabindex="0"></i>
                     <?php esc_html_e('On Specific Post Types:', 'disable-comments'); ?>
-                    <span tabindex="0"></span>
                 </label>
             </div>
 
@@ -124,15 +124,15 @@
                 <?php
                 $types = $this->get_all_post_types();
                 foreach ($types as $key => $value) : ?>
-                    <div class="remove__checklist__item">
+                    <div class="remove__checklist__item checkbox-style">
                         <input type="checkbox"
                             id="remove__checklist__item-<?php echo esc_attr($key); ?>"
                             name="disabled_types[]"
                             value="<?php echo esc_attr($key); ?>"
                             <?php checked(in_array($key, $this->get_disabled_post_types()), true, false); ?>>
                         <label for="remove__checklist__item-<?php echo esc_attr($key); ?>">
+                            <i class="icon" tabindex="0"></i>
                             <?php echo esc_html($value->labels->name); ?>
-                            <span  tabindex="0"></span>
                         </label>
                     </div>
                 <?php endforeach; ?>
@@ -273,38 +273,41 @@
                 </h3>
 
                 <div class="disable__switch" role="radiogroup" aria-labelledby="avatar-settings-heading">
-                    <div class="avatar__status">
+                    <div class="avatar__status radio-style">
                         <input type="radio"
                             id="dont_change"
                             name="disable_avatar"
                             value="-1"
                             aria-describedby="avatar-description"
                             <?php checked($avatar_status, -1); ?>>
-                        <label for="dont_change" tabindex="0">
+                        <label for="dont_change">
+                            <i class="icon" tabindex="0"></i>
                             <?php esc_html_e('Don\'t Change', 'disable-comments'); ?>
                         </label>
                     </div>
 
-                    <div class="avatar__status">
+                    <div class="avatar__status radio-style">
                         <input type="radio"
                             id="enable_avatar"
                             name="disable_avatar"
                             value="0"
                             aria-describedby="avatar-description"
                             <?php checked($avatar_status, 0); ?>>
-                        <label for="enable_avatar" tabindex="0">
+                        <label for="enable_avatar">
+                            <i class="icon" tabindex="0"></i>
                             <?php esc_html_e('Enable Avatar', 'disable-comments'); ?>
                         </label>
                     </div>
 
-                    <div class="avatar__status">
+                    <div class="avatar__status radio-style">
                         <input type="radio"
                             id="disable_avatar"
                             name="disable_avatar"
                             value="1"
                             aria-describedby="avatar-description"
                             <?php checked($avatar_status, 1); ?>>
-                        <label for="disable_avatar" tabindex="0">
+                        <label for="disable_avatar">
+                            <i class="icon" tabindex="0"></i>
                             <?php esc_html_e('Disable Avatar', 'disable-comments'); ?>
                         </label>
                     </div>

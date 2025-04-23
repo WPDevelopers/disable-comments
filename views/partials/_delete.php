@@ -38,7 +38,7 @@
                     <?php esc_html_e('Select where to delete comments', 'disable-comments'); ?>
                 </h4>
 
-                <div class="radio-option">
+                <div class="radio-option radio-style">
                     <input type="radio"
                         id="delete_everywhere"
                         name="delete_mode"
@@ -46,8 +46,8 @@
                         aria-describedby="delete-everywhere-warning"
                         <?php checked($this->options['remove_everywhere']); ?> />
                     <label for="delete_everywhere">
+                        <i class="icon" tabindex="0"></i>
                         <strong><?php esc_html_e('Everywhere:', 'disable-comments'); ?></strong>
-                        <span tabindex="0"></span>
                     </label>
                     <span class="description"><?php esc_html_e('Permanently delete all comments on your WordPress website', 'disable-comments'); ?></span>
                     <p id="delete-everywhere-warning" class="disable__option__description">
@@ -61,7 +61,7 @@
                     <?php esc_html_e('Select Post Types for Comment Deletion', 'disable-comments'); ?>
                 </h4>
 
-                <div class="radio-option">
+                <div class="radio-option radio-style">
                     <input type="radio"
                         id="selected_delete_types"
                         name="delete_mode"
@@ -70,8 +70,8 @@
                         aria-controls="delete__post__types"
                         <?php checked(!$this->options['remove_everywhere']); ?> />
                     <label for="selected_delete_types">
+                        <i class="icon" tabindex="0"></i>
                         <?php esc_html_e('On Certain Post Types:', 'disable-comments'); ?>
-                        <span tabindex="0"></span>
                     </label>
                 </div>
 
@@ -83,16 +83,16 @@
                     <?php
                     $types = $this->get_all_post_types();
                     foreach ($types as $key => $value) : ?>
-                        <div class="delete__checklist__item">
+                        <div class="delete__checklist__item checkbox-style">
                             <input type="checkbox"
                                 id="delete__checklist__item-<?php echo esc_attr($key); ?>"
                                 name="delete_types[]"
                                 value="<?php echo esc_attr($key); ?>"
                                 aria-describedby="delete-type-warning"
                                 <?php checked(in_array($key, $this->options['disabled_post_types']), true, false); ?>>
-                            <label for="delete__checklist__item-<?php echo esc_attr($key); ?>" tabindex="0">
+                            <label for="delete__checklist__item-<?php echo esc_attr($key); ?>">
+                                <i class="icon" tabindex="0"></i>
                                 <?php echo esc_html($value->labels->name); ?>
-                                <span tabindex="0"></span>
                             </label>
                         </div>
                     <?php endforeach; ?>
@@ -130,18 +130,19 @@
                     <?php esc_html_e('Delete By Comment Types', 'disable-comments'); ?>
                 </h4>
 
-                <div class="radio-option">
-                    <input type="radio"
-                        id="selected_delete_comment_types"
-                        name="delete_mode"
-                        value="<?php echo esc_attr('selected_delete_comment_types'); ?>"
-                        aria-expanded="false"
-                        aria-controls="listofdeletecommenttypes" />
-                    <label for="selected_delete_comment_types">
-                        <?php esc_html_e('Delete Certain Comment Types:', 'disable-comments'); ?>
-                        <span tabindex="0"></span>
-                    </label>
-
+                <div>
+                    <div class="radio-option radio-style">
+                        <input type="radio"
+                            id="selected_delete_comment_types"
+                            name="delete_mode"
+                            value="<?php echo esc_attr('selected_delete_comment_types'); ?>"
+                            aria-expanded="false"
+                            aria-controls="listofdeletecommenttypes" />
+                        <label for="selected_delete_comment_types">
+                            <i class="icon" tabindex="0"></i>
+                            <?php esc_html_e('Delete Certain Comment Types:', 'disable-comments'); ?>
+                        </label>
+                    </div>
                     <ul id="listofdeletecommenttypes"
                         class="delete__feedback"
                         role="group"
@@ -149,15 +150,15 @@
                         <?php
                         $commenttypes = $this->get_all_comment_types();
                         foreach ($commenttypes as $key => $value) : ?>
-                            <li>
+                            <li class="checkbox-style">
                                 <input type="checkbox"
                                     id="comment-type-<?php echo esc_attr($key); ?>"
                                     name="delete_comment_types[]"
                                     value="<?php echo esc_attr($key); ?>"
                                     aria-describedby="comment-type-warning">
                                 <label for="comment-type-<?php echo esc_attr($key); ?>">
+                                    <i class="icon" tabindex="0"></i>
                                     <?php echo esc_html($value); ?>
-                                    <span tabindex="0"></span>
                                 </label>
                             </li>
                         <?php endforeach; ?>
@@ -175,15 +176,15 @@
                     <?php esc_html_e('Delete Spam Comments', 'disable-comments'); ?>
                 </h4>
 
-                <div class="radio-option">
+                <div class="radio-option radio-style">
                     <input type="radio"
                         id="delete_spam"
                         name="delete_mode"
                         value="delete_spam"
                         aria-describedby="spam-warning" />
                     <label for="delete_spam">
+                        <i class="icon" tabindex="0"></i>
                         <strong><?php esc_html_e('Spam:', 'disable-comments'); ?></strong>
-                        <span tabindex="0"></span>
                     </label>
                     <span class="description">
                         <?php esc_html_e('Permanently delete all spam comments on your WordPress website', 'disable-comments'); ?>
