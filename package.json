@@ -4,15 +4,22 @@
   "main": "Gruntfile.js",
   "author": "Samir Shah",
   "scripts": {
-    "pot": "wp i18n make-pot . languages/disable-comments.pot "
+    "pot": "wp i18n make-pot . languages/disable-comments.pot ",
+    "r": "wp dist-archive .",
+    "release": "npm run pot && npm run r",
+    "start": "grunt",
+    "build": "grunt build"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0",
     "grunt": "^1.3.0",
     "grunt-babel": "^8.0.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-sass": "^4.0.0",
     "grunt-wp-i18n": "~1.0.3",
     "grunt-wp-readme-to-markdown": "~2.0.1",
-    "load-grunt-tasks": "^5.1.0"
+    "load-grunt-tasks": "^5.1.0",
+    "sass": "^1.87.0"
   }
 }

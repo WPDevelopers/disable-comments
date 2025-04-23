@@ -55,14 +55,32 @@ module.exports = function( grunt ) {
 					'assets/disable-comments.js': 'src/disable-comments.js'
 				}
 			}
-		}
+		},
+        sass: {
+            options: {
+                implementation: require('sass'),
+                sourceMap: true
+            },
+            dist: {
+                files: {
+                    'assets/css/style.css': 'assets/scss/style.scss'
+                }
+            }
+        },
+        watch: {
+            styles: {
+                files: ['assets/scss/**/*.scss'],
+                tasks: ['sass']
+            }
+        }
 	} );
 
 	grunt.loadNpmTasks( 'grunt-wp-i18n' );
 	grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
 	grunt.registerTask( 'i18n', ['addtextdomain', 'makepot'] );
 	grunt.registerTask( 'readme', ['wp_readme_to_markdown'] );
-	grunt.registerTask( 'default', ['babel'] );
+	grunt.registerTask( 'default', ['babel', 'sass', 'watch'] );
+    grunt.registerTask( 'build', ['babel', 'sass'] );
 
 	grunt.util.linefeed = '\n';
 
