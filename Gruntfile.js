@@ -52,7 +52,7 @@ module.exports = function( grunt ) {
 			},
 			dist: {
 				files: {
-					'assets/disable-comments.js': 'src/disable-comments.js'
+					'assets/js/disable-comments.js': 'src/disable-comments.js'
 				}
 			}
 		},

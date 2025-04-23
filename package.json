@@ -4,11 +4,11 @@
   "main": "Gruntfile.js",
   "author": "Samir Shah",
   "scripts": {
+    "start": "grunt",
+    "build": "grunt build",
     "pot": "wp i18n make-pot . languages/disable-comments.pot ",
     "r": "wp dist-archive .",
-    "release": "npm run pot && npm run r",
-    "start": "grunt",
-    "build": "grunt build"
+    "release": "npm run build && npm run pot && npm run r"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
