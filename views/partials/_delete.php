@@ -214,7 +214,7 @@
             <button type="submit"
                 class="button button__delete button__fade"
                 aria-label="<?php esc_attr_e('Permanently delete all selected comments', 'disable-comments'); ?>"
-                data-confirm="<?php esc_attr_e('Are you sure you want to delete the selected comments? This action cannot be undone.', 'disable-comments'); ?>">
+                data-confirm="<?php esc_attr_e('Are you sure you want to delete the selected comments? This action cannot be undone.', 'disable-comments'); ?>" tabindex="0">
                 <?php esc_html_e('Delete Comments', 'disable-comments'); ?>
             </button>
         </div>

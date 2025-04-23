@@ -380,7 +380,7 @@
     <!-- Save Button -->
     <button type="submit"
         class="button button__success button__fade"
-        aria-label="<?php esc_attr_e('Save all disable comments settings', 'disable-comments'); ?>">
+        aria-label="<?php esc_attr_e('Save all disable comments settings', 'disable-comments'); ?>" tabindex="0">
         <span><?php esc_html_e('Save Changes', 'disable-comments'); ?></span>
     </button>
 
