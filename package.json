@@ -7,7 +7,7 @@
     "start": "grunt",
     "build": "grunt build",
     "pot": "wp i18n make-pot . languages/disable-comments.pot ",
-    "r": "wp dist-archive .",
+    "r": "npm run build && wp dist-archive .",
     "release": "npm run build && npm run pot && npm run r"
   },
   "devDependencies": {

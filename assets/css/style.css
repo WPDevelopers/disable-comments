@@ -2823,6 +2823,9 @@ button.button__instagram.hover__highlight:hover .icon {
   outline: none;
   box-shadow: none;
 }
+.blog__post .thumb .play__btn:focus-visible {
+  box-shadow: 0 0 0 2px #2271b1;
+}
 .blog__post .thumb .play__btn span {
   width: 0;
   height: 0;
@@ -2839,6 +2842,9 @@ button.button__instagram.hover__highlight:hover .icon {
   color: #22282d;
   line-height: 1.8;
   font-family: "DM Sans", sans-serif;
+}
+.blog__post .blog__post__content h4 a:focus-visible {
+  box-shadow: 0 0 0 2px #2271b1;
 }
 
 .footer {
@@ -2881,6 +2887,9 @@ button.button__instagram.hover__highlight:hover .icon {
   .footer__content .footer__nav ul li a {
     font-size: 14px;
   }
+}
+.footer__content .footer__nav ul li a:focus-visible {
+  box-shadow: 0 0 0 2px #2271b1;
 }
 
 .cancel-dc-setup {
