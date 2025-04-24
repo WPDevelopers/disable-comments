@@ -23,6 +23,11 @@
             align-items: center;
             outline: none;
             box-shadow: none;
+
+            &:focus-visible {
+                box-shadow: 0 0 0 2px #2271b1;
+            }
+
             span {
                 width: 0; 
                 height: 0; 
@@ -40,6 +45,10 @@
             color: $dark;
             line-height: 1.8;
             font-family: $bodyFont;
+
+            a:focus-visible {
+                box-shadow: 0 0 0 2px #2271b1;
+            }
         }
     }
 }
