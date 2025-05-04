@@ -621,7 +621,7 @@ class Disable_Comments {
 			}
 
 			// translators: %s: disabled post types.
-			echo '<div class="notice notice-warning"><p>' . sprintf(esc_html__('Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types.', 'disable-comments'), implode(esc_html__(', ', 'disable-comments'), $names_escaped)) . '</p></div>';
+			echo '<div class="notice notice-warning"><p>' . sprintf(wp_kses_post(__('Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types.', 'disable-comments')), implode(esc_html__(', ', 'disable-comments'), $names_escaped)) . '</p></div>';
 		}
 	}
 
