@@ -26,29 +26,62 @@ if (! class_exists('EB_Promotion_Notice')) :
 		const VERSION = '1.0.0';
 
 		public function __construct() {
+			// Common condition for all Essential Blocks promotions
+			if ( ! class_exists( 'Classic_Editor' ) && ! class_exists( 'EssentialBlocks' ) ) {
+				// Essential Blocks popup Promo
+				add_action( 'wpdeveloper_eb_popup_promo_init', [ $this, 'eb_popup_promo_init' ] );
+				if ( ( did_action( 'wpdeveloper_eb_popup_promo_init' ) < 1 ) && ! ( get_transient( 'eael_gb_eb_popup_hide' ) || get_transient( 'wpdeveloper_gb_eb_popup_hide' ) ) ) {
+					do_action( 'wpdeveloper_eb_popup_promo_init' );
+				}
 
-			//Essential Blocks Promo
-			if ( ! class_exists( 'Classic_Editor' ) && ! class_exists( 'EssentialBlocks' ) && ( ! get_option( 'dc_eb_optin_hide' ) || ! get_transient( 'dc_gb_eb_popup_hide' ) ) ) {
-				add_action( 'enqueue_block_editor_assets', [ $this, 'essential_blocks_promo_enqueue_scripts' ] );
-				// add_action( 'admin_notices', [ $this, 'essential_block_optin' ] );
-				add_action( 'dc_admin_notices', [ $this, 'essential_block_special_optin' ], 100 );
-				add_action( 'wp_ajax_dc_eb_optin_notice_dismiss', [ $this, 'dc_eb_optin_notice_dismiss' ] );
-				add_action( 'wp_ajax_dc_gb_eb_popup_dismiss', [ $this, 'dc_gb_eb_popup_dismiss' ] );
-			}
-			//Essential Blocks Banner Promo
-			if (! class_exists('Classic_Editor') && ! class_exists('EssentialBlocks') && ! get_transient('dc_eb_banner_promo_hide')) {
-				add_action('enqueue_block_editor_assets', [$this, 'essential_blocks_banner_promo_enqueue_scripts']);
-				add_action('wp_ajax_dc_eb_banner_promo_dismiss', [$this, 'dc_eb_banner_promo_dismiss']);
-			}
-			//Essential Blocks Banner Promo
-			if (! class_exists('Classic_Editor') && ! class_exists('EssentialBlocks') && ! get_transient('dc_eb_notice_promo_hide')) {
-				add_action('admin_notices', array($this, 'discussion_notice'));
+				// Essential Blocks Banner Promo
+				add_action( 'wpdeveloper_eb_banner_promo_init', [ $this, 'dc_eb_banner_promo_init' ] );
+				if ( ( did_action( 'wpdeveloper_eb_banner_promo_init' ) < 1 ) && ! ( get_transient( 'eael_eb_banner_promo_hide' ) || get_transient( 'wpdeveloper_eb_banner_promo_hide' ) ) ) {
+					do_action( 'wpdeveloper_eb_banner_promo_init' );
+				}
+
+				// Essential Blocks Admin Notice
+				add_action( 'wpdeveloper_eb_admin_notice_init', [ $this, 'eb_admin_notice_init' ] );
+				if ( ( did_action( 'wpdeveloper_eb_admin_notice_init' ) < 1 ) && ! ( get_option( 'eael_eb_optin_hide' ) || get_transient( 'wpdeveloper_eb_optin_hide' ) ) ) {
+					do_action( 'wpdeveloper_eb_admin_notice_init' );
+				}
 			}
 		}
 
+		/**
+		 * popup notice
+		 *
+		 * @return void
+		 */
+		public function eb_popup_promo_init() {
+			add_action( 'enqueue_block_editor_assets', [ $this, 'essential_blocks_promo_enqueue_scripts' ] );
+			add_action( 'wp_ajax_dc_gb_eb_popup_dismiss', [ $this, 'dc_gb_eb_popup_dismiss' ] );
+		}
+
+		/**
+		 * admin notice
+		 *
+		 * @return void
+		 */
+		public function eb_admin_notice_init() {
+			add_action( 'admin_notices', [ $this, 'essential_block_optin' ], 100 );
+			add_action( 'wp_ajax_dc_eb_optin_notice_dismiss', [ $this, 'dc_eb_optin_notice_dismiss' ] );
+		}
+
+		/**
+		 * banner notice
+		 *
+		 * @return void
+		 */
+		public function dc_eb_banner_promo_init() {
+			add_action( 'enqueue_block_editor_assets', [ $this, 'essential_blocks_banner_promo_enqueue_scripts' ] );
+			add_action( 'wp_ajax_dc_eb_banner_promo_dismiss', [ $this, 'dc_eb_banner_promo_dismiss' ] );
+		}
+
+
 
 		public function essential_blocks_promo_enqueue_scripts() {
-			if ( is_plugin_active( 'essential-blocks/essential-blocks.php' ) || get_transient( 'dc_gb_eb_popup_hide' ) ) {
+			if ( is_plugin_active( 'essential-blocks/essential-blocks.php' ) ) {
 				return;
 			}
 
@@ -57,6 +90,11 @@ if (! class_exists('EB_Promotion_Notice')) :
 			wp_enqueue_style( 'dc-gutenberg', DC_ASSETS_URI . 'css/dc-essential-blocks-promo.css', [], DC_VERSION );
 		}
 
+		/**
+		 * Gutenberg banner
+		 *
+		 * @return void
+		 */
 		public function essential_blocks_banner_promo_enqueue_scripts() {
 			if (is_plugin_active('essential-blocks/essential-blocks.php')) {
 				return;
@@ -67,15 +105,17 @@ if (! class_exists('EB_Promotion_Notice')) :
 			wp_enqueue_style('dc-gutenberg', DC_ASSETS_URI . 'css/dc-essential-blocks-promo.css', [], DC_VERSION);
 		}
 
-
-
-
+		/**
+		 * Gutenberg banner
+		 *
+		 * @return void
+		 */
 		public function essential_blocks_banner_promo_admin_js_template() {
 			$eb_not_installed = self::get_local_plugin_data('essential-blocks/essential-blocks.php') === false;
 			$action           = $eb_not_installed ? 'install' : 'activate';
 			$nonce            = wp_create_nonce('disable-comments');
 
-?>
+			?>
 			<script id="dc-gb-eb-banner-promo-template" type="text/html">
 				<div id="dc-gb-eb-banner-promo">
 					<div class="dc-gb-eb-banner-promo-left">
@@ -95,13 +135,13 @@ if (! class_exists('EB_Promotion_Notice')) :
 							</svg>
 						</div>
 						<div class="dc-gb-eb-banner-promo-content">
-							<h3 class="dc-gb-eb-banner-promo-title"><?php _e('Want To Get All Exclusive Gutenberg Blocks For Free?', 'essential-addons-for-elementor-lite'); ?></h3>
-							<p class="dc-gb-eb-banner-promo-description"><?php _e('If you want to enrich your Gutenberg block library with the latest designs and functionalities, Essential Blocks can be your best companion.', 'essential-addons-for-elementor-lite'); ?></p>
+							<h3 class="dc-gb-eb-banner-promo-title"><?php _e('Want To Get All Exclusive Gutenberg Blocks For Free?', 'disable-comments'); ?></h3>
+							<p class="dc-gb-eb-banner-promo-description"><?php _e('If you want to enrich your Gutenberg block library with the latest designs and functionalities, Essential Blocks can be your best companion.', 'disable-comments'); ?></p>
 						</div>
 					</div>
 					<div class="dc-gb-eb-banner-promo-right">
-						<a class="dc-gb-eb-banner-promo-learn-more" href="https://essential-blocks.com/" target="_blank"><?php _e('Learn More', 'essential-addons-for-elementor-lite') ?></a>
-						<button class="dc-gb-eb-banner-promo-get-block dc-gb-eb-install" data-promotype="eb-banner" data-action="<?php echo esc_attr($action); ?>" data-nonce="<?php echo esc_attr($nonce); ?>"><?php echo $eb_not_installed ? __('Get Essential Blocks', 'essential-addons-for-elementor-lite') : __('Activate', 'essential-addons-for-elementor-lite'); ?></b>
+						<a class="dc-gb-eb-banner-promo-learn-more" href="https://essential-blocks.com/" target="_blank"><?php _e('Learn More', 'disable-comments') ?></a>
+						<button class="dc-gb-eb-banner-promo-get-block dc-gb-eb-install" data-promotype="eb-banner" data-action="<?php echo esc_attr($action); ?>" data-nonce="<?php echo esc_attr($nonce); ?>"><?php echo $eb_not_installed ? __('Get Essential Blocks', 'disable-comments') : __('Activate', 'disable-comments'); ?></b>
 							<button class="dc-gb-eb-banner-promo-close" data-nonce="<?php echo esc_attr($nonce); ?>">
 								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
 									<g clip-path="url(#clip0_1_101)">
@@ -118,7 +158,7 @@ if (! class_exists('EB_Promotion_Notice')) :
 					</div>
 				</div>
 			</script>
-<?php
+			<?php
 		}
 
 
@@ -132,12 +172,12 @@ if (! class_exists('EB_Promotion_Notice')) :
 			$eb_promo_img5    = DC_ASSETS_URI . 'img/essential-blocks/eb-promo-img5.png';
 			$eb_not_installed = self::get_local_plugin_data( 'essential-blocks/essential-blocks.php' ) === false;
 			$action           = $eb_not_installed ? 'install' : 'activate';
-			$button_title     = $eb_not_installed ? esc_html__( 'Try Essential Blocks', 'essential-addons-for-elementor-lite' ) : esc_html__( 'Activate', 'essential-addons-for-elementor-lite' );
-			$nonce            = wp_create_nonce( 'essential-addons-elementor' );
+			$button_title     = $eb_not_installed ? esc_html__( 'Try Essential Blocks', 'disable-comments' ) : esc_html__( 'Activate', 'disable-comments' );
+			$nonce            = wp_create_nonce( 'disable-comments' );
 			?>
 			<script id="dc-gb-eb-button-template" type="text/html">
 				<button id="dc-eb-popup-button" type="button" class="components-button is-primary">
-					<img width="20" src="<?php echo esc_url( $eb_logo ); ?>" alt=""><?php esc_html_e( 'Essential Blocks', 'essential-addons-for-elementor-lite' ); ?>
+					<img width="20" src="<?php echo esc_url( $eb_logo ); ?>" alt=""><?php esc_html_e( 'Essential Blocks', 'disable-comments' ); ?>
 				</button>
 			</script>
 
@@ -145,7 +185,7 @@ if (! class_exists('EB_Promotion_Notice')) :
 				<div class="dc-gb-eb-popup">
 					<div class="dc-gb-eb-header">
 						<img src="<?php echo esc_url( $eb_promo_cross ); ?>" class="dc-gb-eb-dismiss" alt="">
-						<div class="dc-gb-eb-tooltip"><?php esc_html_e( 'Close dialog', 'essential-addons-for-elementor-lite' ); ?></div>
+						<div class="dc-gb-eb-tooltip"><?php esc_html_e( 'Close dialog', 'disable-comments' ); ?></div>
 					</div>
 					<div class="dc-gb-eb-popup-content --page-1">
 						<div class="dc-gb-eb-content">
@@ -160,15 +200,15 @@ if (! class_exists('EB_Promotion_Notice')) :
 								<span data-page="5"></span>
 							</div>
 							<div class="dc-gb-eb-content-info">
-								<h3><?php esc_html_e( 'Supercharge Your Gutenberg Experience With Essential Blocks', 'essential-addons-for-elementor-lite' ); ?></h3>
-								<p><?php esc_html_e( 'If you like Essential Addons for Elementor, check out Essential Blocks, the ultimate block library for Gutenberg that is trusted by more than 60,000+ web creators.', 'essential-addons-for-elementor-lite' ); ?></p>
+								<h3><?php esc_html_e( 'Supercharge Your Gutenberg Experience With Essential Blocks', 'disable-comments' ); ?></h3>
+								<p><?php esc_html_e( 'If you like Essential Addons for Elementor, check out Essential Blocks, the ultimate block library for Gutenberg that is trusted by more than 60,000+ web creators.', 'disable-comments' ); ?></p>
 								<button class="dc-gb-eb-install components-button is-primary" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
 							</div>
 						</div>
 						<div class="dc-gb-eb-footer">
-							<button class="dc-gb-eb-never-show" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php esc_html_e( 'Skip for Now', 'essential-addons-for-elementor-lite' ); ?></button>
-							<button class="dc-gb-eb-prev"><?php esc_html_e( 'Previous', 'essential-addons-for-elementor-lite' ); ?></button>
-							<button class="dc-gb-eb-next"><?php esc_html_e( 'Next', 'essential-addons-for-elementor-lite' ); ?></button>
+							<button class="dc-gb-eb-never-show" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php esc_html_e( 'Skip for Now', 'disable-comments' ); ?></button>
+							<button class="dc-gb-eb-prev"><?php esc_html_e( 'Previous', 'disable-comments' ); ?></button>
+							<button class="dc-gb-eb-next"><?php esc_html_e( 'Next', 'disable-comments' ); ?></button>
 						</div>
 					</div>
 				</div>
@@ -180,8 +220,8 @@ if (! class_exists('EB_Promotion_Notice')) :
 						<img src="<?php echo esc_url( $eb_promo_img1 ); ?>" alt="">
 					</div>
 					<div class="dc-gb-eb-content-info">
-						<h3><?php esc_html_e( 'Supercharge Your Gutenberg Experience With Essential Blocks', 'essential-addons-for-elementor-lite' ); ?></h3>
-						<p><?php esc_html_e( 'If you like Essential Addons for Elementor, check out Essential Blocks, the ultimate block library for Gutenberg that is trusted by more than 60,000+ web creators.', 'essential-addons-for-elementor-lite' ) ?></p>
+						<h3><?php esc_html_e( 'Supercharge Your Gutenberg Experience With Essential Blocks', 'disable-comments' ); ?></h3>
+						<p><?php esc_html_e( 'If you like Essential Addons for Elementor, check out Essential Blocks, the ultimate block library for Gutenberg that is trusted by more than 60,000+ web creators.', 'disable-comments' ) ?></p>
 						<button class="dc-gb-eb-install components-button is-primary" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
 					</div>
 				</div>
@@ -193,8 +233,8 @@ if (! class_exists('EB_Promotion_Notice')) :
 						<img src="<?php echo esc_url( $eb_promo_img2 ); ?>" alt="">
 					</div>
 					<div class="dc-gb-eb-content-info">
-						<h3><?php esc_html_e( '40+ Amazing Gutenberg Blocks', 'essential-addons-for-elementor-lite' ); ?></h3>
-						<p><?php esc_html_e( 'Create & design your WordPress websites just the way you want with more than 40 amazing, ready blocks from Essential Blocks for Gutenberg.', 'essential-addons-for-elementor-lite' ) ?></p>
+						<h3><?php esc_html_e( '40+ Amazing Gutenberg Blocks', 'disable-comments' ); ?></h3>
+						<p><?php esc_html_e( 'Create & design your WordPress websites just the way you want with more than 40 amazing, ready blocks from Essential Blocks for Gutenberg.', 'disable-comments' ) ?></p>
 						<button class="dc-gb-eb-install components-button is-primary" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
 					</div>
 				</div>
@@ -206,8 +246,8 @@ if (! class_exists('EB_Promotion_Notice')) :
 						<img src="<?php echo esc_url( $eb_promo_img3 ); ?>" alt="">
 					</div>
 					<div class="dc-gb-eb-content-info">
-						<h3><?php esc_html_e( 'Useful Block Control Option', 'essential-addons-for-elementor-lite' ); ?></h3>
-						<p><?php esc_html_e( 'Get the fastest loading time and smoothest experience on your web page by enabling and disabling individual blocks as per your requirements.', 'essential-addons-for-elementor-lite' ) ?></p>
+						<h3><?php esc_html_e( 'Useful Block Control Option', 'disable-comments' ); ?></h3>
+						<p><?php esc_html_e( 'Get the fastest loading time and smoothest experience on your web page by enabling and disabling individual blocks as per your requirements.', 'disable-comments' ) ?></p>
 						<button class="dc-gb-eb-install components-button is-primary" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
 					</div>
 				</div>
@@ -219,8 +259,8 @@ if (! class_exists('EB_Promotion_Notice')) :
 						<img src="<?php echo esc_url( $eb_promo_img4 ); ?>" alt="">
 					</div>
 					<div class="dc-gb-eb-content-info">
-						<h3><?php esc_html_e( 'Access To Thousands Of Ready Gutenberg Templates', 'essential-addons-for-elementor-lite' ); ?></h3>
-						<p><?php esc_html_e( 'Design unique websites using ready Gutenberg templates from Templately with absolute ease and instantly grab attention.', 'essential-addons-for-elementor-lite' ) ?></p>
+						<h3><?php esc_html_e( 'Access To Thousands Of Ready Gutenberg Templates', 'disable-comments' ); ?></h3>
+						<p><?php esc_html_e( 'Design unique websites using ready Gutenberg templates from Templately with absolute ease and instantly grab attention.', 'disable-comments' ) ?></p>
 						<button class="dc-gb-eb-install components-button is-primary" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
 					</div>
 				</div>
@@ -232,30 +272,151 @@ if (! class_exists('EB_Promotion_Notice')) :
 						<img src="<?php echo esc_url( $eb_promo_img5 ); ?>" alt="">
 					</div>
 					<div class="dc-gb-eb-content-info">
-						<h3><?php esc_html_e( 'Try Essential Blocks Today!', 'essential-addons-for-elementor-lite' ); ?></h3>
-						<p><?php printf( __( 'Want to get started with Essential Blocks now? Check out %scomplete guides for each blocks%s to learn more about this ultimate block library for Gutenberg.', 'essential-addons-for-elementor-lite' ), '<a href="https://essential-blocks.com/demo" target="_blank">', '</a>' ) ?></p>
+						<h3><?php esc_html_e( 'Try Essential Blocks Today!', 'disable-comments' ); ?></h3>
+						<p><?php printf( __( 'Want to get started with Essential Blocks now? Check out %scomplete guides for each blocks%s to learn more about this ultimate block library for Gutenberg.', 'disable-comments' ), '<a href="https://essential-blocks.com/demo" target="_blank">', '</a>' ) ?></p>
 						<button class="dc-gb-eb-install components-button is-primary" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
-						<button class="dc-gb-eb-never-show" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php esc_html_e( 'Skip for Now', 'essential-addons-for-elementor-lite' ); ?></button>
+						<button class="dc-gb-eb-never-show" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php esc_html_e( 'Skip for Now', 'disable-comments' ); ?></button>
 					</div>
 				</div>
 			</script>
 			<?php
 		}
 
-		public function discussion_notice() {
+
+		public function essential_block_optin() {
+			if ( is_plugin_active( 'essential-blocks/essential-blocks.php' ) ) {
+				return;
+			}
+
+			$screen           = get_current_screen();
+			$is_exclude       = ! empty( $_GET['post_type'] ) && in_array( $_GET['post_type'], [ 'elementor_library', 'product' ] );
+			$ajax_url         = admin_url( 'admin-ajax.php' );
+			$nonce            = wp_create_nonce( 'disable-comments' );
+			$eb_not_installed = self::get_local_plugin_data( 'essential-blocks/essential-blocks.php' ) === false;
+			$action           = $eb_not_installed ? 'install' : 'activate';
+			$button_title     = $eb_not_installed ? esc_html__( 'Install Essential Blocks', 'disable-comments' ) : esc_html__( 'Activate', 'disable-comments' );
+
+			if ( $screen->parent_base !== 'edit' || $is_exclude ) {
+				return;
+			}
 			?>
-				<div class="notice notice-info is-dismissible">
-				<h3>Using Gutenberg? Check out Essential Blocks!</h3>
-				<p>
-					Are you using the Gutenberg Editor for your website? Then try out Essential Blocks for Gutenberg, and explore 40+ unique blocks to make your web design experience in WordPress even more powerful. 🚀
-				</p>
-				<p>
-					For more information, <a href="https://essential-blocks.com/demo" target="_blank">check out the demo here</a>.
-				</p>
-				<p>
-					<a href="<?php echo esc_url(wp_nonce_url(self_admin_url('update.php?action=install-plugin&plugin=essential-blocks'), 'install-plugin_essential-blocks')); ?>" class="button button-primary">Install Essential Blocks</a>
-				</p>
+			<div class="wpnotice-wrapper notice  notice-info is-dismissible dc-eb-optin-notice">
+				<div class="wpnotice-content-wrapper">
+					<div class="dc-eb-optin">
+						<h3><?php esc_html_e( 'Using Gutenberg? Check out Essential Blocks!', 'disable-comments' ); ?></h3>
+						<p><?php _e( 'Are you using the Gutenberg Editor for your website? Then try out Essential Blocks for Gutenberg, and explore 40+ unique blocks to make your web design experience in WordPress even more powerful. 🚀', 'disable-comments' ); ?></p>
+						<p><?php _e( 'For more information, <a href="https://essential-blocks.com/demo/" target="_blank">check out the demo here</a>.', 'disable-comments' ); ?></p>
+						<p>
+							<a href="#" class="button-primary wpdeveloper-eb-plugin-installer" data-action="<?php echo esc_attr( $action ); ?>"><?php echo esc_html( $button_title ); ?></a>
+						</p>
+					</div>
+				</div>
 			</div>
+
+			<script>
+				// install/activate plugin
+				(function ($) {
+					$(document).on("click", ".wpdeveloper-eb-plugin-installer", function (ev) {
+						ev.preventDefault();
+
+						var button = $(this),
+							action = button.data("action");
+
+						if ($.active && typeof action != "undefined") {
+							button.text("Waiting...").attr("disabled", true);
+
+							setInterval(function () {
+								if (!$.active) {
+									button.attr("disabled", false).trigger("click");
+								}
+							}, 1000);
+						}
+
+						if (action === "install" && !$.active) {
+							button.text("Installing...").attr("disabled", true);
+
+							$.ajax({
+								url: "<?php echo esc_html( $ajax_url ); ?>",
+								type: "POST",
+								data: {
+									action: "wpdeveloper_install_plugin",
+									security: "<?php echo esc_html( $nonce ); ?>",
+									slug: "essential-blocks",
+								},
+								success: function (response) {
+									if (response.success) {
+										button.text("Activated");
+										button.data("action", null);
+
+										setTimeout(function () {
+											location.reload();
+										}, 1000);
+									} else {
+										button.text("Install");
+									}
+
+									button.attr("disabled", false);
+								},
+								error: function (err) {
+									console.log(err.responseJSON);
+								},
+							});
+						} else if (action === "activate" && !$.active) {
+							button.text("Activating...").attr("disabled", true);
+
+							$.ajax({
+								url: "<?php echo esc_html( $ajax_url ); ?>",
+								type: "POST",
+								data: {
+									action: "wpdeveloper_activate_plugin",
+									security: "<?php echo esc_html( $nonce ); ?>",
+									basename: "essential-blocks/essential-blocks.php",
+								},
+								success: function (response) {
+									if (response.success) {
+										button.text("Activated");
+										button.data("action", null);
+
+										setTimeout(function () {
+											location.reload();
+										}, 1000);
+									} else {
+										button.text("Activate");
+									}
+
+									button.attr("disabled", false);
+								},
+								error: function (err) {
+									console.log(err.responseJSON);
+								},
+							});
+						}
+					}).on('click', '.dc-eb-optin-notice button.notice-dismiss', function (e) {
+						e.preventDefault();
+
+						var $notice_wrapper = $(this).closest('.dc-eb-optin-notice');
+
+						$.ajax({
+							url: "<?php echo esc_html( $ajax_url ); ?>",
+							type: "POST",
+							data: {
+								action: "dc_eb_optin_notice_dismiss",
+								security: "<?php echo esc_html( $nonce ); ?>",
+							},
+							success: function (response) {
+								if (response.success) {
+									$notice_wrapper.remove();
+								} else {
+									console.log(response.data);
+								}
+							},
+							error: function (err) {
+								console.log(err.responseText);
+							},
+						});
+					});
+				})(jQuery);
+			</script>
 			<?php
 		}
 
@@ -278,15 +439,37 @@ if (! class_exists('EB_Promotion_Notice')) :
 		}
 
 
+		public function dc_eb_optin_notice_dismiss() {
+			check_ajax_referer( 'disable-comments', 'security' );
 
-		public function dc_eb_banner_promo_dismiss() {
-			check_ajax_referer('disable-comments', 'security');
-
-			if (! current_user_can('manage_options')) {
-				wp_send_json_error(__('You are not allowed to do this action', 'essential-addons-for-elementor-lite'));
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_send_json_error( __( 'You are not allowed to do this action', 'disable-comments' ) );
 			}
 
-			set_transient('dc_eb_banner_promo_hide', true, DAY_IN_SECONDS * 45);
+			// update_option( 'wpdeveloper_eb_optin_hide', true );
+			set_transient( 'wpdeveloper_eb_optin_hide', true, MONTH_IN_SECONDS * 2);
+			wp_send_json_success();
+		}
+
+		public function dc_gb_eb_popup_dismiss() {
+			check_ajax_referer( 'disable-comments', 'security' );
+
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_send_json_error( __( 'You are not allowed to do this action', 'disable-comments' ) );
+			}
+
+			set_transient( 'wpdeveloper_gb_eb_popup_hide', true, MONTH_IN_SECONDS * 2 );
+			wp_send_json_success();
+		}
+
+		public function dc_eb_banner_promo_dismiss() {
+			check_ajax_referer( 'disable-comments', 'security' );
+
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_send_json_error( __( 'You are not allowed to do this action', 'disable-comments' ) );
+			}
+
+			set_transient( 'wpdeveloper_eb_banner_promo_hide', true, DAY_IN_SECONDS * 45 );
 			wp_send_json_success();
 		}
 	}
