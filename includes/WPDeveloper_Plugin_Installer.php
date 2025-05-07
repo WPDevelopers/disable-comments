@@ -51,7 +51,7 @@ class WPDeveloper_Plugin_Installer
     public function get_remote_plugin_data($slug = '')
     {
         if (empty($slug)) {
-            return new WP_Error('empty_arg', __('Argument should not be empty.', 'essential-addons-for-elementor-lite'));
+            return new WP_Error('empty_arg', __('Argument should not be empty.', 'disable-comments'));
         }
 
         $response = wp_remote_post(
@@ -86,7 +86,7 @@ class WPDeveloper_Plugin_Installer
     public function install_plugin($slug = '', $active = true)
     {
         if (empty($slug)) {
-            return new WP_Error('empty_arg', __('Argument should not be empty.', 'essential-addons-for-elementor-lite'));
+            return new WP_Error('empty_arg', __('Argument should not be empty.', 'disable-comments'));
         }
 
         include_once ABSPATH . 'wp-admin/includes/file.php';
@@ -131,7 +131,7 @@ class WPDeveloper_Plugin_Installer
     public function upgrade_plugin($basename = '')
     {
         if (empty($slug)) {
-            return new WP_Error('empty_arg', __('Argument should not be empty.', 'essential-addons-for-elementor-lite'));
+            return new WP_Error('empty_arg', __('Argument should not be empty.', 'disable-comments'));
         }
 
         include_once ABSPATH . 'wp-admin/includes/file.php';
@@ -149,21 +149,21 @@ class WPDeveloper_Plugin_Installer
         check_ajax_referer('disable-comments', 'security');
 
         if(!current_user_can( 'install_plugins' )) {
-            wp_send_json_error(__('you are not allowed to do this action', 'essential-addons-for-elementor-lite'));
+            wp_send_json_error(__('you are not allowed to do this action', 'disable-comments'));
         }
 
 	    $slug   = isset( $_POST['slug'] ) ? sanitize_text_field( $_POST['slug'] ) : '';
 	    $result = $this->install_plugin( $slug );
 
-        if( isset( $_POST['promotype'] ) && 'eb-banner' === $_POST['promotype'] ) {
-            wp_remote_get( 'https://essential-addons.com/essential-blocks-install-gutenberg' );
-        }
+        // if( isset( $_POST['promotype'] ) && 'eb-banner' === $_POST['promotype'] ) {
+        //     wp_remote_get( 'https://essential-addons.com/essential-blocks-install-gutenberg' );
+        // }
 
 	    if ( is_wp_error( $result ) ) {
 		    wp_send_json_error( $result->get_error_message() );
 	    }
 
-        wp_send_json_success(__('Plugin is installed successfully!', 'essential-addons-for-elementor-lite'));
+        wp_send_json_success(__('Plugin is installed successfully!', 'disable-comments'));
     }
 
     public function ajax_upgrade_plugin()
@@ -171,7 +171,7 @@ class WPDeveloper_Plugin_Installer
         check_ajax_referer('disable-comments', 'security');
         //check user capabilities
         if(!current_user_can( 'update_plugins' )) {
-            wp_send_json_error(__('you are not allowed to do this action', 'essential-addons-for-elementor-lite'));
+            wp_send_json_error(__('you are not allowed to do this action', 'disable-comments'));
         }
 
 	    $basename = isset( $_POST['basename'] ) ? sanitize_text_field( $_POST['basename'] ) : '';
@@ -181,7 +181,7 @@ class WPDeveloper_Plugin_Installer
             wp_send_json_error($result->get_error_message());
         }
 
-        wp_send_json_success(__('Plugin is updated successfully!', 'essential-addons-for-elementor-lite'));
+        wp_send_json_success(__('Plugin is updated successfully!', 'disable-comments'));
     }
 
     public function ajax_activate_plugin()
@@ -190,7 +190,7 @@ class WPDeveloper_Plugin_Installer
 
         //check user capabilities
         if(!current_user_can( 'activate_plugins' )) {
-            wp_send_json_error(__('you are not allowed to do this action', 'essential-addons-for-elementor-lite'));
+            wp_send_json_error(__('you are not allowed to do this action', 'disable-comments'));
         }
 
 	    $basename = isset( $_POST['basename'] ) ? sanitize_text_field( $_POST['basename'] ) : '';
@@ -201,9 +201,9 @@ class WPDeveloper_Plugin_Installer
 	    }
 
         if ($result === false) {
-            wp_send_json_error(__('Plugin couldn\'t be activated.', 'essential-addons-for-elementor-lite'));
+            wp_send_json_error(__('Plugin couldn\'t be activated.', 'disable-comments'));
         }
-        wp_send_json_success(__('Plugin is activated successfully!', 'essential-addons-for-elementor-lite'));
+        wp_send_json_success(__('Plugin is activated successfully!', 'disable-comments'));
     }
 
 	public function ajax_deactivate_plugin() {
@@ -211,13 +211,13 @@ class WPDeveloper_Plugin_Installer
 
 		//check user capabilities
 		if ( ! current_user_can( 'activate_plugins' ) ) {
-			wp_send_json_error( __( 'you are not allowed to do this action', 'essential-addons-for-elementor-lite' ) );
+			wp_send_json_error( __( 'you are not allowed to do this action', 'disable-comments' ) );
 		}
 
 		$basename = isset( $_POST['basename'] ) ? sanitize_text_field( $_POST['basename'] ) : '';
 		deactivate_plugins( $basename, true );
 
-		wp_send_json_success( __( 'Plugin is deactivated successfully!', 'essential-addons-for-elementor-lite' ) );
+		wp_send_json_success( __( 'Plugin is deactivated successfully!', 'disable-comments' ) );
 	}
 
 	public function ajax_auto_active_even_not_installed() {
