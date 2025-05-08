@@ -41,9 +41,9 @@ if (! class_exists('EB_Promotion_Notice')) :
 				}
 
 				// Essential Blocks Admin Notice
-				add_action( 'wpdeveloper_eb_admin_notice_init', [ $this, 'eb_admin_notice_init' ] );
-				if ( ( did_action( 'wpdeveloper_eb_admin_notice_init' ) < 1 ) && ! ( get_option( 'eael_eb_optin_hide' ) || get_transient( 'wpdeveloper_eb_optin_hide' ) ) ) {
-					do_action( 'wpdeveloper_eb_admin_notice_init' );
+				add_action( 'wpdeveloper_eb_optin_promo_init', [ $this, 'eb_admin_notice_init' ] );
+				if ( ( did_action( 'wpdeveloper_eb_optin_promo_init' ) < 1 ) && ! ( get_option( 'eael_eb_optin_hide' ) || get_transient( 'wpdeveloper_eb_optin_hide' ) ) ) {
+					do_action( 'wpdeveloper_eb_optin_promo_init' );
 				}
 			}
 		}
