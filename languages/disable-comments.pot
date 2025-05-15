@@ -2,21 +2,21 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Disable Comments 2.5.0\n"
+"Project-Id-Version: Disable Comments 2.4.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/disable-comments\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-15T09:01:25+00:00\n"
+"POT-Creation-Date: 2025-04-24T10:13:52+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: disable-comments\n"
 
 #. Plugin Name of the plugin
 #: disable-comments.php
-#: disable-comments.php:373
+#: disable-comments.php:357
 msgid "Disable Comments"
 msgstr ""
 
@@ -40,85 +40,85 @@ msgstr ""
 msgid "https://wpdeveloper.com"
 msgstr ""
 
-#: disable-comments.php:173
+#: disable-comments.php:157
 msgid "Want to help make Disable Comments even better?"
 msgstr ""
 
-#: disable-comments.php:174
+#: disable-comments.php:158
 msgid "We collect non-sensitive diagnostic data and plugin usage information. Your site URL, WordPress & PHP version, plugins & themes and email address to send you the discount coupon. This data lets us make sure this plugin always stays compatible with the most popular plugins and themes. No spam, I promise."
 msgstr ""
 
 #. translators: %s: WordPress version no.
-#: disable-comments.php:187
+#: disable-comments.php:171
 msgid "Disable Comments requires WordPress version %s or greater."
 msgstr ""
 
-#: disable-comments.php:516
-#: disable-comments.php:667
-#: disable-comments.php:674
+#: disable-comments.php:500
+#: disable-comments.php:651
+#: disable-comments.php:658
 msgid "Comments are closed."
 msgstr ""
 
 #. translators: %s: disabled post types.
-#: disable-comments.php:624
+#: disable-comments.php:608
 msgid "Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types."
 msgstr ""
 
 #. translators: %s: disabled post types.
-#: disable-comments.php:624
+#: disable-comments.php:608
 msgid ", "
 msgstr ""
 
 #. translators: %s: URL to Disabled Comment settings page.
-#: disable-comments.php:657
+#: disable-comments.php:641
 msgid "The <strong>Disable Comments</strong> plugin is active, but isn't configured to do anything yet. Visit the <a href=\"%s\">configuration page</a> to choose which post types to disable comments on."
 msgstr ""
 
-#: disable-comments.php:739
+#: disable-comments.php:723
 #: views/partials/_disable.php:3
 msgid "Settings"
 msgstr ""
 
-#: disable-comments.php:740
+#: disable-comments.php:724
 msgid "Tools"
 msgstr ""
 
-#: disable-comments.php:748
+#: disable-comments.php:732
 msgctxt "settings menu title"
 msgid "Disable Comments"
 msgstr ""
 
-#: disable-comments.php:757
+#: disable-comments.php:741
 #: views/partials/_delete.php:9
 #: views/partials/_delete.php:218
 #: assets/js/disable-comments-settings-scripts.js:364
 msgid "Delete Comments"
 msgstr ""
 
-#: disable-comments.php:818
+#: disable-comments.php:802
 msgid "Default (no type)"
 msgstr ""
 
-#: disable-comments.php:845
+#: disable-comments.php:829
 msgid "Logged out users"
 msgstr ""
 
-#: disable-comments.php:1030
+#: disable-comments.php:1014
 msgid "Saved"
 msgstr ""
 
-#: disable-comments.php:1098
-#: disable-comments.php:1135
-#: disable-comments.php:1162
+#: disable-comments.php:1082
+#: disable-comments.php:1119
+#: disable-comments.php:1146
 msgid "All comments have been deleted"
 msgstr ""
 
-#: disable-comments.php:1100
-#: disable-comments.php:1104
+#: disable-comments.php:1084
+#: disable-comments.php:1088
 msgid "Internal error occured. Please try again later."
 msgstr ""
 
-#: disable-comments.php:1174
+#: disable-comments.php:1158
 msgid "All spam comments have been deleted."
 msgstr ""
 
@@ -228,150 +228,6 @@ msgstr ""
 
 #: includes/cli.php:189
 msgid "Enabled Avatar on your entire site. "
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:138
-msgid "Want To Get All Exclusive Gutenberg Blocks For Free?"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:139
-msgid "If you want to enrich your Gutenberg block library with the latest designs and functionalities, Essential Blocks can be your best companion."
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:143
-msgid "Learn More"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:144
-msgid "Get Essential Blocks"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:144
-#: includes/EB_Promotion_Notice.php:175
-#: includes/EB_Promotion_Notice.php:297
-msgid "Activate"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:175
-msgid "Try Essential Blocks"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:180
-msgid "Essential Blocks"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:188
-msgid "Close dialog"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:203
-#: includes/EB_Promotion_Notice.php:223
-msgid "Supercharge Your Gutenberg Experience With Essential Blocks"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:204
-#: includes/EB_Promotion_Notice.php:224
-msgid "If you like Disable Comments, check out Essential Blocks, the ultimate block library for Gutenberg that is trusted by more than 100,000+ web creators."
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:209
-#: includes/EB_Promotion_Notice.php:278
-msgid "Skip for Now"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:210
-msgid "Previous"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:211
-msgid "Next"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:236
-msgid "60+ Amazing Gutenberg Blocks"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:237
-msgid "Create & design your WordPress websites just the way you want with more than 60 amazing, ready blocks from Essential Blocks for Gutenberg."
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:249
-msgid "Useful Block Control Option"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:250
-msgid "Get the fastest loading time and smoothest experience on your web page by enabling and disabling individual blocks as per your requirements."
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:262
-msgid "Access To Thousands Of Ready Gutenberg Templates"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:263
-msgid "Design unique websites using ready Gutenberg templates from Templately with absolute ease and instantly grab attention."
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:275
-msgid "Try Essential Blocks Today!"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:276
-msgid "Want to get started with Essential Blocks now? Check out %scomplete guides for each blocks%s to learn more about this ultimate block library for Gutenberg."
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:297
-msgid "Install Essential Blocks"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:306
-msgid "Using Gutenberg? Check out Essential Blocks!"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:307
-msgid "Are you using the Gutenberg Editor for your website? Then try out Essential Blocks for Gutenberg, and explore 60+ unique blocks to make your web design experience in WordPress even more powerful. 🚀"
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:308
-msgid "For more information, <a href=\"https://essential-blocks.com/demo/\" target=\"_blank\">check out the demo here</a>."
-msgstr ""
-
-#: includes/EB_Promotion_Notice.php:448
-#: includes/EB_Promotion_Notice.php:460
-#: includes/EB_Promotion_Notice.php:471
-msgid "You are not allowed to do this action"
-msgstr ""
-
-#: includes/WPDeveloper_Plugin_Installer.php:54
-#: includes/WPDeveloper_Plugin_Installer.php:89
-#: includes/WPDeveloper_Plugin_Installer.php:134
-msgid "Argument should not be empty."
-msgstr ""
-
-#: includes/WPDeveloper_Plugin_Installer.php:152
-#: includes/WPDeveloper_Plugin_Installer.php:187
-#: includes/WPDeveloper_Plugin_Installer.php:206
-#: includes/WPDeveloper_Plugin_Installer.php:227
-msgid "you are not allowed to do this action"
-msgstr ""
-
-#: includes/WPDeveloper_Plugin_Installer.php:179
-msgid "Plugin is installed successfully!"
-msgstr ""
-
-#: includes/WPDeveloper_Plugin_Installer.php:197
-msgid "Plugin is updated successfully!"
-msgstr ""
-
-#: includes/WPDeveloper_Plugin_Installer.php:217
-msgid "Plugin couldn't be activated."
-msgstr ""
-
-#: includes/WPDeveloper_Plugin_Installer.php:219
-msgid "Plugin is activated successfully!"
-msgstr ""
-
-#: includes/WPDeveloper_Plugin_Installer.php:233
-msgid "Plugin is deactivated successfully!"
 msgstr ""
 
 #: views/partials/_delete.php:18
