@@ -201,7 +201,7 @@ if (! class_exists('EB_Promotion_Notice')) :
 							</div>
 							<div class="dc-gb-eb-content-info">
 								<h3><?php esc_html_e( 'Supercharge Your Gutenberg Experience With Essential Blocks', 'disable-comments' ); ?></h3>
-								<p><?php esc_html_e( 'If you like Disable Comments, check out Essential Blocks, the ultimate block library for Gutenberg that is trusted by more than 60,000+ web creators.', 'disable-comments' ); ?></p>
+								<p><?php esc_html_e( 'If you like Essential Addons for Elementor, check out Essential Blocks, the ultimate block library for Gutenberg that is trusted by more than 60,000+ web creators.', 'disable-comments' ); ?></p>
 								<button class="dc-gb-eb-install components-button is-primary" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
 							</div>
 						</div>
@@ -221,7 +221,7 @@ if (! class_exists('EB_Promotion_Notice')) :
 					</div>
 					<div class="dc-gb-eb-content-info">
 						<h3><?php esc_html_e( 'Supercharge Your Gutenberg Experience With Essential Blocks', 'disable-comments' ); ?></h3>
-						<p><?php esc_html_e( 'If you like Disable Comments, check out Essential Blocks, the ultimate block library for Gutenberg that is trusted by more than 60,000+ web creators.', 'disable-comments' ) ?></p>
+						<p><?php esc_html_e( 'If you like Essential Addons for Elementor, check out Essential Blocks, the ultimate block library for Gutenberg that is trusted by more than 60,000+ web creators.', 'disable-comments' ) ?></p>
 						<button class="dc-gb-eb-install components-button is-primary" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
 					</div>
 				</div>
