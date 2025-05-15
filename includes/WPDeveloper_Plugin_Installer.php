@@ -155,9 +155,9 @@ class WPDeveloper_Plugin_Installer
 	    $slug   = isset( $_POST['slug'] ) ? sanitize_text_field( $_POST['slug'] ) : '';
 	    $result = $this->install_plugin( $slug );
 
-        if( isset( $_POST['promotype'] ) && 'eb-banner' === $_POST['promotype'] ) {
-            wp_remote_get( 'https://wpdeveloper.com/dc/essential-blocks' );
-        }
+        // if( isset( $_POST['promotype'] ) && 'eb-banner' === $_POST['promotype'] ) {
+        //     wp_remote_get( 'https://essential-addons.com/essential-blocks-install-gutenberg' );
+        // }
 
 	    if ( is_wp_error( $result ) ) {
 		    wp_send_json_error( $result->get_error_message() );
