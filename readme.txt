@@ -3,9 +3,9 @@ Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, alimuzzamanalim, s
 Donate link: https://wpdeveloper.com/
 Tags: Disable Comments, Stop Spam, Delete Comments, Remove Comments, Spam Protection
 Requires at least: 5.0
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 2.4.7
+Stable tag: 2.5.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -191,6 +191,10 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maintained from August 19, 2020 - @asif2bd
+
+= [2.5.0] - 2025-05-15 =
+* Added: Accessibility support to the plugin settings page
+* Various minor improvements and enhancements
 
 = [2.4.7] - 2025-01-27 =
 * Fixed: Errors reported by Plugin Check (PCP)
