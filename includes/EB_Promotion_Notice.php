@@ -40,10 +40,6 @@ if (! class_exists('EB_Promotion_Notice')) :
 				add_action('enqueue_block_editor_assets', [$this, 'essential_blocks_banner_promo_enqueue_scripts']);
 				add_action('wp_ajax_dc_eb_banner_promo_dismiss', [$this, 'dc_eb_banner_promo_dismiss']);
 			}
-			//Essential Blocks Banner Promo
-			if (! class_exists('Classic_Editor') && ! class_exists('EssentialBlocks') && ! get_transient('dc_eb_notice_promo_hide')) {
-				add_action('admin_notices', array($this, 'discussion_notice'));
-			}
 		}
 
 
@@ -239,23 +235,6 @@ if (! class_exists('EB_Promotion_Notice')) :
 					</div>
 				</div>
 			</script>
-			<?php
-		}
-
-		public function discussion_notice() {
-			?>
-				<div class="notice notice-info is-dismissible">
-				<h3>Using Gutenberg? Check out Essential Blocks!</h3>
-				<p>
-					Are you using the Gutenberg Editor for your website? Then try out Essential Blocks for Gutenberg, and explore 40+ unique blocks to make your web design experience in WordPress even more powerful. 🚀
-				</p>
-				<p>
-					For more information, <a href="https://essential-blocks.com/demo" target="_blank">check out the demo here</a>.
-				</p>
-				<p>
-					<a href="<?php echo esc_url(wp_nonce_url(self_admin_url('update.php?action=install-plugin&plugin=essential-blocks'), 'install-plugin_essential-blocks')); ?>" class="button button-primary">Install Essential Blocks</a>
-				</p>
-			</div>
 			<?php
 		}
 
