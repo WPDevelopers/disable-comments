@@ -155,20 +155,15 @@ class WPDeveloper_Plugin_Installer
 	    $slug   = isset( $_POST['slug'] ) ? sanitize_text_field( $_POST['slug'] ) : '';
 	    $result = $this->install_plugin( $slug );
 
-        $args = array(
-            'headers' => array(
-                'Referer' => "DisableComments",
-            ),
-        );
         if( isset( $_POST['promotype'] ) ) {
-            if( 'eb-popup' === $_POST['promotype'] ) {
-                wp_remote_get( 'https://wpdeveloper.com/dc-modal/essential-blocks', $args );
+            if( 'popup' === $_POST['promotype'] ) {
+                wp_remote_get( 'https://wpdeveloper.com/dc-modal/essential-blocks' );
             }
-            if( 'eb-notice' === $_POST['promotype'] ) {
-                wp_remote_get( 'https://wpdeveloper.com/dc-posts/essential-blocks', $args );
+            if( 'notice' === $_POST['promotype'] ) {
+                wp_remote_get( 'https://wpdeveloper.com/dc-posts/essential-blocks' );
             }
-            if( 'eb-banner' === $_POST['promotype'] ) {
-                wp_remote_get( 'https://wpdeveloper.com/dc-editor/essential-blocks', $args );
+            if( 'banner' === $_POST['promotype'] ) {
+                wp_remote_get( 'https://wpdeveloper.com/dc-editor/essential-blocks' );
             }
         }
 
