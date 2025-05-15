@@ -155,16 +155,8 @@ class WPDeveloper_Plugin_Installer
 	    $slug   = isset( $_POST['slug'] ) ? sanitize_text_field( $_POST['slug'] ) : '';
 	    $result = $this->install_plugin( $slug );
 
-        if( isset( $_POST['promotype'] ) ) {
-            if( 'popup' === $_POST['promotype'] ) {
-                wp_remote_get( 'https://wpdeveloper.com/dc-modal/essential-blocks' );
-            }
-            if( 'notice' === $_POST['promotype'] ) {
-                wp_remote_get( 'https://wpdeveloper.com/dc-posts/essential-blocks' );
-            }
-            if( 'banner' === $_POST['promotype'] ) {
-                wp_remote_get( 'https://wpdeveloper.com/dc-editor/essential-blocks' );
-            }
+        if( isset( $_POST['promotype'] ) && 'eb-banner' === $_POST['promotype'] ) {
+            wp_remote_get( 'https://wpdeveloper.com/dc/essential-blocks' );
         }
 
 	    if ( is_wp_error( $result ) ) {
