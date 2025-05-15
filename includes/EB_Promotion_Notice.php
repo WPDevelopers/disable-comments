@@ -202,7 +202,7 @@ if (! class_exists('EB_Promotion_Notice')) :
 							<div class="dc-gb-eb-content-info">
 								<h3><?php esc_html_e( 'Supercharge Your Gutenberg Experience With Essential Blocks', 'disable-comments' ); ?></h3>
 								<p><?php esc_html_e( 'If you like Disable Comments, check out Essential Blocks, the ultimate block library for Gutenberg that is trusted by more than 60,000+ web creators.', 'disable-comments' ); ?></p>
-								<button class="dc-gb-eb-install components-button is-primary" data-promotype="eb-banner" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
+								<button class="dc-gb-eb-install components-button is-primary" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
 							</div>
 						</div>
 						<div class="dc-gb-eb-footer">
@@ -222,7 +222,7 @@ if (! class_exists('EB_Promotion_Notice')) :
 					<div class="dc-gb-eb-content-info">
 						<h3><?php esc_html_e( 'Supercharge Your Gutenberg Experience With Essential Blocks', 'disable-comments' ); ?></h3>
 						<p><?php esc_html_e( 'If you like Disable Comments, check out Essential Blocks, the ultimate block library for Gutenberg that is trusted by more than 60,000+ web creators.', 'disable-comments' ) ?></p>
-						<button class="dc-gb-eb-install components-button is-primary" data-promotype="eb-banner" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
+						<button class="dc-gb-eb-install components-button is-primary" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
 					</div>
 				</div>
 			</script>
@@ -235,7 +235,7 @@ if (! class_exists('EB_Promotion_Notice')) :
 					<div class="dc-gb-eb-content-info">
 						<h3><?php esc_html_e( '40+ Amazing Gutenberg Blocks', 'disable-comments' ); ?></h3>
 						<p><?php esc_html_e( 'Create & design your WordPress websites just the way you want with more than 40 amazing, ready blocks from Essential Blocks for Gutenberg.', 'disable-comments' ) ?></p>
-						<button class="dc-gb-eb-install components-button is-primary" data-promotype="eb-banner" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
+						<button class="dc-gb-eb-install components-button is-primary" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
 					</div>
 				</div>
 			</script>
@@ -248,7 +248,7 @@ if (! class_exists('EB_Promotion_Notice')) :
 					<div class="dc-gb-eb-content-info">
 						<h3><?php esc_html_e( 'Useful Block Control Option', 'disable-comments' ); ?></h3>
 						<p><?php esc_html_e( 'Get the fastest loading time and smoothest experience on your web page by enabling and disabling individual blocks as per your requirements.', 'disable-comments' ) ?></p>
-						<button class="dc-gb-eb-install components-button is-primary" data-promotype="eb-banner" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
+						<button class="dc-gb-eb-install components-button is-primary" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
 					</div>
 				</div>
 			</script>
@@ -261,7 +261,7 @@ if (! class_exists('EB_Promotion_Notice')) :
 					<div class="dc-gb-eb-content-info">
 						<h3><?php esc_html_e( 'Access To Thousands Of Ready Gutenberg Templates', 'disable-comments' ); ?></h3>
 						<p><?php esc_html_e( 'Design unique websites using ready Gutenberg templates from Templately with absolute ease and instantly grab attention.', 'disable-comments' ) ?></p>
-						<button class="dc-gb-eb-install components-button is-primary" data-promotype="eb-banner" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
+						<button class="dc-gb-eb-install components-button is-primary" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
 					</div>
 				</div>
 			</script>
@@ -274,7 +274,7 @@ if (! class_exists('EB_Promotion_Notice')) :
 					<div class="dc-gb-eb-content-info">
 						<h3><?php esc_html_e( 'Try Essential Blocks Today!', 'disable-comments' ); ?></h3>
 						<p><?php printf( __( 'Want to get started with Essential Blocks now? Check out %scomplete guides for each blocks%s to learn more about this ultimate block library for Gutenberg.', 'disable-comments' ), '<a href="https://essential-blocks.com/demo" target="_blank">', '</a>' ) ?></p>
-						<button class="dc-gb-eb-install components-button is-primary" data-promotype="eb-banner" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
+						<button class="dc-gb-eb-install components-button is-primary" data-action="<?php echo esc_attr( $action ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php echo esc_html( $button_title ); ?></button>
 						<button class="dc-gb-eb-never-show" data-nonce="<?php echo esc_attr( $nonce ); ?>"><?php esc_html_e( 'Skip for Now', 'disable-comments' ); ?></button>
 					</div>
 				</div>
@@ -320,7 +320,6 @@ if (! class_exists('EB_Promotion_Notice')) :
 						ev.preventDefault();
 
 						var button = $(this),
-							promoType = button.data("promotype") ?? "",
 							action = button.data("action");
 
 						if ($.active && typeof action != "undefined") {
@@ -343,7 +342,6 @@ if (! class_exists('EB_Promotion_Notice')) :
 									action: "wpdeveloper_install_plugin",
 									security: "<?php echo esc_html( $nonce ); ?>",
 									slug: "essential-blocks",
-									promotype: promoType,
 								},
 								success: function (response) {
 									if (response.success) {
