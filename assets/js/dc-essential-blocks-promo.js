@@ -58,7 +58,7 @@
             url: "admin-ajax.php",
             type: "POST",
             data: {
-                action: "dc_gb_eb_popup_dismiss",
+                action: "eael_gb_eb_popup_dismiss",
                 security: nonce,
             },
             success: function (response) {
