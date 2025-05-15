@@ -15,9 +15,6 @@
  * @package Disable_Comments
  */
 
-use Disable_Comments\Classes\EB_Promotion_Notice;
-use Disable_Comments\Classes\WPDeveloper_Plugin_Installer;
-
 if (!defined('ABSPATH')) {
 	exit;
 }
@@ -111,7 +108,6 @@ class Disable_Comments {
 
 		add_action('plugins_loaded', [$this, 'init_filters']);
 		add_action('wp_loaded', [$this, 'start_plugin_usage_tracking']);
-		add_action('wp_loaded', [$this, 'eb_promotion_notice']);
 	}
 
 	public function is_network_admin() {
@@ -142,18 +138,6 @@ class Disable_Comments {
 				$this->tracker->notice();
 			}
 		}
-	}
-
-	public function eb_promotion_notice() {
-		if (!class_exists('Disable_Comments\Classes\EB_Promotion_Notice')) {
-			include_once(DC_PLUGIN_ROOT_PATH . '/includes/EB_Promotion_Notice.php');
-		}
-		if (!class_exists('Disable_Comments\Classes\WPDeveloper_Plugin_Installer')) {
-			include_once(DC_PLUGIN_ROOT_PATH . '/includes/WPDeveloper_Plugin_Installer.php');
-		}
-
-		$eb_promotion_notice = new EB_Promotion_Notice();
-		$plugin_installer = new WPDeveloper_Plugin_Installer();
 	}
 
 	public function start_plugin_usage_tracking() {
