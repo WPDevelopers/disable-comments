@@ -89,7 +89,7 @@
                                 name="delete_types[]"
                                 value="<?php echo esc_attr($key); ?>"
                                 aria-describedby="delete-type-warning"
-                                <?php checked(in_array($key, $this->options['disabled_post_types']), true, false); ?>>
+                                <?php checked(in_array($key, $this->options['disabled_post_types']), true, true); ?>>
                             <label for="delete__checklist__item-<?php echo esc_attr($key); ?>">
                                 <i class="icon" tabindex="0"></i>
                                 <?php echo esc_html($value->labels->name); ?>
