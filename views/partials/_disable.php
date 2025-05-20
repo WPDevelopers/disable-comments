@@ -129,7 +129,7 @@
                             id="remove__checklist__item-<?php echo esc_attr($key); ?>"
                             name="disabled_types[]"
                             value="<?php echo esc_attr($key); ?>"
-                            <?php checked(in_array($key, $this->get_disabled_post_types()), true, false); ?>>
+                            <?php checked(in_array($key, $this->get_disabled_post_types()), true, true); ?>>
                         <label for="remove__checklist__item-<?php echo esc_attr($key); ?>">
                             <i class="icon" tabindex="0"></i>
                             <?php echo esc_html($value->labels->name); ?>
