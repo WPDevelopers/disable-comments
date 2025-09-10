@@ -30,6 +30,7 @@ wp-cli.local.yml
 tests
 vendor
 node_modules
+docs
 *.sql
 *.tar.gz
 *.zip

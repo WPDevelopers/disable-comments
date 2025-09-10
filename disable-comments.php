@@ -108,6 +108,9 @@ class Disable_Comments {
 
 		add_action('plugins_loaded', [$this, 'init_filters']);
 		add_action('wp_loaded', [$this, 'start_plugin_usage_tracking']);
+
+		// Add Site Health integration
+		add_filter('debug_information', array($this, 'add_site_health_info'));
 	}
 
 	public function is_network_admin() {
@@ -1207,6 +1210,300 @@ class Disable_Comments {
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 		return $wpdb->query( "TRUNCATE TABLE " . esc_sql( $table_name ) );
+	}
+
+	/**
+	 * Get the current site-wide comment status as a descriptive string.
+	 *
+	 * This function analyzes the current Disable Comments plugin configuration
+	 * and returns a string describing which content types have comments disabled.
+	 *
+	 * @return string The current comment status:
+	 *                - 'all' if comments are disabled site-wide for all content types
+	 *                - 'posts' if comments are disabled only for posts
+	 *                - 'pages' if comments are disabled only for pages
+	 *                - 'posts,pages' if comments are disabled for both posts and pages
+	 *                - 'custom_type_name' for other specific content types
+	 *                - 'multiple' if multiple specific types are disabled (not all)
+	 *                - 'none' if comments are not disabled anywhere
+	 *
+	 * @since 2.5.2
+	 */
+	public function get_current_comment_status() {
+		try {
+			// Handle case where plugin is not properly initialized
+			if (empty($this->options)) {
+				return 'none';
+			}
+
+			// Check if comments are disabled everywhere
+			if ($this->is_remove_everywhere()) {
+				return 'all';
+			}
+
+			// Get disabled post types
+			$disabled_post_types = $this->get_disabled_post_types();
+
+			// If no post types are disabled, comments are enabled everywhere
+			if (empty($disabled_post_types)) {
+				return 'none';
+			}
+
+			// Get all available post types that support comments
+			$all_post_types = $this->get_all_post_types();
+			$all_post_type_keys = array_keys($all_post_types);
+
+			// Check if all available post types are disabled
+			if (count($disabled_post_types) >= count($all_post_type_keys)) {
+				$missing_types = array_diff($all_post_type_keys, $disabled_post_types);
+				if (empty($missing_types)) {
+					return 'all';
+				}
+			}
+
+			// Handle specific common cases
+			if (count($disabled_post_types) === 1) {
+				$disabled_type = $disabled_post_types[0];
+
+				// Return the specific post type name for single disabled types
+				switch ($disabled_type) {
+					case 'post':
+						return 'posts';
+					case 'page':
+						return 'pages';
+					default:
+						// For custom post types, return the post type slug
+						return $disabled_type;
+				}
+			}
+
+			// Handle multiple specific post types
+			if (count($disabled_post_types) === 2 &&
+				in_array('post', $disabled_post_types) &&
+				in_array('page', $disabled_post_types)) {
+				return 'posts,pages';
+			}
+
+			// For other combinations, return 'multiple' to indicate partial disabling
+			return 'multiple';
+
+		} catch (Exception $e) {
+			// Error handling - return safe default
+			error_log('Disable Comments: Error in get_current_comment_status() - ' . $e->getMessage());
+			return 'none';
+		}
+	}
+
+	/**
+	 * Get detailed comment status information including API restrictions.
+	 *
+	 * This function provides comprehensive information about comment restrictions
+	 * including post type restrictions, API-level restrictions, network settings,
+	 * role exclusions, and comment counts.
+	 *
+	 * @return array Associative array with detailed status information:
+	 *               - 'status' => Main status (same as get_current_comment_status())
+	 *               - 'disabled_post_types' => Array of disabled post type slugs
+	 *               - 'disabled_post_type_labels' => Array of disabled post type labels
+	 *               - 'remove_everywhere' => Boolean indicating global disable
+	 *               - 'xmlrpc_disabled' => Boolean indicating XML-RPC comments disabled
+	 *               - 'rest_api_disabled' => Boolean indicating REST API comments disabled
+	 *               - 'total_post_types' => Total number of available post types
+	 *               - 'is_configured' => Boolean indicating if plugin is configured
+	 *               - 'total_comments' => Total number of comments in database
+	 *               - 'network_active' => Boolean indicating if plugin is network activated
+	 *               - 'sitewide_settings' => Site-wide settings status
+	 *               - 'role_exclusion_enabled' => Boolean indicating if role exclusions are enabled
+	 *               - 'excluded_roles' => Array of excluded role slugs
+	 *               - 'excluded_role_labels' => Array of human-readable excluded role names
+	 *
+	 * @since 2.5.2
+	 */
+	public function get_detailed_comment_status() {
+		try {
+			$status = $this->get_current_comment_status();
+			$disabled_post_types = $this->get_disabled_post_types();
+			$all_post_types = $this->get_all_post_types();
+
+			// Get human-readable labels for disabled post types
+			$disabled_labels = array();
+			foreach ($disabled_post_types as $post_type) {
+				if (isset($all_post_types[$post_type])) {
+					$disabled_labels[] = $all_post_types[$post_type]->labels->name;
+				} else {
+					// Fallback for custom post types not in the main list
+					$post_type_obj = get_post_type_object($post_type);
+					$disabled_labels[] = $post_type_obj ? $post_type_obj->labels->name : $post_type;
+				}
+			}
+
+			// Get total comments count
+			$total_comments = $this->get_all_comments_number();
+
+			// Determine site-wide settings status
+			$sitewide_settings = 'not_applicable';
+			if ($this->networkactive) {
+				$sitewide_settings = isset($this->options['sitewide_settings']) && $this->options['sitewide_settings'] ?
+					'enabled' : 'disabled';
+			}
+
+			// Process role-based exclusion information
+			$role_exclusion_enabled = isset($this->options['enable_exclude_by_role']) && $this->options['enable_exclude_by_role'];
+			$excluded_roles = isset($this->options['exclude_by_role']) ? $this->options['exclude_by_role'] : array();
+
+			// Get human-readable role names
+			$excluded_role_labels = array();
+			if ($role_exclusion_enabled && !empty($excluded_roles)) {
+				$editable_roles = get_editable_roles();
+
+				foreach ($excluded_roles as $role) {
+					if ($role === 'logged-out-users') {
+						$excluded_role_labels[] = __('Logged out users', 'disable-comments');
+					} elseif (isset($editable_roles[$role])) {
+						$excluded_role_labels[] = translate_user_role($editable_roles[$role]['name']);
+					} else {
+						$excluded_role_labels[] = $role;
+					}
+				}
+			}
+
+			return array(
+				'status' => $status,
+				'disabled_post_types' => $disabled_post_types,
+				'disabled_post_type_labels' => $disabled_labels,
+				'remove_everywhere' => $this->is_remove_everywhere(),
+				'xmlrpc_disabled' => !empty($this->options['remove_xmlrpc_comments']),
+				'rest_api_disabled' => !empty($this->options['remove_rest_API_comments']),
+				'total_post_types' => count($all_post_types),
+				'is_configured' => $this->is_configured(),
+				'total_comments' => $total_comments,
+				'network_active' => $this->networkactive,
+				'sitewide_settings' => $sitewide_settings,
+				'role_exclusion_enabled' => $role_exclusion_enabled,
+				'excluded_roles' => $excluded_roles,
+				'excluded_role_labels' => $excluded_role_labels
+			);
+
+		} catch (Exception $e) {
+			// Error handling - return safe defaults
+			error_log('Disable Comments: Error in get_detailed_comment_status() - ' . $e->getMessage());
+			return array(
+				'status' => 'none',
+				'disabled_post_types' => array(),
+				'disabled_post_type_labels' => array(),
+				'remove_everywhere' => false,
+				'xmlrpc_disabled' => false,
+				'rest_api_disabled' => false,
+				'total_post_types' => 0,
+				'is_configured' => false,
+				'total_comments' => 0,
+				'network_active' => false,
+				'sitewide_settings' => 'not_applicable',
+				'role_exclusion_enabled' => false,
+				'excluded_roles' => array(),
+				'excluded_role_labels' => array()
+			);
+		}
+	}
+	/**
+	 * Add Disable Comments information to WordPress Site Health Info panel.
+	 *
+	 * This method integrates the plugin's status information into WordPress's
+	 * built-in Site Health system for easy debugging and site overview.
+	 *
+	 * @param array $debug_info The debug information array.
+	 * @return array Modified debug information array.
+	 *
+	 * @since 2.5.2
+	 */
+	public function add_site_health_info($debug_info) {
+		$data = $this->get_detailed_comment_status();
+
+		// Create the main status description
+		$status_descriptions = array(
+			'all' => __('Comments are disabled site-wide for all content types', 'disable-comments'),
+			'posts' => __('Comments are disabled only for blog posts', 'disable-comments'),
+			'pages' => __('Comments are disabled only for pages', 'disable-comments'),
+			'posts,pages' => __('Comments are disabled for both posts and pages', 'disable-comments'),
+			'multiple' => __('Comments are disabled for multiple specific content types', 'disable-comments'),
+			'none' => __('Comments are enabled everywhere', 'disable-comments'),
+		);
+
+		$status_description = isset($status_descriptions[$data['status']]) ?
+			$status_descriptions[$data['status']] :
+			sprintf(__('Comments are disabled for: %s', 'disable-comments'), $data['status']);
+
+		// Format site-wide settings value
+		$sitewide_settings_labels = array(
+			'enabled' => __('Enabled', 'disable-comments'),
+			'disabled' => __('Disabled', 'disable-comments'),
+			'not_applicable' => __('Not applicable', 'disable-comments'),
+		);
+
+		// Build the fields array using data from get_detailed_comment_status()
+		$fields = array(
+			'status' => array(
+				'label' => __('Comment Status', 'disable-comments'),
+				'value' => $status_description,
+			),
+			'plugin_configured' => array(
+				'label' => __('Plugin Configured', 'disable-comments'),
+				'value' => $data['is_configured'] ? __('Yes', 'disable-comments') : __('No', 'disable-comments'),
+			),
+			'total_comments' => array(
+				'label' => __('Total Comments', 'disable-comments'),
+				'value' => number_format_i18n($data['total_comments']),
+			),
+			'global_disable' => array(
+				'label' => __('Global Disable Active', 'disable-comments'),
+				'value' => $data['remove_everywhere'] ? __('Yes', 'disable-comments') : __('No', 'disable-comments'),
+			),
+			'disabled_post_type_count' => array(
+				'label' => __('Disabled Post Types Count', 'disable-comments'),
+				'value' => sprintf('%d of %d', count($data['disabled_post_types']), $data['total_post_types']),
+			),
+			'disabled_post_types' => array(
+				'label' => __('Disabled Post Types', 'disable-comments'),
+				'value' => !empty($data['disabled_post_type_labels']) ?
+					implode(', ', $data['disabled_post_type_labels']) :
+					__('None', 'disable-comments'),
+			),
+			'xmlrpc_comments' => array(
+				'label' => __('XML-RPC Comments', 'disable-comments'),
+				'value' => $data['xmlrpc_disabled'] ? __('Disabled', 'disable-comments') : __('Enabled', 'disable-comments'),
+			),
+			'rest_api_comments' => array(
+				'label' => __('REST API Comments', 'disable-comments'),
+				'value' => $data['rest_api_disabled'] ? __('Disabled', 'disable-comments') : __('Enabled', 'disable-comments'),
+			),
+			'network_active' => array(
+				'label' => __('Network Active', 'disable-comments'),
+				'value' => $data['network_active'] ? __('Yes', 'disable-comments') : __('No', 'disable-comments'),
+			),
+			'sitewide_settings' => array(
+				'label' => __('Site-wide Settings', 'disable-comments'),
+				'value' => $sitewide_settings_labels[$data['sitewide_settings']],
+			),
+			'role_exclusion_enabled' => array(
+				'label' => __('Role-based Exclusions', 'disable-comments'),
+				'value' => $data['role_exclusion_enabled'] ? __('Enabled', 'disable-comments') : __('Disabled', 'disable-comments'),
+			),
+			'excluded_roles' => array(
+				'label' => __('Excluded Roles', 'disable-comments'),
+				'value' => !empty($data['excluded_role_labels']) ?
+					implode(', ', $data['excluded_role_labels']) :
+					__('None', 'disable-comments'),
+			),
+		);
+
+		// Add the section to Site Health
+		$debug_info['disable-comments'] = array(
+			'label' => __('Disable Comments', 'disable-comments'),
+			'description' => __('Complete overview of comment disable settings and configuration.', 'disable-comments'),
+			'fields' => $fields,
+		);
+
+		return $debug_info;
 	}
 }
 
