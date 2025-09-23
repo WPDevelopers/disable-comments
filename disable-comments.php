@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 }
 
 class Disable_Comments {
-	const DB_VERSION         = 7;
+	const DB_VERSION         = 8;
 	private static $instance = null;
 	private $options;
 	public  $networkactive;
@@ -80,6 +80,7 @@ class Disable_Comments {
 					'disabled_sites'           => array(),
 					'remove_xmlrpc_comments'   => 0,
 					'remove_rest_API_comments' => 0,
+					'show_existing_comments'   => false,
 					'settings_saved'           => true,
 					'db_version'               => $this->options['db_version']
 				];
@@ -208,7 +209,13 @@ class Disable_Comments {
 				$this->options['disabled_sites'] = $this->get_disabled_sites();
 			}
 
-			foreach (array('remove_everywhere', 'extra_post_types') as $v) {
+			if ($old_ver < 8) {
+				// Add new show_existing_comments option with default value false
+				// This maintains backward compatibility - existing behavior is preserved
+				$this->options['show_existing_comments'] = false;
+			}
+
+			foreach (array('remove_everywhere', 'extra_post_types', 'show_existing_comments') as $v) {
 				if (!isset($this->options[$v])) {
 					$this->options[$v] = false;
 				}
@@ -683,7 +690,15 @@ class Disable_Comments {
 
 	public function filter_existing_comments($comments, $post_id) {
 		$post_type = get_post_type($post_id);
-		return ($this->is_remove_everywhere() || $this->is_post_type_disabled($post_type)  ? array() : $comments);
+		$comments_disabled = $this->is_remove_everywhere() || $this->is_post_type_disabled($post_type);
+
+		// If comments are disabled but show_existing_comments is enabled, return existing comments
+		if ($comments_disabled && !empty($this->options['show_existing_comments'])) {
+			return $comments;
+		}
+
+		// Default behavior: hide comments if disabled
+		return ($comments_disabled ? array() : $comments);
 	}
 
 	public function filter_comment_status($open, $post_id) {
@@ -693,7 +708,15 @@ class Disable_Comments {
 
 	public function filter_comments_number($count, $post_id) {
 		$post_type = get_post_type($post_id);
-		return ($this->is_remove_everywhere() || $this->is_post_type_disabled($post_type) ? 0 : $count);
+		$comments_disabled = $this->is_remove_everywhere() || $this->is_post_type_disabled($post_type);
+
+		// If comments are disabled but show_existing_comments is enabled, return actual count
+		if ($comments_disabled && !empty($this->options['show_existing_comments'])) {
+			return $count;
+		}
+
+		// Default behavior: return 0 if disabled
+		return ($comments_disabled ? 0 : $count);
 	}
 
 	public function disable_rc_widget() {
@@ -1007,6 +1030,8 @@ class Disable_Comments {
 			$this->options['remove_xmlrpc_comments'] = (isset($formArray['remove_xmlrpc_comments']) ? intval($formArray['remove_xmlrpc_comments']) : ($this->is_CLI && isset($this->options['remove_xmlrpc_comments']) ? $this->options['remove_xmlrpc_comments'] : 0));
 			// rest api comments
 			$this->options['remove_rest_API_comments'] = (isset($formArray['remove_rest_API_comments']) ? intval($formArray['remove_rest_API_comments']) : ($this->is_CLI && isset($this->options['remove_rest_API_comments']) ? $this->options['remove_rest_API_comments'] : 0));
+			// show existing comments
+			$this->options['show_existing_comments'] = (isset($formArray['show_existing_comments']) ? (bool) $formArray['show_existing_comments'] : ($this->is_CLI && isset($this->options['show_existing_comments']) ? $this->options['show_existing_comments'] : false));
 
 			$this->options['db_version'] = self::DB_VERSION;
 			$this->options['settings_saved'] = true;
@@ -1374,6 +1399,7 @@ class Disable_Comments {
 				'remove_everywhere' => $this->is_remove_everywhere(),
 				'xmlrpc_disabled' => !empty($this->options['remove_xmlrpc_comments']),
 				'rest_api_disabled' => !empty($this->options['remove_rest_API_comments']),
+				'show_existing_comments' => !empty($this->options['show_existing_comments']),
 				'total_post_types' => count($all_post_types),
 				'is_configured' => $this->is_configured(),
 				'total_comments' => $total_comments,
@@ -1394,6 +1420,7 @@ class Disable_Comments {
 				'remove_everywhere' => false,
 				'xmlrpc_disabled' => false,
 				'rest_api_disabled' => false,
+				'show_existing_comments' => false,
 				'total_post_types' => 0,
 				'is_configured' => false,
 				'total_comments' => 0,
@@ -1475,6 +1502,10 @@ class Disable_Comments {
 			'rest_api_comments' => array(
 				'label' => __('REST API Comments', 'disable-comments'),
 				'value' => $data['rest_api_disabled'] ? __('Disabled', 'disable-comments') : __('Enabled', 'disable-comments'),
+			),
+			'show_existing_comments' => array(
+				'label' => __('Show Existing Comments', 'disable-comments'),
+				'value' => $data['show_existing_comments'] ? __('Yes', 'disable-comments') : __('No', 'disable-comments'),
 			),
 			'network_active' => array(
 				'label' => __('Network Active', 'disable-comments'),

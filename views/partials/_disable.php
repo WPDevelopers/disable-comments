@@ -167,6 +167,35 @@
                 <?php esc_html_e('Disabling comments will also disable trackbacks and pingbacks. All comment-related fields will also be hidden from the edit/quick-edit screens of the affected posts. These settings cannot be overridden for individual posts. Comments will be visible on all other post types.', 'disable-comments'); ?>
             </p>
         </div>
+
+        <div class="disable_option dc-text__block mb30 mt30" role="group" aria-labelledby="existing-comments-heading">
+            <h4 id="existing-comments-heading" class="visually-hidden">
+                <?php esc_html_e('Existing Comments Display Settings', 'disable-comments'); ?>
+            </h4>
+
+            <div class="dissable__switch__item">
+                <input type="hidden" name="show_existing_comments" value="0">
+                <input type="checkbox"
+                    name="show_existing_comments"
+                    id="show_existing_comments"
+                    value="1"
+                    aria-describedby="existing-comments-description"
+                    <?php checked(isset($this->options['show_existing_comments']) ? $this->options['show_existing_comments'] : false); ?>>
+
+                <label for="show_existing_comments">
+                    <span class="switch" role="presentation" tabindex="0">
+                        <span class="switch__text on" aria-hidden="true"><?php esc_html_e('On', 'disable-comments'); ?></span>
+                        <span class="switch__text off" aria-hidden="true"><?php esc_html_e('Off', 'disable-comments'); ?></span>
+                    </span>
+                    <?php esc_html_e('Show Existing Comments', 'disable-comments'); ?>
+                </label>
+
+                <p id="existing-comments-description" class="disable__option__description">
+                    <?php esc_html_e('When enabled, existing approved comments will remain visible even when new comments are disabled. This allows you to stop spam while preserving your existing comment discussions.', 'disable-comments'); ?>
+                </p>
+            </div>
+        </div>
+
         <?php if (!is_network_admin()): ?>
             <div id="exclude_by_role_wrapper"
                 class="disable_option dc-text__block mb30 mt30"
