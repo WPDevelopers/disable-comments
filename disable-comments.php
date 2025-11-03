@@ -694,7 +694,7 @@ class Disable_Comments {
 
 		// If comments are disabled but show_existing_comments is enabled, return existing comments
 		if ($comments_disabled && !empty($this->options['show_existing_comments'])) {
-			return $comments;
+			$comments_disabled = false;
 		}
 
 		// Default behavior: hide comments if disabled
@@ -712,7 +712,7 @@ class Disable_Comments {
 
 		// If comments are disabled but show_existing_comments is enabled, return actual count
 		if ($comments_disabled && !empty($this->options['show_existing_comments'])) {
-			return $count;
+			$comments_disabled = false;
 		}
 
 		// Default behavior: return 0 if disabled
