@@ -381,7 +381,9 @@ class Disable_Comments {
 				// we need to know what native support was for later.
 				if (post_type_supports($type, 'comments')) {
 					$this->modified_types[] = $type;
-					remove_post_type_support($type, 'comments');
+					if (empty($this->options['show_existing_comments'])) {
+						remove_post_type_support($type, 'comments');
+					}
 					remove_post_type_support($type, 'trackbacks');
 				}
 			}
@@ -457,7 +459,9 @@ class Disable_Comments {
 		if (is_singular() && ($this->is_remove_everywhere() || $this->is_post_type_disabled(get_post_type()))) {
 			if (!defined('DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE') || DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE == true) {
 				// Kill the comments template.
-				add_filter('comments_template', array($this, 'dummy_comments_template'), 20);
+				if(empty($this->options['show_existing_comments'])) {
+					add_filter('comments_template', array($this, 'dummy_comments_template'), 20);
+				}
 			}
 			// Remove comment-reply script for themes that include it indiscriminately.
 			wp_deregister_script('comment-reply');
