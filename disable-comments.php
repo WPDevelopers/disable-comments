@@ -661,11 +661,13 @@ class Disable_Comments {
 	public function filter_admin_menu() {
 		global $pagenow;
 
-		if ($pagenow == 'comment.php' || $pagenow == 'edit-comments.php') {
-			wp_die(esc_html__('Comments are closed.', 'disable-comments'), '', array('response' => 403));
-		}
+		if(empty($this->options['show_existing_comments'])) {
+			if ($pagenow == 'comment.php' || $pagenow == 'edit-comments.php') {
+				wp_die(esc_html__('Comments are closed.', 'disable-comments'), '', array('response' => 403));
+			}
 
-		remove_menu_page('edit-comments.php');
+			remove_menu_page('edit-comments.php');
+		}
 
 		if (!$this->discussion_settings_allowed()) {
 			if ($pagenow == 'options-discussion.php') {
