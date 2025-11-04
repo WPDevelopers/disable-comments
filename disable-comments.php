@@ -354,8 +354,6 @@ class Disable_Comments {
 		}
 
 		// These can happen later.
-		$this->register_text_domain();
-		// add_action('plugins_loaded', array($this, 'register_text_domain'));
 		add_action('wp_loaded', array($this, 'init_wploaded_filters'));
 		// Disable "Latest comments" block in Gutenberg.
 		add_action('enqueue_block_editor_assets', array($this, 'filter_gutenberg_blocks'));
@@ -368,10 +366,6 @@ class Disable_Comments {
 				return $status_links;
 			});
 		}
-	}
-
-	public function register_text_domain() {
-		load_plugin_textdomain('disable-comments', false, dirname(plugin_basename(__FILE__)) . '/languages');
 	}
 
 	public function init_wploaded_filters() {
@@ -1320,7 +1314,9 @@ class Disable_Comments {
 
 		} catch (Exception $e) {
 			// Error handling - return safe default
-			error_log('Disable Comments: Error in get_current_comment_status() - ' . $e->getMessage());
+			if (defined('WP_DEBUG') && WP_DEBUG) {
+				error_log('Disable Comments: Error in get_current_comment_status() - ' . $e->getMessage());
+			}
 			return 'none';
 		}
 	}
@@ -1418,7 +1414,9 @@ class Disable_Comments {
 
 		} catch (Exception $e) {
 			// Error handling - return safe defaults
-			error_log('Disable Comments: Error in get_detailed_comment_status() - ' . $e->getMessage());
+			if (defined('WP_DEBUG') && WP_DEBUG) {
+				error_log('Disable Comments: Error in get_detailed_comment_status() - ' . $e->getMessage());
+			}
 			return array(
 				'status' => 'none',
 				'disabled_post_types' => array(),
@@ -1462,9 +1460,11 @@ class Disable_Comments {
 			'none' => __('Comments are enabled everywhere', 'disable-comments'),
 		);
 
+		// translators: %s: disabled post types.
+		$other_status_description = sprintf(__('Comments are disabled for: %s', 'disable-comments'), $data['status']);
 		$status_description = isset($status_descriptions[$data['status']]) ?
 			$status_descriptions[$data['status']] :
-			sprintf(__('Comments are disabled for: %s', 'disable-comments'), $data['status']);
+			$other_status_description;
 
 		// Format site-wide settings value
 		$sitewide_settings_labels = array(
