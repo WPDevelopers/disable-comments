@@ -9,14 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-03T11:19:30+00:00\n"
+"POT-Creation-Date: 2025-11-04T10:41:09+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: disable-comments\n"
 
 #. Plugin Name of the plugin
 #: disable-comments.php
-#: disable-comments.php:367
+#: disable-comments.php:365
 #: disable-comments.php:1538
 msgid "Disable Comments"
 msgstr ""
@@ -55,103 +55,104 @@ msgstr ""
 msgid "Disable Comments requires WordPress version %s or greater."
 msgstr ""
 
-#: disable-comments.php:514
-#: disable-comments.php:666
-#: disable-comments.php:674
+#: disable-comments.php:508
+#: disable-comments.php:660
+#: disable-comments.php:668
 msgid "Comments are closed."
 msgstr ""
 
 #. translators: %s: disabled post types.
-#: disable-comments.php:622
+#: disable-comments.php:616
 #, php-format
 msgid "Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types."
 msgstr ""
 
 #. translators: %s: disabled post types.
-#: disable-comments.php:622
+#: disable-comments.php:616
 msgid ", "
 msgstr ""
 
 #. translators: %s: URL to Disabled Comment settings page.
-#: disable-comments.php:655
+#: disable-comments.php:649
 #, php-format
 msgid "The <strong>Disable Comments</strong> plugin is active, but isn't configured to do anything yet. Visit the <a href=\"%s\">configuration page</a> to choose which post types to disable comments on."
 msgstr ""
 
-#: disable-comments.php:755
+#: disable-comments.php:749
 #: views/partials/_disable.php:3
 msgid "Settings"
 msgstr ""
 
-#: disable-comments.php:756
+#: disable-comments.php:750
 msgid "Tools"
 msgstr ""
 
-#: disable-comments.php:764
+#: disable-comments.php:758
 msgctxt "settings menu title"
 msgid "Disable Comments"
 msgstr ""
 
-#: disable-comments.php:773
+#: disable-comments.php:767
 #: views/partials/_delete.php:9
 #: views/partials/_delete.php:218
 #: assets/js/disable-comments-settings-scripts.js:364
 msgid "Delete Comments"
 msgstr ""
 
-#: disable-comments.php:834
+#: disable-comments.php:828
 msgid "Default (no type)"
 msgstr ""
 
-#: disable-comments.php:861
-#: disable-comments.php:1392
+#: disable-comments.php:855
+#: disable-comments.php:1388
 msgid "Logged out users"
 msgstr ""
 
-#: disable-comments.php:1048
+#: disable-comments.php:1042
 msgid "Saved"
 msgstr ""
 
-#: disable-comments.php:1116
-#: disable-comments.php:1153
-#: disable-comments.php:1180
+#: disable-comments.php:1110
+#: disable-comments.php:1147
+#: disable-comments.php:1174
 msgid "All comments have been deleted"
 msgstr ""
 
-#: disable-comments.php:1118
-#: disable-comments.php:1122
+#: disable-comments.php:1112
+#: disable-comments.php:1116
 msgid "Internal error occured. Please try again later."
 msgstr ""
 
-#: disable-comments.php:1192
+#: disable-comments.php:1186
 msgid "All spam comments have been deleted."
 msgstr ""
 
-#: disable-comments.php:1457
+#: disable-comments.php:1455
 msgid "Comments are disabled site-wide for all content types"
 msgstr ""
 
-#: disable-comments.php:1458
+#: disable-comments.php:1456
 msgid "Comments are disabled only for blog posts"
 msgstr ""
 
-#: disable-comments.php:1459
+#: disable-comments.php:1457
 msgid "Comments are disabled only for pages"
 msgstr ""
 
-#: disable-comments.php:1460
+#: disable-comments.php:1458
 msgid "Comments are disabled for both posts and pages"
 msgstr ""
 
-#: disable-comments.php:1461
+#: disable-comments.php:1459
 msgid "Comments are disabled for multiple specific content types"
 msgstr ""
 
-#: disable-comments.php:1462
+#: disable-comments.php:1460
 msgid "Comments are enabled everywhere"
 msgstr ""
 
-#: disable-comments.php:1467
+#. translators: %s: disabled post types.
+#: disable-comments.php:1464
 #, php-format
 msgid "Comments are disabled for: %s"
 msgstr ""

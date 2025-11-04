@@ -1315,6 +1315,7 @@ class Disable_Comments {
 		} catch (Exception $e) {
 			// Error handling - return safe default
 			if (defined('WP_DEBUG') && WP_DEBUG) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging for WP_DEBUG mode
 				error_log('Disable Comments: Error in get_current_comment_status() - ' . $e->getMessage());
 			}
 			return 'none';
@@ -1415,6 +1416,7 @@ class Disable_Comments {
 		} catch (Exception $e) {
 			// Error handling - return safe defaults
 			if (defined('WP_DEBUG') && WP_DEBUG) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging for WP_DEBUG mode
 				error_log('Disable Comments: Error in get_detailed_comment_status() - ' . $e->getMessage());
 			}
 			return array(
