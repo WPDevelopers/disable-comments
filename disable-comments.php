@@ -4,7 +4,7 @@
  * Plugin Name: Disable Comments
  * Plugin URI: https://wordpress.org/plugins/disable-comments/
  * Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. You could bulk delete comments using Tools.
- * Version: 2.5.3
+ * Version: 2.6.0
  * Author: WPDeveloper
  * Author URI: https://wpdeveloper.com
  * License: GPL-3.0+
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 }
 
 class Disable_Comments {
-	const DB_VERSION         = 7;
+	const DB_VERSION         = 8;
 	private static $instance = null;
 	private $options;
 	public  $networkactive;
@@ -38,7 +38,7 @@ class Disable_Comments {
 	}
 
 	function __construct() {
-		define('DC_VERSION', '2.5.3');
+		define('DC_VERSION', '2.6.0');
 		define('DC_PLUGIN_SLUG', 'disable_comments_settings');
 		define('DC_PLUGIN_ROOT_PATH', dirname(__FILE__));
 		define('DC_PLUGIN_VIEWS_PATH', DC_PLUGIN_ROOT_PATH . '/views/');
@@ -80,6 +80,7 @@ class Disable_Comments {
 					'disabled_sites'           => array(),
 					'remove_xmlrpc_comments'   => 0,
 					'remove_rest_API_comments' => 0,
+					'show_existing_comments'   => false,
 					'settings_saved'           => true,
 					'db_version'               => $this->options['db_version']
 				];
@@ -208,7 +209,13 @@ class Disable_Comments {
 				$this->options['disabled_sites'] = $this->get_disabled_sites();
 			}
 
-			foreach (array('remove_everywhere', 'extra_post_types') as $v) {
+			if ($old_ver < 8) {
+				// Add new show_existing_comments option with default value false
+				// This maintains backward compatibility - existing behavior is preserved
+				$this->options['show_existing_comments'] = false;
+			}
+
+			foreach (array('remove_everywhere', 'extra_post_types', 'show_existing_comments') as $v) {
 				if (!isset($this->options[$v])) {
 					$this->options[$v] = false;
 				}
@@ -347,8 +354,6 @@ class Disable_Comments {
 		}
 
 		// These can happen later.
-		$this->register_text_domain();
-		// add_action('plugins_loaded', array($this, 'register_text_domain'));
 		add_action('wp_loaded', array($this, 'init_wploaded_filters'));
 		// Disable "Latest comments" block in Gutenberg.
 		add_action('enqueue_block_editor_assets', array($this, 'filter_gutenberg_blocks'));
@@ -363,10 +368,6 @@ class Disable_Comments {
 		}
 	}
 
-	public function register_text_domain() {
-		load_plugin_textdomain('disable-comments', false, dirname(plugin_basename(__FILE__)) . '/languages');
-	}
-
 	public function init_wploaded_filters() {
 		$disabled_post_types = $this->get_disabled_post_types();
 		if (!empty($disabled_post_types) && !$this->is_exclude_by_role()) {
@@ -374,7 +375,9 @@ class Disable_Comments {
 				// we need to know what native support was for later.
 				if (post_type_supports($type, 'comments')) {
 					$this->modified_types[] = $type;
-					remove_post_type_support($type, 'comments');
+					if (empty($this->options['show_existing_comments'])) {
+						remove_post_type_support($type, 'comments');
+					}
 					remove_post_type_support($type, 'trackbacks');
 				}
 			}
@@ -450,7 +453,9 @@ class Disable_Comments {
 		if (is_singular() && ($this->is_remove_everywhere() || $this->is_post_type_disabled(get_post_type()))) {
 			if (!defined('DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE') || DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE == true) {
 				// Kill the comments template.
-				add_filter('comments_template', array($this, 'dummy_comments_template'), 20);
+				if(empty($this->options['show_existing_comments'])) {
+					add_filter('comments_template', array($this, 'dummy_comments_template'), 20);
+				}
 			}
 			// Remove comment-reply script for themes that include it indiscriminately.
 			wp_deregister_script('comment-reply');
@@ -650,11 +655,13 @@ class Disable_Comments {
 	public function filter_admin_menu() {
 		global $pagenow;
 
-		if ($pagenow == 'comment.php' || $pagenow == 'edit-comments.php') {
-			wp_die(esc_html__('Comments are closed.', 'disable-comments'), '', array('response' => 403));
-		}
+		if(empty($this->options['show_existing_comments'])) {
+			if ($pagenow == 'comment.php' || $pagenow == 'edit-comments.php') {
+				wp_die(esc_html__('Comments are closed.', 'disable-comments'), '', array('response' => 403));
+			}
 
-		remove_menu_page('edit-comments.php');
+			remove_menu_page('edit-comments.php');
+		}
 
 		if (!$this->discussion_settings_allowed()) {
 			if ($pagenow == 'options-discussion.php') {
@@ -683,7 +690,15 @@ class Disable_Comments {
 
 	public function filter_existing_comments($comments, $post_id) {
 		$post_type = get_post_type($post_id);
-		return ($this->is_remove_everywhere() || $this->is_post_type_disabled($post_type)  ? array() : $comments);
+		$comments_disabled = $this->is_remove_everywhere() || $this->is_post_type_disabled($post_type);
+
+		// If comments are disabled but show_existing_comments is enabled, return existing comments
+		if ($comments_disabled && !empty($this->options['show_existing_comments'])) {
+			$comments_disabled = false;
+		}
+
+		// Default behavior: hide comments if disabled
+		return ($comments_disabled ? array() : $comments);
 	}
 
 	public function filter_comment_status($open, $post_id) {
@@ -693,7 +708,15 @@ class Disable_Comments {
 
 	public function filter_comments_number($count, $post_id) {
 		$post_type = get_post_type($post_id);
-		return ($this->is_remove_everywhere() || $this->is_post_type_disabled($post_type) ? 0 : $count);
+		$comments_disabled = $this->is_remove_everywhere() || $this->is_post_type_disabled($post_type);
+
+		// If comments are disabled but show_existing_comments is enabled, return actual count
+		if ($comments_disabled && !empty($this->options['show_existing_comments'])) {
+			$comments_disabled = false;
+		}
+
+		// Default behavior: return 0 if disabled
+		return ($comments_disabled ? 0 : $count);
 	}
 
 	public function disable_rc_widget() {
@@ -1007,6 +1030,8 @@ class Disable_Comments {
 			$this->options['remove_xmlrpc_comments'] = (isset($formArray['remove_xmlrpc_comments']) ? intval($formArray['remove_xmlrpc_comments']) : ($this->is_CLI && isset($this->options['remove_xmlrpc_comments']) ? $this->options['remove_xmlrpc_comments'] : 0));
 			// rest api comments
 			$this->options['remove_rest_API_comments'] = (isset($formArray['remove_rest_API_comments']) ? intval($formArray['remove_rest_API_comments']) : ($this->is_CLI && isset($this->options['remove_rest_API_comments']) ? $this->options['remove_rest_API_comments'] : 0));
+			// show existing comments
+			$this->options['show_existing_comments'] = (isset($formArray['show_existing_comments']) ? (bool) $formArray['show_existing_comments'] : ($this->is_CLI && isset($this->options['show_existing_comments']) ? $this->options['show_existing_comments'] : false));
 
 			$this->options['db_version'] = self::DB_VERSION;
 			$this->options['settings_saved'] = true;
@@ -1289,7 +1314,10 @@ class Disable_Comments {
 
 		} catch (Exception $e) {
 			// Error handling - return safe default
-			error_log('Disable Comments: Error in get_current_comment_status() - ' . $e->getMessage());
+			if (defined('WP_DEBUG') && WP_DEBUG) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging for WP_DEBUG mode
+				error_log('Disable Comments: Error in get_current_comment_status() - ' . $e->getMessage());
+			}
 			return 'none';
 		}
 	}
@@ -1374,6 +1402,7 @@ class Disable_Comments {
 				'remove_everywhere' => $this->is_remove_everywhere(),
 				'xmlrpc_disabled' => !empty($this->options['remove_xmlrpc_comments']),
 				'rest_api_disabled' => !empty($this->options['remove_rest_API_comments']),
+				'show_existing_comments' => !empty($this->options['show_existing_comments']),
 				'total_post_types' => count($all_post_types),
 				'is_configured' => $this->is_configured(),
 				'total_comments' => $total_comments,
@@ -1386,7 +1415,10 @@ class Disable_Comments {
 
 		} catch (Exception $e) {
 			// Error handling - return safe defaults
-			error_log('Disable Comments: Error in get_detailed_comment_status() - ' . $e->getMessage());
+			if (defined('WP_DEBUG') && WP_DEBUG) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug logging for WP_DEBUG mode
+				error_log('Disable Comments: Error in get_detailed_comment_status() - ' . $e->getMessage());
+			}
 			return array(
 				'status' => 'none',
 				'disabled_post_types' => array(),
@@ -1394,6 +1426,7 @@ class Disable_Comments {
 				'remove_everywhere' => false,
 				'xmlrpc_disabled' => false,
 				'rest_api_disabled' => false,
+				'show_existing_comments' => false,
 				'total_post_types' => 0,
 				'is_configured' => false,
 				'total_comments' => 0,
@@ -1429,9 +1462,11 @@ class Disable_Comments {
 			'none' => __('Comments are enabled everywhere', 'disable-comments'),
 		);
 
+		// translators: %s: disabled post types.
+		$other_status_description = sprintf(__('Comments are disabled for: %s', 'disable-comments'), $data['status']);
 		$status_description = isset($status_descriptions[$data['status']]) ?
 			$status_descriptions[$data['status']] :
-			sprintf(__('Comments are disabled for: %s', 'disable-comments'), $data['status']);
+			$other_status_description;
 
 		// Format site-wide settings value
 		$sitewide_settings_labels = array(
@@ -1475,6 +1510,10 @@ class Disable_Comments {
 			'rest_api_comments' => array(
 				'label' => __('REST API Comments', 'disable-comments'),
 				'value' => $data['rest_api_disabled'] ? __('Disabled', 'disable-comments') : __('Enabled', 'disable-comments'),
+			),
+			'show_existing_comments' => array(
+				'label' => __('Show Existing Comments', 'disable-comments'),
+				'value' => $data['show_existing_comments'] ? __('Yes', 'disable-comments') : __('No', 'disable-comments'),
 			),
 			'network_active' => array(
 				'label' => __('Network Active', 'disable-comments'),
