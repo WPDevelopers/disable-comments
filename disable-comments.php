@@ -339,18 +339,22 @@ class Disable_Comments {
 			add_action('template_redirect', array($this, 'filter_admin_bar'));
 			add_action('admin_init', array($this, 'filter_admin_bar'));
 
-			// Disable Comments REST API Endpoint
+			// Disable Comments REST API Endpoint (but allow notes)
 			add_filter('rest_endpoints', array($this, 'filter_rest_endpoints'));
+			add_filter('rest_pre_dispatch', array($this, 'filter_rest_comment_dispatch'), 10, 3);
+			add_filter('rest_comment_query', array($this, 'filter_rest_comment_query'), 10, 2);
 		}
 
 		// remove create comment via xmlrpc
 		if (isset($this->options['remove_xmlrpc_comments']) && intval($this->options['remove_xmlrpc_comments']) === 1) {
 			add_filter('xmlrpc_methods', array($this, 'disable_xmlrc_comments'));
 		}
-		// rest API Comment Block
+		// rest API Comment Block (but allow notes)
 		if (isset($this->options['remove_rest_API_comments']) && intval($this->options['remove_rest_API_comments']) === 1) {
 			add_filter('rest_endpoints', array($this, 'filter_rest_endpoints'));
 			add_filter('rest_pre_insert_comment', array($this, 'disable_rest_API_comments'), 10, 2);
+			add_filter('rest_pre_dispatch', array($this, 'filter_rest_comment_dispatch'), 10, 3);
+			add_filter('rest_comment_query', array($this, 'filter_rest_comment_query'), 10, 2);
 		}
 
 		// These can happen later.
@@ -497,7 +501,65 @@ class Disable_Comments {
 	}
 
 	public function disable_rest_API_comments($prepared_comment, $request) {
+		// Allow notes (WordPress 6.9+ block notes feature)
+		if ($this->is_note_request($request)) {
+			return $prepared_comment;
+		}
 		return;
+	}
+
+	/**
+	 * Check if a REST API request is for notes (WordPress 6.9+ block notes feature)
+	 *
+	 * @param WP_REST_Request $request The REST API request object
+	 * @return bool True if the request is for notes, false otherwise
+	 */
+	private function is_note_request($request = null) {
+		// Check if we have a request object
+		if (!$request) {
+			// Check global $_REQUEST for type parameter
+			if (isset($_REQUEST['type']) && $_REQUEST['type'] === 'note') {
+				return true;
+			}
+			// Check if we're in a REST API context
+			if (defined('REST_REQUEST') && REST_REQUEST) {
+				global $wp;
+				if (isset($wp->query_vars['type']) && $wp->query_vars['type'] === 'note') {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		// Check the request object for type parameter
+		$type = $request->get_param('type');
+		if ($type === 'note') {
+			return true;
+		}
+
+		// Check the request body for type parameter (for POST requests)
+		$body = $request->get_body_params();
+		if (isset($body['type']) && $body['type'] === 'note') {
+			return true;
+		}
+
+		// Check JSON body for type parameter
+		$json = $request->get_json_params();
+		if (isset($json['type']) && $json['type'] === 'note') {
+			return true;
+		}
+
+		// For UPDATE requests (PUT/PATCH), check if the existing comment is a note
+		// WordPress doesn't send the type parameter when updating, only the ID and content
+		$comment_id = $request->get_param('id');
+		if ($comment_id) {
+			$comment = get_comment($comment_id);
+			if ($comment && isset($comment->comment_type) && $comment->comment_type === 'note') {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -524,18 +586,64 @@ class Disable_Comments {
 
 	/**
 	 * Remove the comments endpoint for the REST API
+	 * But allow WordPress 6.9+ block notes (type=note) to work
 	 */
 	public function filter_rest_endpoints($endpoints) {
-		if (isset($endpoints['comments'])) {
-			unset($endpoints['comments']);
-		}
-		if (isset($endpoints['/wp/v2/comments'])) {
-			unset($endpoints['/wp/v2/comments']);
-		}
-		if (isset($endpoints['/wp/v2/comments/(?P<id>[\d]+)'])) {
-			unset($endpoints['/wp/v2/comments/(?P<id>[\d]+)']);
-		}
+		// Don't remove endpoints entirely - instead we'll use permission callbacks
+		// and other filters to block regular comments while allowing notes
+
+		// We still need to add a filter to block non-note requests
+		// This is handled by rest_pre_dispatch filter added in init_filters
+
 		return $endpoints;
+	}
+
+	/**
+	 * Filter REST API comment requests to block non-note comments
+	 *
+	 * @param mixed $result Response to replace the requested version with
+	 * @param WP_REST_Server $server Server instance
+	 * @param WP_REST_Request $request Request used to generate the response
+	 * @return mixed
+	 */
+	public function filter_rest_comment_dispatch($result, $server, $request) {
+		// Only filter comment-related routes
+		$route = $request->get_route();
+		if (strpos($route, '/wp/v2/comments') === false) {
+			return $result;
+		}
+
+		// Allow note requests to pass through
+		if ($this->is_note_request($request)) {
+			return $result;
+		}
+
+		// Block all other comment requests
+		return new WP_Error(
+			'rest_comment_disabled',
+			__('Comments are disabled.', 'disable-comments'),
+			array('status' => 403)
+		);
+	}
+
+	/**
+	 * Filter comment queries in REST API to allow notes
+	 *
+	 * @param array $prepared_args Array of arguments for WP_Comment_Query
+	 * @param WP_REST_Request $request The REST API request
+	 * @return array
+	 */
+	public function filter_rest_comment_query($prepared_args, $request) {
+		// If this is a note request, allow it
+		if ($this->is_note_request($request)) {
+			return $prepared_args;
+		}
+
+		// For non-note requests, return empty results
+		// by setting an impossible condition
+		$prepared_args['comment__in'] = array(0);
+
+		return $prepared_args;
 	}
 
 	/**
@@ -697,8 +805,20 @@ class Disable_Comments {
 			$comments_disabled = false;
 		}
 
-		// Default behavior: hide comments if disabled
-		return ($comments_disabled ? array() : $comments);
+		// If comments are disabled, filter out regular comments but keep notes (WordPress 6.9+)
+		if ($comments_disabled && !empty($comments)) {
+			$filtered_comments = array();
+			foreach ($comments as $comment) {
+				// Keep notes (type=note) even when comments are disabled
+				if (isset($comment->comment_type) && $comment->comment_type === 'note') {
+					$filtered_comments[] = $comment;
+				}
+			}
+			return $filtered_comments;
+		}
+
+		// Default behavior: return all comments if not disabled
+		return $comments;
 	}
 
 	public function filter_comment_status($open, $post_id) {
@@ -715,8 +835,18 @@ class Disable_Comments {
 			$comments_disabled = false;
 		}
 
-		// Default behavior: return 0 if disabled
-		return ($comments_disabled ? 0 : $count);
+		// If comments are disabled, count only notes (WordPress 6.9+ block notes feature)
+		if ($comments_disabled) {
+			$notes_count = get_comments(array(
+				'post_id' => $post_id,
+				'type'    => 'note',
+				'count'   => true
+			));
+			return $notes_count;
+		}
+
+		// Default behavior: return original count
+		return $count;
 	}
 
 	public function disable_rc_widget() {
