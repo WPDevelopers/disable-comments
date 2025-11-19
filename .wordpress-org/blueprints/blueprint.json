@@ -1,0 +1,15 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "landingPage": "/wp-admin/options-general.php?page=disable_comments_settings",
+  "login": true,
+  "extraLibraries": [ "wp-cli" ],
+  "plugins": [
+    "disable-comments"
+  ],
+  "steps": [
+    {
+      "step": "wp-cli",
+      "command": "wp disable-comments settings --types=all --xmlrpc --rest-api"
+    }
+  ]
+}
