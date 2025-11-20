@@ -1330,8 +1330,10 @@ class Disable_Comments {
 	protected function __get_comment_count() {
 		global $wpdb;
 
+		// Exclude notes (WordPress 6.9+ block notes) from the count since they cannot be deleted
+		// and should not be displayed in the "Total Comments" count in the Delete Comments tab
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-		return $wpdb->get_var("SELECT COUNT(comment_id) FROM $wpdb->comments");
+		return $wpdb->get_var($wpdb->prepare("SELECT COUNT(comment_id) FROM $wpdb->comments WHERE comment_type != %s", 'note'));
 	}
 
 	/**
