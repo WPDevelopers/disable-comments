@@ -835,18 +835,7 @@ class Disable_Comments {
 			$comments_disabled = false;
 		}
 
-		// If comments are disabled, count only notes (WordPress 6.9+ block notes feature)
-		if ($comments_disabled) {
-			$notes_count = get_comments(array(
-				'post_id' => $post_id,
-				'type'    => 'note',
-				'count'   => true
-			));
-			return $notes_count;
-		}
-
-		// Default behavior: return original count
-		return $count;
+		return $comments_disabled ? 0 : $count;
 	}
 
 	public function disable_rc_widget() {
@@ -954,6 +943,10 @@ class Disable_Comments {
 		if (!empty($commenttypes_query) && is_array($commenttypes_query)) {
 			foreach ($commenttypes_query as $entry) {
 				$value = $entry['comment_type'];
+				// Exclude 'note' type (WordPress 6.9+ block notes) from deletable comment types
+				if ($value === 'note') {
+					continue;
+				}
 				if ('' === $value) {
 					$commenttypes['default'] = __('Default (no type)', 'disable-comments');
 				} else {
@@ -1231,21 +1224,18 @@ class Disable_Comments {
 		// comments delete
 		if (isset($formArray['delete_mode'])) {
 			if ($formArray['delete_mode'] == 'delete_everywhere') {
-				if ($this->truncate_table($wpdb->commentmeta) != false) {
-					if ($this->truncate_table($wpdb->comments) != false) {
-						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-						$wpdb->query("UPDATE $wpdb->posts SET comment_count = 0");
-						$this->optimize_table($wpdb->commentmeta);
-						$this->optimize_table($wpdb->comments);
-						$log = __('All comments have been deleted', 'disable-comments');
-					} else {
-						wp_send_json_error(array('message' => __('Internal error occured. Please try again later.', 'disable-comments')));
-						wp_die();
-					}
-				} else {
-					wp_send_json_error(array('message' => __('Internal error occured. Please try again later.', 'disable-comments')));
-					wp_die();
-				}
+				// Delete all comment metadata except for notes (WordPress 6.9+ block notes)
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+				$wpdb->query($wpdb->prepare("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID WHERE comments.comment_type != %s", 'note'));
+				// Delete all comments except notes
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+				$wpdb->query($wpdb->prepare("DELETE FROM $wpdb->comments WHERE comment_type != %s", 'note'));
+				// Update comment counts (excluding notes)
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+				$wpdb->query("UPDATE $wpdb->posts SET comment_count = 0");
+				$this->optimize_table($wpdb->commentmeta);
+				$this->optimize_table($wpdb->comments);
+				$log = __('All comments have been deleted', 'disable-comments');
 			} elseif ($formArray['delete_mode'] == 'selected_delete_types') {
 				$delete_post_types = empty($formArray['delete_types']) ? array() : (array) $formArray['delete_types'];
 				$delete_post_types = array_intersect($delete_post_types, array_keys($types));
@@ -1258,12 +1248,12 @@ class Disable_Comments {
 				}
 
 				if (!empty($delete_post_types)) {
-					// Loop through post_types and remove comments/meta and set posts comment_count to 0.
+					// Loop through post_types and remove comments/meta (excluding notes) and set posts comment_count to 0.
 					foreach ($delete_post_types as $delete_post_type) {
 						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-						$wpdb->query($wpdb->prepare("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = %s", $delete_post_type));
+						$wpdb->query($wpdb->prepare("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = %s AND comments.comment_type != 'note'", $delete_post_type));
 						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-						$wpdb->query($wpdb->prepare("DELETE comments FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = %s", $delete_post_type));
+						$wpdb->query($wpdb->prepare("DELETE comments FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = %s AND comments.comment_type != 'note'", $delete_post_type));
 						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 						$wpdb->query($wpdb->prepare("UPDATE $wpdb->posts SET comment_count = 0 WHERE post_author != 0 AND post_type = %s", $delete_post_type));
 
@@ -1305,10 +1295,11 @@ class Disable_Comments {
 				}
 			} elseif ($formArray['delete_mode'] == 'delete_spam') {
 
+				// Delete spam comments and their metadata (excluding notes)
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-				$wpdb->query("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID WHERE comments.comment_approved = 'spam'");
+				$wpdb->query($wpdb->prepare("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID WHERE comments.comment_approved = %s AND comments.comment_type != %s", 'spam', 'note'));
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-				$wpdb->query("DELETE comments FROM $wpdb->comments comments  WHERE comments.comment_approved = 'spam'");
+				$wpdb->query($wpdb->prepare("DELETE comments FROM $wpdb->comments comments  WHERE comments.comment_approved = %s AND comments.comment_type != %s", 'spam', 'note'));
 
 
 				$this->optimize_table($wpdb->commentmeta);
