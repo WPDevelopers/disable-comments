@@ -258,7 +258,76 @@
                 </p>
             </div>
 
-            <!-- Avatar Settings -->
+            <!-- Enable Certain Comment Types -->
+        <div class="disable_option dc-text__block mb30 mt30"
+            role="group"
+            aria-labelledby="allowed-comment-types-heading">
+
+            <h4 id="allowed-comment-types-heading" class="visually-hidden">
+                <?php esc_html_e('Allowed Comment Types Settings', 'disable-comments'); ?>
+            </h4>
+
+            <div class="dissable__switch__item">
+                <input type="hidden" name="enable_allowed_comment_types" value="0">
+                <input type="checkbox"
+                    name="enable_allowed_comment_types"
+                    id="enable_allowed_comment_types"
+                    value="1"
+                    aria-controls="allowed_comment_types_wrapper"
+                    aria-expanded="false"
+                    <?php
+                    $allowed_types = isset($this->options['allowed_comment_types']) ? $this->options['allowed_comment_types'] : array();
+                    checked(!empty($allowed_types));
+                    ?>>
+
+                <label for="enable_allowed_comment_types">
+                    <span class="switch" role="presentation" tabindex="0">
+                        <span class="switch__text on" aria-hidden="true"><?php esc_html_e('On', 'disable-comments'); ?></span>
+                        <span class="switch__text off" aria-hidden="true"><?php esc_html_e('Off', 'disable-comments'); ?></span>
+                    </span>
+                    <?php esc_html_e('Enable Certain Comment Types', 'disable-comments'); ?>
+                </label>
+            </div>
+
+            <div id="allowed_comment_types_wrapper"
+                class="allowed-comment-types-wrapper mt20"
+                <?php echo empty($allowed_types) ? 'hidden' : ''; ?>>
+
+                <?php
+                $available_types = $this->get_all_comment_types();
+                if (!empty($available_types)):
+                ?>
+                    <div class="checkbox-list" role="group" aria-labelledby="comment-types-list-heading">
+                        <h5 id="comment-types-list-heading" class="visually-hidden">
+                            <?php esc_html_e('Select comment types to enable', 'disable-comments'); ?>
+                        </h5>
+                        <?php foreach ($available_types as $type => $label): ?>
+                            <div class="checkbox-item">
+                                <input type="checkbox"
+                                    name="allowed_comment_types[]"
+                                    id="allowed_comment_type_<?php echo esc_attr($type); ?>"
+                                    value="<?php echo esc_attr($type); ?>"
+                                    <?php checked(in_array($type, $allowed_types, true)); ?>>
+                                <label for="allowed_comment_type_<?php echo esc_attr($type); ?>">
+                                    <?php echo esc_html($label); ?>
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else: ?>
+                    <p class="disable__option__description">
+                        <?php esc_html_e('No special comment types found in your database. Special comment types will appear here once they are created (e.g., WordPress 6.9+ block notes, WooCommerce order notes, etc.).', 'disable-comments'); ?>
+                    </p>
+                <?php endif; ?>
+            </div>
+
+            <p id="allowed-comment-types-description" class="disable__option__description mt10">
+                <span class="danger" aria-hidden="true"><?php esc_html_e('Note:', 'disable-comments'); ?></span>
+                <?php esc_html_e('Enabling specific comment types will allow these notes/comments to be added or displayed wherever they normally appear throughout your site, even when regular comments are disabled. These comment types will also be protected from deletion and will not appear in the "Delete Comments" interface.', 'disable-comments'); ?>
+            </p>
+        </div>
+
+        <!-- Avatar Settings -->
             <div class="disable_option dc-text__block mt30"
                 role="group"
                 aria-labelledby="avatar-settings-heading">

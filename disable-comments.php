@@ -501,62 +501,97 @@ class Disable_Comments {
 	}
 
 	public function disable_rest_API_comments($prepared_comment, $request) {
-		// Allow notes (WordPress 6.9+ block notes feature)
-		if ($this->is_note_request($request)) {
+		// Allow comment types in the allowlist (e.g., WordPress 6.9+ block notes)
+		if ($this->is_allowed_comment_type_request($request)) {
 			return $prepared_comment;
 		}
 		return;
 	}
 
 	/**
-	 * Check if a REST API request is for notes (WordPress 6.9+ block notes feature)
+	 * Get the list of allowed comment types from settings
+	 *
+	 * @return array Array of allowed comment types
+	 */
+	private function get_allowed_comment_types() {
+		if (!isset($this->options['allowed_comment_types']) || !is_array($this->options['allowed_comment_types'])) {
+			return array(); // Default: all special comment types disabled
+		}
+		return $this->options['allowed_comment_types'];
+	}
+
+	/**
+	 * Check if a specific comment type is allowed (enabled in the allowlist)
+	 *
+	 * @param string $comment_type The comment type to check
+	 * @return bool True if the comment type is allowed, false otherwise
+	 */
+	private function is_comment_type_allowed($comment_type) {
+		$allowed_types = $this->get_allowed_comment_types();
+		return in_array($comment_type, $allowed_types, true);
+	}
+
+	/**
+	 * Check if a REST API request is for an allowed comment type
 	 *
 	 * @param WP_REST_Request $request The REST API request object
-	 * @return bool True if the request is for notes, false otherwise
+	 * @return bool True if the request is for an allowed comment type, false otherwise
 	 */
-	private function is_note_request($request = null) {
+	private function is_allowed_comment_type_request($request = null) {
+		$comment_type = null;
+
 		// Check if we have a request object
 		if (!$request) {
 			// Check global $_REQUEST for type parameter
-			if (isset($_REQUEST['type']) && $_REQUEST['type'] === 'note') {
-				return true;
+			if (isset($_REQUEST['type'])) {
+				$comment_type = sanitize_text_field(wp_unslash($_REQUEST['type']));
 			}
 			// Check if we're in a REST API context
-			if (defined('REST_REQUEST') && REST_REQUEST) {
+			elseif (defined('REST_REQUEST') && REST_REQUEST) {
 				global $wp;
-				if (isset($wp->query_vars['type']) && $wp->query_vars['type'] === 'note') {
-					return true;
+				if (isset($wp->query_vars['type'])) {
+					$comment_type = sanitize_text_field($wp->query_vars['type']);
 				}
 			}
-			return false;
-		}
-
-		// Check the request object for type parameter
-		$type = $request->get_param('type');
-		if ($type === 'note') {
-			return true;
-		}
-
-		// Check the request body for type parameter (for POST requests)
-		$body = $request->get_body_params();
-		if (isset($body['type']) && $body['type'] === 'note') {
-			return true;
-		}
-
-		// Check JSON body for type parameter
-		$json = $request->get_json_params();
-		if (isset($json['type']) && $json['type'] === 'note') {
-			return true;
-		}
-
-		// For UPDATE requests (PUT/PATCH), check if the existing comment is a note
-		// WordPress doesn't send the type parameter when updating, only the ID and content
-		$comment_id = $request->get_param('id');
-		if ($comment_id) {
-			$comment = get_comment($comment_id);
-			if ($comment && isset($comment->comment_type) && $comment->comment_type === 'note') {
-				return true;
+		} else {
+			// Check the request object for type parameter
+			$type = $request->get_param('type');
+			if ($type) {
+				$comment_type = $type;
 			}
+
+			// Check the request body for type parameter (for POST requests)
+			if (!$comment_type) {
+				$body = $request->get_body_params();
+				if (isset($body['type'])) {
+					$comment_type = $body['type'];
+				}
+			}
+
+			// Check JSON body for type parameter
+			if (!$comment_type) {
+				$json = $request->get_json_params();
+				if (isset($json['type'])) {
+					$comment_type = $json['type'];
+				}
+			}
+
+			// For UPDATE requests (PUT/PATCH), check if the existing comment is an allowed type
+			// WordPress doesn't send the type parameter when updating, only the ID and content
+			if (!$comment_type) {
+				$comment_id = $request->get_param('id');
+				if ($comment_id) {
+					$comment = get_comment($comment_id);
+					if ($comment && isset($comment->comment_type)) {
+						$comment_type = $comment->comment_type;
+					}
+				}
+			}
+		}
+
+		// Check if the comment type is in the allowlist
+		if ($comment_type && $this->is_comment_type_allowed($comment_type)) {
+			return true;
 		}
 
 		return false;
@@ -599,7 +634,7 @@ class Disable_Comments {
 	}
 
 	/**
-	 * Filter REST API comment requests to block non-note comments
+	 * Filter REST API comment requests to block comments except allowed types
 	 *
 	 * @param mixed $result Response to replace the requested version with
 	 * @param WP_REST_Server $server Server instance
@@ -613,8 +648,8 @@ class Disable_Comments {
 			return $result;
 		}
 
-		// Allow note requests to pass through
-		if ($this->is_note_request($request)) {
+		// Allow requests for comment types in the allowlist to pass through
+		if ($this->is_allowed_comment_type_request($request)) {
 			return $result;
 		}
 
@@ -627,19 +662,19 @@ class Disable_Comments {
 	}
 
 	/**
-	 * Filter comment queries in REST API to allow notes
+	 * Filter comment queries in REST API to allow only allowed comment types
 	 *
 	 * @param array $prepared_args Array of arguments for WP_Comment_Query
 	 * @param WP_REST_Request $request The REST API request
 	 * @return array
 	 */
 	public function filter_rest_comment_query($prepared_args, $request) {
-		// If this is a note request, allow it
-		if ($this->is_note_request($request)) {
+		// If this is a request for an allowed comment type, allow it
+		if ($this->is_allowed_comment_type_request($request)) {
 			return $prepared_args;
 		}
 
-		// For non-note requests, return empty results
+		// For non-allowed requests, return empty results
 		// by setting an impossible condition
 		$prepared_args['comment__in'] = array(0);
 
@@ -805,12 +840,12 @@ class Disable_Comments {
 			$comments_disabled = false;
 		}
 
-		// If comments are disabled, filter out regular comments but keep notes (WordPress 6.9+)
+		// If comments are disabled, filter out regular comments but keep allowed comment types
 		if ($comments_disabled && !empty($comments)) {
 			$filtered_comments = array();
 			foreach ($comments as $comment) {
-				// Keep notes (type=note) even when comments are disabled
-				if (isset($comment->comment_type) && $comment->comment_type === 'note') {
+				// Keep comment types that are in the allowlist even when comments are disabled
+				if (isset($comment->comment_type) && $this->is_comment_type_allowed($comment->comment_type)) {
 					$filtered_comments[] = $comment;
 				}
 			}
@@ -943,8 +978,9 @@ class Disable_Comments {
 		if (!empty($commenttypes_query) && is_array($commenttypes_query)) {
 			foreach ($commenttypes_query as $entry) {
 				$value = $entry['comment_type'];
-				// Exclude 'note' type (WordPress 6.9+ block notes) from deletable comment types
-				if ($value === 'note') {
+				// Exclude comment types that are in the allowlist from deletable comment types
+				// These are protected and should not appear in the "Delete Certain Comment Types" interface
+				if ($this->is_comment_type_allowed($value)) {
 					continue;
 				}
 				if ('' === $value) {
@@ -1156,6 +1192,15 @@ class Disable_Comments {
 			// show existing comments
 			$this->options['show_existing_comments'] = (isset($formArray['show_existing_comments']) ? (bool) $formArray['show_existing_comments'] : ($this->is_CLI && isset($this->options['show_existing_comments']) ? $this->options['show_existing_comments'] : false));
 
+			// allowed comment types (opt-in allowlist)
+			if (isset($formArray['allowed_comment_types']) && is_array($formArray['allowed_comment_types'])) {
+				// Sanitize and validate the allowed comment types
+				$this->options['allowed_comment_types'] = array_map('sanitize_key', $formArray['allowed_comment_types']);
+			} else {
+				// Default: empty array (all special comment types disabled)
+				$this->options['allowed_comment_types'] = array();
+			}
+
 			$this->options['db_version'] = self::DB_VERSION;
 			$this->options['settings_saved'] = true;
 			// save settings
@@ -1224,13 +1269,37 @@ class Disable_Comments {
 		// comments delete
 		if (isset($formArray['delete_mode'])) {
 			if ($formArray['delete_mode'] == 'delete_everywhere') {
-				// Delete all comment metadata except for notes (WordPress 6.9+ block notes)
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-				$wpdb->query($wpdb->prepare("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID WHERE comments.comment_type != %s", 'note'));
-				// Delete all comments except notes
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-				$wpdb->query($wpdb->prepare("DELETE FROM $wpdb->comments WHERE comment_type != %s", 'note'));
-				// Update comment counts (excluding notes)
+				// Delete all comment metadata except for allowed comment types
+				$allowed_types = $this->get_allowed_comment_types();
+
+				if (empty($allowed_types)) {
+					// No allowed types, delete all comments
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+					$wpdb->query("DELETE FROM $wpdb->commentmeta");
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+					$wpdb->query("DELETE FROM $wpdb->comments");
+				} else {
+					// Build exclusion query for allowed comment types
+					$placeholders = implode(', ', array_fill(0, count($allowed_types), '%s'));
+
+					// Delete comment metadata
+					$query = $wpdb->prepare(
+						"DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID WHERE comments.comment_type NOT IN ($placeholders)",
+						$allowed_types
+					);
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+					$wpdb->query($query);
+
+					// Delete comments
+					$query = $wpdb->prepare(
+						"DELETE FROM $wpdb->comments WHERE comment_type NOT IN ($placeholders)",
+						$allowed_types
+					);
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+					$wpdb->query($query);
+				}
+
+				// Update comment counts
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 				$wpdb->query("UPDATE $wpdb->posts SET comment_count = 0");
 				$this->optimize_table($wpdb->commentmeta);
@@ -1248,12 +1317,38 @@ class Disable_Comments {
 				}
 
 				if (!empty($delete_post_types)) {
-					// Loop through post_types and remove comments/meta (excluding notes) and set posts comment_count to 0.
+					// Loop through post_types and remove comments/meta (excluding allowed comment types) and set posts comment_count to 0.
+					$allowed_types = $this->get_allowed_comment_types();
+
 					foreach ($delete_post_types as $delete_post_type) {
-						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-						$wpdb->query($wpdb->prepare("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = %s AND comments.comment_type != 'note'", $delete_post_type));
-						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-						$wpdb->query($wpdb->prepare("DELETE comments FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = %s AND comments.comment_type != 'note'", $delete_post_type));
+						if (empty($allowed_types)) {
+							// No allowed types, delete all comments for this post type
+							// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+							$wpdb->query($wpdb->prepare("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = %s", $delete_post_type));
+							// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+							$wpdb->query($wpdb->prepare("DELETE comments FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = %s", $delete_post_type));
+						} else {
+							// Build exclusion query for allowed comment types
+							$placeholders = implode(', ', array_fill(0, count($allowed_types), '%s'));
+							$params = array_merge(array($delete_post_type), $allowed_types);
+
+							// Delete comment metadata
+							$query = $wpdb->prepare(
+								"DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = %s AND comments.comment_type NOT IN ($placeholders)",
+								$params
+							);
+							// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+							$wpdb->query($query);
+
+							// Delete comments
+							$query = $wpdb->prepare(
+								"DELETE comments FROM $wpdb->comments comments INNER JOIN $wpdb->posts posts ON comments.comment_post_ID=posts.ID WHERE posts.post_type = %s AND comments.comment_type NOT IN ($placeholders)",
+								$params
+							);
+							// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+							$wpdb->query($query);
+						}
+
 						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 						$wpdb->query($wpdb->prepare("UPDATE $wpdb->posts SET comment_count = 0 WHERE post_author != 0 AND post_type = %s", $delete_post_type));
 
@@ -1295,12 +1390,36 @@ class Disable_Comments {
 				}
 			} elseif ($formArray['delete_mode'] == 'delete_spam') {
 
-				// Delete spam comments and their metadata (excluding notes)
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-				$wpdb->query($wpdb->prepare("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID WHERE comments.comment_approved = %s AND comments.comment_type != %s", 'spam', 'note'));
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-				$wpdb->query($wpdb->prepare("DELETE comments FROM $wpdb->comments comments  WHERE comments.comment_approved = %s AND comments.comment_type != %s", 'spam', 'note'));
+				// Delete spam comments and their metadata (excluding allowed comment types)
+				$allowed_types = $this->get_allowed_comment_types();
 
+				if (empty($allowed_types)) {
+					// No allowed types, delete all spam comments
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+					$wpdb->query($wpdb->prepare("DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID WHERE comments.comment_approved = %s", 'spam'));
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+					$wpdb->query($wpdb->prepare("DELETE comments FROM $wpdb->comments comments WHERE comments.comment_approved = %s", 'spam'));
+				} else {
+					// Build exclusion query for allowed comment types
+					$placeholders = implode(', ', array_fill(0, count($allowed_types), '%s'));
+					$params = array_merge(array('spam'), $allowed_types);
+
+					// Delete comment metadata
+					$query = $wpdb->prepare(
+						"DELETE cmeta FROM $wpdb->commentmeta cmeta INNER JOIN $wpdb->comments comments ON cmeta.comment_id=comments.comment_ID WHERE comments.comment_approved = %s AND comments.comment_type NOT IN ($placeholders)",
+						$params
+					);
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+					$wpdb->query($query);
+
+					// Delete comments
+					$query = $wpdb->prepare(
+						"DELETE comments FROM $wpdb->comments comments WHERE comments.comment_approved = %s AND comments.comment_type NOT IN ($placeholders)",
+						$params
+					);
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+					$wpdb->query($query);
+				}
 
 				$this->optimize_table($wpdb->commentmeta);
 				$this->optimize_table($wpdb->comments);
@@ -1330,10 +1449,25 @@ class Disable_Comments {
 	protected function __get_comment_count() {
 		global $wpdb;
 
-		// Exclude notes (WordPress 6.9+ block notes) from the count since they cannot be deleted
+		// Exclude allowed comment types from the count since they cannot be deleted
 		// and should not be displayed in the "Total Comments" count in the Delete Comments tab
+		$allowed_types = $this->get_allowed_comment_types();
+
+		if (empty($allowed_types)) {
+			// No allowed types, count all comments
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+			return $wpdb->get_var("SELECT COUNT(comment_id) FROM $wpdb->comments");
+		}
+
+		// Build exclusion query for allowed comment types
+		$placeholders = implode(', ', array_fill(0, count($allowed_types), '%s'));
+		$query = $wpdb->prepare(
+			"SELECT COUNT(comment_id) FROM $wpdb->comments WHERE comment_type NOT IN ($placeholders)",
+			$allowed_types
+		);
+
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-		return $wpdb->get_var($wpdb->prepare("SELECT COUNT(comment_id) FROM $wpdb->comments WHERE comment_type != %s", 'note'));
+		return $wpdb->get_var($query);
 	}
 
 	/**
