@@ -289,37 +289,34 @@
                 </label>
             </div>
 
-            <div id="allowed_comment_types_wrapper"
-                class="allowed-comment-types-wrapper mt20"
-                <?php echo empty($allowed_types) ? 'hidden' : ''; ?>>
+            <ul id="allowed_comment_types_wrapper"
+                class="delete__feedback"
+                role="group"
+                aria-label="<?php esc_attr_e('Available comment types', 'disable-comments'); ?>">
 
                 <?php
                 $available_types = $this->get_all_comment_types(false);
                 if (!empty($available_types)):
-                ?>
-                    <div class="checkbox-list" role="group" aria-labelledby="comment-types-list-heading">
-                        <h5 id="comment-types-list-heading" class="visually-hidden">
-                            <?php esc_html_e('Select comment types to enable', 'disable-comments'); ?>
-                        </h5>
-                        <?php foreach ($available_types as $type => $label): ?>
-                            <div class="checkbox-item">
-                                <input type="checkbox"
-                                    name="allowed_comment_types[]"
-                                    id="allowed_comment_type_<?php echo esc_attr($type); ?>"
-                                    value="<?php echo esc_attr($type); ?>"
-                                    <?php checked(in_array($type, $allowed_types, true)); ?>>
-                                <label for="allowed_comment_type_<?php echo esc_attr($type); ?>">
-                                    <?php echo esc_html($label); ?>
-                                </label>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php else: ?>
-                    <p class="disable__option__description">
+                    foreach ($available_types as $type => $label): ?>
+                        <li class="checkbox-style">
+                            <input type="checkbox"
+                                name="allowed_comment_types[]"
+                                id="allowed_comment_type_<?php echo esc_attr($type); ?>"
+                                value="<?php echo esc_attr($type); ?>"
+                                aria-describedby="allowed-comment-types-description"
+                                <?php checked(in_array($type, $allowed_types, true)); ?>>
+                            <label for="allowed_comment_type_<?php echo esc_attr($type); ?>">
+                                <i class="icon" tabindex="0"></i>
+                                <?php echo esc_html($label); ?>
+                            </label>
+                        </li>
+                    <?php endforeach;
+                else: ?>
+                    <li class="disable__option__description">
                         <?php esc_html_e('No special comment types found in your database. Special comment types will appear here once they are created (e.g., WordPress 6.9+ block notes, WooCommerce order notes, etc.).', 'disable-comments'); ?>
-                    </p>
+                    </li>
                 <?php endif; ?>
-            </div>
+            </ul>
 
             <p id="allowed-comment-types-description" class="disable__option__description mt10">
                 <span class="danger" aria-hidden="true"><?php esc_html_e('Note:', 'disable-comments'); ?></span>
