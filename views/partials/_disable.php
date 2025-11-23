@@ -294,7 +294,7 @@
                 <?php echo empty($allowed_types) ? 'hidden' : ''; ?>>
 
                 <?php
-                $available_types = $this->get_all_comment_types();
+                $available_types = $this->get_all_comment_types(false);
                 if (!empty($available_types)):
                 ?>
                     <div class="checkbox-list" role="group" aria-labelledby="comment-types-list-heading">

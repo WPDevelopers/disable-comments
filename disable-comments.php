@@ -952,7 +952,7 @@ class Disable_Comments {
 		}
 	}
 
-	public function get_all_comment_types() {
+	public function get_all_comment_types($exclude_allowed = true) {
 		if ($this->networkactive && is_network_admin() && function_exists('get_sites')) {
 			$comment_types = [];
 			$sites = get_sites([
@@ -961,15 +961,15 @@ class Disable_Comments {
 			]);
 			foreach ($sites as $blog_id) {
 				switch_to_blog($blog_id);
-				$comment_types = array_merge($this->_get_all_comment_types(), $comment_types);
+				$comment_types = array_merge($this->_get_all_comment_types($exclude_allowed), $comment_types);
 				restore_current_blog();
 			}
 			return $comment_types;
 		} else {
-			return $this->_get_all_comment_types();
+			return $this->_get_all_comment_types($exclude_allowed);
 		}
 	}
-	public function _get_all_comment_types() {
+	public function _get_all_comment_types($exclude_allowed = true) {
 		global $wpdb;
 		$commenttypes = array();
 		// we need fresh data in every call.
@@ -980,7 +980,7 @@ class Disable_Comments {
 				$value = $entry['comment_type'];
 				// Exclude comment types that are in the allowlist from deletable comment types
 				// These are protected and should not appear in the "Delete Certain Comment Types" interface
-				if ($this->is_comment_type_allowed($value)) {
+				if ($exclude_allowed && $this->is_comment_type_allowed($value)) {
 					continue;
 				}
 				if ('' === $value) {
