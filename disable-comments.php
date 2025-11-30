@@ -556,9 +556,8 @@ class Disable_Comments {
 	 * arbitrary string values stored in the wp_comments table. Therefore, we maintain
 	 * a curated list of known special comment types that plugins commonly use.
 	 *
-	 * This function combines:
-	 * 1. Predefined known types (shown even if no comments of those types exist yet)
-	 * 2. Any additional types found in the database (for custom/unknown types)
+	 * This function returns only predefined known types plus any types added via the
+	 * 'disable_comments_known_comment_types' filter hook.
 	 *
 	 * @return array Associative array of comment_type => label
 	 */
@@ -586,15 +585,7 @@ class Disable_Comments {
 		 *
 		 * @param array $known_types Associative array of comment_type => label
 		 */
-		$known_types = apply_filters('disable_comments_known_comment_types', $known_types);
-
-		// Get additional types from database that we might not know about
-		// Pass false to get ALL types including those in the allowlist
-		$db_types = $this->get_all_comment_types(false);
-
-		// Use array union: known types take precedence (for their friendly labels),
-		// but any additional types from the database are appended
-		return $known_types + $db_types;
+		return apply_filters('disable_comments_known_comment_types', $known_types);
 	}
 
 	/**
