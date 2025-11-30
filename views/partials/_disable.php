@@ -295,7 +295,7 @@
                 aria-label="<?php esc_attr_e('Available comment types', 'disable-comments'); ?>">
 
                 <?php
-                $available_types = $this->get_all_comment_types(false);
+                $available_types = $this->get_available_comment_type_options();
                 if (!empty($available_types)):
                     foreach ($available_types as $type => $label): ?>
                         <li class="checkbox-style">

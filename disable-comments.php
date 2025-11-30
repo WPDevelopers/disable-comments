@@ -379,7 +379,9 @@ class Disable_Comments {
 				// we need to know what native support was for later.
 				if (post_type_supports($type, 'comments')) {
 					$this->modified_types[] = $type;
-					if (empty($this->options['show_existing_comments'])) {
+					// Keep comments support if show_existing_comments is enabled
+					// or if there are allowed comment types that need to be displayed
+					if (empty($this->options['show_existing_comments']) && !$this->has_allowed_comment_types()) {
 						remove_post_type_support($type, 'comments');
 					}
 					remove_post_type_support($type, 'trackbacks');
@@ -456,8 +458,10 @@ class Disable_Comments {
 	public function check_comment_template() {
 		if (is_singular() && ($this->is_remove_everywhere() || $this->is_post_type_disabled(get_post_type()))) {
 			if (!defined('DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE') || DISABLE_COMMENTS_REMOVE_COMMENTS_TEMPLATE == true) {
-				// Kill the comments template.
-				if(empty($this->options['show_existing_comments'])) {
+				// Kill the comments template unless:
+				// - show_existing_comments is enabled, OR
+				// - there are allowed comment types that need to be displayed
+				if (empty($this->options['show_existing_comments']) && !$this->has_allowed_comment_types()) {
 					add_filter('comments_template', array($this, 'dummy_comments_template'), 20);
 				}
 			}
@@ -521,6 +525,16 @@ class Disable_Comments {
 	}
 
 	/**
+	 * Check if any comment types are enabled in the allowlist
+	 *
+	 * @return bool True if there are allowed comment types, false otherwise
+	 */
+	private function has_allowed_comment_types() {
+		$allowed_types = $this->get_allowed_comment_types();
+		return !empty($allowed_types);
+	}
+
+	/**
 	 * Check if a specific comment type is allowed (enabled in the allowlist)
 	 *
 	 * @param string $comment_type The comment type to check
@@ -529,6 +543,58 @@ class Disable_Comments {
 	private function is_comment_type_allowed($comment_type) {
 		$allowed_types = $this->get_allowed_comment_types();
 		return in_array($comment_type, $allowed_types, true);
+	}
+
+	/**
+	 * Get available comment type options for the "Enable Certain Comment Types" UI
+	 *
+	 * This function returns a list of known special comment types that users can enable,
+	 * regardless of whether any comments of those types currently exist in the database.
+	 *
+	 * IMPORTANT: WordPress does not provide a formal API for registering or retrieving
+	 * comment types (unlike post types with get_post_types()). Comment types are simply
+	 * arbitrary string values stored in the wp_comments table. Therefore, we maintain
+	 * a curated list of known special comment types that plugins commonly use.
+	 *
+	 * This function combines:
+	 * 1. Predefined known types (shown even if no comments of those types exist yet)
+	 * 2. Any additional types found in the database (for custom/unknown types)
+	 *
+	 * @return array Associative array of comment_type => label
+	 */
+	public function get_available_comment_type_options() {
+		// Predefined known special comment types with descriptive labels
+		// These are shown even if no comments of these types exist yet in the database
+		//
+		// Note: WordPress does not have a formal comment type registration API,
+		// so this list is maintained manually based on common plugin usage.
+		$known_types = array(
+			'note' => __('Block Note - WordPress 6.9+ (note)', 'disable-comments'),
+		);
+
+		/**
+		 * Filter the list of known comment types shown in the "Enable Certain Comment Types" UI
+		 *
+		 * Plugins can add their own comment types to this list so users can enable them
+		 * even before any comments of those types exist in the database.
+		 *
+		 * Example:
+		 *   add_filter( 'disable_comments_known_comment_types', function( $types ) {
+		 *       $types['my_custom_type'] = __( 'My Custom Comment Type', 'my-plugin' );
+		 *       return $types;
+		 *   } );
+		 *
+		 * @param array $known_types Associative array of comment_type => label
+		 */
+		$known_types = apply_filters('disable_comments_known_comment_types', $known_types);
+
+		// Get additional types from database that we might not know about
+		// Pass false to get ALL types including those in the allowlist
+		$db_types = $this->get_all_comment_types(false);
+
+		// Use array union: known types take precedence (for their friendly labels),
+		// but any additional types from the database are appended
+		return $known_types + $db_types;
 	}
 
 	/**
@@ -867,10 +933,37 @@ class Disable_Comments {
 
 		// If comments are disabled but show_existing_comments is enabled, return actual count
 		if ($comments_disabled && !empty($this->options['show_existing_comments'])) {
-			$comments_disabled = false;
+			return $count;
+		}
+
+		// If comments are disabled but there are allowed comment types, count only those types
+		if ($comments_disabled && $this->has_allowed_comment_types()) {
+			return $this->count_allowed_comment_types($post_id);
 		}
 
 		return $comments_disabled ? 0 : $count;
+	}
+
+	/**
+	 * Count comments of allowed types for a specific post
+	 *
+	 * @param int $post_id The post ID
+	 * @return int The count of comments matching allowed types
+	 */
+	private function count_allowed_comment_types($post_id) {
+		$allowed_types = $this->get_allowed_comment_types();
+		if (empty($allowed_types)) {
+			return 0;
+		}
+
+		$comments = get_comments(array(
+			'post_id' => $post_id,
+			'type__in' => $allowed_types,
+			'status' => 'approve',
+			'count' => true,
+		));
+
+		return (int) $comments;
 	}
 
 	public function disable_rc_widget() {
