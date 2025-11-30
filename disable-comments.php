@@ -568,7 +568,7 @@ class Disable_Comments {
 		// Note: WordPress does not have a formal comment type registration API,
 		// so this list is maintained manually based on common plugin usage.
 		$known_types = array(
-			'note' => __('Block Note - WordPress 6.9+ (note)', 'disable-comments'),
+			'note' => __('Notes - WordPress 6.9+ (note)', 'disable-comments'),
 		);
 
 		/**
