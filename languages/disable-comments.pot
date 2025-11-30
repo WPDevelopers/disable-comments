@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-17T05:28:40+00:00\n"
+"POT-Creation-Date: 2025-11-30T03:50:06+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: disable-comments\n"
@@ -17,7 +17,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #: disable-comments.php
 #: disable-comments.php:369
-#: disable-comments.php:1670
+#: disable-comments.php:1881
 msgid "Disable Comments"
 msgstr ""
 
@@ -55,203 +55,202 @@ msgstr ""
 msgid "Disable Comments requires WordPress version %s or greater."
 msgstr ""
 
-#: disable-comments.php:570
-#: disable-comments.php:768
-#: disable-comments.php:776
+#: disable-comments.php:571
+msgid "Block Note - WordPress 6.9+ (note)"
+msgstr ""
+
+#: disable-comments.php:662
+#: disable-comments.php:860
+#: disable-comments.php:868
 msgid "Comments are closed."
 msgstr ""
 
-#: disable-comments.php:624
+#: disable-comments.php:716
 msgid "Comments are disabled."
 msgstr ""
 
 #. translators: %s: disabled post types.
-#: disable-comments.php:724
+#: disable-comments.php:816
 #, php-format
 msgid "Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types."
 msgstr ""
 
 #. translators: %s: disabled post types.
-#: disable-comments.php:724
+#: disable-comments.php:816
 msgid ", "
 msgstr ""
 
 #. translators: %s: URL to Disabled Comment settings page.
-#: disable-comments.php:757
+#: disable-comments.php:849
 #, php-format
 msgid "The <strong>Disable Comments</strong> plugin is active, but isn't configured to do anything yet. Visit the <a href=\"%s\">configuration page</a> to choose which post types to disable comments on."
 msgstr ""
 
-#: disable-comments.php:879
+#: disable-comments.php:987
 #: views/partials/_disable.php:3
 msgid "Settings"
 msgstr ""
 
-#: disable-comments.php:880
+#: disable-comments.php:988
 msgid "Tools"
 msgstr ""
 
-#: disable-comments.php:888
+#: disable-comments.php:996
 msgctxt "settings menu title"
 msgid "Disable Comments"
 msgstr ""
 
-#: disable-comments.php:897
+#: disable-comments.php:1005
 #: views/partials/_delete.php:9
 #: views/partials/_delete.php:218
 #: assets/js/disable-comments-settings-scripts.js:364
 msgid "Delete Comments"
 msgstr ""
 
-#: disable-comments.php:958
+#: disable-comments.php:1071
 msgid "Default (no type)"
 msgstr ""
 
-#: disable-comments.php:985
-#: disable-comments.php:1519
+#: disable-comments.php:1098
+#: disable-comments.php:1730
 msgid "Logged out users"
 msgstr ""
 
-#: disable-comments.php:1172
+#: disable-comments.php:1294
 msgid "Saved"
 msgstr ""
 
-#: disable-comments.php:1240
-#: disable-comments.php:1277
-#: disable-comments.php:1304
+#: disable-comments.php:1391
+#: disable-comments.php:1446
+#: disable-comments.php:1473
 msgid "All comments have been deleted"
 msgstr ""
 
-#: disable-comments.php:1242
-#: disable-comments.php:1246
-msgid "Internal error occured. Please try again later."
-msgstr ""
-
-#: disable-comments.php:1316
+#: disable-comments.php:1510
 msgid "All spam comments have been deleted."
 msgstr ""
 
-#: disable-comments.php:1587
+#: disable-comments.php:1798
 msgid "Comments are disabled site-wide for all content types"
 msgstr ""
 
-#: disable-comments.php:1588
+#: disable-comments.php:1799
 msgid "Comments are disabled only for blog posts"
 msgstr ""
 
-#: disable-comments.php:1589
+#: disable-comments.php:1800
 msgid "Comments are disabled only for pages"
 msgstr ""
 
-#: disable-comments.php:1590
+#: disable-comments.php:1801
 msgid "Comments are disabled for both posts and pages"
 msgstr ""
 
-#: disable-comments.php:1591
+#: disable-comments.php:1802
 msgid "Comments are disabled for multiple specific content types"
 msgstr ""
 
-#: disable-comments.php:1592
+#: disable-comments.php:1803
 msgid "Comments are enabled everywhere"
 msgstr ""
 
 #. translators: %s: disabled post types.
-#: disable-comments.php:1596
+#: disable-comments.php:1807
 #, php-format
 msgid "Comments are disabled for: %s"
 msgstr ""
 
-#: disable-comments.php:1603
-#: disable-comments.php:1638
-#: disable-comments.php:1642
-#: disable-comments.php:1658
+#: disable-comments.php:1814
+#: disable-comments.php:1849
+#: disable-comments.php:1853
+#: disable-comments.php:1869
 msgid "Enabled"
 msgstr ""
 
-#: disable-comments.php:1604
-#: disable-comments.php:1638
-#: disable-comments.php:1642
-#: disable-comments.php:1658
+#: disable-comments.php:1815
+#: disable-comments.php:1849
+#: disable-comments.php:1853
+#: disable-comments.php:1869
 msgid "Disabled"
 msgstr ""
 
-#: disable-comments.php:1605
+#: disable-comments.php:1816
 msgid "Not applicable"
 msgstr ""
 
-#: disable-comments.php:1611
+#: disable-comments.php:1822
 msgid "Comment Status"
 msgstr ""
 
-#: disable-comments.php:1615
+#: disable-comments.php:1826
 msgid "Plugin Configured"
 msgstr ""
 
-#: disable-comments.php:1616
-#: disable-comments.php:1624
-#: disable-comments.php:1646
-#: disable-comments.php:1650
+#: disable-comments.php:1827
+#: disable-comments.php:1835
+#: disable-comments.php:1857
+#: disable-comments.php:1861
 msgid "Yes"
 msgstr ""
 
-#: disable-comments.php:1616
-#: disable-comments.php:1624
-#: disable-comments.php:1646
-#: disable-comments.php:1650
+#: disable-comments.php:1827
+#: disable-comments.php:1835
+#: disable-comments.php:1857
+#: disable-comments.php:1861
 msgid "No"
 msgstr ""
 
-#: disable-comments.php:1619
+#: disable-comments.php:1830
 msgid "Total Comments"
 msgstr ""
 
-#: disable-comments.php:1623
+#: disable-comments.php:1834
 msgid "Global Disable Active"
 msgstr ""
 
-#: disable-comments.php:1627
+#: disable-comments.php:1838
 msgid "Disabled Post Types Count"
 msgstr ""
 
-#: disable-comments.php:1631
+#: disable-comments.php:1842
 msgid "Disabled Post Types"
 msgstr ""
 
-#: disable-comments.php:1634
-#: disable-comments.php:1664
+#: disable-comments.php:1845
+#: disable-comments.php:1875
 msgid "None"
 msgstr ""
 
-#: disable-comments.php:1637
+#: disable-comments.php:1848
 msgid "XML-RPC Comments"
 msgstr ""
 
-#: disable-comments.php:1641
+#: disable-comments.php:1852
 msgid "REST API Comments"
 msgstr ""
 
-#: disable-comments.php:1645
+#: disable-comments.php:1856
 #: views/partials/_disable.php:190
 msgid "Show Existing Comments"
 msgstr ""
 
-#: disable-comments.php:1649
+#: disable-comments.php:1860
 msgid "Network Active"
 msgstr ""
 
-#: disable-comments.php:1653
+#: disable-comments.php:1864
 msgid "Site-wide Settings"
 msgstr ""
 
-#: disable-comments.php:1657
+#: disable-comments.php:1868
 msgid "Role-based Exclusions"
 msgstr ""
 
-#: disable-comments.php:1661
+#: disable-comments.php:1872
 msgid "Excluded Roles"
 msgstr ""
 
-#: disable-comments.php:1671
+#: disable-comments.php:1882
 msgid "Complete overview of comment disable settings and configuration."
 msgstr ""
 
@@ -377,8 +376,9 @@ msgstr ""
 #: views/partials/_disable.php:63
 #: views/partials/_disable.php:166
 #: views/partials/_disable.php:256
-#: views/partials/_disable.php:291
-#: views/partials/_disable.php:346
+#: views/partials/_disable.php:322
+#: views/partials/_disable.php:357
+#: views/partials/_disable.php:412
 msgid "Note:"
 msgstr ""
 
@@ -450,6 +450,7 @@ msgid "Delete Certain Comment Types:"
 msgstr ""
 
 #: views/partials/_delete.php:149
+#: views/partials/_disable.php:295
 msgid "Available comment types"
 msgstr ""
 
@@ -504,18 +505,20 @@ msgstr ""
 #: views/partials/_disable.php:21
 #: views/partials/_disable.php:187
 #: views/partials/_disable.php:221
-#: views/partials/_disable.php:282
-#: views/partials/_disable.php:371
-#: views/partials/_disable.php:387
+#: views/partials/_disable.php:285
+#: views/partials/_disable.php:348
+#: views/partials/_disable.php:437
+#: views/partials/_disable.php:453
 msgid "On"
 msgstr ""
 
 #: views/partials/_disable.php:22
 #: views/partials/_disable.php:188
 #: views/partials/_disable.php:222
-#: views/partials/_disable.php:283
-#: views/partials/_disable.php:372
-#: views/partials/_disable.php:388
+#: views/partials/_disable.php:286
+#: views/partials/_disable.php:349
+#: views/partials/_disable.php:438
+#: views/partials/_disable.php:454
 msgid "Off"
 msgstr ""
 
@@ -592,67 +595,83 @@ msgid "This will exclude all the above settings for the selected user roles."
 msgstr ""
 
 #: views/partials/_disable.php:267
+msgid "Allowed Comment Types Settings"
+msgstr ""
+
+#: views/partials/_disable.php:288
+msgid "Enable Certain Comment Types"
+msgstr ""
+
+#: views/partials/_disable.php:316
+msgid "No special comment types found in your database. Special comment types will appear here once they are created (e.g., WordPress 6.9+ block notes, WooCommerce order notes, etc.)."
+msgstr ""
+
+#: views/partials/_disable.php:323
+msgid "Enabling specific comment types will allow these notes/comments to be added or displayed wherever they normally appear throughout your site, even when regular comments are disabled. These comment types will also be protected from deletion and will not appear in the \"Delete Comments\" interface."
+msgstr ""
+
+#: views/partials/_disable.php:333
 msgid "Avatar Display Settings"
 msgstr ""
 
-#: views/partials/_disable.php:285
-#: views/partials/_disable.php:340
+#: views/partials/_disable.php:351
+#: views/partials/_disable.php:406
 msgid "Disable Avatar"
 msgstr ""
 
-#: views/partials/_disable.php:292
+#: views/partials/_disable.php:358
 msgid "This will change Avatar state from your entire site."
 msgstr ""
 
-#: views/partials/_disable.php:301
+#: views/partials/_disable.php:367
 msgid "Avatar settings:"
 msgstr ""
 
-#: views/partials/_disable.php:314
+#: views/partials/_disable.php:380
 msgid "Don't Change"
 msgstr ""
 
-#: views/partials/_disable.php:327
+#: views/partials/_disable.php:393
 msgid "Enable Avatar"
 msgstr ""
 
-#: views/partials/_disable.php:347
+#: views/partials/_disable.php:413
 msgid "This will change Avatar state from your entire network. If you want to change the Avatar setting specifically on your subsites by enabling site-wise settings, select \"Don't change\" from here."
 msgstr ""
 
-#: views/partials/_disable.php:354
+#: views/partials/_disable.php:420
 msgid "Disable Comments With API"
 msgstr ""
 
-#: views/partials/_disable.php:357
+#: views/partials/_disable.php:423
 msgid "You can disable comments made on your website using WordPress specifications."
 msgstr ""
 
-#: views/partials/_disable.php:374
+#: views/partials/_disable.php:440
 msgid "Disable Comments via XML-RPC"
 msgstr ""
 
-#: views/partials/_disable.php:390
+#: views/partials/_disable.php:456
 msgid "Disable Comments via REST API"
 msgstr ""
 
-#: views/partials/_disable.php:397
+#: views/partials/_disable.php:463
 msgid "Toggle XML-RPC comments. When enabled, this will prevent comments from being submitted through XML-RPC."
 msgstr ""
 
-#: views/partials/_disable.php:400
+#: views/partials/_disable.php:466
 msgid "Toggle REST API comments. When enabled, this will prevent comments from being submitted through the REST API."
 msgstr ""
 
-#: views/partials/_disable.php:403
+#: views/partials/_disable.php:469
 msgid "Turning on these settings will disable any comments made on your website via XML-RPC or REST API specifications."
 msgstr ""
 
-#: views/partials/_disable.php:412
+#: views/partials/_disable.php:478
 msgid "Save all disable comments settings"
 msgstr ""
 
-#: views/partials/_disable.php:413
+#: views/partials/_disable.php:479
 msgid "Save Changes"
 msgstr ""
 
