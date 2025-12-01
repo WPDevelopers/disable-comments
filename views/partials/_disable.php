@@ -196,68 +196,6 @@
             </div>
         </div>
 
-        <?php if (!is_network_admin()): ?>
-            <div id="exclude_by_role_wrapper"
-                class="disable_option dc-text__block mb30 mt30"
-                role="group"
-                aria-labelledby="exclude-roles-heading">
-
-                <h4 id="exclude-roles-heading" class="visually-hidden">
-                    <?php esc_html_e('Role-based Exclusion Settings', 'disable-comments'); ?>
-                </h4>
-
-                <div class="dissable__switch__item">
-                    <input type="hidden" name="enable_exclude_by_role" value="0">
-                    <input type="checkbox"
-                        name="enable_exclude_by_role"
-                        id="enable_exclude_by_role"
-                        value="1"
-                        aria-controls="exclude_by_role_select_description_wrapper"
-                        aria-expanded="false"
-                        <?php checked(isset($this->options['enable_exclude_by_role']) ? $this->options['enable_exclude_by_role'] : false); ?>>
-
-                    <label for="enable_exclude_by_role">
-                        <span class="switch" role="presentation" tabindex="0">
-                            <span class="switch__text on" aria-hidden="true"><?php esc_html_e('On', 'disable-comments'); ?></span>
-                            <span class="switch__text off" aria-hidden="true"><?php esc_html_e('Off', 'disable-comments'); ?></span>
-                        </span>
-                        <?php esc_html_e('Exclude Disable Comments Settings Based On User Roles', 'disable-comments'); ?>
-                    </label>
-                </div>
-
-                <div id="exclude_by_role_select_description_wrapper"
-                    class="roles-selection-wrapper"
-                    <?php echo !isset($this->options['enable_exclude_by_role']) || !$this->options['enable_exclude_by_role'] ? 'hidden' : ''; ?>>
-
-                    <div id="exclude_by_role_select_wrapper" class="mb10">
-                        <?php
-                        $selected_roles = isset($this->options['exclude_by_role']) ? $this->options['exclude_by_role'] : [];
-                        $roles = $this->get_roles($selected_roles);
-                        ?>
-                        <label for="exclude_by_role" class="visually-hidden">
-                            <?php esc_html_e('Select user roles to exclude', 'disable-comments'); ?>
-                        </label>
-                        <select id="exclude_by_role"
-                            class="dc-select2"
-                            name="exclude_by_role[]"
-                            data-options='<?php echo wp_json_encode($roles); ?>'
-                            multiple
-                            aria-describedby="roles-description">
-                        </select>
-                    </div>
-
-                    <div class="roles-status" aria-live="polite">
-                        <p class="disable__option__description description__roles excluded-roles" hidden></p>
-                        <p class="disable__option__description description__roles included-roles" hidden></p>
-                    </div>
-                </div>
-
-                <p id="roles-description" class="disable__option__description mt10">
-                    <span class="danger" aria-hidden="true"><?php esc_html_e('Note:', 'disable-comments'); ?></span>
-                    <?php esc_html_e('This will exclude all the above settings for the selected user roles.', 'disable-comments'); ?>
-                </p>
-            </div>
-
             <!-- Enable Certain Comment Types -->
         <div class="disable_option dc-text__block mb30 mt30"
             role="group"
@@ -323,6 +261,68 @@
                 <?php esc_html_e('Enabling specific comment types will allow these notes/comments to be added or displayed wherever they normally appear throughout your site, even when regular comments are disabled. These comment types will also be protected from deletion and will not appear in the "Delete Comments" interface.', 'disable-comments'); ?>
             </p>
         </div>
+
+        <?php if (!is_network_admin()): ?>
+            <div id="exclude_by_role_wrapper"
+                class="disable_option dc-text__block mb30 mt30"
+                role="group"
+                aria-labelledby="exclude-roles-heading">
+
+                <h4 id="exclude-roles-heading" class="visually-hidden">
+                    <?php esc_html_e('Role-based Exclusion Settings', 'disable-comments'); ?>
+                </h4>
+
+                <div class="dissable__switch__item">
+                    <input type="hidden" name="enable_exclude_by_role" value="0">
+                    <input type="checkbox"
+                        name="enable_exclude_by_role"
+                        id="enable_exclude_by_role"
+                        value="1"
+                        aria-controls="exclude_by_role_select_description_wrapper"
+                        aria-expanded="false"
+                        <?php checked(isset($this->options['enable_exclude_by_role']) ? $this->options['enable_exclude_by_role'] : false); ?>>
+
+                    <label for="enable_exclude_by_role">
+                        <span class="switch" role="presentation" tabindex="0">
+                            <span class="switch__text on" aria-hidden="true"><?php esc_html_e('On', 'disable-comments'); ?></span>
+                            <span class="switch__text off" aria-hidden="true"><?php esc_html_e('Off', 'disable-comments'); ?></span>
+                        </span>
+                        <?php esc_html_e('Exclude Disable Comments Settings Based On User Roles', 'disable-comments'); ?>
+                    </label>
+                </div>
+
+                <div id="exclude_by_role_select_description_wrapper"
+                    class="roles-selection-wrapper"
+                    <?php echo !isset($this->options['enable_exclude_by_role']) || !$this->options['enable_exclude_by_role'] ? 'hidden' : ''; ?>>
+
+                    <div id="exclude_by_role_select_wrapper" class="mb10">
+                        <?php
+                        $selected_roles = isset($this->options['exclude_by_role']) ? $this->options['exclude_by_role'] : [];
+                        $roles = $this->get_roles($selected_roles);
+                        ?>
+                        <label for="exclude_by_role" class="visually-hidden">
+                            <?php esc_html_e('Select user roles to exclude', 'disable-comments'); ?>
+                        </label>
+                        <select id="exclude_by_role"
+                            class="dc-select2"
+                            name="exclude_by_role[]"
+                            data-options='<?php echo wp_json_encode($roles); ?>'
+                            multiple
+                            aria-describedby="roles-description">
+                        </select>
+                    </div>
+
+                    <div class="roles-status" aria-live="polite">
+                        <p class="disable__option__description description__roles excluded-roles" hidden></p>
+                        <p class="disable__option__description description__roles included-roles" hidden></p>
+                    </div>
+                </div>
+
+                <p id="roles-description" class="disable__option__description mt10">
+                    <span class="danger" aria-hidden="true"><?php esc_html_e('Note:', 'disable-comments'); ?></span>
+                    <?php esc_html_e('This will exclude all the above settings for the selected user roles.', 'disable-comments'); ?>
+                </p>
+            </div>
 
         <!-- Avatar Settings -->
             <div class="disable_option dc-text__block mt30"
