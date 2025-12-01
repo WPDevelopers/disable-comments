@@ -251,7 +251,7 @@
                     <?php endforeach;
                 else: ?>
                     <li class="disable__option__description">
-                        <?php esc_html_e('No special comment types found in your database. Special comment types will appear here once they are created (e.g., WordPress 6.9+ block notes, WooCommerce order notes, etc.).', 'disable-comments'); ?>
+                        <?php esc_html_e('Currently, we support WordPress 6.9+ block notes (note type). This option will allow block notes to function even when regular comments are disabled.', 'disable-comments'); ?>
                     </li>
                 <?php endif; ?>
             </ul>

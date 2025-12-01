@@ -74,15 +74,16 @@ class Disable_Comments {
 				)
 			) {
 				$this->options = [
-					'remove_everywhere'        => false,
-					'disabled_post_types'      => array(),
-					'extra_post_types'         => array(),
-					'disabled_sites'           => array(),
-					'remove_xmlrpc_comments'   => 0,
+					'remove_everywhere' => false,
+					'disabled_post_types' => array(),
+					'extra_post_types' => array(),
+					'disabled_sites' => array(),
+					'remove_xmlrpc_comments' => 0,
 					'remove_rest_API_comments' => 0,
-					'show_existing_comments'   => false,
-					'settings_saved'           => true,
-					'db_version'               => $this->options['db_version']
+					'show_existing_comments' => false,
+					'allowed_comment_types' => array(),
+					'settings_saved' => true,
+					'db_version' => $this->options['db_version']
 				];
 			}
 		} else {
@@ -115,7 +116,7 @@ class Disable_Comments {
 	}
 
 	public function is_network_admin() {
-		$sanitized_referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_text_field( wp_unslash($_SERVER['HTTP_REFERER']) ) : '';
+		$sanitized_referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
 		if (is_network_admin() || !empty($sanitized_referer) && defined('DOING_AJAX') && DOING_AJAX && is_multisite() && preg_match('#^' . network_admin_url() . '#i', $sanitized_referer)) {
 			return true;
 		}
@@ -153,9 +154,9 @@ class Disable_Comments {
 			include_once(DC_PLUGIN_ROOT_PATH . '/includes/class-plugin-usage-tracker.php');
 		}
 		$tracker = $this->tracker = DisableComments_Plugin_Tracker::get_instance(__FILE__, [
-			'opt_in'       => true,
+			'opt_in' => true,
 			'goodbye_form' => true,
-			'item_id'      => 'b0112c9030af6ba53de4'
+			'item_id' => 'b0112c9030af6ba53de4'
 		]);
 		$tracker->set_notice_options(array(
 			'notice' => __('Want to help make Disable Comments even better?', 'disable-comments'),
@@ -197,7 +198,7 @@ class Disable_Comments {
 			}
 			if ($old_ver < 7 && function_exists('get_sites')) {
 				$this->options['disabled_sites'] = [];
-				$dc_options     = get_site_option('disable_comments_options', array());
+				$dc_options = get_site_option('disable_comments_options', array());
 
 				foreach (get_sites(['number' => 0, 'fields' => 'ids']) as $blog_id) {
 					if (isset($dc_options['disabled_sites'])) {
@@ -296,7 +297,7 @@ class Disable_Comments {
 	private function is_exclude_by_role() {
 		if (!empty($this->options['enable_exclude_by_role']) && !empty($this->options['exclude_by_role'])) {
 			if (is_user_logged_in()) {
-				$user  = wp_get_current_user();
+				$user = wp_get_current_user();
 				$roles = (array) $user->roles;
 				$diff = array_intersect($this->options['exclude_by_role'], $roles);
 				if (count($diff) || (in_array("administrator", $this->options['exclude_by_role']) && is_super_admin())) {
@@ -764,10 +765,10 @@ class Disable_Comments {
 			$hook_suffix === 'options-general_' . DC_PLUGIN_SLUG
 		) {
 			// css
-			wp_enqueue_style('sweetalert2',  DC_ASSETS_URI . 'css/sweetalert2.min.css', [], DC_VERSION);
+			wp_enqueue_style('sweetalert2', DC_ASSETS_URI . 'css/sweetalert2.min.css', [], DC_VERSION);
 			// wp_enqueue_style('pagination',  DC_ASSETS_URI . 'css/pagination.css', [], false);
-			wp_enqueue_style('disable-comments-style',  DC_ASSETS_URI . 'css/style.css', [], DC_VERSION);
-			wp_enqueue_style('select2',  DC_ASSETS_URI . 'css/select2.min.css', [], DC_VERSION);
+			wp_enqueue_style('disable-comments-style', DC_ASSETS_URI . 'css/style.css', [], DC_VERSION);
+			wp_enqueue_style('select2', DC_ASSETS_URI . 'css/select2.min.css', [], DC_VERSION);
 			// js
 			wp_enqueue_script('sweetalert2', DC_ASSETS_URI . 'js/sweetalert2.all.min.js', array('jquery'), DC_VERSION, true);
 			wp_enqueue_script('pagination', DC_ASSETS_URI . 'js/pagination.min.js', array('jquery'), DC_VERSION, true);
@@ -786,7 +787,7 @@ class Disable_Comments {
 			wp_set_script_translations('disable-comments-scripts', 'disable-comments');
 		} else {
 			// notice css
-			wp_enqueue_style('disable-comments-notice',  DC_ASSETS_URI . 'css/notice.css', [], DC_VERSION);
+			wp_enqueue_style('disable-comments-notice', DC_ASSETS_URI . 'css/notice.css', [], DC_VERSION);
 		}
 	}
 
@@ -855,7 +856,7 @@ class Disable_Comments {
 	public function filter_admin_menu() {
 		global $pagenow;
 
-		if(empty($this->options['show_existing_comments'])) {
+		if (empty($this->options['show_existing_comments'])) {
 			if ($pagenow == 'comment.php' || $pagenow == 'edit-comments.php') {
 				wp_die(esc_html__('Comments are closed.', 'disable-comments'), '', array('response' => 403));
 			}
@@ -1094,16 +1095,16 @@ class Disable_Comments {
 	public function get_roles($selected) {
 		$roles = [
 			[
-				"id"       => 'logged-out-users',
-				"text"     => __('Logged out users', 'disable-comments'),
+				"id" => 'logged-out-users',
+				"text" => __('Logged out users', 'disable-comments'),
 				"selected" => in_array('logged-out-users', (array) $selected),
 			]
 		];
 		$editable_roles = array_reverse(get_editable_roles());
 		foreach ($editable_roles as $role => $details) {
 			$roles[] = [
-				"id"       => esc_attr($role),
-				"text"     => translate_user_role($details['name']),
+				"id" => esc_attr($role),
+				"text" => translate_user_role($details['name']),
 				"selected" => in_array($role, (array) $selected),
 			];
 		}
@@ -1147,22 +1148,22 @@ class Disable_Comments {
 		}
 
 		$_sub_sites = [];
-		$type       = isset($_GET['type']) ? sanitize_text_field(wp_unslash($_GET['type'])) : 'disabled';
-		$search     = isset($_GET['search']) ? sanitize_text_field(wp_unslash($_GET['search'])) : '';
-		$pageSize   = isset($_GET['pageSize']) ? sanitize_text_field(wp_unslash($_GET['pageSize'])) : 50;
+		$type = isset($_GET['type']) ? sanitize_text_field(wp_unslash($_GET['type'])) : 'disabled';
+		$search = isset($_GET['search']) ? sanitize_text_field(wp_unslash($_GET['search'])) : '';
+		$pageSize = isset($_GET['pageSize']) ? sanitize_text_field(wp_unslash($_GET['pageSize'])) : 50;
 		$pageNumber = isset($_GET['pageNumber']) ? sanitize_text_field(wp_unslash($_GET['pageNumber'])) : 1;
-		$offset     = ($pageNumber - 1) * $pageSize;
-		$sub_sites  = get_sites([
+		$offset = ($pageNumber - 1) * $pageSize;
+		$sub_sites = get_sites([
 			'number' => $pageSize,
 			'offset' => $offset,
 			'search' => $search,
 			'fields' => 'ids',
 		]);
-		$totalNumber  = get_sites([
+		$totalNumber = get_sites([
 			// 'number' => $pageSize,
 			// 'offset' => $offset,
 			'search' => $search,
-			'count'  => true,
+			'count' => true,
 		]);
 
 		if ($type == 'disabled') {
@@ -1172,12 +1173,12 @@ class Disable_Comments {
 		}
 
 		foreach ($sub_sites as $sub_site_id) {
-			$blog        = get_blog_details($sub_site_id);
-			$is_checked  = checked(!empty($disabled_site_options["site_$sub_site_id"]), true, false);
+			$blog = get_blog_details($sub_site_id);
+			$is_checked = checked(!empty($disabled_site_options["site_$sub_site_id"]), true, false);
 			$_sub_sites[] = [
-				'site_id'    => $sub_site_id,
+				'site_id' => $sub_site_id,
 				'is_checked' => $is_checked,
-				'blogname'   => $blog->blogname,
+				'blogname' => $blog->blogname,
 			];
 		}
 		wp_send_json(['data' => $_sub_sites, 'totalNumber' => $totalNumber]);
@@ -1190,7 +1191,7 @@ class Disable_Comments {
 		}
 		// nonce is verified in the calling function
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing
-		else if(isset($_POST['data'])){
+		else if (isset($_POST['data'])) {
 			// need to use wp_parse_args before map_deep sanitize_text_field
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing
 			$formArray = map_deep(wp_parse_args(wp_unslash($_POST['data'])), 'sanitize_text_field');
@@ -1213,8 +1214,8 @@ class Disable_Comments {
 			$this->options['is_network_admin'] = isset($formArray['is_network_admin']) && $formArray['is_network_admin'] == '1' ? true : false;
 
 			if (!empty($this->options['is_network_admin']) && function_exists('get_sites') && empty($formArray['sitewide_settings'])) {
-				$formArray['disabled_sites'] = isset($formArray['disabled_sites']) 		   ? $formArray['disabled_sites'] : [];
-				$this->options['disabled_sites'] = isset($old_options['disabled_sites']) 	   ? $old_options['disabled_sites'] : [];
+				$formArray['disabled_sites'] = isset($formArray['disabled_sites']) ? $formArray['disabled_sites'] : [];
+				$this->options['disabled_sites'] = isset($old_options['disabled_sites']) ? $old_options['disabled_sites'] : [];
 				$this->options['disabled_sites'] = array_merge($this->options['disabled_sites'], $formArray['disabled_sites']);
 			} elseif (!empty($this->options['is_network_admin']) && !empty($formArray['sitewide_settings'])) {
 				$this->options['disabled_sites'] = $old_options['disabled_sites'];
@@ -1236,7 +1237,7 @@ class Disable_Comments {
 
 			// Extra custom post types.
 			if ($this->networkactive && isset($formArray['extra_post_types'])) {
-				$extra_post_types                  = array_filter(array_map('sanitize_key', explode(',', $formArray['extra_post_types'])));
+				$extra_post_types = array_filter(array_map('sanitize_key', explode(',', $formArray['extra_post_types'])));
 				$this->options['extra_post_types'] = array_diff($extra_post_types, array_keys($post_types)); // Make sure we don't double up builtins.
 			}
 
@@ -1397,7 +1398,7 @@ class Disable_Comments {
 				if ($this->networkactive && !empty($formArray['delete_extra_post_types'])) {
 					$delete_extra_post_types = array_filter(array_map('sanitize_key', explode(',', $formArray['delete_extra_post_types'])));
 					$delete_extra_post_types = array_diff($delete_extra_post_types, array_keys($types));    // Make sure we don't double up builtins.
-					$delete_post_types       = array_merge($delete_post_types, $delete_extra_post_types);
+					$delete_post_types = array_merge($delete_post_types, $delete_extra_post_types);
 				}
 
 				if (!empty($delete_post_types)) {
@@ -1437,7 +1438,7 @@ class Disable_Comments {
 						$wpdb->query($wpdb->prepare("UPDATE $wpdb->posts SET comment_count = 0 WHERE post_author != 0 AND post_type = %s", $delete_post_type));
 
 						$post_type_object = get_post_type_object($delete_post_type);
-						$post_type_label  = $post_type_object ? $post_type_object->labels->name : $delete_post_type;
+						$post_type_label = $post_type_object ? $post_type_object->labels->name : $delete_post_type;
 						$deletedPostTypeNames[] = $post_type_label;
 					}
 
@@ -1563,7 +1564,7 @@ class Disable_Comments {
 		global $wpdb;
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-		return $wpdb->query( "OPTIMIZE TABLE " . esc_sql( $table_name ) );
+		return $wpdb->query("OPTIMIZE TABLE " . esc_sql($table_name));
 	}
 
 	/**
@@ -1575,7 +1576,7 @@ class Disable_Comments {
 		global $wpdb;
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
-		return $wpdb->query( "TRUNCATE TABLE " . esc_sql( $table_name ) );
+		return $wpdb->query("TRUNCATE TABLE " . esc_sql($table_name));
 	}
 
 	/**
@@ -1652,7 +1653,6 @@ class Disable_Comments {
 
 			// For other combinations, return 'multiple' to indicate partial disabling
 			return 'multiple';
-
 		} catch (Exception $e) {
 			// Error handling - return safe default
 			if (defined('WP_DEBUG') && WP_DEBUG) {
@@ -1753,7 +1753,6 @@ class Disable_Comments {
 				'excluded_roles' => $excluded_roles,
 				'excluded_role_labels' => $excluded_role_labels
 			);
-
 		} catch (Exception $e) {
 			// Error handling - return safe defaults
 			if (defined('WP_DEBUG') && WP_DEBUG) {
