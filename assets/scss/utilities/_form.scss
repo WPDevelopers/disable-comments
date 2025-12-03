@@ -186,6 +186,42 @@
         padding-left: 2rem;
     }
 
+    .allowed-comment-types-wrapper {
+        margin-top: 1rem;
+        padding-left: 2rem;
+    }
+
+    .allowed-comment-types-wrapper .checkbox-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .allowed-comment-types-wrapper .checkbox-item {
+        display: flex;
+        align-items: center;
+    }
+
+    .allowed-comment-types-wrapper .checkbox-item input[type="checkbox"] {
+        margin-right: 0.5rem;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+    }
+
+    .allowed-comment-types-wrapper .checkbox-item label {
+        font-size: 16px;
+        font-weight: 500;
+        color: #687b95;
+        cursor: pointer;
+        margin: 0;
+    }
+
+    .allowed-comment-types-wrapper .checkbox-item input[type="checkbox"]:focus {
+        outline: 2px solid #007cba;
+        outline-offset: 2px;
+    }
+
     .dc-select2:focus {
         outline: 2px solid #007cba;
         outline-offset: 2px;

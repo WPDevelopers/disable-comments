@@ -469,6 +469,22 @@ jQuery(document).ready(function ($) {
 		jQuery('#enable_exclude_by_role').trigger('change');
 	})();
 
+	// Handle allowed comment types toggle
+	(function(){
+		var allowedCommentTypesWrapper = jQuery('#allowed_comment_types_wrapper');
+		jQuery('#enable_allowed_comment_types').on('change', function(){
+			if(jQuery(this).is(':checked')){
+				allowedCommentTypesWrapper.show();
+			}
+			else{
+				allowedCommentTypesWrapper.hide();
+				// Uncheck all comment type checkboxes when disabled
+				allowedCommentTypesWrapper.find('input[type="checkbox"]').prop('checked', false);
+			}
+		});
+		jQuery('#enable_allowed_comment_types').trigger('change');
+	})();
+
 
 	jQuery(document).on('keydown', 'label .icon[tabindex], label span[tabindex]', function(event) {
 		// console.log(event);
