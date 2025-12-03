@@ -1835,7 +1835,7 @@ class Disable_Comments {
 			),
 			'disabled_post_type_count' => array(
 				'label' => __('Disabled Post Types Count', 'disable-comments'),
-				'value' => sprintf('%d of %d', count($data['disabled_post_types']), $data['total_post_types']),
+				'value' => sprintf(__('%1$d of %2$d', 'disable-comments'), count($data['disabled_post_types']), $data['total_post_types']),
 			),
 			'disabled_post_types' => array(
 				'label' => __('Disabled Post Types', 'disable-comments'),
