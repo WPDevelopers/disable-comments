@@ -8,5 +8,7 @@ node_modules/
 vendor/
 .vscode/
 .idea
+.claude/worktrees/
 package-lock.json
 pnpm-lock.yaml
+.ai/security/

@@ -116,9 +116,12 @@ class Disable_Comments {
 	}
 
 	public function is_network_admin() {
-		$sanitized_referer = isset($_SERVER['HTTP_REFERER']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_REFERER'])) : '';
-		if (is_network_admin() || !empty($sanitized_referer) && defined('DOING_AJAX') && DOING_AJAX && is_multisite() && preg_match('#^' . network_admin_url() . '#i', $sanitized_referer)) {
+		if (is_network_admin()) {
 			return true;
+		}
+		if (defined('DOING_AJAX') && DOING_AJAX) {
+			$is_network_admin_param = isset($_REQUEST['is_network_admin']) ? sanitize_text_field(wp_unslash($_REQUEST['is_network_admin'])) : '';
+			return $is_network_admin_param === '1' && current_user_can('manage_network_plugins');
 		}
 		return false;
 	}
@@ -796,7 +799,8 @@ class Disable_Comments {
 					'save_action' => 'disable_comments_save_settings',
 					'delete_action' => 'disable_comments_delete_comments',
 					'settings_URI' => $this->settings_page_url(),
-					'_nonce' => wp_create_nonce('disable_comments_save_settings')
+					'_nonce' => wp_create_nonce('disable_comments_save_settings'),
+					'is_network_admin' => is_network_admin() ? '1' : '0'
 				)
 			);
 			wp_set_script_translations('disable-comments-scripts', 'disable-comments');
@@ -829,7 +833,7 @@ class Disable_Comments {
 			}
 
 			// translators: %s: disabled post types.
-			echo '<div class="notice notice-warning"><p>' . sprintf(esc_html__('Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types.', 'disable-comments'), implode(esc_html__(', ', 'disable-comments'), $names_escaped)) . '</p></div>';
+			echo '<div class="notice notice-warning"><p>' . wp_kses_post(sprintf(__('Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types.', 'disable-comments'), implode(__(', ', 'disable-comments'), $names_escaped))) . '</p></div>';
 		}
 	}
 
@@ -1159,7 +1163,12 @@ class Disable_Comments {
 	public function get_sub_sites() {
 		$nonce = (isset($_REQUEST['nonce']) ? sanitize_text_field(wp_unslash($_REQUEST['nonce'])) : '');
 		if (!wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
-			wp_send_json(['data' => [], 'totalNumber' => 0]);
+			wp_send_json_error(['message' => __('Invalid request. Please refresh the page and try again.', 'disable-comments')], 403);
+		}
+
+		$required_cap = is_multisite() ? 'manage_network_plugins' : 'manage_options';
+		if (!current_user_can($required_cap)) {
+			wp_send_json_error(['message' => __('Sorry, you are not allowed to access this resource.', 'disable-comments')], 403);
 		}
 
 		$_sub_sites = [];
@@ -1216,17 +1225,31 @@ class Disable_Comments {
 
 	public function disable_comments_settings($_args = array()) {
 		$nonce = (isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '');
-		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
+
+		if (!$this->is_CLI) {
+			if (!wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
+				wp_send_json_error(['message' => __('Nonce verification failed.', 'disable-comments')], 403);
+			}
+		}
+
+		if (($this->is_CLI && !empty($_args)) || !$this->is_CLI) {
 
 			$formArray = $this->get_form_array_escaped($_args);
+			$is_network_action = $this->is_CLI
+				? (!empty($formArray['is_network_admin']) && $formArray['is_network_admin'] == '1')
+				: $this->is_network_admin();
+			$required_cap = $is_network_action ? 'manage_network_plugins' : 'manage_options';
+			if (!$this->is_CLI && !current_user_can($required_cap)) {
+				wp_send_json_error(['message' => __('Insufficient permissions.', 'disable-comments')], 403);
+			}
 
-			$old_options = $this->options;
+			$old_options = $this->is_CLI ? $this->options : ($is_network_action ? get_site_option('disable_comments_options', []) : $this->options);
 			$this->options = [];
 			if ($this->is_CLI) {
 				$this->options = $old_options;
 			}
 
-			$this->options['is_network_admin'] = isset($formArray['is_network_admin']) && $formArray['is_network_admin'] == '1' ? true : false;
+			$this->options['is_network_admin'] = $is_network_action;
 
 			if (!empty($this->options['is_network_admin']) && function_exists('get_sites') && empty($formArray['sitewide_settings'])) {
 				$formArray['disabled_sites'] = isset($formArray['disabled_sites']) ? $formArray['disabled_sites'] : [];
@@ -1256,12 +1279,12 @@ class Disable_Comments {
 				$this->options['extra_post_types'] = array_diff($extra_post_types, array_keys($post_types)); // Make sure we don't double up builtins.
 			}
 
-			if (isset($formArray['sitewide_settings'])) {
+			if ($is_network_action && isset($formArray['sitewide_settings'])) {
 				update_site_option('disable_comments_sitewide_settings', $formArray['sitewide_settings']);
 			}
 
 			if (isset($formArray['disable_avatar'])) {
-				if ($this->is_network_admin()) {
+				if ($is_network_action) {
 					if ($formArray['disable_avatar'] == '0' || $formArray['disable_avatar'] == '1') {
 						$sites = get_sites([
 							'number' => 0,
@@ -1326,10 +1349,28 @@ class Disable_Comments {
 		$log = '';
 		$nonce = (isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '');
 
-		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
-			$formArray = $this->get_form_array_escaped($_args);
+		if (!$this->is_CLI) {
+			if (!wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
+				wp_send_json_error(['message' => __('Nonce verification failed.', 'disable-comments')], 403);
+				wp_die();
+			}
+		}
 
-			if (!empty($formArray['is_network_admin']) && function_exists('get_sites') && class_exists('WP_Site_Query')) {
+		if (($this->is_CLI && !empty($_args)) || !$this->is_CLI) {
+			$formArray = $this->get_form_array_escaped($_args);
+			$is_network_action = $this->is_CLI
+				? (!empty($formArray['is_network_admin']) && $formArray['is_network_admin'] == '1')
+				: $this->is_network_admin();
+
+			if (!$this->is_CLI) {
+				$required_cap = $is_network_action ? 'manage_network_plugins' : 'manage_options';
+				if (!current_user_can($required_cap)) {
+					wp_send_json_error(['message' => __('Insufficient permissions.', 'disable-comments')], 403);
+					wp_die();
+				}
+			}
+
+			if ($is_network_action && function_exists('get_sites') && class_exists('WP_Site_Query')) {
 				$sites = get_sites([
 					'number' => 0,
 					'fields' => 'ids',
@@ -1337,6 +1378,9 @@ class Disable_Comments {
 				foreach ($sites as $blog_id) {
 					// $formArray['disabled_sites'] ids don't include "site_" prefix.
 					if (!empty($formArray['disabled_sites']) && !empty($formArray['disabled_sites']["site_$blog_id"])) {
+						if (!is_super_admin() && !is_user_member_of_blog(get_current_user_id(), $blog_id)) {
+							continue; // Skip sites the user doesn't belong to
+						}
 						switch_to_blog($blog_id);
 						$log = $this->delete_comments($_args);
 						restore_current_blog();
@@ -1850,7 +1894,7 @@ class Disable_Comments {
 			),
 			'disabled_post_type_count' => array(
 				'label' => __('Disabled Post Types Count', 'disable-comments'),
-				'value' => sprintf('%d of %d', count($data['disabled_post_types']), $data['total_post_types']),
+				'value' => sprintf(esc_html__('%1$d of %2$d', 'disable-comments'), count($data['disabled_post_types']), $data['total_post_types']),
 			),
 			'disabled_post_types' => array(
 				'label' => __('Disabled Post Types', 'disable-comments'),
