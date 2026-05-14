@@ -3,7 +3,7 @@ Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, alimuzzamanalim, s
 Donate link: https://wpdeveloper.com/
 Tags: Disable Comments, Stop Spam, Delete Comments, Remove Comments, Spam Protection
 Requires at least: 5.0
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.0
 Stable tag: 2.7.0
 License: GPL-3.0-or-later
@@ -15,7 +15,7 @@ Allows administrators to globally disable comments on their site. Comments can b
 
 = Disable Comments - Remove Comments & Stop Spam [Multi-Site Support] =
 
-Enable/Disable comments on any WordPress content (Pages, Posts, or Media) to stop spammers. WP-CLI, XML-RPC & REST-API support to stop spam comments.
+Disable comments on WordPress posts, pages, and media in one click. Stop spam, remove existing comments, and turn off comments site-wide or per post type. Multisite, WP-CLI, REST API, and XML-RPC supported
 
 [More About Plugin](https://wpdeveloper.com/plugins/disable-comments/) ◼️ [Documentation](https://wpdeveloper.com/docs-category/disable-comments/) ◼️ [Support Forum](https://wordpress.org/support/plugin/disable-comments/)
 
@@ -42,11 +42,14 @@ https://www.youtube.com/watch?v=J9AteKzQpPs
 * The X-Pingback HTTP header is removed from all pages.
 * Outgoing pingbacks are disabled.
 * Stop spam comments entirely from the site with one click.
-* **[New]** Delete comments by type.
-* **[New]** Disable comments via [XML-RPC](https://wpdeveloper.com/docs/how-to-disable-comments-made-via-xml-rpc/) & [REST-API](https://wpdeveloper.com/docs/how-to-disable-comments-made-via-rest-api/)
-* **[New]** Fully Multi-site Network supported.
-* **[New]** Manage multiple website network-specific subsites or entire network comments in advance.
+* Delete comments by type.
+* Disable comments via [XML-RPC](https://wpdeveloper.com/docs/how-to-disable-comments-made-via-xml-rpc/) & [REST-API](https://wpdeveloper.com/docs/how-to-disable-comments-made-via-rest-api/)
+* Fully Multi-site Network supported.
+* Manage multiple website network-specific subsites or entire network comments in advance.
 * **[New]** Exclude Disable Comments Settings based on user roles.
+* **[New]** Disable Gravatar
+* **[New]** Enable Certain Comment Types
+* **[New]** Show Existing Comments
 
 https://www.youtube.com/watch?v=FBq3-W-p-DM
 
@@ -125,7 +128,7 @@ Consider checking out our other WordPress solutions & boost your WordPress websi
 
 📄 [EmbedPress](https://wordpress.org/plugins/embedpress/): EmbedPress lets you embed anything including videos, images, posts, audio, maps and upload PDF, DOC, PPT etc.
 
-☁ [Templately](https://wordpress.org/plugins/templately/): 6000+ Free templates library for Elementor & Gutenberg along with the cloud collaboration for WordPress.
+☁ [Templately](https://wordpress.org/plugins/templately/): 6500+ Free templates library for Elementor & Gutenberg along with the cloud collaboration for WordPress.
 
 📚 [BetterDocs](https://wordpress.org/plugins/betterdocs/): Best Documentation & Knowledge Base Plugin for WordPress reduce manual support tickets & improve user experience.
 
