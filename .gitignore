@@ -12,3 +12,7 @@ package-lock.json
 pnpm-lock.yaml
 .ai/security/
 .claude/worktrees/
+
+# Local WordPress sandbox (bin/setup-wp-sandbox.sh)
+.wp-sandbox/
+wp-sandbox*/

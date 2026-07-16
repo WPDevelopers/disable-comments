@@ -1,0 +1,72 @@
+# Automated checks on every pull request. Two layers:
+#
+#   lint  — php -l syntax check across the full supported PHP range,
+#           including 5.6 (catches the newer-syntax regressions documented
+#           in CLAUDE.md "PHP Compatibility").
+#   smoke — boots a real WordPress (core + SQLite drop-in, no MySQL) via
+#           bin/setup-wp-sandbox.sh and runs bin/smoke-test.sh: live
+#           runtime assertions on the plugin's behaviour.
+#
+# The heavier WP/PHP install matrix stays in compatibility-test.yml
+# (manual dispatch).
+name: PR Checks
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: "PHP ${{ matrix.php-version }} syntax"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["5.6", "7.4", "8.4"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+
+      - name: php -l all plugin files
+        run: |
+          FAIL=0
+          while IFS= read -r -d '' f; do
+            if ! OUT=$(php -l "$f" 2>&1); then
+              echo "$OUT"
+              FAIL=1
+            fi
+          done < <(find . -type f -name '*.php' \
+                     -not -path './vendor/*' \
+                     -not -path './node_modules/*' -print0)
+          [ "$FAIL" -eq 0 ] && echo "All PHP files parse cleanly on ${{ matrix.php-version }}."
+          exit $FAIL
+
+  smoke:
+    name: "Smoke tests (live WP, PHP ${{ matrix.php-version }})"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["7.4", "8.4"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: curl, zip, gd, mbstring, xml, sqlite3, pdo_sqlite
+          coverage: none
+
+      - name: Bootstrap WordPress sandbox (SQLite)
+        run: bin/setup-wp-sandbox.sh
+
+      - name: Run smoke tests
+        run: bin/smoke-test.sh
