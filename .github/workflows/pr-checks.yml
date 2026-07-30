@@ -70,3 +70,25 @@ jobs:
 
       - name: Run smoke tests
         run: bin/smoke-test.sh
+
+  multisite:
+    name: "Multisite smoke tests (live WP, PHP ${{ matrix.php-version }})"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["7.4", "8.4"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: curl, zip, gd, mbstring, xml, sqlite3, pdo_sqlite
+          coverage: none
+
+      # Builds its own sandbox and converts it to a network. Kept separate from
+      # the single-site job because multisite-convert is one-way.
+      - name: Run multisite smoke tests
+        run: bin/smoke-test-multisite.sh

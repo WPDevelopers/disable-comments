@@ -4,7 +4,7 @@
  * Plugin Name: Disable Comments
  * Plugin URI: https://wordpress.org/plugins/disable-comments/
  * Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. You could bulk delete comments using Tools.
- * Version: 2.7.1
+ * Version: 2.8.0
  * Author: WPDeveloper
  * Author URI: https://wpdeveloper.com
  * License: GPL-3.0+
@@ -38,7 +38,7 @@ class Disable_Comments {
 	}
 
 	function __construct() {
-		define('DC_VERSION', '2.7.1');
+		define('DC_VERSION', '2.8.0');
 		define('DC_PLUGIN_SLUG', 'disable_comments_settings');
 		define('DC_PLUGIN_ROOT_PATH', dirname(__FILE__));
 		define('DC_PLUGIN_VIEWS_PATH', DC_PLUGIN_ROOT_PATH . '/views/');
@@ -54,6 +54,11 @@ class Disable_Comments {
 		if (defined('WP_CLI') && WP_CLI) {
 			add_action('init', array($this, 'enable_cli'), 9999);
 		}
+
+		// Expose plugin state to the Abilities API (WordPress 6.9+), so AI
+		// agents and MCP clients can query how comments are configured.
+		add_action('wp_abilities_api_categories_init', array($this, 'register_ability_categories'));
+		add_action('wp_abilities_api_init', array($this, 'register_abilities'));
 
 		// are we network activated?
 		$this->networkactive = (is_multisite() && array_key_exists(plugin_basename(__FILE__), (array) get_site_option('active_sitewide_plugins')));
@@ -166,6 +171,47 @@ class Disable_Comments {
 	public function enable_cli() {
 		require_once DC_PLUGIN_ROOT_PATH . "/includes/cli.php";
 		new Disable_Comment_Command($this);
+	}
+
+	/**
+	 * Load the Abilities API integration.
+	 *
+	 * Guarded on the API being present so nothing changes on WordPress < 6.9,
+	 * where these hooks never fire anyway.
+	 *
+	 * @since 2.8.0
+	 * @return bool True when the integration is available and loaded.
+	 */
+	private function load_abilities() {
+		if (!function_exists('wp_register_ability') || !function_exists('wp_register_ability_category')) {
+			return false;
+		}
+		require_once DC_PLUGIN_ROOT_PATH . '/includes/abilities.php';
+		return true;
+	}
+
+	/**
+	 * Register the plugin's ability category with the Abilities API.
+	 *
+	 * @since 2.8.0
+	 * @return void
+	 */
+	public function register_ability_categories() {
+		if ($this->load_abilities()) {
+			disable_comments_register_ability_categories();
+		}
+	}
+
+	/**
+	 * Register the plugin's abilities with the Abilities API.
+	 *
+	 * @since 2.8.0
+	 * @return void
+	 */
+	public function register_abilities() {
+		if ($this->load_abilities()) {
+			disable_comments_register_abilities();
+		}
 	}
 
 	public function admin_notice() {
@@ -281,6 +327,129 @@ class Disable_Comments {
 		}
 	}
 
+	/**
+	 * Purges front-end page caches after a change to what the site renders.
+	 *
+	 * Disabling comments changes the HTML of every page that carries a comment
+	 * form or count, but a full-page cache keeps serving the old markup until
+	 * each entry expires. On a live nginx FastCGI host this was reproducible:
+	 * after saving, `x-cache: HIT` responses still contained the comment form
+	 * while a cache-busted request did not. Comments really were off — visitors
+	 * just could not tell.
+	 *
+	 * Called from the save and delete handlers rather than from
+	 * update_options(), deliberately. Those handlers run on `wp_ajax_*` or
+	 * WP-CLI, long after `plugins_loaded`, so every cache plugin has already
+	 * registered its listeners. update_options() is also reached from
+	 * check_db_upgrades() during plugin construction, where firing these would
+	 * be too early for anything to hear them.
+	 *
+	 * Only *page* caches are purged. The object cache (Redis/Memcached) is left
+	 * alone on purpose: settings are read through options that WordPress already
+	 * invalidates on write, so flushing a shared object cache would stampede a
+	 * busy site's origin for no benefit.
+	 *
+	 * Each integration is guarded — a caching plugin that renames or drops its
+	 * API must never turn "settings saved" into a fatal error.
+	 *
+	 * @since 2.8.0
+	 * @return void
+	 */
+	public function purge_page_caches($blog_ids = array()) {
+		// On a network the purge has to run *inside* each affected site. Several
+		// integrations (WP Rocket, SiteGround Optimizer, W3 Total Cache) only
+		// clear the site they are called from, so purging once from the network
+		// admin would leave every subsite serving deleted comments, stale counts,
+		// or an old comment form.
+		if (!empty($blog_ids) && is_multisite() && function_exists('switch_to_blog')) {
+			foreach (array_unique(array_map('intval', (array) $blog_ids)) as $blog_id) {
+				switch_to_blog($blog_id);
+				$this->purge_current_site_page_caches();
+				restore_current_blog();
+			}
+			return;
+		}
+
+		$this->purge_current_site_page_caches();
+	}
+
+	/**
+	 * Purges page caches for the site that is currently switched in.
+	 *
+	 * Split out from purge_page_caches() so the network loop can reuse it
+	 * without re-entering the switching logic.
+	 *
+	 * @since 2.8.0
+	 * @return void
+	 */
+	private function purge_current_site_page_caches() {
+		/**
+		 * Fires when Disable Comments has changed what the front end renders.
+		 *
+		 * On a network this fires once per affected site, with that site
+		 * switched in, so `get_current_blog_id()` inside the handler is the site
+		 * being purged. Hosts, caching plugins, and CDN integrations can hook
+		 * this to clear their own layer. Fired before the bundled integrations
+		 * below so a handler can act first.
+		 *
+		 * @since 2.8.0
+		 */
+		do_action('disable_comments_purge_caches');
+
+		if (function_exists('wp_cache_clear_cache')) {
+			wp_cache_clear_cache(); // WP Super Cache.
+		}
+		if (function_exists('w3tc_flush_posts')) {
+			w3tc_flush_posts(); // W3 Total Cache — page cache only, not the whole stack.
+		}
+		if (function_exists('rocket_clean_domain')) {
+			rocket_clean_domain(); // WP Rocket.
+		}
+		if (function_exists('sg_cachepress_purge_cache')) {
+			sg_cachepress_purge_cache(); // SiteGround Optimizer.
+		}
+
+		// Action-based integrations. do_action() with no listener is a no-op, so
+		// these are safe to fire unconditionally and stay correct for a plugin
+		// that registers its listener late.
+		do_action('litespeed_purge_all');        // LiteSpeed Cache.
+		do_action('rt_nginx_helper_purge_all');  // Nginx Helper.
+		do_action('breeze_clear_all_cache');     // Breeze.
+		do_action('wphb_clear_page_cache');      // Hummingbird.
+	}
+
+	/**
+	 * Sites whose rendered pages a settings save has just invalidated.
+	 *
+	 * A save from the network admin changes what every site in the network
+	 * renders, so every site's page cache is stale — not just the one the
+	 * request happened to run on. Outside a network context this is the current
+	 * site alone, which purge_page_caches() handles by default.
+	 *
+	 * @since 2.8.0
+	 * @param bool $is_network_ctx Whether the save came from a network admin screen.
+	 * @return array Blog IDs to purge. Empty means "just the current site".
+	 */
+	private function get_purge_blog_ids($is_network_ctx) {
+		if (!$is_network_ctx || !is_multisite() || !function_exists('get_sites')) {
+			return array();
+		}
+
+		$blog_ids = get_sites(array('number' => 0, 'fields' => 'ids'));
+
+		/**
+		 * Filters the sites purged after a network-wide settings change.
+		 *
+		 * Defaults to every site in the network, which is correct but O(sites).
+		 * A very large network whose cache layer already purges network-wide
+		 * from a single call can narrow this list.
+		 *
+		 * @since 2.8.0
+		 * @param array $blog_ids Blog IDs about to be purged.
+		 */
+		return (array) apply_filters('disable_comments_purge_blog_ids', $blog_ids);
+	}
+
 	public function get_disabled_sites($default = false) {
 		$disabled_sites = ['all' => true];
 		foreach (get_sites(['number' => 0, 'fields' => 'ids']) as $blog_id) {
@@ -342,6 +511,159 @@ class Disable_Comments {
 		}
 		return false;
 	}
+	/**
+	 * Endpoint-level comment blocking state.
+	 *
+	 * These settings are independent of the post-type configuration: either can
+	 * block comments over its transport while post types remain untouched. A
+	 * consumer that only inspects post-type settings would report comments as
+	 * fully enabled while REST comment creation returns 403.
+	 *
+	 * REST blocking has two sources — the dedicated toggle *and* global
+	 * "disable everywhere" mode, whose branch in init_filters() installs the
+	 * same rest_pre_dispatch/rest_endpoints/rest_comment_query filters. Either
+	 * one results in a 403 for non-allowlisted comment requests, so both count.
+	 * XML-RPC has only the dedicated toggle; global mode does not touch it.
+	 *
+	 * Reported role-independently, matching how the rest of the site's
+	 * configuration is described.
+	 *
+	 * @since 2.8.0
+	 * @return array {
+	 *     @type bool $rest   Whether REST API comment endpoints are blocked.
+	 *     @type bool $xmlrpc Whether XML-RPC comment methods are removed.
+	 * }
+	 */
+	public function get_endpoint_blocking_state() {
+		$rest_toggle = isset($this->options['remove_rest_API_comments']) && intval($this->options['remove_rest_API_comments']) === 1;
+		return array(
+			'rest'   => $rest_toggle || $this->is_remove_everywhere_configured(),
+			'xmlrpc' => isset($this->options['remove_xmlrpc_comments']) && intval($this->options['remove_xmlrpc_comments']) === 1,
+		);
+	}
+
+	/**
+	 * Comment types that stay enabled even when comments are disabled.
+	 *
+	 * The allowlist (e.g. WordPress 6.9+ "note" comments) is preserved in
+	 * comment queries, counted separately, and permitted through REST even in
+	 * "disable everywhere" mode. Consumers describing the site's comment state
+	 * must disclose it, otherwise "comments are disabled" reads as absolute
+	 * when it is not.
+	 *
+	 * @since 2.8.0
+	 * @return array List of allowed comment type slugs.
+	 */
+	public function get_allowed_comment_types_list() {
+		$allowed = $this->get_allowed_comment_types();
+		return is_array($allowed) ? array_values($allowed) : array();
+	}
+
+	/**
+	 * Whether the site is *configured* to disable comments everywhere.
+	 *
+	 * Unlike is_remove_everywhere(), this reports the stored setting regardless
+	 * of the current user's role exemption. Consumers that describe the site's
+	 * configuration (such as the Abilities API integration) need the
+	 * role-independent value; consumers deciding whether to filter a given
+	 * request must keep using is_remove_everywhere().
+	 *
+	 * @since 2.8.0
+	 * @return bool True when the global "disable everywhere" setting is on.
+	 */
+	/**
+	 * Whether every comment-capable post type on this site is actually closed.
+	 *
+	 * "Every public post type is ticked" is not the same as "comments are off
+	 * everywhere". get_all_post_types() — and so the settings screen — only
+	 * lists `public` post types, but a non-public post type can support comments
+	 * too. Tick every box and that type stays open; switch on the global setting
+	 * and it is closed. Only the second is genuinely site-wide.
+	 *
+	 * Detected by looking for any post type that *still* supports comments and
+	 * is not in the disabled list. The plugin removes comment support from the
+	 * types it closes, so whatever still supports comments is precisely what it
+	 * has not closed — including non-public and late-registered types the
+	 * settings screen never shows.
+	 *
+	 * Not valid for the global setting: under "remove everywhere" the plugin
+	 * closes types without necessarily having stripped support from ones
+	 * registered after its filters ran. Callers must check
+	 * is_remove_everywhere_configured() first.
+	 *
+	 * @since 2.8.0
+	 * @return bool True when no comment-capable post type is left open.
+	 */
+	/**
+	 * Disabled post types, limited to ones that actually exist right now.
+	 *
+	 * The stored selection outlives the post types in it. Disable comments on a
+	 * CPT, then deactivate the plugin that registered it, and the slug stays in
+	 * the option forever — so a status report would advertise a post type the
+	 * site no longer has, while get_all_post_types() correctly omits it.
+	 *
+	 * FOR REPORTING ONLY. Never use this to decide which types to filter:
+	 * get_disabled_post_types() is consulted while filters are being installed,
+	 * before CPTs have registered on `init`, and dropping unregistered types
+	 * there would leave comments open on every custom post type.
+	 *
+	 * @since 2.8.0
+	 * @return array Disabled post type slugs that are currently registered.
+	 */
+	public function get_disabled_post_types_registered() {
+		$types = $this->get_disabled_post_types();
+		$types = is_array($types) ? $types : array();
+
+		$existing = array();
+		foreach ($types as $type) {
+			if (post_type_exists($type)) {
+				$existing[] = $type;
+			}
+		}
+
+		return array_values($existing);
+	}
+
+	public function is_every_comment_capable_type_disabled() {
+		$disabled = $this->get_disabled_post_types();
+		$disabled = is_array($disabled) ? $disabled : array();
+
+		foreach (get_post_types(array(), 'names') as $post_type) {
+			if (post_type_supports($post_type, 'comments') && !in_array($post_type, $disabled, true)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public function is_remove_everywhere_configured() {
+		return !empty($this->options['remove_everywhere']);
+	}
+
+	/**
+	 * Role-exclusion state for the current request.
+	 *
+	 * Role exclusion is a per-user override: when the current user matches an
+	 * excluded role, comments are left open for them even though the site is
+	 * configured to disable them. Consumers that report configuration (such as
+	 * the Abilities API integration) need to disclose this, otherwise the
+	 * reported status is misleading for exempt users.
+	 *
+	 * @since 2.8.0
+	 * @return array {
+	 *     @type bool $enabled  Whether role-based exclusion is configured at all.
+	 *     @type bool $excluded Whether the *current* user is exempt.
+	 * }
+	 */
+	public function get_role_exclusion_state() {
+		$enabled = !empty($this->options['enable_exclude_by_role']) && !empty($this->options['exclude_by_role']);
+		return array(
+			'enabled'  => (bool) $enabled,
+			'excluded' => (bool) $this->is_exclude_by_role(),
+		);
+	}
+
 	private function is_remove_everywhere() {
 		if ($this->is_exclude_by_role()) {
 			return false;
@@ -1367,6 +1689,11 @@ class Disable_Comments {
 			$this->options['settings_saved'] = true;
 			// save settings
 			$this->update_options($is_network_ctx);
+
+			// A cached page keeps serving the old comment form otherwise, so the
+			// setting looks ignored to every visitor until the cache expires.
+			// A network save invalidates every site, not just this one.
+			$this->purge_page_caches($this->get_purge_blog_ids($is_network_ctx));
 		}
 		if (!$this->is_CLI) {
 			wp_send_json_success(array('message' => __('Saved', 'disable-comments')));
@@ -1421,11 +1748,19 @@ class Disable_Comments {
 							continue;
 						}
 						$log = $this->delete_comments($_args, $is_network_ctx);
+						// Purge while this site is still switched in: per-site
+						// integrations only clear the site they run in, so a
+						// purge after the loop would miss every subsite.
+						$this->purge_page_caches();
 						restore_current_blog();
 					}
 				}
 			} else {
 				$log = $this->delete_comments($_args, $is_network_ctx);
+
+				// Deleted comments stay visible in cached pages, and so do
+				// their counts, so the same purge applies here.
+				$this->purge_page_caches();
 			}
 		}
 		// message
@@ -1705,8 +2040,10 @@ class Disable_Comments {
 				return 'all';
 			}
 
-			// Get disabled post types
-			$disabled_post_types = $this->get_disabled_post_types();
+			// Get disabled post types. Reporting-only, so unregistered slugs left
+			// behind by a deactivated CPT plugin are excluded — they would
+			// otherwise be summarised as though the type still existed.
+			$disabled_post_types = $this->get_disabled_post_types_registered();
 
 			// If no post types are disabled, comments are enabled everywhere
 			if (empty($disabled_post_types)) {
@@ -1788,7 +2125,7 @@ class Disable_Comments {
 	public function get_detailed_comment_status() {
 		try {
 			$status = $this->get_current_comment_status();
-			$disabled_post_types = $this->get_disabled_post_types();
+			$disabled_post_types = $this->get_disabled_post_types_registered();
 			$all_post_types = $this->get_all_post_types();
 
 			// Get human-readable labels for disabled post types

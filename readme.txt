@@ -3,9 +3,9 @@ Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, alimuzzamanalim, s
 Donate link: https://wpdeveloper.com/
 Tags: Disable Comments, Stop Spam, Delete Comments, Remove Comments, Spam Protection
 Requires at least: 5.0
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.0
-Stable tag: 2.7.1
+Stable tag: 2.8.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -47,6 +47,7 @@ https://www.youtube.com/watch?v=J9AteKzQpPs
 * **[New]** Fully Multi-site Network supported.
 * **[New]** Manage multiple website network-specific subsites or entire network comments in advance.
 * **[New]** Exclude Disable Comments Settings based on user roles.
+* **[New]** AI-agent ready: supports the WordPress Abilities API (WP 6.9+), so AI assistants and MCP clients can read your comment settings.
 
 https://www.youtube.com/watch?v=FBq3-W-p-DM
 
@@ -191,6 +192,11 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maintained from August 19, 2020 - @asif2bd
+
+= [2.8.0] - 2026-07-27 =
+* New Feature: WordPress Abilities API support (WordPress 6.9+) — AI assistants, the command palette and MCP clients can now ask the site where comments are disabled, via the read-only `disable-comments/get-status` ability
+* Fixed: Page caches are now purged when settings are saved or comments are deleted — previously a cached page kept serving the comment form after comments were disabled
+* Compatible with WordPress 7.0
 
 = [2.7.1] - 2026-07-22 =
 * Improvement: General improvements
