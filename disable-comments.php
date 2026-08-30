@@ -1519,15 +1519,17 @@ class Disable_Comments {
 	public function get_sub_sites() {
 		$nonce = (isset($_REQUEST['nonce']) ? sanitize_text_field(wp_unslash($_REQUEST['nonce'])) : '');
 		if (!wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
-			wp_send_json(['data' => [], 'totalNumber' => 0]);
+			wp_send_json_error(['message' => __('Invalid request. Please refresh the page and try again.', 'disable-comments')], 403);
+		}
+		if (!is_multisite() || !function_exists('get_sites')) {
+			wp_send_json_error(['message' => __('Subsite listing is only available on multisite.', 'disable-comments')], 400);
 		}
 		// Listing subsites is always a network-level operation on multisite —
 		// require manage_network_plugins regardless of how the plugin is activated
 		// (network-wide or per-site). A per-site admin must never enumerate all
 		// network sites. On single-site installs manage_options suffices.
-		$required_cap = is_multisite() ? 'manage_network_plugins' : 'manage_options';
-		if (!current_user_can($required_cap)) {
-			wp_send_json(['data' => [], 'totalNumber' => 0]);
+		if (!current_user_can('manage_network_plugins')) {
+			wp_send_json_error(['message' => __('Sorry, you are not allowed to access this resource.', 'disable-comments')], 403);
 		}
 
 		$_sub_sites = [];
@@ -1584,7 +1586,11 @@ class Disable_Comments {
 
 	public function disable_comments_settings($_args = array()) {
 		$nonce = (isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '');
-		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
+		if (!$this->is_CLI && !wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
+			wp_send_json_error(['message' => __('Nonce verification failed.', 'disable-comments')], 403);
+		}
+
+		if (($this->is_CLI && !empty($_args)) || !$this->is_CLI) {
 			// Resolve context ONCE — used for both cap check and save routing.
 			$is_network_ctx = $this->is_network_admin_ajax_context();
 
@@ -1600,7 +1606,7 @@ class Disable_Comments {
 					$required_cap = 'manage_options';
 				}
 				if (!current_user_can($required_cap)) {
-					wp_send_json_error(['message' => 'Insufficient permissions.'], 403);
+					wp_send_json_error(['message' => __('Insufficient permissions.', 'disable-comments')], 403);
 				}
 			}
 
@@ -1715,7 +1721,11 @@ class Disable_Comments {
 		$log = '';
 		$nonce = (isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '');
 
-		if (($this->is_CLI && !empty($_args)) || wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
+		if (!$this->is_CLI && !wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
+			wp_send_json_error(['message' => __('Nonce verification failed.', 'disable-comments')], 403);
+		}
+
+		if (($this->is_CLI && !empty($_args)) || !$this->is_CLI) {
 			// Resolve context ONCE — used for both cap check and deletion routing.
 			$is_network_ctx = $this->is_network_admin_ajax_context();
 
@@ -1728,7 +1738,7 @@ class Disable_Comments {
 					$required_cap = 'manage_options';
 				}
 				if (!current_user_can($required_cap)) {
-					wp_send_json_error(['message' => 'Insufficient permissions.'], 403);
+					wp_send_json_error(['message' => __('Insufficient permissions.', 'disable-comments')], 403);
 				}
 			}
 
