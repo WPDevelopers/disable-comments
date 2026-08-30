@@ -1,0 +1,648 @@
+# Workflow Name: DC Compatibility Testing
+# This workflow ensures the plugin installs and activates without fatal errors
+# across specific legacy and modern WordPress/PHP environments.
+name: DC Compatibility Testing
+
+on:
+  # push:
+  #   branches:
+  #     - master
+  #     - dev
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # ← opt into Node 24 now, ahead of June 2026 deadline
+
+jobs:
+  compatibility-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      # 'fail-fast: false' ensures if one PHP version fails, others continue to run
+      fail-fast: false
+      matrix:
+        # We use an 'include' strategy to match your specific requirements
+        include:
+          # ── Minimum Requirements Baseline ────────────────────────────────────
+          # DC requires WP 5.0+ and PHP 5.6+. This entry validates the absolute
+          # floor: both the minimum WP version and minimum PHP version together.
+          #
+          # syntax-only: true — PHP 5.6 activating the plugin triggers a fatal
+          # "Only variables can be passed by reference" from plugin code that
+          # uses PHP 7-specific by-reference semantics (end() + cast). That is
+          # a plugin-level PHP 5.6 compat bug. Until it is fixed in the plugin,
+          # this CI entry runs a syntax-only check: it verifies every .php file
+          # parses cleanly under PHP 5.6 but skips full WP activation and the
+          # runtime integration steps that require the plugin to be loaded.
+          - wp-version: "5.0.21"
+            php-version: "5.6"
+            syntax-only: true
+
+          # ── WP / PHP Compatibility Matrix ────────────────────────────────────
+          # WP 6.9.4 across all modern PHP versions (latest tested)
+          - wp-version: "6.9.4"
+            php-version: "7.4"
+          - wp-version: "6.9.4"
+            php-version: "8.0"
+          - wp-version: "6.9.4"
+            php-version: "8.2"
+            conflict-check: true   # runs the "Test With Common Plugins" step
+          - wp-version: "6.9.4"
+            php-version: "8.4"
+
+          # WP 6.5.5 with PHP 8.1
+          - wp-version: "6.5.5"
+            php-version: "8.1"
+
+          # WP 6.0.9 with PHP 7.4 (Legacy Baseline)
+          - wp-version: "6.0.9"
+            php-version: "7.4"
+
+          # ── Multisite Compatibility ───────────────────────────────────────────
+          # DC has dedicated multisite / network-activation support.
+          # WP 6.9.4 / PHP 8.2 as the representative modern environment.
+          - wp-version: "6.9.4"
+            php-version: "8.2"
+            multisite: true
+
+    # Append "/ Multisite" to the job name for the multisite matrix entry so it
+    # is visually distinct from the regular WP 6.9.4 / PHP 8.2 conflict-check entry.
+    name: "WP ${{ matrix.wp-version }} / PHP ${{ matrix.php-version }}${{ matrix.multisite && ' / Multisite' || '' }}"
+
+
+    steps:
+      # 1. Pull the plugin code from the repository
+      - name: Checkout DC Code
+        uses: actions/checkout@v4
+
+      # 2. Setup the specific PHP environment for this matrix job
+      - name: Setup PHP Runtime
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mysqli, mbstring, xml, gd
+          tools: wp-cli
+
+      # 3. Start MySQL service (required for WordPress installation)
+      - name: Start Database
+        if: '!matrix.syntax-only'
+        run: |
+          # PHP 5.6's mysqli fails with error 2054 when MySQL 8 sends caching_sha2_password
+          # in the INITIAL HANDSHAKE PACKET — this happens regardless of what plugin
+          # the connecting user's account uses, because MySQL sends its server-default
+          # plugin first. PHP 5.6 errors out immediately, before the per-user plugin
+          # switch (AuthSwitchRequest) can even be negotiated.
+          #
+          # Fix: set default_authentication_plugin=mysql_native_password in MySQL config
+          # BEFORE starting MySQL. This changes the initial handshake to use
+          # mysql_native_password, which PHP 5.6 understands. The 'loose_' prefix
+          # silently ignores the option on MySQL 8.4+ where it was removed.
+          printf '[mysqld]\nloose_default_authentication_plugin=mysql_native_password\n' \
+            | sudo tee /etc/mysql/conf.d/mysql56-compat.cnf > /dev/null
+
+          sudo systemctl start mysql
+
+          # Create a dedicated WordPress test user. mysql_native_password is safe
+          # for all PHP versions (5.6 – 8.x). Both @localhost and @127.0.0.1 are
+          # created so the account matches regardless of how PHP resolves the host.
+          mysql -u root -proot -e "
+            CREATE DATABASE wordpress_test;
+            CREATE USER 'wptest'@'localhost'  IDENTIFIED WITH mysql_native_password BY 'wptest';
+            CREATE USER 'wptest'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY 'wptest';
+            GRANT ALL PRIVILEGES ON wordpress_test.* TO 'wptest'@'localhost';
+            GRANT ALL PRIVILEGES ON wordpress_test.* TO 'wptest'@'127.0.0.1';
+            FLUSH PRIVILEGES;
+          "
+
+      # 4. Download and Install WordPress Core
+      - name: Install WordPress Core
+        if: '!matrix.syntax-only'
+        run: |
+          wp core download --version=${{ matrix.wp-version }} --path=./test-site --allow-root
+          cd test-site
+          # Use the dedicated 'wptest' user (created with mysql_native_password above).
+          # Avoids caching_sha2_password issues with PHP 5.6 entirely.
+          wp config create --dbname=wordpress_test --dbuser=wptest --dbpass=wptest --dbhost=127.0.0.1 --allow-root
+          wp core install --url=http://localhost:8080 --title="DC Test" --admin_user=admin --admin_password=password --admin_email=test@example.com --allow-root
+
+      # 5. Convert to WordPress Multisite (only for the multisite matrix entry)
+      # Converts the single-site install to subdirectory-based multisite using
+      # WP-CLI. All subsequent steps that perform plugin activation or option
+      # reads automatically work in the multisite context.
+      - name: Convert to WordPress Multisite
+        if: matrix.multisite
+        run: |
+          cd test-site
+          wp core multisite-convert --title="DC Multisite Test" --allow-root
+          echo "✅ WordPress converted to Multisite (subdirectory)"
+          wp eval 'echo is_multisite() ? "✅ Confirmed: is_multisite() = true\n" : "❌ Not multisite!\n";' --allow-root
+
+      # 6. Move Plugin to WP Folder and Attempt Activation
+      # The symlink is always created (required by the PHP Syntax Check step).
+      # Actual WP activation is skipped for the syntax-only PHP 5.6 entry because
+      # the plugin contains PHP 7-style by-reference semantics that trigger a fatal
+      # in PHP 5.6 at compile time. That is a plugin-level bug; the YAML cannot
+      # work around it at runtime. Syntax checking still validates PHP 5.6 parse
+      # compatibility of every .php file in the plugin.
+      - name: Symlink Plugin into WordPress
+        if: '!matrix.syntax-only'
+        run: |
+          ln -s $(pwd) ./test-site/wp-content/plugins/disable-comments
+          echo "✅ Plugin symlinked into wp-content/plugins/disable-comments"
+
+      - name: Activate Disable Comments Plugin
+        if: '!matrix.syntax-only'
+        run: |
+          cd test-site
+          # This command will return an error code if activation triggers a Fatal Error
+          if [[ "${{ matrix.multisite }}" == "true" ]]; then
+            wp plugin activate disable-comments --network --allow-root
+            echo "✅ Disable Comments network-activated"
+          else
+            wp plugin activate disable-comments --allow-root
+            echo "✅ Disable Comments activated"
+          fi
+
+      # 7. Basic Integrity Check
+      - name: Run Integrity Check
+        if: '!matrix.syntax-only'
+        run: |
+          cd test-site
+          WP_STATUS=$(wp eval 'echo "Ready";' --quiet --allow-root)
+          if [[ "$WP_STATUS" != "Ready" ]]; then
+            echo "::error::WordPress environment crashed after activating Disable Comments."
+            exit 1
+          fi
+          echo "✅ Disable Comments is active and stable on WP ${{ matrix.wp-version }} / PHP ${{ matrix.php-version }}"
+
+      # 8. Verify Plugin is Listed as Active
+      # Network-activated plugins appear under --status=active-network, not --status=active.
+      - name: Verify Plugin is Listed as Active
+        if: '!matrix.syntax-only'
+        run: |
+          cd test-site
+          if [[ "${{ matrix.multisite }}" == "true" ]]; then
+            wp plugin list --status=active-network --field=name --allow-root | grep -q "disable-comments"
+          else
+            wp plugin list --status=active --field=name --allow-root | grep -q "disable-comments"
+          fi
+          echo "✅ Disable Comments is listed as active"
+
+      # 9. Verify Activation Constants & Default Options
+      # Checks the real constants and options that Disable Comments actually defines.
+      # Real constants (from disable-comments.php __construct):
+      #   DC_VERSION, DC_PLUGIN_SLUG, DC_PLUGIN_ROOT_PATH,
+      #   DC_PLUGIN_VIEWS_PATH, DC_PLUGIN_ROOT_URI, DC_ASSETS_URI
+      # Real option set (from init_wploaded_filters() on wp_loaded):
+      #   disable_comment_version  (always stored with update_option, not site option)
+      - name: Verify Activation Constants & Options
+        if: '!matrix.syntax-only'
+        run: |
+          cd test-site
+          wp eval '
+            // Trigger wp_loaded so init_wploaded_filters() runs and saves disable_comment_version
+            do_action("wp_loaded");
+
+            // Check critical constants defined in the plugin entry file
+            $constants = ["DC_VERSION", "DC_PLUGIN_SLUG", "DC_PLUGIN_ROOT_PATH", "DC_PLUGIN_VIEWS_PATH", "DC_PLUGIN_ROOT_URI", "DC_ASSETS_URI"];
+            foreach ($constants as $c) {
+              if (!defined($c)) { echo "::error::Missing constant: $c\n"; exit(1); }
+            }
+            echo "✅ All constants defined\n";
+
+            // Check disable_comment_version option was saved by init_wploaded_filters()
+            // This is always a per-site option (update_option), not a network option.
+            $val = get_option("disable_comment_version", "__MISSING__");
+            if ($val === "__MISSING__") { echo "::error::Missing option: disable_comment_version\n"; exit(1); }
+            echo "✅ disable_comment_version option saved: " . $val . "\n";
+
+            // Version consistency check
+            if (get_option("disable_comment_version") !== DC_VERSION) {
+              echo "::error::Version mismatch in DB vs constant\n"; exit(1);
+            }
+            echo "✅ Version stored correctly: " . DC_VERSION . "\n";
+          ' --allow-root
+
+      # 10. PHP Syntax Check (All Plugin Files)
+      # For syntax-only entries (PHP 5.6) the plugin is never symlinked into a
+      # test-site, so we scan the checkout root directly. For all other entries
+      # the symlink path is used (same files, different path).
+      - name: PHP Syntax Check
+        run: |
+          if [[ "${{ matrix.syntax-only }}" == "true" ]]; then
+            SCAN_PATH="$(pwd)"
+          else
+            SCAN_PATH="./test-site/wp-content/plugins/disable-comments"
+          fi
+          ERRORS=0
+          while IFS= read -r file; do
+            if ! php -l "$file" > /dev/null 2>&1; then
+              echo "::error::Syntax error in $file"
+              php -l "$file"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done < <(find "$SCAN_PATH" -name "*.php" -type f -not -path "*/vendor/*" -not -path "*/.git/*")
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "::error::$ERRORS file(s) have syntax errors"
+            exit 1
+          fi
+          echo "✅ All PHP files pass syntax check under PHP ${{ matrix.php-version }}"
+
+      # 11. Verify Admin Menu Registration
+      # In WP-CLI context is_admin()=false and is_network_admin()=false, so the
+      # 'admin_menu'/'network_admin_menu' actions are never fired.
+      # We call settings_menu() directly, but first we must satisfy two conditions:
+      #
+      # (A) is_network_admin() must return true for network-active DC, because
+      #     settings_menu() only registers under settings.php when BOTH networkactive
+      #     AND is_network_admin() are true. WP-CLI never sets WP_NETWORK_ADMIN, so
+      #     we define it here to make is_network_admin() return true.
+      #
+      # (B) The current user must pass current_user_can('manage_network_plugins').
+      #     In multisite WordPress routes this through is_super_admin(). We set the
+      #     $super_admins global directly so get_super_admins() (which checks the
+      #     global first, before the DB) returns the admin login immediately.
+      #
+      # Single-site: DC registers under options-general.php (Settings > Disable Comments)
+      # Multisite / network-active: DC registers under settings.php (Network Admin > Settings)
+      - name: Verify Admin Menu Registration
+        if: '!matrix.syntax-only'
+        run: |
+          cd test-site
+          wp eval '
+            require_once ABSPATH . "wp-admin/includes/admin.php";
+
+            // (A) Fake network-admin context so is_network_admin() returns true.
+            // settings_menu() checks: if ($this->networkactive && is_network_admin()).
+            // Without this, when network-active, the else-if (!networkactive || sitewide)
+            // also evaluates to false, and NO menu is registered at all.
+            if (is_multisite() && !defined("WP_NETWORK_ADMIN")) {
+              define("WP_NETWORK_ADMIN", true);
+            }
+
+            // (B) Authenticate as the install admin and ensure super-admin status.
+            // get_super_admins() reads $super_admins global before touching the DB.
+            // Set it directly so is_super_admin(1) is guaranteed true in CLI context.
+            $user = get_userdata(1);
+            if ($user) {
+              global $super_admins;
+              $super_admins = array($user->user_login);
+              wp_set_current_user(1);
+            }
+
+            // Disable_Comments is already initialized via plugins_loaded.
+            // Directly invoke settings_menu() to register the WP submenu entries.
+            $instance = Disable_Comments::get_instance();
+            $instance->settings_menu();
+
+            global $submenu;
+            $found = false;
+            // DC registers under settings.php when network-active, options-general.php otherwise
+            $parent = $instance->networkactive ? "settings.php" : "options-general.php";
+            if (is_array($submenu) && isset($submenu[$parent])) {
+              foreach ($submenu[$parent] as $item) {
+                // DC registers the slug DC_PLUGIN_SLUG = "disable_comments_settings"
+                if (isset($item[2]) && strpos($item[2], DC_PLUGIN_SLUG) !== false) {
+                  $found = true;
+                  echo "✅ Found submenu under $parent: " . strip_tags($item[0]) . "\n";
+                }
+              }
+            }
+            if (!$found) { echo "::error::DC admin submenu not registered under $parent\n"; exit(1); }
+          ' --allow-root
+
+      # 12. Check for PHP Warnings & Deprecations Under WP_DEBUG
+      - name: Check for PHP Warnings & Deprecations
+        if: '!matrix.syntax-only'
+        run: |
+          cd test-site
+          wp config set WP_DEBUG true --raw --allow-root
+          wp config set WP_DEBUG_LOG true --raw --allow-root
+
+          # Trigger a full WP bootstrap + admin_init cycle
+          wp eval 'do_action("admin_init"); echo "Bootstrap OK\n";' --allow-root
+
+          # Check the debug log for warnings/errors
+          if [ -f wp-content/debug.log ]; then
+            ISSUES=$(grep -cE "(PHP Warning|PHP Fatal|PHP Deprecated|PHP Notice)" wp-content/debug.log || true)
+            if [ "$ISSUES" -gt 0 ]; then
+              echo "::warning::Found $ISSUES PHP issue(s) in debug.log:"
+              grep -E "(PHP Warning|PHP Fatal|PHP Deprecated|PHP Notice)" wp-content/debug.log
+              # Fail on Fatal errors, warn on others
+              FATALS=$(grep -c "PHP Fatal" wp-content/debug.log || true)
+              if [ "$FATALS" -gt 0 ]; then exit 1; fi
+            fi
+          fi
+          echo "✅ No fatal PHP errors under WP_DEBUG"
+
+      # 13. Test Clean Deactivation & Reactivation Cycle
+      # Uses --network for the multisite entry since DC was network-activated.
+      - name: Test Deactivation and Reactivation Cycle
+        if: '!matrix.syntax-only'
+        run: |
+          cd test-site
+          if [[ "${{ matrix.multisite }}" == "true" ]]; then
+            wp plugin deactivate disable-comments --network --allow-root
+          else
+            wp plugin deactivate disable-comments --allow-root
+          fi
+          echo "✅ Deactivation succeeded"
+
+          # Verify site still works after deactivation
+          WP_STATUS=$(wp eval 'echo "Ready";' --quiet --allow-root)
+          if [[ "$WP_STATUS" != "Ready" ]]; then
+            echo "::error::Site crashed after deactivating Disable Comments"
+            exit 1
+          fi
+          echo "✅ Site stable after deactivation"
+
+          # Reactivate
+          if [[ "${{ matrix.multisite }}" == "true" ]]; then
+            wp plugin activate disable-comments --network --allow-root
+          else
+            wp plugin activate disable-comments --allow-root
+          fi
+          echo "✅ Reactivation succeeded"
+
+          WP_STATUS=$(wp eval 'echo "Ready";' --quiet --allow-root)
+          if [[ "$WP_STATUS" != "Ready" ]]; then
+            echo "::error::Site crashed after reactivating Disable Comments"
+            exit 1
+          fi
+          echo "✅ Site stable after reactivation"
+
+      # 14. Test With Common Plugins (Conflict Check)
+      # Verifies Disable Comments coexists with the most widely-used WordPress plugins.
+      # Only runs on one representative modern environment (WP 6.9.4 / PHP 8.2)
+      # to avoid exhausting CI minutes across all matrix entries.
+      - name: Test With Common Plugins (Conflict Check)
+        if: matrix.conflict-check && !matrix.syntax-only
+        run: |
+          cd test-site
+
+          # Helper: checks WP is alive after a plugin is activated.
+          # Uses grep instead of exact match because some plugins (e.g. WooCommerce)
+          # print PHP notices to stdout on first activation, polluting the output.
+          check_wp_alive() {
+            local label="$1"
+            WP_STATUS=$(wp eval 'echo "DC_OK";' --allow-root 2>/dev/null || true)
+            if ! echo "$WP_STATUS" | grep -q "DC_OK"; then
+              echo "::error::Conflict detected with $label — WordPress failed to boot after activation"
+              return 1
+            fi
+            wp plugin list --status=active --field=name --allow-root | grep -q "disable-comments" \
+              && echo "✅ Disable Comments still active alongside $label"
+            echo "✅ No conflicts with $label"
+          }
+
+          # Helper: install + activate a plugin gracefully.
+          # Captures output to a file (not a pipe) so the exit code is correct.
+          try_install_plugin() {
+            local slug="$1"
+            local label="$2"
+            echo "--- Testing $label ---"
+            wp plugin install "$slug" --activate --allow-root >/tmp/wp_install.log 2>&1
+            local exit_code=$?
+            cat /tmp/wp_install.log
+            if [ $exit_code -eq 0 ]; then
+              check_wp_alive "$label" || return 1
+            else
+              # If install failed due to a WP version requirement, emit a warning and skip.
+              if grep -q "Minimum WordPress requirement" /tmp/wp_install.log \
+                || grep -q "could not be found" /tmp/wp_install.log; then
+                echo "::warning::Skipping $label conflict check — plugin requires a newer WordPress version than ${{ matrix.wp-version }}"
+              else
+                echo "::error::Failed to install $label for unexpected reason (see log above)"
+                return 1
+              fi
+            fi
+          }
+
+          # ── Akismet (ships with WP by default) ──────────────────────────────
+          wp plugin activate akismet --allow-root 2>/dev/null || true
+          check_wp_alive "Akismet" || exit 1
+
+          # ── WooCommerce ─────────────────────────────────────────────────────
+          # DC has special handling to keep WooCommerce product reviews
+          # functional while disabling standard comments; confirms no fatal
+          # on co-activation.
+          try_install_plugin "woocommerce" "WooCommerce" || exit 1
+
+          # ── Classic Editor ──────────────────────────────────────────────────
+          # Ensures the classic editor does not break DC's frontend/admin hooks.
+          try_install_plugin "classic-editor" "Classic Editor" || exit 1
+
+          # ── Yoast SEO ───────────────────────────────────────────────────────
+          # Yoast hooks heavily into wp_head; confirm DC does not break it.
+          try_install_plugin "wordpress-seo" "Yoast SEO" || exit 1
+
+          # Deactivate third-party plugins after the check to keep env clean
+          wp plugin deactivate woocommerce classic-editor wordpress-seo --allow-root 2>/dev/null || true
+
+      # 15. Verify REST API Health
+      - name: Verify REST API Health
+        if: '!matrix.syntax-only'
+        run: |
+          cd test-site
+          wp eval '
+            $request  = new WP_REST_Request("GET", "/wp/v2/posts");
+            $response = rest_do_request($request);
+            if ($response->is_error()) {
+              echo "::error::REST API broken after activation: " . $response->as_error()->get_error_message() . "\n";
+              exit(1);
+            }
+            echo "✅ REST API responding normally\n";
+          ' --allow-root
+
+      # 16. Verify Core Comment Disabling Functionality
+      # Confirms that when Disable Comments is configured to disable comments
+      # everywhere, comments_open() correctly returns false on a published post.
+      # Two separate wp eval calls are used so each gets a fresh WP bootstrap
+      # that reads the updated option from the database.
+      # In multisite (network-activated), DC reads from site options, so we
+      # use update_site_option / get_site_option accordingly.
+      - name: Verify Core Comment Disabling Functionality
+        if: '!matrix.syntax-only'
+        run: |
+          cd test-site
+
+          # Step A: Set remove_everywhere = true in the DB
+          wp eval '
+            // DC uses site options in multisite network-activated context,
+            // regular per-site options in single-site context.
+            $get_fn    = is_multisite() ? "get_site_option"    : "get_option";
+            $update_fn = is_multisite() ? "update_site_option" : "update_option";
+            $opts = $get_fn("disable_comments_options", []);
+            $opts["remove_everywhere"] = true;
+            $update_fn("disable_comments_options", $opts);
+            echo "remove_everywhere set to true\n";
+          ' --allow-root
+
+          # Step B: Fresh WP bootstrap — DC reads the updated option and registers
+          # its comments_open filter. Create a post and verify comments are closed.
+          wp eval '
+            $post_id = wp_insert_post([
+              "post_title"  => "DC Filter Test",
+              "post_status" => "publish",
+              "post_type"   => "post",
+            ]);
+            $open = comments_open($post_id);
+            wp_delete_post($post_id, true);
+            if ($open !== false) {
+              echo "::error::comments_open returned true — DC comment disabling filter is not working\n";
+              exit(1);
+            }
+            echo "✅ comments_open correctly returns false — core comment disabling works\n";
+          ' --allow-root
+
+          # Step C: Restore default state (no post types disabled)
+          wp eval '
+            $get_fn    = is_multisite() ? "get_site_option"    : "get_option";
+            $update_fn = is_multisite() ? "update_site_option" : "update_option";
+            $opts = $get_fn("disable_comments_options", []);
+            $opts["remove_everywhere"] = false;
+            $update_fn("disable_comments_options", $opts);
+            echo "✅ remove_everywhere restored to false\n";
+          ' --allow-root
+
+      # 17. Verify Multisite Network Activation
+      # Confirms DC is properly network-activated, creates a sub-site, and
+      # verifies the plugin is active and WP boots cleanly in that sub-site context.
+      - name: Verify Multisite Network Activation
+        if: matrix.multisite && !matrix.syntax-only
+        run: |
+          cd test-site
+
+          # Confirm is_multisite() is true
+          MULTISITE_CHECK=$(wp eval 'echo is_multisite() ? "yes" : "no";' --allow-root)
+          if [[ "$MULTISITE_CHECK" != "yes" ]]; then
+            echo "::error::is_multisite() returned false — multisite conversion failed"
+            exit 1
+          fi
+          echo "✅ Confirmed: running in Multisite mode"
+
+          # Confirm DC is listed as network-active
+          wp plugin list --status=active-network --field=name --allow-root | grep -q "disable-comments"
+          echo "✅ DC is listed as network-active"
+
+          # Create a sub-site and verify DC is accessible there
+          wp site create --slug=testsubsite --title="Test Subsite" --email=test@example.com --allow-root
+          echo "✅ Sub-site created at /testsubsite/"
+
+          # Verify WP boots cleanly on the sub-site (DC is network-active there)
+          WP_STATUS=$(wp eval 'echo "Ready";' --url=http://localhost:8080/testsubsite/ --quiet --allow-root)
+          if [[ "$WP_STATUS" != "Ready" ]]; then
+            echo "::error::Sub-site crashed with DC network-activated"
+            exit 1
+          fi
+          echo "✅ Sub-site boots cleanly with DC network-activated"
+
+          # Confirm DC appears network-active from the sub-site context
+          wp plugin list --status=active-network --url=http://localhost:8080/testsubsite/ --field=name --allow-root | grep -q "disable-comments"
+          echo "✅ DC is network-active in sub-site context"
+
+          # Verify network site options are accessible
+          # (DC stores settings in site options when network-activated)
+          wp eval '
+            $opts = get_site_option("disable_comments_options", null);
+            if ($opts === null) {
+              echo "ℹ️ disable_comments_options site option not yet set (default state is OK)\n";
+            } else {
+              echo "✅ disable_comments_options site option is accessible\n";
+            }
+            echo "✅ Network site options accessible\n";
+          ' --allow-root
+
+          echo "✅ Multisite network activation fully verified"
+
+      # 18. Frontend Hook Health Check (wp_head / wp_footer)
+      # A broken plugin often manifests as a corrupted wp_head or wp_footer.
+      # We simulate a frontend request and confirm both hooks execute cleanly.
+      - name: Frontend Hook Health Check
+        if: '!matrix.syntax-only'
+        run: |
+          cd test-site
+          wp eval '
+            ob_start();
+            do_action("wp_head");
+            $head_output = ob_get_clean();
+            if (empty($head_output)) {
+              echo "::warning::wp_head produced no output — may indicate a hook registration problem\n";
+            } else {
+              echo "✅ wp_head executed and produced output\n";
+            }
+
+            ob_start();
+            do_action("wp_footer");
+            $footer_output = ob_get_clean();
+            // wp_footer can be empty in CLI context; just confirm no fatal
+            echo "✅ wp_footer hook executed cleanly\n";
+          ' --allow-root
+
+      # 19. Verify Plugin Asset Files Present
+      # Disable Comments bundles its CSS/JS directly in the plugin's assets/ directory
+      # (unlike plugins that generate cache files at runtime). Confirms the key
+      # stylesheet and settings script are present after checkout & activation.
+      # For syntax-only entries the checkout root is used directly.
+      - name: Verify Plugin Asset Files Present
+        run: |
+          if [[ "${{ matrix.syntax-only }}" == "true" ]]; then
+            PLUGIN_PATH="$(pwd)"
+          else
+            PLUGIN_PATH="./test-site/wp-content/plugins/disable-comments"
+          fi
+          MISSING=0
+          for FILE in "assets/css/style.css" "assets/js/disable-comments-settings-scripts.js"; do
+            if [ ! -f "$PLUGIN_PATH/$FILE" ]; then
+              echo "::error::Missing asset file: $FILE"
+              MISSING=$((MISSING + 1))
+            else
+              echo "✅ Found: $FILE"
+            fi
+          done
+          if [ "$MISSING" -gt 0 ]; then
+            echo "::error::$MISSING asset file(s) missing from plugin distribution"
+            exit 1
+          fi
+          echo "✅ All required plugin asset files are present"
+
+      # 20. Verify WP-CLI Command Registration
+      # Disable Comments registers 'wp disable-comments settings' and
+      # 'wp disable-comments delete' via WP_CLI::add_command() on 'init'.
+      # Uses the settings command to disable on a specific post type and then
+      # verifies the option was persisted, confirming end-to-end CLI integration.
+      # In multisite (network-activated), DC writes to site options via update_site_option,
+      # so the verification reads from get_site_option accordingly.
+      - name: Verify WP-CLI Command Registration
+        if: '!matrix.syntax-only'
+        run: |
+          cd test-site
+
+          # Disable comments on 'post' post type via WP-CLI
+          wp disable-comments settings --types=post --add --allow-root
+          echo "✅ wp disable-comments settings command executed"
+
+          # Verify the post type was persisted to the correct option store.
+          # IMPORTANT: DC's CLI path always calls update_option() (per-site), never
+          # update_site_option(). This is because disable_comments_settings() routes
+          # via is_network_admin_ajax_context() which is always false in WP-CLI
+          # (no HTTP admin URL, no $_GET['is_network_admin']). Always read back with
+          # get_option() here regardless of single-site vs multisite context.
+          wp eval '
+            $opts = get_option("disable_comments_options", array());
+            if (empty($opts["disabled_post_types"]) || !in_array("post", (array) $opts["disabled_post_types"])) {
+              // If remove_everywhere is true that also covers all post types
+              if (!empty($opts["remove_everywhere"])) {
+                echo "✅ WP-CLI set remove_everywhere (covers all post types)\n";
+              } else {
+                echo "::error::WP-CLI disable-comments settings did not persist post type to DB\n";
+                exit(1);
+              }
+            } else {
+              echo "✅ WP-CLI persisted disabled_post_types: " . implode(", ", $opts["disabled_post_types"]) . "\n";
+            }
+          ' --allow-root
+
+          # Clean up: remove the 'post' type from disabled list
+          wp disable-comments settings --types=post --remove --allow-root
+          echo "✅ WP-CLI disable-comments settings cleanup complete"

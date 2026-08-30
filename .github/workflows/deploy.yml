@@ -5,6 +5,10 @@ on:
     - "*"
 jobs:
   build:
+    # WordPress.org deploys run only from the public repo (SVN secrets live
+    # there). In the private dev repo, tag pushes trigger sync-to-public.yml
+    # instead, which mirrors the tag to the public repo and fires this there.
+    if: github.repository == 'WPDevelopers/disable-comments'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

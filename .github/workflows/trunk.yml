@@ -6,6 +6,8 @@ on:
 
 jobs:
   assets:
+    # Runs only from the public repo, where the WordPress.org SVN secrets live.
+    if: github.repository == 'WPDevelopers/disable-comments'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

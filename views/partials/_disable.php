@@ -306,7 +306,7 @@
                         <select id="exclude_by_role"
                             class="dc-select2"
                             name="exclude_by_role[]"
-                            data-options='<?php echo wp_json_encode($roles); ?>'
+                            data-options='<?php echo esc_attr( wp_json_encode( $roles ) ); // esc_attr() prevents attribute injection; JS handles DOM XSS via $('<span>').text(label).html() ?>'
                             multiple
                             aria-describedby="roles-description">
                         </select>

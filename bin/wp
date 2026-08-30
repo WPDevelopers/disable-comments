@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# WP-CLI wrapper pointed at the local WordPress sandbox created by
+# bin/setup-wp-sandbox.sh. Usage: bin/wp plugin list
+set -euo pipefail
+SANDBOX="${WP_SANDBOX_DIR:-$HOME/wp-sandbox-disable-comments}"
+if [ ! -x "$SANDBOX/wp-cli.phar" ]; then
+	echo "Sandbox not set up yet — run bin/setup-wp-sandbox.sh first." >&2
+	exit 1
+fi
+exec php "$SANDBOX/wp-cli.phar" --path="$SANDBOX/wordpress" --allow-root "$@"
