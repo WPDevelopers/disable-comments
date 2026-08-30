@@ -1521,12 +1521,14 @@ class Disable_Comments {
 		if (!wp_verify_nonce($nonce, 'disable_comments_save_settings')) {
 			wp_send_json_error(['message' => __('Invalid request. Please refresh the page and try again.', 'disable-comments')], 403);
 		}
+		if (!is_multisite() || !function_exists('get_sites')) {
+			wp_send_json_error(['message' => __('Subsite listing is only available on multisite.', 'disable-comments')], 400);
+		}
 		// Listing subsites is always a network-level operation on multisite —
 		// require manage_network_plugins regardless of how the plugin is activated
 		// (network-wide or per-site). A per-site admin must never enumerate all
 		// network sites. On single-site installs manage_options suffices.
-		$required_cap = is_multisite() ? 'manage_network_plugins' : 'manage_options';
-		if (!current_user_can($required_cap)) {
+		if (!current_user_can('manage_network_plugins')) {
 			wp_send_json_error(['message' => __('Sorry, you are not allowed to access this resource.', 'disable-comments')], 403);
 		}
 

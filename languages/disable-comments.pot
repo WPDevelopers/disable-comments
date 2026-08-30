@@ -130,6 +130,10 @@ msgstr ""
 msgid "Sorry, you are not allowed to access this resource."
 msgstr ""
 
+#: disable-comments.php:1528
+msgid "Subsite listing is only available on multisite."
+msgstr ""
+
 #: disable-comments.php:1588
 #: disable-comments.php:1723
 msgid "Nonce verification failed."

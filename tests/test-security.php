@@ -77,6 +77,21 @@ class DisableCommentsSecurityTestCase extends WP_Ajax_UnitTestCase {
 		$this->assertFalse( $response['success'] );
 	}
 
+	public function test_subsite_listing_rejects_single_site_before_multisite_apis_are_called() {
+		if ( is_multisite() ) {
+			$this->markTestSkipped( 'Single-site WordPress is required.' );
+		}
+
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
+		$_REQUEST['nonce'] = wp_create_nonce( 'disable_comments_save_settings' );
+
+		$response = $this->run_ajax( 'get_sub_sites' );
+
+		$this->assertSame( 400, http_response_code() );
+		$this->assertFalse( $response['success'] );
+		$this->assertSame( 'Subsite listing is only available on multisite.', $response['data']['message'] );
+	}
+
 	public function test_valid_nonce_does_not_bypass_settings_capability() {
 		wp_set_current_user( self::factory()->user->create( array( 'role' => 'subscriber' ) ) );
 		$_POST['nonce'] = wp_create_nonce( 'disable_comments_save_settings' );
