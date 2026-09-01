@@ -36,6 +36,9 @@ $details = $instance->get_detailed_comment_status();
 // 'status' - Main status string
 // 'disabled_post_types' - Array of disabled post type slugs
 // 'disabled_post_type_labels' - Array of human-readable labels
+// 'conditional_rules_enabled' - Boolean for the per-post rules layer
+// 'conditional_rules_count' - Number of rules in force (0 while the layer is off)
+// 'auto_close_days' - Age limit in days, 0 for none
 // 'remove_everywhere' - Boolean for global disable
 // 'xmlrpc_disabled' - Boolean for XML-RPC restriction
 // 'rest_api_disabled' - Boolean for REST API restriction
@@ -71,8 +74,22 @@ This provides administrators with a complete overview of all plugin settings inc
 - **Site-wide Settings**: Network site-wide settings status
 - **Role-based Exclusions**: Whether role exclusions are enabled
 - **Excluded Roles**: List of roles excluded from comment restrictions
+- **Conditional Rules**: Whether the per-post rules layer is in force
+- **Conditional Rules Configured**: How many rules are being applied
+- **Auto-close Comments After**: The age limit, or "No age limit"
 
 All fields are always displayed regardless of their current state, providing a complete configuration overview.
+
+**Comment Status is qualified while conditional rules are on.** The sentence
+describes the global and post-type settings, which are only the starting point
+once rules are in force — a site with nothing disabled at all still closes
+comments on every post a rule matches. With the layer on, the sentence gains
+"Conditional rules then close or reopen comments on individual posts" rather
+than reading as the whole story.
+
+A rule that is stored while the layer is switched off is reported as absent:
+the count follows `get_conditional_rules()`, which only returns what is
+actually being enforced.
 
 ## Example Usage
 

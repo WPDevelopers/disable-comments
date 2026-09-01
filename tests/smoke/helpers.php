@@ -49,3 +49,17 @@ function dc_make_test_post( $post_type = 'post' ) {
 	}
 	return $id;
 }
+
+/**
+ * Parse one CSV record the way RFC 4180 defines it.
+ *
+ * PHP's own str_getcsv() defaults to treating a backslash as an escape
+ * character, which the format has no concept of: give it a conforming file
+ * whose field ends in a backslash and it runs the rest of the row into that
+ * field. Asserting through it would be asserting against a reader that is
+ * itself wrong, so pass the empty escape every consumer of this export
+ * (Excel, Sheets, LibreOffice, Python's csv module) effectively uses.
+ */
+function dc_read_csv_line( $line ) {
+	return str_getcsv( $line, ',', '"', '' );
+}

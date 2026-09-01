@@ -43,4 +43,18 @@ echo "── Multisite: page cache purging across the network ──────
 "$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-cache-purge-multisite.php"
 
 echo ""
+echo "── Multisite: settings export/import against network storage ──"
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-settings-portability-multisite.php"
+
+echo ""
+echo "── Multisite: per-site permissions on a network export ────────"
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-network-export-caps.php"
+
+echo ""
+echo "── Multisite: uninstall clears every subsite ──────────────────"
+# Runs last: the per-site options live in each subsite's own options table, so
+# this executes the real uninstall.php and checks every site it walked.
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-uninstall.php"
+
+echo ""
 echo "ALL MULTISITE SMOKE TESTS PASSED"

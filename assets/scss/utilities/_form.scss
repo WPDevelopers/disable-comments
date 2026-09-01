@@ -82,6 +82,98 @@
         padding-top: 11px !important;
     }
 
+    // The blocked-attempt breakdown.
+    //
+    // The markup always had a label span and a count span per row, and nothing
+    // styled either class — so the browser laid them out as inline text inside
+    // a list item and the panel read as a run-on sentence: "Comment form
+    // submissions 0 Trackbacks 0 REST API comment requests 0".
+    .blocked-attempts-list {
+        list-style: none;
+        max-width: 420px;
+        margin: 15px 0 0;
+        padding: 0;
+
+        li {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 15px;
+            margin: 0;
+            padding: 8px 0;
+            border-bottom: 1px solid $grey4;
+
+            &:last-child {
+                border-bottom: 0;
+            }
+        }
+
+        .blocked-attempts-label {
+            color: $grey3;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .blocked-attempts-count {
+            font-size: 16px;
+            font-weight: 700;
+            color: $dark;
+            // The reset button rewrites these in place, so the counts hold
+            // their column instead of shifting as the digits change.
+            font-variant-numeric: tabular-nums;
+        }
+    }
+
+    // Conditional rule rows.
+    //
+    // Each row was an inline label followed by inline controls, so where a
+    // row's controls started depended on how long that row's label happened to
+    // be — "For posts in these terms:" and "For content using this page
+    // template:" are not the same width, so no two rows lined up. The term
+    // picker wrapped onto a line of its own and sat indented under the label
+    // rather than under the dropdowns it belongs with.
+    //
+    // Scoped to this block on purpose: .mb10 is a generic margin utility used
+    // all over the screen.
+    #conditional_rules_fields > .mb10 {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px 15px;
+        // .disablecommentswrap sets a 10px base that every deliberately styled
+        // element overrides. Nothing set a size on this row, so its bare text —
+        // "days (0 = no age limit)" — inherited the base and rendered at 10px
+        // beside 15px body copy.
+        font-size: 15px;
+
+        // The row's own label takes a line to itself, so every row's controls
+        // start at the same left edge whatever the label says. The
+        // visually-hidden labels are absolutely positioned, so they are out of
+        // flow and take no slot in the row.
+        > label:not(.visually-hidden) {
+            flex: 0 0 100%;
+            // 16px/500, the size and weight every other inline label on this
+            // screen already uses.
+            font-size: 16px;
+            font-weight: 500;
+            color: $grey3;
+        }
+
+        // select2 hides the <select> and renders a sibling container, which has
+        // no width of its own to match the selects beside it. max-width keeps
+        // it inside the row when the panel is narrow rather than pushing the
+        // whole thing sideways.
+        .select2-container {
+            min-width: 290px;
+            max-width: 100%;
+            // WordPress gives a native select a 1px side margin. Without
+            // matching it the picker starts a pixel left of every dropdown
+            // above it — which is exactly the kind of not-quite-aligned this
+            // section was reported for.
+            margin: 0 1px;
+        }
+    }
+
     .visually-hidden {
         clip: rect(0 0 0 0);
         clip-path: inset(50%);
@@ -305,6 +397,113 @@
         padding: 1rem;
         border-left: 4px solid #d63638;
         background: #fff;
+    }
+
+    // Export / import ("Copy These Settings To Another Site").
+    //
+    // The controls used to be a flat row of four heterogeneous things: a
+    // styled button, a raw native file input sitting 9px off the shared
+    // baseline, and two more buttons. Grouped and aligned here instead.
+    .dc-portability {
+        margin-top: 15px;
+
+        &__group {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px 15px;
+
+            + .dc-portability__group {
+                margin-top: 12px;
+            }
+        }
+
+        &__group-label {
+            flex: 0 0 60px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #22282d;
+        }
+
+        &__actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        // The file input itself is offscreen but still focusable, so the
+        // label below has to show focus on its behalf.
+        &__file-input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        &__file {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 100%;
+            cursor: pointer;
+        }
+
+        // Written out rather than as `&__file-button`: nested inside this
+        // rule, `&` expands to the whole outer selector again and compiles to
+        // a descendant selector that matches nothing.
+        &__file:focus-within .dc-portability__file-button {
+            outline: 2px solid #05cb6b;
+            outline-offset: 2px;
+        }
+
+        &__file-button {
+            display: inline-flex;
+            align-items: center;
+            height: 50px;
+            padding: 0 20px;
+            border-radius: 5px;
+            background: #f4f6fc;
+            color: #808da1;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        &__file-name {
+            font-size: 13px;
+            color: #687b95;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 220px;
+        }
+
+        // A disabled step keeps the shape of a button. Left to the admin
+        // default it lost its background entirely and read as stray grey
+        // text next to real buttons - the "looks broken" in the report.
+        //
+        // !important because core's own
+        // `.wp-core-ui .button:disabled { background: ... !important }`
+        // cannot be outranked by specificity. Same reason .button__fade
+        // above already does it.
+        &__action:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f4f6fc !important;
+            color: #808da1 !important;
+            box-shadow: none;
+        }
+
+        &__hint {
+            margin: 12px 0 0;
+            font-size: 13px;
+            color: #687b95;
+        }
     }
 
 }

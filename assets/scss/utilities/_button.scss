@@ -48,6 +48,46 @@
 		}
 	}
 
+	// A secondary button had no border and a near-white fill, so at rest it
+	// read as grey text and only turned into a button on hover — a state
+	// change announcing something that should have been visible all along.
+	//
+	// The coloured buttons are excluded: they carry their own fill, and a
+	// neutral ring around a red delete button would be a different bug. The
+	// flex centring replaces the line-height, which the border would otherwise
+	// throw a pixel out under border-box sizing.
+	.button:not(.button__success):not(.button__delete) {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid $grey4;
+
+		&:hover,
+		&:focus {
+			border: 1px solid $success;
+		}
+	}
+
+	// The delete tab's action row. With no layout of its own it was a block
+	// with inline-flowing children: nothing between the buttons, and the third
+	// wrapped onto a second row exactly one button-height down, so it sat
+	// flush against the first and read as overlapping it.
+	.form-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 15px;
+		align-items: center;
+
+		// The preview result is an aria-live region that fills in after a
+		// click. As a flex item beside the buttons it would shove them
+		// sideways the moment it did, so it takes a row of its own — and the
+		// row gap above already spaces it off them.
+		#delete_preview_result {
+			flex-basis: 100%;
+			margin-top: 0;
+		}
+	}
+
 	.button__delete {
 		color: $white;
 		background: #e0061a;

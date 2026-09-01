@@ -197,11 +197,36 @@
                 </div>
             </div>
 
+            <?php
+            // "Total Comments: 2" sat inches above "This will permanently
+            // delete 0 comment(s)" and read as a contradiction. Both numbers
+            // were right and they answer different questions: this one is the
+            // site's inventory, every status included, while the preview
+            // counts only what the selected mode would remove. On a
+            // destructive, no-undo screen the reader should not have to work
+            // that out, so the figure says what it counts.
+            $dc_allowed_types = (array) $this->get_allowed_comment_types_list();
+            ?>
             <div class="comments-count" role="status" aria-live="polite">
                 <h4 class="total-comments">
-                    <?php esc_html_e('Total Comments:', 'disable-comments'); ?>
+                    <?php
+                    // The figure sums every site when the network admin is
+                    // looking at it, so it cannot claim to be "this site".
+                    if (is_network_admin()) {
+                        esc_html_e('Comments across this network:', 'disable-comments');
+                    } else {
+                        esc_html_e('Comments on this site:', 'disable-comments');
+                    }
+                    ?>
                     <span><?php echo esc_html($total_comments); ?></span>
                 </h4>
+
+                <p class="disable__option__description">
+                    <?php esc_html_e('Counted whatever their status: approved, pending, spam and trash. The preview below counts only the ones the mode you picked would delete.', 'disable-comments'); ?>
+                    <?php if (!empty($dc_allowed_types)) : ?>
+                        <?php esc_html_e('Comment types you have allowed are left out of both: they cannot be deleted from here.', 'disable-comments'); ?>
+                    <?php endif; ?>
+                </p>
             </div>
         </div>
         <?php if (is_network_admin()): ?>
@@ -211,12 +236,24 @@
         <?php endif; ?>
 
         <div class="form-actions">
+            <button type="button"
+                class="button" id="preview_delete_comments"
+                aria-controls="delete_preview_result">
+                <?php esc_html_e('Preview what will be deleted', 'disable-comments'); ?>
+            </button>
+
+            <button type="button" class="button" id="export_comments_before_delete">
+                <?php esc_html_e('Download a CSV backup first', 'disable-comments'); ?>
+            </button>
+
             <button type="submit"
                 class="button button__delete button__fade"
                 aria-label="<?php esc_attr_e('Permanently delete all selected comments', 'disable-comments'); ?>"
                 data-confirm="<?php esc_attr_e('Are you sure you want to delete the selected comments? This action cannot be undone.', 'disable-comments'); ?>" tabindex="0">
                 <?php esc_html_e('Delete Comments', 'disable-comments'); ?>
             </button>
+
+            <div id="delete_preview_result" class="mt10" aria-live="polite"></div>
         </div>
 
     <?php else: ?>

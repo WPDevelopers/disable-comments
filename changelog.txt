@@ -1,0 +1,308 @@
+# Changelog
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
+and this project adheres to [Semantic Versioning](http://semver.org/).
+This will be maintained from August 19, 2020 - @asif2bd
+
+= [2.9.0] - 2026-09-01 =
+* New Feature: Conditional rules - disable or re-enable comments by taxonomy term, page template, or post age, instead of by post type alone
+* New Feature: Dry-run preview for Delete Comments - see which comments a delete will remove before running it, and download them as CSV first
+* New Feature: Blocked-attempt counter - see how many comment, trackback and REST attempts the plugin has turned away, reported in Site Health
+* New Feature: Export and import settings as JSON, with a diff preview before anything is written
+* New Feature: WooCommerce product reviews are now a first-class setting, separate from ordinary comments, including closing reviews while other product comments stay open
+* New Feature: Theme conflict scanner - diagnoses a theme that still renders a comment form after comments are disabled
+* New Feature: Abilities API write support (WordPress 6.9+) - AI assistants and MCP clients can change comment settings and delete comments, gated on the same capabilities as the admin screens
+* New Feature: The advanced tools now have a Settings tab of their own, leaving the first screen to the core choice of where comments are off
+* Improved: The Delete Comments preview lists the comments it matched - author, date, post and an excerpt - rather than only how many there are
+* Improved: Conditional rule terms are searchable, so a taxonomy with more than 200 terms is fully reachable
+* Improved: Site Health reports conditional rules, so the overview no longer reads "comments are enabled everywhere" while a rule is closing them
+* Improved: Settings screen layout - aligned rule controls, a readable blocked-attempt breakdown, consistent label sizes, and result boxes that match the rest of the plugin
+* Improved: readme and plugin directory listing rewritten for clarity
+* Fixed: CSV backups escape every free-text column, so a comment cannot execute as a formula when the file is opened in a spreadsheet
+* Fixed: An anonymous REST read is no longer counted as a blocked attempt
+* Fixed: "Counting blocked attempts since" keeps its start date instead of showing today's date until the first block
+* Fixed: A delete that matches nothing no longer reloads the whole settings screen
+* Fixed: The review prompt can be dismissed on every screen it appears on
+* Fixed: Uninstall removes the review-prompt data the plugin created
+* Fixed: The Abilities API set-status summary describes the site's configuration rather than the calling user's role exemption
+* Fixed: "Total Comments" says what it counts, so it no longer contradicts the mode-specific delete preview
+* Developer: `disable-comments delete` gains `--dry-run` and `--export=<file>`; new `disable-comments export` and `disable-comments import` WP-CLI commands
+
+= [2.8.0] - 2026-07-27 =
+* New Feature: WordPress Abilities API support (WordPress 6.9+) — AI assistants, the command palette and MCP clients can now ask the site where comments are disabled, via the read-only `disable-comments/get-status` ability
+* Fixed: Page caches are now purged when settings are saved or comments are deleted — previously a cached page kept serving the comment form after comments were disabled
+* Compatible with WordPress 7.0
+
+= [2.7.1] - 2026-07-22 =
+* Improvement: General improvements
+
+= [2.7.0] - 2026-04-05 =
+* Improvement: Improved overall performance and stability
+
+= [2.6.2] - 2026-01-20 =
+* Fixed: An issue where deleting Notes in WordPress 6.9+ throws an error
+
+= [2.6.1] - 2025-12-02 =
+* Compatible with WordPress 6.9
+* Added: Introduced the “Enable Certain Comment Types” setting, allowing you to exclude the new Block Editor “Notes” comment type introduced in WordPress 6.9
+
+= [2.6.0] - 2025-11-05 =
+* New Feature: Show Existing Comments
+* Improved: Security Enhancements
+
+= [2.5.3] - 2025-09-14 =
+* Enhancement: Introduced a function to retrieve settings details ([#f16cee5](https://github.com/WPDevelopers/disable-comments/commit/f16cee5a4f939bcf8bb1f1d98e5b27103dc632ee))
+
+= [2.5.2] - 2025-05-20 =
+* Fixed: Issue where post types were not being selected in the "On Specific Post Types" section of the plugin settings
+
+= [2.5.1] - 2025-05-15 =
+* Few minor bug fixes and improvements
+
+= [2.5.0] - 2025-05-15 =
+* Added: Accessibility support to the plugin settings page
+* Various minor improvements and enhancements
+
+= [2.4.7] - 2025-01-27 =
+* Fixed: Errors reported by Plugin Check (PCP)
+* Few minor bug fixes and improvements
+
+= [2.4.6] - 2024-03-25 =
+* Added: WordPress 6.5 Compatibility
+
+= [2.4.5] - 2023-08-30 =
+* Minor bug fixes and improvements.
+
+= [2.4.4] - 2023-06-19 =
+* Fixed: PHP 8.2 deprecated issue fixed while using WP-CLI.
+* Few minor bug fixes and improvements.
+
+= [2.4.3] - 2023-01-12 =
+* Added: PHP 8.2 Compatibility
+
+= [2.4.2] - 2022-09-18 =
+* Improved sanitization.
+
+= [2.4.1] - 2022-08-10 =
+* Improvement: Localized missing strings in plugin.
+* Improvement: Included the fonts in plugin distribution.
+
+= [2.4.0] - 2022-07-27 =
+* New Feature: Exclude Disable Comments settings based on user roles.
+* Few minor bug fix and improvement.
+
+= [2.3.6] - 2022-06-05 =
+* Fixed: JavaScript error in Gutenberg editor.
+
+= [2.3.5] - 2022-04-27 =
+* Added: More WP-CLI commands.
+* Few minor bug fix and improvement.
+
+= [2.3.4] - 2022-03-28 =
+* Fixed: PHP Warning in Multisite Network.
+
+= [2.3.3] - 2022-01-25 =
+* Added: WordPress 5.9 compatibility added.
+
+= [2.3.2] - 2021-12-20 =
+* Added: Configure Disable Avatar settings from the main network of Multisite Network.
+* Fixed: Disable Comments via REST API toggle mismatch issue.
+
+= [2.3.1] - 2021-12-14 =
+* Added: You can enable or disable Avatar from Disable Comments settings.
+
+= [2.3.0] - 2021-12-14 =
+* New Feature: Delete Spam Comments.
+* Updated deprecated jQuery library.
+* Improvement: Disable Gravatar request.
+* Few minor bug fixes and improvement.
+
+= [2.2.4] - 2021-11-09 =
+* Added: Ajax pagination in Subsite area (Multisite network).
+* Added: Ajax search in Subsite area (Multisite network).
+* Added: "Disable Comments" navigation added inside Comments menu.
+* Few minor bug fixes and improvement.
+
+= [2.2.3] - 2021-10-25 =
+* Few minor bug fixes and improvement.
+
+= [2.2.2] - 2021-10-05 =
+* Added: "Select All" checkbox for subsites selection in a multisite network.
+* Few minor bug fixes and improvement.
+
+= [2.2.1] - 2021-09-26 =
+* Fixed: 100+ subsites limit issue in multisite network
+
+= [2.2.0] - 2021-09-22 =
+* New Feature: Configure Disable Comments on Subsites from Main Network in Multisite Network.
+* Improvement: UX Improvement.
+* Few minor bug fix and improvement.
+
+= [2.1.2] - 2021-06-20 =
+* Improvement: Fix for Attempt to read property "post_type" on null
+
+= [2.1.1] - 2021-04-06 =
+* Improvement: Compatible with WordPress 5.7
+* Few minor bug fix and improvement
+
+
+= [2.1.0] - 2021-02-08 =
+* New Feature: Site wise settings in Multisite Network
+* Added: Some strings localization
+* Fixed: Delete Comments in Multisite
+* Few minor bug fix and improvement
+
+= [2.0.2] - 2020-12-01 =
+* Removed: Quick Setup Wizard
+* Improved: Redirection settings page after activation.
+* Fixed: Text-Domain Issue.
+
+= [2.0.1] - 2020-11-28 =
+* Bug Fix: Settings page URL issue fixed from plugins page.
+* Improvement: Quick Setup Wizard instructions.
+
+= [2.0.0] - 2020-11-28 =
+* Improved UI for Settings page
+* New feature: Manage Disable Comments settings with WP-CLI
+* New feature: Quick Setup Wizard
+* New feature: Disable Comments via REST-API
+* New feature: Disable Comments via XML-RPC
+
+= [1.11.0] - 2020-08-22 =
+* Introducing Delete Comment by Type - Contribution by garretthyder
+* PHP 7.4 Tested
+* WordPress 5.5 Compatible Tested
+
+= [1.10.3] - 2020-07-29 =
+* Minor fix - changelog backported.
+
+= 1.10.0 =
+* Disable "recent comments" Gutenberg block.
+
+= 1.9.0 =
+* Fix compatibility with WordPress 5.0 and above.
+* Remove deprecated "persistent mode" feature.
+
+= 1.8.0 =
+* Added `DISABLE_COMMENTS_ALLOW_DISCUSSION_SETTINGS` configuration.
+
+= 1.7.1 =
+* Small enhancements to hiding comment-related functionality in the admin.
+
+= 1.7 =
+* Dropped logic to try and hide the comments link from the Meta widget. Administrators should manually add styling to hide this link, or replace the Meta widget with an alternative.
+* Removed the `disable_comments_allow_persistent_mode` filter. Define `DISABLE_COMMENTS_ALLOW_PERSISTENT_MODE` instead.
+
+= 1.6 =
+* Added a tool for deleting comments in bulk.
+
+= 1.5.2 =
+* Fix Javascript errors when the Meta widget is enabled.
+* Hide comments link from the Welcome panel.
+
+= 1.5.1 =
+* Hide existing comments if there are any.
+* Filter the comments link in the Meta widget if it is enabled.
+
+= 1.5 =
+* Remove the comments feed link from the head in WP 4.4 and higher.
+
+= 1.4.2 =
+* Delay loading of translation text domain until all plugins are loaded. This allows plugins to modify translations.
+
+= 1.4 =
+* Hide the troublesome "persistent mode" option for all sites where it is not in use. This option will be removed in a future release.
+
+= 1.3.2 =
+* Compatibility updates and code refactoring for WordPress 4.3
+* Adding a few new translations
+
+= 1.3.1 =
+* Change the behaviour for comment feed requests. This removes a potential security issue.
+
+= 1.3 =
+* Move persistent mode filter into a define.
+* Add an advanced option to show the theme's comment template even when comments are disabled.
+
+= 1.2 =
+* Allow network administrators to disable comments on custom post types across the whole network.
+
+= 1.1.1 =
+* Fix PHP warning when active_sitewide_plugins option doesn't contain expected data type.
+
+= 1.1 =
+* Attempt to hide the comments template ("Comments are closed") whenever comments are disabled.
+
+= 1.0.4 =
+* Fix CSRF vulnerability in the admin. Thanks to dxw for responsible disclosure.
+
+= 1.0.3 =
+* Compatibility fix for WordPress 3.8
+
+= 1.0.2 =
+* Disable comment-reply script for themes that don't check comment status properly.
+* Add French translation
+
+= 1.0.1 =
+* Fix issue with settings persistence in single-site installations.
+
+= 1.0 =
+* Prevent theme comments template from being displayed when comments are disabled everywhere.
+* Prevent direct access to comment admin pages when comments are disabled everywhere.
+
+= 0.9.2 =
+* Make persistent mode option filter available all the time.
+* Fix redirection for feed requests
+* Fix admin bar filtering in WP 3.6
+
+= 0.9.1 =
+* Short life in the wild.
+
+= 0.9 =
+* Added gettext support and German translation.
+* Added links to GitHub development repo.
+* Allow network administrators to prevent the use of persistent mode.
+
+= 0.8 =
+* Remove X-Pingback header when comments are completely disabled.
+* Disable comment feeds when comment are completely disabled.
+* Simplified settings page.
+
+= 0.7 =
+* Now supports Network Activation - disable comments on your entire multi-site network.
+* Simplified settings page.
+
+= 0.6 =
+* Add "persistent mode" to deal with themes that don't use filterable comment status checking.
+
+= 0.5 =
+* Allow temporary disabling of comments site-wide by ensuring that original comment statuses are not overwritten when a post is edited.
+
+= 0.4 =
+* Added the option to disable the Recent Comments template widget.
+* Bugfix: don't show admin messages to users who don't can't do anything about them.
+
+= 0.3.5 =
+* Bugfix: Other admin menu items could inadvertently be hidden when 'Remove the "Comments" link from the Admin Menu' was selected.
+
+= 0.3.4 =
+* Bugfix: A typo on the settings page meant that the submit button went missing on some browsers. Thanks to Wojtek for reporting this.
+
+= 0.3.3 =
+* Bugfix: Custom post types which don't support comments shouldn't appear on the settings page
+* Add warning notice to Discussion settings when comments are disabled
+
+= 0.3.2 =
+* Bugfix: Some dashboard items were incorrectly hidden in multisite
+
+= 0.3.1 =
+* Compatibility fix for WordPress 3.3
+
+= 0.3 =
+* Added the ability to remove links to comment admin pages from the Dashboard, Admin Bar and Admin Menu
+
+= 0.2.1 =
+* Usability improvements to help first-time users configure the plugin.
+
+= 0.2 =
+* Bugfix: Make sure pingbacks are also prevented when comments are disabled.

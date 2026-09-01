@@ -26,6 +26,7 @@ Read-only. Reports where comments are currently disabled on the site.
 | `status` | string | `all`, `none`, `posts`, `pages`, `posts,pages`, `multiple`, or a single custom post type slug |
 | `comments_disabled_everywhere` | bool | True when no post type is left accepting comments, including non-public ones. Stricter than `status: "all"` — see below. Not absolute either, see `allowed_comment_types` |
 | `allowed_comment_types` | string[] | Comment types that stay enabled anyway (e.g. `note` for WP 6.9+ editor notes) |
+| `blocked_comment_types` | string[] | The mirror image: comment types closed **even where comments are open** (e.g. `review` on a store that closes product reviews but keeps other comments on products). Creating one is rejected with a 403 on both the comment form and REST. Never overlaps `allowed_comment_types` |
 | `disabled_post_types` | string[] | Post type slugs with comments disabled |
 | `available_post_types` | string[] | Post type slugs that support comments and can be toggled |
 | `rest_api_comments_blocked` | bool | REST API comment endpoints are blocked — from the REST setting **or** from "disable everywhere". Not implied by the post type fields |
@@ -34,6 +35,9 @@ Read-only. Reports where comments are currently disabled on the site.
 | `is_network_wide_setting` | bool | A super admin applies one set of settings to every site. Always `false` when `is_network_active` is `false` |
 | `role_exclusion_enabled` | bool | The site exempts one or more user roles from comment disabling |
 | `excluded_for_current_user` | bool | The requesting user is exempt by role — comments stay open for them |
+| `woocommerce_active` | bool | WooCommerce is running. The two fields below only mean anything while it is |
+| `product_reviews_disabled` | bool | Customers cannot leave a product review. Reviews are usually just comments on the `product` post type, so this is mostly the answer for reviews specifically. It can also be `true` on its own — when `review` is in `blocked_comment_types`, or when WooCommerce's own review switch is off. Describes the site, not the caller: a role exemption does not change it |
+| `product_reviews_disabled_by` | string | What is blocking reviews: `disable-comments`, `woocommerce`, or `""` when they are enabled |
 | `plugin_version` | string | Version of Disable Comments answering the request |
 
 **Example response**
@@ -43,6 +47,7 @@ Read-only. Reports where comments are currently disabled on the site.
   "status": "posts",
   "comments_disabled_everywhere": false,
   "allowed_comment_types": [],
+  "blocked_comment_types": [],
   "disabled_post_types": ["post"],
   "available_post_types": ["post", "page", "attachment"],
   "is_network_active": false,
@@ -51,6 +56,9 @@ Read-only. Reports where comments are currently disabled on the site.
   "xmlrpc_comments_blocked": false,
   "role_exclusion_enabled": false,
   "excluded_for_current_user": false,
+  "woocommerce_active": false,
+  "product_reviews_disabled": false,
+  "product_reviews_disabled_by": "",
   "plugin_version": "2.8.0"
 }
 ```
@@ -124,6 +132,15 @@ specific third-party plugin, which this plugin deliberately does not take.
   `allowed_comment_types` is still preserved in comment queries, counted, and
   permitted through the REST API. Check that list before concluding a comment
   type is unavailable — WordPress 6.9+ editor notes are the common case.
+- **"Comments are open" is not absolute either — check `blocked_comment_types`.**
+  It is the only field that discloses a comment type closed on its own. Nothing
+  else in the payload will: `status`, `disabled_post_types` and
+  `comments_disabled_everywhere` can all say a post type accepts comments while
+  one comment type on it is refused with a 403. The motivating case is a
+  WooCommerce store closing `review` while other comments on products stay open,
+  which `comments_open()` cannot express because it is one boolean per post.
+  Existing comments of a blocked type are untouched and still readable — only
+  creating one is refused.
 - **When `comments_disabled_everywhere` is `true`, `disabled_post_types` lists
   every comment-capable post type**, not just the ones ticked in settings. The
   global setting also covers post types registered after the settings were
@@ -147,6 +164,75 @@ specific third-party plugin, which this plugin deliberately does not take.
   a role-exempt one. That method resolves its `all` branch per-user, so for an
   exempt caller it would under-report the site's global setting; the ability
   reads the global setting role-independently instead and reports `all`.
-- Write abilities (changing settings, deleting comments) are intentionally not
-  registered yet. They will ship separately with their own capability checks so
-  that read access can be granted to agents without granting write access.
+
+## Write abilities
+
+Two abilities change the site. Both are gated on `manage_options`, and on a
+network-activated install with sitewide settings on, both require
+`manage_network_plugins` — a call that rewrites configuration for every site in
+a network needs the network capability, not just `manage_options` on whichever
+site the request landed on.
+
+### `disable-comments/set-status`
+
+Changes where comments are disabled.
+
+| Input | |
+| --- | --- |
+| `mode` | `everywhere`, `post_types`, or `off`. Required. |
+| `post_types` | Slugs, when `mode` is `post_types`. |
+| `confirm` | Must be `true`. Required. |
+
+Returns `changed`, `previous_status`, `previous_mode`,
+`previous_disabled_post_types`, `status`, `disabled_post_types` and
+`unknown_post_types`.
+
+**To undo a change, send back `previous_mode` and
+`previous_disabled_post_types`** — not `previous_status`. That field is a
+human-readable summary in the same vocabulary as `get-status`, and values like
+`pages` or `multiple` are rejected by the input schema; `multiple` does not
+carry the type list at all. The two `previous_*` fields together are everything
+needed to restore the earlier state, which is why the ability is annotated
+`destructive: false` despite being a write.
+
+**`previous_status` and `status` describe the site, not the caller.** Both read
+the global "disable everywhere" setting role-independently, exactly as
+`get-status` does, so a caller in an excluded role gets the same summary as
+anyone else. Use `excluded_for_current_user` from `get-status` to find out
+whether comments are actually open for the user making the call.
+
+Slugs the site does not register are reported in `unknown_post_types` and
+ignored, rather than being stored where they would sit in the options claiming
+to disable something that does not exist.
+
+### `disable-comments/delete-comments`
+
+Permanently deletes comments. There is no trash and no undo.
+
+| Input | |
+| --- | --- |
+| `mode` | `everywhere`, `post_types`, `comment_types`, or `spam`. Required. |
+| `post_types` / `comment_types` | Slugs, for the matching mode. |
+| `dry_run` | Count only. **Defaults to `true`.** |
+| `confirm` | Must be `true` for a real deletion. |
+
+Returns `dry_run`, `deleted` and `matched`.
+
+On a multisite network this only ever affects the site the request is made
+against. It does not fan out across the network, even when the plugin is
+network-activated.
+
+**`dry_run` defaults to true when the field is omitted.** A missing field is
+the most likely thing a caller gets wrong, and the safe reading of an
+ambiguous delete request is to count rather than to delete. A real deletion
+needs `dry_run: false` *and* `confirm: true` — two separate deliberate acts.
+
+Comment types on the site's allowlist (WP 6.9+ notes, and anything a plugin
+adds) cannot be deleted through this ability, and are excluded from `matched`.
+
+### Why `confirm` exists
+
+An agent must say so in the call. Without it, a mis-parsed instruction or a
+hallucinated tool call rewrites a site's configuration, or empties its comments
+table, with nothing standing in the way. Hosts that surface the `destructive`
+annotation should require a human to confirm the delete ability on top of this.

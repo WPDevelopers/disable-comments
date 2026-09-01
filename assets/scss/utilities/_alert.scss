@@ -78,3 +78,104 @@
 		}
 	}
 }
+
+// Result boxes: the theme scan report, the delete preview and the import
+// preview.
+//
+// All three render WordPress's own .notice markup, and nothing here styled
+// .notice at all — so three results sitting inside the plugin's rounded cards
+// fell back to the admin's flat tinted box with a 4px bar down its left edge.
+//
+// Restyled rather than rewritten: .notice is what the JS emits and the
+// modifier carries the meaning, so the markup stays and the box learns the
+// house style. The colours follow the meaning rather than the admin's palette.
+.disablecommentswrap {
+	#theme_scan_result,
+	#delete_preview_result,
+	#import_dc_settings_result {
+		// Body size, explicitly. WordPress sets 13px on a notice's paragraph
+		// and the wrapper's base is 10px, so both of these boxes and the lines
+		// under them came out smaller than the copy around them.
+		font-size: 15px;
+
+		.notice {
+			margin: 10px 0 0;
+			padding: 10px 15px;
+			font-size: 15px;
+			// The shorthand is deliberate: it replaces the admin's left accent
+			// bar, which is what made these read as someone else's component.
+			border: 1px solid $grey4;
+			border-radius: 5px;
+			background: $white;
+			box-shadow: none;
+			color: $grey3;
+			font-family: $bodyFont;
+		}
+
+		.notice-success {
+			border-color: rgba($success, 0.5);
+			background: rgba($success, 0.07);
+		}
+
+		.notice-warning {
+			border-color: rgba($secondary, 0.6);
+			background: rgba($secondary, 0.07);
+		}
+
+		.notice-error {
+			border-color: rgba($danger, 0.4);
+			background: rgba($danger, 0.05);
+		}
+
+		.notice-info {
+			border-color: rgba($info, 0.4);
+			background: rgba($info, 0.06);
+		}
+	}
+
+	// The delete preview's list of the comments it matched. Three lines per
+	// row, so an author is not run together with the text they wrote — the
+	// mistake the blocked-attempt breakdown was reported for.
+	.delete-preview-heading {
+		margin: 15px 0 5px;
+		font-size: 15px;
+		color: $grey3;
+	}
+
+	.delete-preview-comments {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		max-width: 640px;
+
+		li {
+			margin: 0;
+			padding: 10px 0;
+			border-bottom: 1px solid $grey4;
+
+			&:last-child {
+				border-bottom: 0;
+			}
+		}
+
+		.delete-preview-author {
+			display: block;
+			font-size: 15px;
+			font-weight: 700;
+			color: $dark;
+		}
+
+		.delete-preview-meta {
+			display: block;
+			font-size: 13px;
+			color: $grey2;
+		}
+
+		.delete-preview-excerpt {
+			display: block;
+			margin-top: 3px;
+			font-size: 15px;
+			color: $grey3;
+		}
+	}
+}

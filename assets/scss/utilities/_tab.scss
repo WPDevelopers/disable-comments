@@ -368,6 +368,17 @@
 		margin-top: 20px;
 		color: #687b95;
 	}
+	// The line under that figure saying what it counts. .comments-count sits
+	// outside .disable_option, so the shared description rule above does not
+	// reach it and it would fall back to the admin's own 13px black.
+	.comments-count .disable__option__description {
+		margin-top: 5px;
+		font-size: 15px;
+		font-weight: 400;
+		line-height: 1.8;
+		color: $grey3;
+		font-family: $bodyFont;
+	}
 }
 
 

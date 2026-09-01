@@ -112,4 +112,50 @@ dc_check(
 	false === $result['xmlrpc_comments_blocked']
 );
 
+// ---------------------------------------------------------------------------
+echo "\n-- an enable rule contradicts a site-wide shutdown --\n";
+
+// comments_disabled_everywhere claims nothing on the site accepts comments. A
+// conditional "enable" rule deliberately reopens the posts it matches, so the
+// claim is untrue while one exists — and an agent reading true would tell
+// someone their site was shut down while visitors carried on commenting on the
+// exception posts.
+$dc   = Disable_Comments::get_instance();
+$term = wp_insert_term( 'dc-ev-' . substr( uniqid(), -6 ), 'category' );
+$tid  = is_wp_error( $term ) ? 1 : (int) $term['term_id'];
+
+$dc->apply_settings( array( 'mode' => 'remove_everywhere', 'enable_conditional_rules' => 0, 'conditional_rules' => array() ), false, false );
+$plain = $ability->execute();
+dc_check( 'everywhere with no rules still reports a shutdown', true === $plain['comments_disabled_everywhere'] );
+
+$dc->apply_settings(
+	array(
+		'mode'                     => 'remove_everywhere',
+		'enable_conditional_rules' => 1,
+		'conditional_rules'        => array(
+			array( 'type' => 'taxonomy', 'action' => 'enable', 'taxonomy' => 'category', 'terms' => array( $tid ) ),
+		),
+	),
+	false,
+	false
+);
+$with_exception = $ability->execute();
+dc_check( 'an enable rule stops it claiming a shutdown', false === $with_exception['comments_disabled_everywhere'] );
+
+// A disable-only rule adds no exception, so the claim still holds — a fix that
+// answered false for any rule at all would be its own kind of wrong.
+$dc->apply_settings(
+	array(
+		'mode'                     => 'remove_everywhere',
+		'enable_conditional_rules' => 1,
+		'conditional_rules'        => array(
+			array( 'type' => 'taxonomy', 'action' => 'disable', 'taxonomy' => 'category', 'terms' => array( $tid ) ),
+		),
+	),
+	false,
+	false
+);
+$disable_only = $ability->execute();
+dc_check( 'a disable-only rule leaves the shutdown claim standing', true === $disable_only['comments_disabled_everywhere'] );
+
 dc_smoke_finish( 'abilities-everywhere' );

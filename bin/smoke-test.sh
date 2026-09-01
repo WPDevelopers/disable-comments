@@ -103,4 +103,191 @@ echo "── Scenario 9: page caches purged on settings change ─────�
 "$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-cache-purge.php"
 
 echo ""
+echo "── Scenario 12: conditional rules ─────────────────────────────"
+# Nothing is disabled in the base configuration, so every closed comment in
+# this scenario can only have come from the rules layer.
+#
+# The seed carries a placeholder rule naming a taxonomy that is not registered:
+# it matches nothing, but it makes has_conditional_rules() true at construct
+# time, which is what decides whether the per-post filters are registered at
+# all. Seeding an empty rule list would leave them unregistered and the
+# scenario would assert the logic while proving nothing about the wiring.
+"$WP" option update disable_comments_options \
+	"{\"db_version\":$DBV,\"remove_everywhere\":false,\"disabled_post_types\":[],\"enable_conditional_rules\":true,\"auto_close_days\":0,\"conditional_rules\":[{\"type\":\"taxonomy\",\"action\":\"disable\",\"taxonomy\":\"dc_smoke_placeholder\",\"terms\":[1]}],\"settings_saved\":true}" \
+	--format=json >/dev/null
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-conditional-rules.php"
+
+echo ""
+echo "── Scenario 22: Site Health section ───────────────────────────"
+# Reconfigures the plugin through the real save handler as it goes, so it is
+# seeded with the base state and drives the rest itself.
+"$WP" option update disable_comments_options \
+	"{\"db_version\":$DBV,\"remove_everywhere\":false,\"disabled_post_types\":[],\"settings_saved\":true}" \
+	--format=json >/dev/null
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-site-health.php"
+
+echo ""
+echo "── Scenario 13: blocked-attempt counting ──────────────────────"
+# Comments disabled everywhere, so the render path takes its "disabled" branch
+# on every call — which is exactly where a counter must NOT be wired.
+"$WP" option update disable_comments_options \
+	"{\"db_version\":$DBV,\"remove_everywhere\":true,\"disabled_post_types\":[\"post\",\"page\",\"attachment\"]}" \
+	--format=json >/dev/null
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-blocked-stats.php"
+
+echo ""
+echo "── Scenario 15: WooCommerce product reviews ───────────────────"
+# Needs a real WooCommerce. CI runners do not have one, so this half skips
+# loudly rather than silently passing — the absent half below always runs,
+# and that is the half protecting every site that will never run a store.
+#
+# Seeded with a post type already disabled so init_wploaded_filters() registers
+# the per-post comment filters at construct. The scenario cross-checks its
+# reported review status against a real comments_open() call; without the
+# filters registered that check passes vacuously and proves nothing.
+"$WP" option update disable_comments_options \
+	"{\"db_version\":$DBV,\"remove_everywhere\":false,\"disabled_post_types\":[\"product\"]}" \
+	--format=json >/dev/null
+if "$WP" plugin is-installed woocommerce >/dev/null 2>&1; then
+	"$WP" plugin activate woocommerce >/dev/null 2>&1
+	"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-woocommerce-reviews.php"
+	"$WP" plugin deactivate woocommerce >/dev/null 2>&1
+else
+	echo "  SKIP  WooCommerce is not installed in this sandbox"
+	echo "        (install it with: bin/wp plugin install woocommerce)"
+fi
+
+echo ""
+echo "── Scenario 16: every WooCommerce path with it uninstalled ────"
+"$WP" plugin deactivate woocommerce >/dev/null 2>&1 || true
+"$WP" option update disable_comments_options \
+	"{\"db_version\":$DBV,\"remove_everywhere\":false,\"disabled_post_types\":[]}" \
+	--format=json >/dev/null
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-woocommerce-absent.php"
+
+echo ""
+echo "── Scenario 17: review prompt ─────────────────────────────────"
+# Mostly asserts the prompt does NOT appear. See the file header for why.
+"$WP" option update disable_comments_options \
+	"{\"db_version\":$DBV,\"remove_everywhere\":false,\"disabled_post_types\":[]}" \
+	--format=json >/dev/null
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-review-prompt.php"
+
+echo ""
+echo "── Scenario 19: theme conflict scanner ────────────────────────"
+# The scanner makes the site request its own front end, so this scenario needs
+# a live HTTP server. It is started here and stopped afterwards; if it cannot
+# be reached the scenario skips its end-to-end half loudly and still asserts
+# the verdict logic, which needs no HTTP.
+"$WP" option update disable_comments_options \
+	"{\"db_version\":$DBV,\"remove_everywhere\":false,\"disabled_post_types\":[\"post\"]}" \
+	--format=json >/dev/null
+
+THEMES_DIR="$("$WP" eval 'echo get_theme_root();')"
+cp -r "$PLUGIN_DIR/tests/themes/dc-correct" "$THEMES_DIR/" 2>/dev/null || true
+cp -r "$PLUGIN_DIR/tests/themes/dc-broken" "$THEMES_DIR/" 2>/dev/null || true
+
+SCAN_SERVER_PID=""
+HOME_URL="$("$WP" option get home)"
+
+# `set -e` is on. A bare `cmd && break` that fails is a statement returning
+# non-zero and would abort the whole run, so every probe below stays inside an
+# `if`, where a failure is just a condition.
+dc_front_end_up() {
+	curl -sf -o /dev/null --max-time 3 "$HOME_URL" >/dev/null 2>&1
+}
+
+if ! dc_front_end_up; then
+	"$WP" server --host=127.0.0.1 --port=8888 >/tmp/dc-smoke-server.log 2>&1 &
+	SCAN_SERVER_PID=$!
+	# Courtesy wait, not a hard requirement: the scenario skips its end-to-end
+	# half loudly if the server never comes up.
+	for _ in 1 2 3 4 5 6 7 8 9 10; do
+		if dc_front_end_up; then
+			break
+		fi
+		sleep 1
+	done
+fi
+
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-theme-scanner.php"
+
+if [ -n "$SCAN_SERVER_PID" ]; then
+	kill "$SCAN_SERVER_PID" 2>/dev/null || true
+	wait "$SCAN_SERVER_PID" 2>/dev/null || true
+fi
+
+echo ""
+echo "── Scenario 18: Abilities API write abilities ─────────────────"
+# Mostly asserts refusal: who may call, the confirm flag, and the dry run.
+"$WP" option update disable_comments_options \
+	"{\"db_version\":$DBV,\"remove_everywhere\":false,\"disabled_post_types\":[]}" \
+	--format=json >/dev/null
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-abilities-write.php"
+
+echo ""
+echo "── Scenario 14: settings export / import ──────────────────────"
+"$WP" option update disable_comments_options \
+	"{\"db_version\":$DBV,\"remove_everywhere\":false,\"disabled_post_types\":[]}" \
+	--format=json >/dev/null
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-settings-portability.php"
+
+echo ""
+echo "── Scenario 10: delete modes, dry-run preview and CSV export ──"
+# Drives the real delete handler across every mode. Asserts the preview count
+# equals what the delete then removes — the two share a query builder, and a
+# drift between them is the bug this scenario exists to catch.
+"$WP" option update disable_comments_options \
+	"{\"db_version\":$DBV,\"remove_everywhere\":false,\"disabled_post_types\":[]}" \
+	--format=json >/dev/null
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-delete-modes.php"
+
+echo ""
+echo "── Scenario 11: allowed comment types survive every delete ────"
+# allowed_comment_types must be in place before the plugin constructs, so it is
+# seeded here rather than inside the scenario.
+"$WP" option update disable_comments_options \
+	"{\"db_version\":$DBV,\"remove_everywhere\":false,\"disabled_post_types\":[],\"allowed_comment_types\":[\"note\"]}" \
+	--format=json >/dev/null
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-delete-allowed-types.php"
+
+echo ""
+echo "── Scenario 20: comment types closed while comments stay open ─"
+# The blocklist has to be in place before the plugin constructs — its guards
+# are registered at plugins_loaded from the stored option — so it is seeded
+# here rather than inside the scenario.
+#
+# Nothing is disabled by post type on purpose: the assertion that matters is
+# that comments_open() stays true on a product while reviews are closed, and a
+# disabled post type would close it for an unrelated reason and hide a
+# regression. WooCommerce is activated when the sandbox has it; the scenario
+# announces the store-specific half as skipped when it does not.
+"$WP" option update disable_comments_options \
+	"{\"db_version\":$DBV,\"remove_everywhere\":false,\"disabled_post_types\":[],\"blocked_comment_types\":[\"review\"]}" \
+	--format=json >/dev/null
+if "$WP" plugin is-installed woocommerce >/dev/null 2>&1; then
+	"$WP" plugin activate woocommerce >/dev/null 2>&1
+	# `set -e` would abort on a failing scenario and skip the deactivation
+	# below, leaving WooCommerce active in the sandbox and breaking unrelated
+	# scenarios on the next run. Capture the status, clean up, then fail.
+	set +e
+	"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-comment-type-blocklist.php"
+	BLOCKLIST_STATUS=$?
+	set -e
+	"$WP" plugin deactivate woocommerce >/dev/null 2>&1
+	[ "$BLOCKLIST_STATUS" -eq 0 ]
+else
+	"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-comment-type-blocklist.php"
+fi
+
+echo ""
+echo "── Scenario 21: uninstall leaves nothing behind ───────────────"
+# Runs last: it executes the real uninstall.php, which removes the settings
+# every scenario above seeds.
+"$WP" option update disable_comments_options \
+	"{\"db_version\":$DBV,\"remove_everywhere\":false,\"disabled_post_types\":[]}" \
+	--format=json >/dev/null
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-uninstall.php"
+
+echo ""
 echo "ALL SMOKE TESTS PASSED"
