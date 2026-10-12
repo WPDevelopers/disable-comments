@@ -469,14 +469,6 @@ if( ! class_exists('DisableComments_Plugin_Tracker') ) :
 			 * Send Initial Data to API
 			 */
 			if( $site_id == false && $this->item_id !== false ) {
-				if( isset( $_SERVER['REMOTE_ADDR'] ) && ! empty( $_SERVER['REMOTE_ADDR'] && $_SERVER['REMOTE_ADDR'] != '127.0.0.1' ) ) {
-					$country_request = wp_remote_get( 'http://ip-api.com/json/'. sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) .'?fields=country');
-					if( ! is_wp_error( $country_request ) && $country_request['response']['code'] == 200 ) {
-						$ip_data = json_decode( $country_request["body"] );
-						$body['country'] = isset( $ip_data->country ) ? $ip_data->country : 'NOT SET';
-					}
-				}
-
 				$body['plugin_slug'] = $this->plugin_name;
 				$body['url']         = $site_url;
 				$body['item_id']     = $this->item_id;

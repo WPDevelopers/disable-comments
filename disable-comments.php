@@ -315,7 +315,12 @@ class Disable_Comments {
 		]);
 		$tracker->set_notice_options(array(
 			'notice' => __('Want to help make Disable Comments even better?', 'disable-comments'),
-			'extra_notice' => __('We collect non-sensitive diagnostic data and plugin usage information. Your site URL, WordPress & PHP version, plugins & themes and email address to send you the discount coupon. This data lets us make sure this plugin always stays compatible with the most popular plugins and themes. No spam, I promise.', 'disable-comments'),
+			'extra_notice' => sprintf(
+				// translators: 1: service host name, 2: privacy policy URL.
+				__('If you agree, the plugin sends this to WPInsight (%1$s), WPDeveloper\'s usage-analytics service: your site URL and site name, WordPress version, site language and charset, PHP version, server software, whether it is a multisite, the server path of the plugin, your active and inactive plugins, your active theme and its version, the Disable Comments version, and your admin email address so we can send you the discount coupon. It is sent once when you agree and then about once a day. When you deactivate the plugin, the reason you choose and any note you type are sent too. Like any web request, it also reveals your server\'s IP address. No other service is contacted. This data lets us make sure this plugin always stays compatible with the most popular plugins and themes. No spam, I promise. <a href="%2$s" target="_blank" rel="noopener noreferrer">Privacy Policy</a>', 'disable-comments'),
+				'send.wpinsight.com',
+				esc_url('https://wpdeveloper.com/privacy-policy/')
+			),
 		));
 		$tracker->init();
 	}

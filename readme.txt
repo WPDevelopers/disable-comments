@@ -232,6 +232,22 @@ Both the sources and the build configuration live in the [GitHub development rep
 `npm run build`
 
 
+== External services ==
+
+Disable Comments connects to one external service, and only if you opt in.
+
+= WPInsight usage analytics (opt-in, off by default) =
+
+WPInsight is WPDeveloper's usage-analytics service. We use it to learn which WordPress versions, PHP versions, plugins and themes people run alongside Disable Comments, so we can keep the plugin compatible with them.
+
+* **When data is sent:** only after an administrator clicks "Sure, I'd like to help" in the opt-in notice. It is sent once at that moment, then about once a day by WP-Cron, and once more when the plugin is deactivated. If you click "No Thanks." or ignore the notice, nothing is ever sent.
+* **What is sent:** your site URL and site name, WordPress version, site language and charset, PHP version, server software, whether the site is a multisite, text direction, the server path of the plugin, the lists of active and inactive plugins, the active theme and its version, the Disable Comments version, and the email address of the administrator who opted in (used to send the discount coupon). On deactivation it also sends the reason you choose in the deactivation form and any note you type there, if you fill it in. Like any web request, the connection also reveals your server's IP address to the service.
+* **Where it is sent:** `https://send.wpinsight.com/process-plugin-data`
+* **Terms and privacy:** [Terms and Conditions](https://wpdeveloper.com/terms-and-conditions/), [Privacy Policy](https://wpdeveloper.com/privacy-policy/)
+
+The "Still Seeing a Comment Form?" check on the plugin's settings page also requests pages of your own site to check what your theme outputs. Those requests go to your own site only and send nothing to a third party.
+
+
 == Screenshots ==
 
 1. Setting Screen for Disable Comments

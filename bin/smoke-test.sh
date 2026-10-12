@@ -281,6 +281,12 @@ else
 fi
 
 echo ""
+echo "── Scenario 23: external services match the disclosure ────────"
+# Intercepts every outbound request the opt-in usage tracker makes (nothing is
+# really sent) and checks it against the opt-in notice and readme (#164).
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-external-services.php"
+
+echo ""
 echo "── Scenario 21: uninstall leaves nothing behind ───────────────"
 # Runs last: it executes the real uninstall.php, which removes the settings
 # every scenario above seeds.
