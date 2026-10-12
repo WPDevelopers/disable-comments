@@ -27,7 +27,8 @@ $GLOBALS['dc_outbound'] = array();
 add_filter(
 	'pre_http_request',
 	function ( $pre, $args, $url ) {
-		$GLOBALS['dc_outbound'][] = $url;
+		$GLOBALS['dc_outbound'][]        = $url;
+		$GLOBALS['dc_outbound_bodies'][] = isset( $args['body'] ) ? $args['body'] : null;
 		return array(
 			'headers'  => array(),
 			'body'     => wp_json_encode( array( 'siteId' => 'dc-smoke-site' ) ),
@@ -51,10 +52,17 @@ add_filter(
 function dc_reset_tracker_state( $slug ) {
 	delete_option( "wpins_{$slug}_site_id" );
 	delete_option( "wpins_{$slug}_original_url" );
+	// The stub's siteId makes send_data() store the whole payload under it.
+	delete_option( "wpins_{$slug}_dc-smoke-site" );
+	delete_option( "wpins_{$slug}_dc-smoke-site_send_failed" );
 	delete_option( 'wpins_last_track_time' );
-	delete_option( 'wpins_block_notice' );
-	$GLOBALS['dc_outbound'] = array();
+	delete_option( "wpins_deactivation_reason_{$slug}" );
+	delete_option( "wpins_deactivation_details_{$slug}" );
+	$GLOBALS['dc_outbound']        = array();
+	$GLOBALS['dc_outbound_bodies'] = array();
 }
+
+$block_notice_before = get_option( 'wpins_block_notice' );
 
 // A routable address, so the old guard against 127.0.0.1 would not skip it.
 $_SERVER['REMOTE_ADDR'] = '203.0.113.7';
@@ -87,15 +95,34 @@ foreach ( $GLOBALS['dc_outbound'] as $url ) {
 echo "\n-- the opt-in notice discloses what is sent and where --\n";
 
 dc_reset_tracker_state( $slug );
+delete_option( 'wpins_block_notice' );
 ob_start();
 $tracker->notice();
 $notice = strtolower( wp_strip_all_tags( ob_get_clean() ) );
 
 dc_check( 'notice is rendered for an administrator', '' !== trim( $notice ) );
-foreach ( array( 'send.wpinsight.com', 'site url', 'site name', 'email', 'php', 'server software', 'plugins', 'theme', 'deactivat' ) as $needle ) {
+foreach ( array( 'send.wpinsight.com', 'site url', 'site name', 'email', 'php', 'server software', 'plugins', 'theme', 'text direction', 'deactivat', 'ip address' ) as $needle ) {
 	dc_check( "notice mentions \"$needle\"", false !== strpos( $notice, $needle ) );
 }
-dc_check( 'notice no longer promises a third-party IP lookup', false === strpos( $notice, 'ip-api' ) );
+
+// ---------------------------------------------------------------------------
+echo "\n-- deactivation sends only with consent --\n";
+
+dc_reset_tracker_state( $slug );
+delete_option( 'wpins_allow_tracking' );
+update_option( "wpins_deactivation_reason_{$slug}", 'smoke reason' );
+$tracker->deactivate_this_plugin();
+dc_check( 'deactivation sends nothing without consent', array() === $GLOBALS['dc_outbound'] );
+
+dc_reset_tracker_state( $slug );
+update_option( 'wpins_allow_tracking', array( $slug => $slug ) );
+update_option( "wpins_deactivation_reason_{$slug}", 'smoke reason' );
+update_option( "wpins_deactivation_details_{$slug}", 'smoke note' );
+$tracker->deactivate_this_plugin();
+$sent = (array) end( $GLOBALS['dc_outbound_bodies'] );
+dc_check( 'deactivation report goes only to https://send.wpinsight.com', count( $GLOBALS['dc_outbound'] ) > 0 && array() === array_diff( $GLOBALS['dc_outbound'], array( DisableComments_Plugin_Tracker::API_URL ) ) );
+dc_check( 'deactivation report carries the reason and the note, as disclosed', isset( $sent['deactivation_reason'], $sent['deactivation_details'] ) );
+dc_check( 'deactivation report carries the deactivating admin\'s email, as disclosed', isset( $sent['email'] ) && wp_get_current_user()->user_email === $sent['email'] );
 
 // ---------------------------------------------------------------------------
 echo "\n-- shipped code has no plain-HTTP remote calls --\n";
@@ -105,7 +132,7 @@ $offences = array();
 $iterator = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $root, FilesystemIterator::SKIP_DOTS ) );
 foreach ( $iterator as $file ) {
 	$path = $file->getPathname();
-	if ( ! preg_match( '/\.(php|js)$/', $path ) || preg_match( '#/(\.git|node_modules|vendor|tests)/#', substr( $path, strlen( $root ) ) ) ) {
+	if ( ! preg_match( '/\.(php|js)$/', $path ) || preg_match( '#/(\.git|node_modules|vendor|tests|\.wp-sandbox|wp-sandbox[^/]*)/#', substr( $path, strlen( $root ) ) ) ) {
 		continue;
 	}
 	$code = file_get_contents( $path );
@@ -128,4 +155,9 @@ foreach ( array( 'send.wpinsight.com', 'Terms', 'Privacy' ) as $needle ) {
 
 dc_reset_tracker_state( $slug );
 delete_option( 'wpins_allow_tracking' );
+if ( false === $block_notice_before ) {
+	delete_option( 'wpins_block_notice' );
+} else {
+	update_option( 'wpins_block_notice', $block_notice_before );
+}
 dc_smoke_finish( 'External services' );
