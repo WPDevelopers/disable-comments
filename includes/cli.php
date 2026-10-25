@@ -423,6 +423,7 @@ wp disable-comments import --file=dc-settings.json",
             // Streamed straight to the destination. export_comments_csv()
             // buffers the whole file in memory first, which would undo the
             // batching on exactly the high-volume sites that reach for this.
+            // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- WP-CLI only; operator-chosen export path, streamed row by row.
             $handle = fopen($export, 'w');
             if (false === $handle) {
                 WP_CLI::error(sprintf('Could not write the export to %s. Nothing was deleted.', $export));
@@ -436,10 +437,12 @@ wp disable-comments import --file=dc-settings.json",
             try {
                 $rows = $this->dc_instance->stream_comments_csv($handle, $delete_comments_settings);
             } catch (Exception $e) {
+                // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Closes the export handle opened above.
                 fclose($handle);
                 WP_CLI::error(sprintf('Export to %s failed: %s. Nothing was deleted.', $export, $e->getMessage()));
             }
 
+            // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Closes the export handle opened above; a false return stops the delete.
             if (false === fclose($handle)) {
                 WP_CLI::error(sprintf('Could not finish writing %s. Nothing was deleted.', $export));
             }

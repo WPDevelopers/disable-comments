@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <form id="deleteCommentSettings" action="#">
     <?php
     $total_comments = $this->get_all_comments_number();

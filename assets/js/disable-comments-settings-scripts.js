@@ -170,7 +170,15 @@ jQuery(document).ready(function ($) {
 
 		jQuery(tabNavItem).on("click", "a", function (e) {
 			e.preventDefault();
-			showTab(jQuery(this).attr("href"));
+			var target = jQuery(this).attr("href");
+			// Reflect the active tab in the URL so it can be linked, bookmarked
+			// and survive a refresh — the loader above already reads this hash on
+			// arrival. preventDefault stays, so the panel shows without the
+			// browser scroll-jumping to the anchor; replaceState updates the
+			// address bar without adding a history entry on every tab click.
+			if (showTab(target) && window.history && history.replaceState) {
+				history.replaceState(null, "", target);
+			}
 		});
 
 		// "#delete" is the alias the Tools menu redirects to; it predates the
@@ -593,6 +601,7 @@ jQuery(document).ready(function ($) {
 							return $('<span>').text(label).html();
 						});
 						var text = "<b>" + escapedOptions.join("</b>, <b>") + "</b>";
+						// translators: %s: comma-separated list of user roles, wrapped in bold tags.
 						excludedRoles.html(sprintf(__("Comments are visible to %s and <b>Logged out users</b>.", "disable-comments"), text));
 						includedRoles.text(__("No comments will be visible to other roles.", "disable-comments"));
 					}
@@ -605,6 +614,7 @@ jQuery(document).ready(function ($) {
 						return $('<span>').text(label).html();
 					});
 					var text = "<b>" + escapedLabels.join("</b>, <b>") + "</b>";
+					// translators: %s: comma-separated list of user roles, wrapped in bold tags.
 					excludedRoles.html(sprintf(__("Comments are visible to %s.", "disable-comments"), text));
 					includedRoles.text(__("Other roles and logged out users won't see any comments.", "disable-comments"));
 				}

@@ -411,6 +411,14 @@ echo "\n-- attempts blocked only by a conditional rule still count --\n";
 $term    = wp_insert_term( 'dc-counter-' . uniqid(), 'category' );
 $term_id = is_wp_error( $term ) ? 1 : (int) $term['term_id'];
 
+$dc_save_warnings = array();
+set_error_handler(
+	function ( $severity, $message ) use ( &$dc_save_warnings ) {
+		$dc_save_warnings[] = $message;
+		return true;
+	},
+	E_WARNING | E_NOTICE
+);
 $dc->apply_settings(
 	array(
 		'enable_conditional_rules' => 1,
@@ -422,6 +430,9 @@ $dc->apply_settings(
 	false,
 	false
 );
+
+restore_error_handler();
+dc_check( 'saving conditional rules without mode emits no PHP warnings: ' . implode( '; ', $dc_save_warnings ), array() === $dc_save_warnings );
 
 $ruled = dc_make_test_post( 'post' );
 wp_set_object_terms( $ruled, array( $term_id ), 'category' );

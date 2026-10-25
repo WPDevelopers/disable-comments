@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <div class="footer__nav">
     <ul>
         <li><a href="<?php echo esc_url('https://wpdeveloper.com/about/'); ?>" target="_blank" rel="nofollow"><?php esc_html_e('About Us', 'disable-comments'); ?></a></li>

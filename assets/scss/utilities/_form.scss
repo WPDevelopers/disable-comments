@@ -271,6 +271,14 @@
         padding: 1rem;
         background: #f8f9fa;
         border-radius: 4px;
+
+        // Nothing sized this label, so it inherited the 10px wrapper base and
+        // rendered far smaller than the 14px helper text beside it. Match the
+        // plugin's other field labels. (Network-admin-only field, on both the
+        // Disable and Delete tabs.)
+        .form-field label {
+            font-size: 16px;
+        }
     }
 
     .roles-selection-wrapper {

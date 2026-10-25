@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
     <div class="disable__comment__option mb50" role="group" aria-labelledby="settings-heading">
         <h3 id="settings-heading" class="title"><?php esc_html_e('Settings', 'disable-comments'); ?></h3>
         <p class="subtitle"><?php esc_html_e('Configure the settings below to disable comments globally or on specific types of posts.', 'disable-comments'); ?></p>

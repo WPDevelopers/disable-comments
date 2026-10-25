@@ -4,7 +4,7 @@
  * Plugin Name: Disable Comments
  * Plugin URI: https://wordpress.org/plugins/disable-comments/
  * Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. You could bulk delete comments using Tools.
- * Version: 2.9.0
+ * Version: 2.9.1
  * Author: WPDeveloper
  * Author URI: https://wpdeveloper.com
  * License: GPL-3.0+
@@ -101,7 +101,7 @@ class Disable_Comments {
 	}
 
 	function __construct() {
-		define('DC_VERSION', '2.9.0');
+		define('DC_VERSION', '2.9.1');
 		define('DC_PLUGIN_SLUG', 'disable_comments_settings');
 		define('DC_PLUGIN_ROOT_PATH', dirname(__FILE__));
 		define('DC_PLUGIN_VIEWS_PATH', DC_PLUGIN_ROOT_PATH . '/views/');
@@ -214,7 +214,9 @@ class Disable_Comments {
 		if (is_network_admin()) {
 			return true;
 		}
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only routing hint; callers separately check nonce and network capabilities.
 		if (defined('DOING_AJAX') && DOING_AJAX && is_multisite() && isset($_GET['is_network_admin'])) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only routing hint; never used alone for authorization.
 			$param = sanitize_text_field(wp_unslash($_GET['is_network_admin']));
 			return $param === '1';
 		}
@@ -315,7 +317,12 @@ class Disable_Comments {
 		]);
 		$tracker->set_notice_options(array(
 			'notice' => __('Want to help make Disable Comments even better?', 'disable-comments'),
-			'extra_notice' => __('We collect non-sensitive diagnostic data and plugin usage information. Your site URL, WordPress & PHP version, plugins & themes and email address to send you the discount coupon. This data lets us make sure this plugin always stays compatible with the most popular plugins and themes. No spam, I promise.', 'disable-comments'),
+			'extra_notice' => sprintf(
+				// translators: 1: service host name, 2: privacy policy URL.
+				__('If you agree, the plugin sends this to WPInsight (%1$s), WPDeveloper\'s usage-analytics service: your site URL and site name, WordPress version, site language and charset, PHP version, server software, whether it is a multisite, text direction, the server path of the plugin, your active and inactive plugins, your active theme and its version, the Disable Comments version, and your user account\'s email address so we can send you the discount coupon. It is sent once when you agree, then about once a day (only what changed). A daily report can also include the current logged-in user account email; a background report without a logged-in user omits email. Reports also include the plugin name and identifier, tracker version, activation status and marketing flag, service-assigned site identifier, and original site URL when available. When you deactivate the plugin, these details are sent again with your email address, deactivation time, and the reason and note you enter. Like any web request, it also reveals your server\'s IP address. No other service is contacted. This data lets us make sure this plugin always stays compatible with the most popular plugins and themes. No spam, I promise. <a href="%2$s" target="_blank" rel="noopener noreferrer">Privacy Policy</a>', 'disable-comments'),
+				'send.wpinsight.com',
+				esc_url('https://wpinsight.com/privacy-policy/')
+			),
 		));
 		$tracker->init();
 	}
@@ -514,9 +521,13 @@ class Disable_Comments {
 		// Action-based integrations. do_action() with no listener is a no-op, so
 		// these are safe to fire unconditionally and stay correct for a plugin
 		// that registers its listener late.
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Invoke the cache plugin's public hook.
 		do_action('litespeed_purge_all');        // LiteSpeed Cache.
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Invoke the cache plugin's public hook.
 		do_action('rt_nginx_helper_purge_all');  // Nginx Helper.
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Invoke the cache plugin's public hook.
 		do_action('breeze_clear_all_cache');     // Breeze.
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Invoke the cache plugin's public hook.
 		do_action('wphb_clear_page_cache');      // Hummingbird.
 	}
 
@@ -2113,7 +2124,9 @@ class Disable_Comments {
 		// Check if we have a request object
 		if (!$request) {
 			// Check global $_REQUEST for type parameter
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only REST comment-type hint; does not perform a state change.
 			if (isset($_REQUEST['type'])) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only REST comment-type hint; mutations are authorized by the REST endpoint.
 				$comment_type = sanitize_text_field(wp_unslash($_REQUEST['type']));
 			}
 			// Check if we're in a REST API context
@@ -2495,11 +2508,11 @@ class Disable_Comments {
 		if (get_current_screen()->id == 'options-discussion' && !empty($disabled_post_types)) {
 			$names_escaped = array();
 			foreach ($disabled_post_types as $type) {
-				$names_escaped[$type] = esc_html(get_post_type_object($type)->labels->name);
+				$names_escaped[$type] = get_post_type_object($type)->labels->name;
 			}
 
 			// translators: %s: disabled post types.
-			echo '<div class="notice notice-warning"><p>' . sprintf(esc_html__('Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types.', 'disable-comments'), implode(esc_html__(', ', 'disable-comments'), $names_escaped)) . '</p></div>';
+			echo '<div class="notice notice-warning"><p>' . sprintf(esc_html__('Note: The <em>Disable Comments</em> plugin is currently active, and comments are completely disabled on: %s. Many of the settings below will not be applicable for those post types.', 'disable-comments'), esc_html(implode(__(', ', 'disable-comments'), $names_escaped))) . '</p></div>';
 		}
 	}
 
@@ -4251,7 +4264,7 @@ class Disable_Comments {
 			}
 			$post_types = $this->get_all_post_types($is_network_ctx);
 
-			if ($this->options['remove_everywhere']) {
+			if (!empty($this->options['remove_everywhere'])) {
 				$disabled_post_types = array_keys($post_types);
 			} else {
 				$disabled_post_types = (isset($formArray['disabled_types']) ? array_map('sanitize_key', (array) $formArray['disabled_types']) : ($preserve_existing && isset($this->options['disabled_post_types']) ? $this->options['disabled_post_types'] : []));
@@ -4384,7 +4397,7 @@ class Disable_Comments {
 	}
 
 	public function delete_comments_settings($_args = array(), $ceilings = null) {
-		global $deletedPostTypeNames;
+		global $dc_deleted_post_type_names;
 		$log = '';
 		$nonce = (isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '');
 
@@ -4401,8 +4414,8 @@ class Disable_Comments {
 			$log = $this->apply_delete_comments($this->get_form_array_escaped($_args), $is_network_ctx, $_args, $ceilings);
 		}
 		// message
-		$deletedPostTypeNames = array_unique((array) $deletedPostTypeNames);
-		$message = (count($deletedPostTypeNames) == 0 ? $log . '.' : $log . ' for ' . implode(", ", $deletedPostTypeNames) . '.');
+		$dc_deleted_post_type_names = array_unique((array) $dc_deleted_post_type_names);
+		$message = (count($dc_deleted_post_type_names) == 0 ? $log . '.' : $log . ' for ' . implode(", ", $dc_deleted_post_type_names) . '.');
 		if (!$this->is_CLI) {
 			// `deleted` so the screen can tell "removed nothing" from "removed
 			// something" without parsing the prose in `message`. A run that
@@ -4805,7 +4818,7 @@ class Disable_Comments {
 				' ORDER BY comments.comment_date DESC LIMIT ' . (int) $remaining
 			);
 
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- build_target_query() prepares any bound value; the raw path is constant SQL
 			$rows = $wpdb->get_results($sql, ARRAY_A);
 
 			// A failed read here would quietly shorten the list, and a short
@@ -4913,6 +4926,7 @@ class Disable_Comments {
 		// wpdb::query() calls flush() before it runs, which clears last_error,
 		// so this cannot pick up a stale failure from an earlier query.
 		if ('' !== $wpdb->last_error) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Plain-text exception data; final consumers, including web error handlers, own context-specific escaping.
 			throw new RuntimeException('Database error while reading comments: ' . $wpdb->last_error);
 		}
 	}
@@ -4934,7 +4948,7 @@ class Disable_Comments {
 
 		foreach ($targets as $target) {
 			$sql = $this->build_target_query("SELECT COUNT(*) FROM $wpdb->comments comments", $target);
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- build_target_query() prepares any bound value; the raw path is constant SQL
 			$count = (int) $wpdb->get_var($sql);
 			// A failed count reads as zero, and zero is the number the
 			// operator confirms the delete against.
@@ -5035,6 +5049,7 @@ class Disable_Comments {
 	 */
 	private function csv_write($handle, $line) {
 		$expected = strlen($line);
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite -- Writes to a caller-supplied stream; WP_Filesystem has no handle-based write.
 		$written  = fwrite($handle, $line);
 
 		// fwrite() reports a short count as an integer, not false: a disk that
@@ -5085,6 +5100,7 @@ class Disable_Comments {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- $placeholders is only %d tokens, one per $comment_ids arg.
 				"SELECT comment_id, meta_key, meta_value FROM $wpdb->commentmeta WHERE comment_id IN ($placeholders)",
 				$comment_ids
 			),
@@ -5285,7 +5301,7 @@ class Disable_Comments {
 					array($last_id)
 				);
 
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- build_target_query() always prepares here: $last_id is always a bound param
 				$rows = $wpdb->get_results($sql, ARRAY_A);
 
 				// Before the empty check, not after: a failed read is
@@ -5370,6 +5386,7 @@ class Disable_Comments {
 	 * @return string CSV payload.
 	 */
 	public function export_comments_csv($_args = array(), $is_network_ctx = false) {
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- php://temp is a PHP-managed stream, not a filesystem path.
 		$handle = fopen('php://temp', 'r+');
 		if (false === $handle) {
 			return '';
@@ -5379,6 +5396,7 @@ class Disable_Comments {
 
 		rewind($handle);
 		$csv = stream_get_contents($handle);
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Closes the php://temp stream opened above.
 		fclose($handle);
 
 		return $csv;
@@ -5428,6 +5446,7 @@ class Disable_Comments {
 		$handle = fopen('php://output', 'w');
 		if (false !== $handle) {
 			$this->stream_comments_csv($handle, array(), $is_network_ctx);
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Closes the php://output stream opened above.
 			fclose($handle);
 		}
 
@@ -5453,7 +5472,7 @@ class Disable_Comments {
 		$count = "(SELECT COUNT(*) FROM $wpdb->comments comments WHERE comments.comment_post_ID = posts.ID AND comments.comment_approved = '1')";
 
 		if (null === $post_type) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $count is a fixed subquery: no request data and no values to bind
 			$wpdb->query("UPDATE $wpdb->posts posts SET comment_count = $count");
 
 			return;
@@ -5465,7 +5484,7 @@ class Disable_Comments {
 		// wrong, and a post with no author needs an accurate count just as
 		// much as any other. Inheriting it left authorless posts reporting a
 		// count for comments that are gone.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $count is a fixed subquery with no % and no request data
 		$wpdb->query($wpdb->prepare("UPDATE $wpdb->posts posts SET comment_count = $count WHERE posts.post_type = %s", $post_type));
 	}
 
@@ -5500,17 +5519,17 @@ class Disable_Comments {
 			$ceiling_sql,
 			$ceiling_params
 		);
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- build_target_query() prepares when params exist; the raw path is constant SQL
 		$wpdb->query($meta_sql);
 
 		$sql = $this->build_target_query("DELETE comments FROM $wpdb->comments comments", $target, $ceiling_sql, $ceiling_params);
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- build_target_query() prepares when params exist; the raw path is constant SQL
 		$wpdb->query($sql);
 	}
 
 	private function delete_comments($_args, $is_network_ctx = false, $ceilings = null) {
 		global $wpdb;
-		global $deletedPostTypeNames;
+		global $dc_deleted_post_type_names;
 
 		// When an export ran first, this delete is the second half of a
 		// "back it up, then remove it" pair, and it must not remove anything
@@ -5556,7 +5575,7 @@ class Disable_Comments {
 			}
 
 			if ('selected_delete_types' === $mode || 'selected_delete_comment_types' === $mode) {
-				$deletedPostTypeNames[] = $target['label'];
+				$dc_deleted_post_type_names[] = $target['label'];
 			}
 		}
 
@@ -5664,11 +5683,12 @@ class Disable_Comments {
 		// Build exclusion query for allowed comment types
 		$placeholders = implode(', ', array_fill(0, count($allowed_types), '%s'));
 		$query = $wpdb->prepare(
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- $placeholders is only %s tokens, one per $allowed_types arg.
 			"SELECT COUNT(comment_id) FROM $wpdb->comments WHERE comment_type NOT IN ($placeholders)",
 			$allowed_types
 		);
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared -- $query is prepared above
 		return $wpdb->get_var($query);
 	}
 

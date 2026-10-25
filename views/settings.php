@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <div class="wrap">
     <div id="disablecommentswrap" class="disablecommentswrap background__grey">
         <?php do_action('disable_comments_notice'); ?>

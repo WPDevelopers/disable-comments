@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <div class="sidebar__widget__wrap">
     <div class="dc-tutorials dc-text__block mt50 mb50">
         <h3><?php esc_html_e('Read Our Tutorials', 'disable-comments'); ?></h3>

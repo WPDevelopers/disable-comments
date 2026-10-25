@@ -1,0 +1,40 @@
+SweetAlert2 v10.10.1
+====================
+
+Bundled files:
+  assets/js/sweetalert2.all.min.js
+  assets/css/sweetalert2.min.css
+
+Version: 10.10.1, from the version="10.10.1" property in the bundled
+assets/js/sweetalert2.all.min.js.
+
+Upstream source: https://github.com/sweetalert2/sweetalert2/tree/v10.10.1
+Tag v10.10.1 commit: 93e76c248d21bddb4baffdc89c2c427f7c6874c2
+License file: https://github.com/sweetalert2/sweetalert2/blob/v10.10.1/LICENSE
+Upstream package.json at v10.10.1: "license": "MIT"
+
+The license text below is the verbatim LICENSE file from the upstream tag above.
+
+----------------------------------------------------------------------
+
+The MIT License (MIT)
+
+Copyright (c) 2014 Tristan Edwards & Limon Monte
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <div class="sites-selection" role="region" aria-labelledby="sites-selection-heading">
     <div class="d__flex mb15 space__between">
         <div class="subsite__checklist__item checkbox-style" style="flex: 1 1 200px;">

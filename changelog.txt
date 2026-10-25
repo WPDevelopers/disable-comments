@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maintained from August 19, 2020 - @asif2bd
 
+= [2.9.1] - 2026-10-25 =
+* Improved: Settings tabs now show in the page URL, so a tab can be linked or bookmarked and stays open after a refresh
+* Fixed: The network-admin "Custom post types" label on the Disable Comments and Delete Comments tabs no longer renders at 10px
+* Fixed: Saving settings no longer triggers a PHP warning when "Everywhere" has never been set
+* Improved: Several minor improvements and fixes throughout the plugin
+
 = [2.9.0] - 2026-09-01 =
 * New Feature: Conditional rules - disable or re-enable comments by taxonomy term, page template, or post age, instead of by post type alone
 * New Feature: Dry-run preview for Delete Comments - see which comments a delete will remove before running it, and download them as CSV first

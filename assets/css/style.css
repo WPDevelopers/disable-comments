@@ -3613,6 +3613,9 @@ button.button__instagram.hover__highlight:hover .icon {
   background: #f8f9fa;
   border-radius: 4px;
 }
+.disable_option .custom-types-input .form-field label {
+  font-size: 16px;
+}
 .disable_option .roles-selection-wrapper {
   margin-top: 1rem;
   padding-left: 2rem;

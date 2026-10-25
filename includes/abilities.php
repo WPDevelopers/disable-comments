@@ -32,6 +32,10 @@ if (!defined('ABSPATH')) {
  * @return void
  */
 function disable_comments_register_ability_categories() {
+	if (!function_exists('wp_register_ability_category')) {
+		return;
+	}
+
 	wp_register_ability_category(
 		'disable-comments',
 		array(
@@ -52,6 +56,10 @@ function disable_comments_register_ability_categories() {
  * @return void
  */
 function disable_comments_register_abilities() {
+	if (!function_exists('wp_register_ability')) {
+		return;
+	}
+
 	wp_register_ability(
 		'disable-comments/get-status',
 		array(

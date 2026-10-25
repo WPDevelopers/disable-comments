@@ -16,6 +16,10 @@
  *
  * @package Disable_Comments
  */
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 
 <?php if (!is_network_admin()): ?>
