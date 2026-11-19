@@ -1,0 +1,60 @@
+{
+    "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+    "meta": {
+		"title": "Disable Comments Demo",
+		"description": "Demo for the Disable Comments plugin",
+		"author": "noahmobes",
+		"categories": ["Plugins", "default"]
+	},
+	"login": true,
+	"landingPage": "/disable-comments-demo-sample-post/",
+	"siteOptions": {
+		"blogname": "Disable Comments Demo",
+        "blogdescription": "A demo for the Disable Comments plugin"
+	},
+	"steps": [
+		{
+            "step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org/plugins",
+				"slug": "disable-comments"
+			},
+			"options": {
+				"activate": true
+			}
+        },
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "wordpress.org/themes",
+				"slug": "twentytwentyfive"
+			}
+		},
+        {
+			"step": "mkdir",
+			"path": "/wordpress/wp-content/plugins/nav-assist"
+		},
+		{
+			"step": "writeFile",
+			"path": "/wordpress/wp-content/plugins/nav-assist/plugin.php",
+			"data": "<?php\n/*\nPlugin Name: \"Nav Assist\" Plugin\nDescription: A custom plugin to help the user easily navigate between the sample post and the Disable Comments settings\nAuthor: noahmobes\n*/\n\nfunction nav_assist() {\n    echo '<p><a href=\"/wp-admin/options-general.php?page=disable_comments_settings\">Disable Comments Settings</a> | <a href=\"/disable-comments-demo-sample-post/\">Sample Post</a></p>';\n}\n\nadd_action('admin_notices', 'nav_assist');"
+		},
+		{
+			"step": "activatePlugin",
+			"pluginPath": "nav-assist/plugin.php"
+		},
+		{
+			"step": "writeFile",
+			"path": "/wordpress/wp-content/mu-plugins/rewrite.php",
+			"data": "<?php add_action( 'after_setup_theme', function() { global $wp_rewrite; $wp_rewrite->set_permalink_structure('/%postname%/'); $wp_rewrite->flush_rules(); } );"
+		},
+		{
+			"step": "wp-cli",
+      		"command": "wp post update 1 --post_title='Disable Comments Demo Sample Post' --post_content='This is a sample post for the Disable Comments plugin demo.</p> <p>Edit the settings here: <strong><a href=\"/wp-admin/options-general.php?page=disable_comments_settings\">Disable Comments Settings</a></strong>.' --post_name='disable-comments-demo-sample-post'"
+		},
+		{
+			"step": "wp-cli",
+			"command": "wp comment update 1 --comment_content='Try disabling comments using the Disable Comments plugin! This comment will disappear!'"
+		}
+	]
+}
