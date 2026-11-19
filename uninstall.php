@@ -67,3 +67,6 @@ if ( is_multisite() && function_exists( 'get_sites' ) && class_exists( 'WP_Site_
  * records which users dismissed the prompt, so there is no list to walk.
  */
 delete_metadata( 'user', 0, 'disable_comments_review_dismissed', '', true );
+
+// The xSpeed tips' per-user dismissals (Disable_Comments_XSpeed_Tips::DISMISSED_META).
+delete_metadata( 'user', 0, 'disable_comments_xspeed_tips_dismissed', '', true );

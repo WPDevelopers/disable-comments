@@ -5,7 +5,7 @@ Tags: Disable Comments, Stop Spam, Delete Comments, Remove Comments, Comments
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 2.9.1
+Stable tag: 2.9.2
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -244,7 +244,7 @@ The Select2, pagination.js, and SweetAlert2 JavaScript/CSS distributions are bun
 
 == External services ==
 
-Disable Comments connects to one external service, and only if you opt in.
+Disable Comments connects to two external services, each only when an administrator chooses to.
 
 = WPInsight usage analytics (opt-in, off by default) =
 
@@ -254,6 +254,15 @@ WPInsight is WPDeveloper's usage-analytics service. We use it to learn which Wor
 * **What is sent:** your site URL and site name, WordPress version, site language and charset, PHP version, server software, whether the site is a multisite, text direction, the server path of the plugin, the lists of active and inactive plugins, the active theme and its version, the Disable Comments version, and the account email address of the administrator who clicks the opt-in button (used to send the discount coupon). A daily report can also include the current logged-in user account email; a background report without a logged-in user omits email. Reports also include the plugin name and identifier, tracker version, activation status and marketing flag, service-assigned site identifier, and original site URL when available. On deactivation it sends the same details again, plus the account email address of the administrator who deactivates the plugin, the deactivation time, and the reason and any note they enter in the deactivation form. Like any web request, the connection also reveals your server's IP address to the service.
 * **Where it is sent:** `https://send.wpinsight.com/process-plugin-data`
 * **Terms and privacy:** [Terms and Conditions](https://wpinsight.com/terms-and-conditions/), [Privacy Policy](https://wpinsight.com/privacy-policy/)
+
+= xSpeed Scan (only when you click "Scan my site free") =
+
+xSpeed Scan is WPDeveloper's free website speed test. The settings page can start a scan of your site for you, so you do not have to type its address.
+
+* **When data is sent:** only when an administrator clicks "Scan my site free" or "Run a free speed scan" on the Disable Comments settings page. Nothing is sent at any other time.
+* **What is sent:** your site's home page address, and nothing else. The scan is requested as unlisted, so it does not appear in xSpeed Scan's public list of recent scans; anyone with the report link can open the report.
+* **Where it is sent:** `https://xspeedcache.com/api/scan`. Your browser then opens the scan on `https://xspeedcache.com/experience/`, or the `https://xspeedcache.com/` home page if the scan could not start.
+* **Terms and privacy:** [Terms and Conditions](https://wpdeveloper.com/terms-and-conditions/), [Privacy Policy](https://xspeedcache.com/privacy/)
 
 The "Still Seeing a Comment Form?" check on the plugin's settings page also requests pages of your own site to check what your theme outputs. Those requests go to your own site only and send nothing to a third party.
 
@@ -270,6 +279,10 @@ The "Still Seeing a Comment Form?" check on the plugin's settings page also requ
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maintained from August 19, 2020 - @asif2bd
+
+= [2.9.2] - 2026-11-19 =
+* Improved: WPML compatibility
+* Minor bug fixes and improvements
 
 = [2.9.1] - 2026-10-25 =
 * Improved: Settings tabs now show in the page URL, so a tab can be linked or bookmarked and stays open after a refresh

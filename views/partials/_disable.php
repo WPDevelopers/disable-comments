@@ -588,6 +588,11 @@ if ( ! defined( 'ABSPATH' ) ) {
         aria-label="<?php esc_attr_e('Save all disable comments settings', 'disable-comments'); ?>" tabindex="0">
         <span><?php esc_html_e('Save Changes', 'disable-comments'); ?></span>
     </button>
+    <?php
+    if (class_exists('Disable_Comments_XSpeed_Tips')) {
+        Disable_Comments_XSpeed_Tips::render('save');
+    }
+    ?>
 
     <?php if (is_network_admin()): ?>
         <input type="hidden" name="is_network_admin" value="1">

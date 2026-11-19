@@ -25,6 +25,7 @@ No configuration needed — these fire automatically when the plugin is active:
 | Nginx Helper | `rt_nginx_helper_purge_all` action |
 | Breeze | `breeze_clear_all_cache` action |
 | Hummingbird | `wphb_clear_page_cache` action |
+| xSpeed Cache | `XSpeed\Purge_Runner::purge_page()` |
 
 Every one is guarded, so a caching plugin that renames or drops its API cannot
 turn "settings saved" into a fatal error.

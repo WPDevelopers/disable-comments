@@ -4,6 +4,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maintained from August 19, 2020 - @asif2bd
 
+= [2.9.2] - 2026-11-19 =
+* Improved: WPML compatibility
+* Minor bug fixes and improvements
+
 = [2.9.1] - 2026-10-25 =
 * Improved: Settings tabs now show in the page URL, so a tab can be linked or bookmarked and stays open after a refresh
 * Fixed: The network-admin "Custom post types" label on the Disable Comments and Delete Comments tabs no longer renders at 10px

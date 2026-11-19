@@ -147,6 +147,11 @@ if ( ! defined( 'ABSPATH' ) ) {
             </div>
         </div>
     </div>
+    <?php
+    if (class_exists('Disable_Comments_XSpeed_Tips')) {
+        Disable_Comments_XSpeed_Tips::render('sidebar');
+    }
+    ?>
     <article class="blog__post">
         <div class="thumb">
             <?php // phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>

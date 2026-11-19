@@ -47,6 +47,13 @@ foreach ( array_keys( $fired ) as $hook ) {
 	);
 }
 
+// xSpeed Cache is called through its own class rather than an action.
+// Stand in for it with the same class and method name.
+$GLOBALS['dc_smoke_xspeed_purges'] = array();
+if ( ! class_exists( 'XSpeed\\Purge_Runner' ) ) {
+	eval( 'namespace XSpeed; final class Purge_Runner { public static function purge_page( $cause ) { $GLOBALS["dc_smoke_xspeed_purges"][] = $cause; return array(); } }' ); // phpcs:ignore Squiz.PHP.Eval.Discouraged
+}
+
 // ── A direct call reaches every integration ─────────────────────────────────
 $instance->purge_page_caches();
 
@@ -57,6 +64,7 @@ dc_check( 'Nginx Helper purge fires', 1 === $fired['rt_nginx_helper_purge_all'] 
 dc_check( 'LiteSpeed purge fires', 1 === $fired['litespeed_purge_all'] );
 dc_check( 'Breeze purge fires', 1 === $fired['breeze_clear_all_cache'] );
 dc_check( 'Hummingbird page-cache purge fires', 1 === $fired['wphb_clear_page_cache'] );
+dc_check( 'xSpeed Cache page purge runs', 1 === count( $GLOBALS['dc_smoke_xspeed_purges'] ) );
 
 // ── The object cache is deliberately left alone ─────────────────────────────
 // Flushing a shared Redis/Memcached object cache on every settings save would

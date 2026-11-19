@@ -4,7 +4,7 @@
  * Plugin Name: Disable Comments
  * Plugin URI: https://wordpress.org/plugins/disable-comments/
  * Description: Allows administrators to globally disable comments on their site. Comments can be disabled according to post type. You could bulk delete comments using Tools.
- * Version: 2.9.1
+ * Version: 2.9.2
  * Author: WPDeveloper
  * Author URI: https://wpdeveloper.com
  * License: GPL-3.0+
@@ -92,6 +92,15 @@ class Disable_Comments {
 	private $last_deleted_count = 0;
 	/** Findings accumulated during a scanned front-end request. */
 	private $scan_report = array();
+	/**
+	 * Taxonomy-rule term IDs with their translations, per request.
+	 *
+	 * is_disabled_for_post() runs several times for every post on a page, and
+	 * looking up each term in each language every time would multiply that.
+	 *
+	 * @var array
+	 */
+	private $rule_term_translations = array();
 
 	public static function get_instance() {
 		if (is_null(self::$instance)) {
@@ -101,7 +110,7 @@ class Disable_Comments {
 	}
 
 	function __construct() {
-		define('DC_VERSION', '2.9.1');
+		define('DC_VERSION', '2.9.2');
 		define('DC_PLUGIN_SLUG', 'disable_comments_settings');
 		define('DC_PLUGIN_ROOT_PATH', dirname(__FILE__));
 		define('DC_PLUGIN_VIEWS_PATH', DC_PLUGIN_ROOT_PATH . '/views/');
@@ -120,6 +129,10 @@ class Disable_Comments {
 		add_action('wp_ajax_disable_comments_scan_theme', array($this, 'scan_theme_conflict'));
 		add_action('wp_ajax_disable_comments_export_settings', array($this, 'export_settings_download'));
 		add_action('wp_ajax_disable_comments_import_settings', array($this, 'import_settings_ajax'));
+
+		// Tips about xSpeed Cache, printed only by this plugin's own views.
+		require_once DC_PLUGIN_ROOT_PATH . '/includes/class-xspeed-tips.php';
+		Disable_Comments_XSpeed_Tips::init();
 
 		// Including cli.php
 		if (defined('WP_CLI') && WP_CLI) {
@@ -529,6 +542,16 @@ class Disable_Comments {
 		do_action('breeze_clear_all_cache');     // Breeze.
 		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Invoke the cache plugin's public hook.
 		do_action('wphb_clear_page_cache');      // Hummingbird.
+
+		// xSpeed Cache: page cache only, like every integration above. Called
+		// through call_user_func so a renamed or missing class is a no-op.
+		if (class_exists('XSpeed\\Purge_Runner') && is_callable(array('XSpeed\\Purge_Runner', 'purge_page'))) {
+			try {
+				call_user_func(array('XSpeed\\Purge_Runner', 'purge_page'), 'Disable Comments settings changed');
+			} catch (Exception $e) {
+				// A failed purge must never turn "settings saved" into an error.
+			}
+		}
 	}
 
 	/**
@@ -886,7 +909,7 @@ class Disable_Comments {
 				return false;
 			}
 
-			return (bool) has_term($terms, $taxonomy, $post_id);
+			return (bool) has_term($this->with_term_translations($terms, $taxonomy), $taxonomy, $post_id);
 		}
 
 		if ('template' === $type) {
@@ -900,6 +923,138 @@ class Disable_Comments {
 		}
 
 		return false;
+	}
+
+	/**
+	 * A taxonomy rule's terms, plus the same terms in every other language.
+	 *
+	 * A rule stores the IDs of the terms picked on the settings screen. On a
+	 * multilingual site each translation of a term is a term of its own, with
+	 * its own ID, so a post filed under "Noticias" never carried the ID of
+	 * "News" and the rule passed it by. WPML also rewrites a post's term IDs
+	 * into the language of the request, which made the answer for one post
+	 * depend on who asked: the admin screens and the comment handler (both in
+	 * the default language) saw the post closed, while the translated page
+	 * drew a comment form that then refused every comment. Matching against
+	 * every translation gives the same answer in every language.
+	 *
+	 * Asks the multilingual plugin through its public API only, so on a site
+	 * without one the saved IDs come back unchanged.
+	 *
+	 * @since 2.9.2
+	 * @param array  $term_ids Term IDs saved on the rule.
+	 * @param string $taxonomy The rule's taxonomy.
+	 * @return int[]
+	 */
+	private function with_term_translations($term_ids, $taxonomy) {
+		$term_ids = array_values(array_unique(array_filter(array_map('intval', (array) $term_ids))));
+		$key      = $taxonomy . ':' . implode(',', $term_ids);
+
+		if (isset($this->rule_term_translations[$key])) {
+			return $this->rule_term_translations[$key];
+		}
+
+		$ids = $term_ids;
+
+		// WPML. Passing false for "return original if missing" leaves out a
+		// language the term has not been translated into, instead of adding
+		// the original's ID a second time.
+		$languages = apply_filters('wpml_active_languages', null, array('skip_missing' => 0));
+
+		if (is_array($languages) && !empty($languages)) {
+			foreach ($term_ids as $term_id) {
+				foreach (array_keys($languages) as $language) {
+					$translated = apply_filters('wpml_object_id', $term_id, $taxonomy, false, $language);
+
+					if ($translated) {
+						$ids[] = (int) $translated;
+					}
+				}
+			}
+		}
+
+		// Polylang.
+		if (function_exists('pll_get_term_translations')) {
+			foreach ($term_ids as $term_id) {
+				$ids = array_merge($ids, array_map('intval', array_values((array) pll_get_term_translations($term_id))));
+			}
+		}
+
+		/**
+		 * Filters the term IDs a taxonomy rule matches.
+		 *
+		 * WPML and Polylang are handled already. Another multilingual plugin
+		 * can add the IDs of the translations of $term_ids here.
+		 *
+		 * @since 2.9.2
+		 * @param int[]  $ids      The saved term IDs plus the translations found.
+		 * @param int[]  $term_ids The term IDs saved on the rule.
+		 * @param string $taxonomy The rule's taxonomy.
+		 */
+		$ids = apply_filters('disable_comments_rule_term_ids', array_values(array_unique(array_filter($ids))), $term_ids, $taxonomy);
+
+		$this->rule_term_translations[$key] = array_values(array_unique(array_filter(array_map('intval', (array) $ids))));
+
+		return $this->rule_term_translations[$key];
+	}
+
+	/**
+	 * Run a lookup of a rule's own terms with WPML's language filter off.
+	 *
+	 * A rule stores exact term IDs, but WPML limits get_terms() to the admin's
+	 * current language and makes get_term() and get_term_by() return that
+	 * language's translation. Read from a Spanish admin, a rule on "News" and
+	 * the English-only "Archive" came back as "Noticias" alone: the settings
+	 * form submitted only that, so the next save rewrote the rule and dropped
+	 * "Archive", and an export wrote the Spanish slugs. Looking the terms up
+	 * in WPML's "all" language returns the stored terms unchanged.
+	 *
+	 * @since 2.9.2
+	 * @param callable $lookup Runs the term query and returns its result.
+	 * @return mixed What $lookup returned.
+	 */
+	private function in_all_languages($lookup) {
+		$language = apply_filters('wpml_current_language', null);
+		$switch   = is_string($language) && '' !== $language && 'all' !== $language;
+
+		if ($switch) {
+			do_action('wpml_switch_language', 'all');
+		}
+
+		try {
+			return call_user_func($lookup);
+		} finally {
+			if ($switch) {
+				do_action('wpml_switch_language', $language);
+			}
+		}
+	}
+
+	/**
+	 * The terms a taxonomy rule stores, as WP_Term objects, in every language.
+	 *
+	 * Used by the settings screen to render the rule's current terms, which
+	 * must be exactly the stored ones: whatever it renders is what the next
+	 * save submits.
+	 *
+	 * @since 2.9.2
+	 * @param string $taxonomy The rule's taxonomy.
+	 * @param int[]  $term_ids Term IDs saved on the rule.
+	 * @return WP_Term[]
+	 */
+	private function get_rule_terms($taxonomy, $term_ids) {
+		$terms = $this->in_all_languages(function () use ($taxonomy, $term_ids) {
+			return get_terms(array(
+				'taxonomy'   => $taxonomy,
+				'hide_empty' => false,
+				'include'    => $term_ids,
+				'orderby'    => 'name',
+				// Polylang's "every language" query var.
+				'lang'       => '',
+			));
+		});
+
+		return is_wp_error($terms) ? array() : (array) $terms;
 	}
 
 	/**
@@ -1034,7 +1189,9 @@ class Disable_Comments {
 			$slugs    = array();
 
 			foreach ((array) (isset($rule['terms']) ? $rule['terms'] : array()) as $term_id) {
-				$term = get_term((int) $term_id, $taxonomy);
+				$term = $this->in_all_languages(function () use ($term_id, $taxonomy) {
+					return get_term((int) $term_id, $taxonomy);
+				});
 
 				if ($term && !is_wp_error($term) && '' !== $term->slug) {
 					$slugs[] = $term->slug;
@@ -1078,7 +1235,9 @@ class Disable_Comments {
 					continue;
 				}
 
-				$term = get_term_by('slug', sanitize_title((string) $slug), $taxonomy);
+				$term = $this->in_all_languages(function () use ($slug, $taxonomy) {
+					return get_term_by('slug', sanitize_title((string) $slug), $taxonomy);
+				});
 
 				if ($term && !is_wp_error($term)) {
 					$ids[] = (int) $term->term_id;

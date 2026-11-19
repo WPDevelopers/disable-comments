@@ -118,6 +118,19 @@ echo "── Scenario 12: conditional rules ────────────
 "$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-conditional-rules.php"
 
 echo ""
+echo "── Scenario 24: conditional rules on translated terms ─────────"
+# Same seed as Scenario 12, for the same reason: the per-post filters are only
+# registered when the feature is on at construct time.
+"$WP" option update disable_comments_options \
+	"{\"db_version\":$DBV,\"remove_everywhere\":false,\"disabled_post_types\":[],\"enable_conditional_rules\":true,\"auto_close_days\":0,\"conditional_rules\":[{\"type\":\"taxonomy\",\"action\":\"disable\",\"taxonomy\":\"dc_smoke_placeholder\",\"terms\":[1]}],\"settings_saved\":true}" \
+	--format=json >/dev/null
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-conditional-rules-translations.php"
+
+echo ""
+echo "── Scenario 25: rule terms in another admin language ──────────"
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-rule-terms-admin-language.php"
+
+echo ""
 echo "── Scenario 22: Site Health section ───────────────────────────"
 # Reconfigures the plugin through the real save handler as it goes, so it is
 # seeded with the base state and drives the rest itself.
@@ -172,6 +185,10 @@ echo "── Scenario 17: review prompt ─────────────�
 	"{\"db_version\":$DBV,\"remove_everywhere\":false,\"disabled_post_types\":[]}" \
 	--format=json >/dev/null
 "$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-review-prompt.php"
+
+echo ""
+echo "── Scenario 25: xSpeed Cache tips ─────────────────────────────"
+"$WP" eval-file "$PLUGIN_DIR/tests/smoke/scenario-xspeed-tips.php"
 
 echo ""
 echo "── Scenario 19: theme conflict scanner ────────────────────────"

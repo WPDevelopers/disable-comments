@@ -259,6 +259,11 @@ if ( ! defined( 'ABSPATH' ) ) {
             </button>
 
             <div id="delete_preview_result" class="mt10" aria-live="polite"></div>
+            <?php
+            if (class_exists('Disable_Comments_XSpeed_Tips')) {
+                Disable_Comments_XSpeed_Tips::render('delete');
+            }
+            ?>
         </div>
 
     <?php else: ?>

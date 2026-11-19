@@ -152,15 +152,10 @@ if ( ! defined( 'ABSPATH' ) ) {
                         $dc_selected = array_values(array_unique(array_filter(array_map('intval', (array) $dc_tax_rule['terms']))));
 
                         if (!empty($dc_selected)) {
-                            $dc_terms = get_terms(array(
-                                'taxonomy'   => $dc_tax_rule['taxonomy'],
-                                'hide_empty' => false,
-                                'include'    => $dc_selected,
-                                'orderby'    => 'name',
-                            ));
-                            $dc_terms = is_wp_error($dc_terms) ? array() : $dc_terms;
-
-                            foreach ($dc_terms as $dc_term) {
+                            // In every language: a multilingual admin working
+                            // in another language must still get the exact
+                            // stored terms, or the save drops them.
+                            foreach ($this->get_rule_terms($dc_tax_rule['taxonomy'], $dc_selected) as $dc_term) {
                                 printf(
                                     '<option value="%1$s" selected>%2$s</option>',
                                     (int) $dc_term->term_id,

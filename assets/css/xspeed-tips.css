@@ -1,0 +1,232 @@
+/* xSpeed Cache tips on the Disable Comments settings screen. */
+/*
+ * Spacing comes from the card's gap, not from margins: the settings screen
+ * zeroes every margin with `.disablecommentswrap p { margin: 0 }`, which
+ * outranks a single-class selector here.
+ */
+.dc-xspeed-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	max-width: 450px;
+	margin: 0 0 30px;
+	padding: 20px 22px 18px;
+	background: #ffffff;
+	border-radius: 10px;
+	border-top: 3px solid #0f8a7a;
+	font-family: "DM Sans", sans-serif;
+}
+.disablecommentswrap .dc-xspeed-card > * {
+	margin: 0;
+}
+.dc-xspeed-card--active {
+	border-top-color: #e3e7f1;
+	padding: 14px 18px;
+}
+.disablecommentswrap .dc-xspeed-card--active p {
+	font-size: 13px;
+	line-height: 1.5;
+	color: #687b95;
+}
+.disablecommentswrap .dc-xspeed-card__title {
+	padding-right: 24px;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 1.3;
+	color: #22282d;
+}
+.disablecommentswrap .dc-xspeed-card__body {
+	font-size: 14px;
+	line-height: 1.55;
+	color: #687b95;
+}
+.disablecommentswrap .dc-xspeed-card__context {
+	padding: 10px 12px;
+	font-size: 13px;
+	line-height: 1.55;
+	color: #22282d;
+	background: #e3f4f1;
+	border-radius: 6px;
+}
+.disablecommentswrap .dc-xspeed-card__context a,
+.disablecommentswrap .dc-xspeed-tip a,
+.disablecommentswrap a.dc-xspeed-footer-link {
+	color: #0f7a6c;
+	font-weight: 600;
+}
+.dc-xspeed-btn {
+	display: flex;
+	flex: 1 1 0;
+	min-width: 0;
+	align-items: center;
+	justify-content: center;
+	padding: 8px 6px;
+	text-align: center;
+	line-height: 1.3;
+	overflow-wrap: break-word;
+}
+.dc-xspeed-btn {
+	display: inline-block;
+	box-sizing: border-box;
+	padding: 9px 12px;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.4;
+	border-radius: 6px;
+	text-decoration: none;
+	border: 1px solid #0f8a7a;
+}
+.disablecommentswrap a.dc-xspeed-btn--solid {
+	background: #0f8a7a;
+	color: #ffffff;
+}
+.disablecommentswrap a.dc-xspeed-btn--solid:hover,
+.disablecommentswrap a.dc-xspeed-btn--solid:focus {
+	background: #0c7365;
+	color: #ffffff;
+}
+.dc-xspeed-btn:focus-visible,
+.dc-xspeed-tip__close:focus-visible {
+	outline: 2px solid #2271b1;
+	outline-offset: 2px;
+	box-shadow: none;
+}
+.disablecommentswrap a.dc-xspeed-btn--block {
+	display: block;
+	width: 100%;
+	padding: 10px 12px;
+	text-align: center;
+}
+.disablecommentswrap .dc-xspeed-card__about {
+	margin-top: -4px;
+	font-size: 12.5px;
+	line-height: 1.5;
+	color: #687b95;
+	text-align: center;
+}
+.disablecommentswrap .dc-xspeed-card__about a {
+	display: inline;
+	color: #0f7a6c;
+	font-weight: 600;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+/*
+ * The footer runs edge to edge: negative margins cancel the card's padding.
+ * The `> p` selector is needed to outrank the card's own `> * { margin: 0 }`.
+ */
+.disablecommentswrap .dc-xspeed-card > p.dc-xspeed-card__foot {
+	display: block;
+	margin: 4px -22px -18px;
+	padding: 11px 12px;
+	border-top: 1px solid #cfe9e3;
+	border-radius: 0 0 10px 10px;
+	background: #eaf6f3;
+	font-size: 11.5px;
+	line-height: 1.4;
+	color: #4d6f69;
+	text-align: center;
+}
+.dc-xspeed-card__foot svg {
+	display: inline-block;
+	margin-right: 5px;
+	vertical-align: -2px;
+	color: #0f8a7a;
+}
+.disablecommentswrap .dc-xspeed-card__foot strong {
+	font-weight: 600;
+	color: #0c5c51;
+}
+.dc-xspeed-tip__close {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	border: 0;
+	border-radius: 4px;
+	background: transparent;
+	color: #8a96a8;
+	font-size: 18px;
+	line-height: 24px;
+	cursor: pointer;
+}
+.dc-xspeed-tip__close:hover {
+	background: #f0f2f8;
+	color: #22282d;
+}
+.dc-xspeed-tip {
+	position: relative;
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	max-width: 720px;
+	margin: 16px 0 0;
+	padding: 11px 40px 11px 14px;
+	background: #e3f4f1;
+	border-radius: 8px;
+}
+.dc-xspeed-tip[hidden] {
+	display: none;
+}
+.dc-xspeed-tip__dot {
+	flex: none;
+	width: 8px;
+	height: 8px;
+	margin-top: 7px;
+	border-radius: 50%;
+	background: #0f8a7a;
+}
+.disablecommentswrap .dc-xspeed-tip__text {
+	margin: 0;
+	font-size: 13.5px;
+	line-height: 1.55;
+	color: #22282d;
+}
+.dc-xspeed-card__head {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding-right: 24px;
+}
+.dc-xspeed-card__icon {
+	display: grid;
+	place-items: center;
+	flex: none;
+	width: 40px;
+	height: 40px;
+	border-radius: 10px;
+	background: #e3f4f1;
+	color: #0f8a7a;
+}
+.dc-xspeed-card__needle {
+	transform-origin: 12px 14.5px;
+	transition: transform 0.4s ease;
+}
+.dc-xspeed-card:hover .dc-xspeed-card__needle,
+.dc-xspeed-card:focus-within .dc-xspeed-card__needle {
+	transform: rotate(-70deg);
+}
+.disablecommentswrap .dc-xspeed-card__head .dc-xspeed-card__title {
+	margin: 0;
+	padding-right: 0;
+}
+.disablecommentswrap .dc-xspeed-card__note {
+	font-size: 12.5px;
+	line-height: 1.5;
+	color: #8a5a00;
+}
+.dc-xspeed-card__note[hidden] {
+	display: none;
+}
+.disablecommentswrap a.dc-xspeed-btn.is-busy {
+	opacity: 0.75;
+	cursor: progress;
+}
+@media (prefers-reduced-motion: reduce) {
+	.dc-xspeed-card__needle {
+		transition: none;
+	}
+}
